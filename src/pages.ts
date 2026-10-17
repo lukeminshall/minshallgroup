@@ -7,7 +7,7 @@ import {subscribeBox,split,splitLetters,eyebrow,shead,phead,btn,cards,returnsRow
 import {dot,tile} from './brand';
 import {gRidge,gDial,gNetwork} from './graphics';
 import {researchPage,RESEARCH_SLUG} from './research';
-import {datalenseSample,straightTalkingDemo} from './demos';
+import {datalenseSample} from './demos';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 export const P:Record<string,()=>string>={};
@@ -284,7 +284,7 @@ ${ctaBand('Considering a site?','Send us the postcode. We will run the catchment
 
 P['/products/straight-talking']=()=>`
 ${phead({crumb:'<a href="/products">Products</a><span>/</span>Straight Talking',title:'A compliance cost, turned into evidence.',lede:'Straight Talking is the patient-reported spine for a whole clinical journey: one capture surface from first contact to outcome, with the mandated instruments layered on top.',gfx:'layers',
-  actions:`${btn('Try the live demo','/products/straight-talking/demo')}${btn('Join the first cohort','/contact',true)}`,meta:'<span class="status">First cohort · October 2026</span>'})}
+  actions:`${btn('Join the first cohort','/contact')}`,meta:'<span class="status">First cohort · October 2026</span>'})}
 <section><div class="wrap split-2">
   <div class="reveal">${eyebrow('The problem')}<h2 class="h2">Feedback collected once, at the end, from the few who reply.</h2></div>
   <div class="prose reveal" style="--i:1"><p>Most providers collect patient feedback at one point, usually by email, from a small share of patients. It satisfies a reporting requirement and tells the organisation almost nothing it can act on, or negotiate with.</p><p>Straight Talking treats the patient’s voice as a continuous record across the journey. Capture rate comes first; validated instruments sit on the same spine; experience and outcome live on one record.</p></div>
@@ -384,7 +384,6 @@ ${phead({crumb:`<a href="/insights">Insights</a><span>/</span>${a.tag}`,title:a.
 INSIGHTS.forEach(a=>{P['/insights/'+a.slug]=()=>article(a);});
 P['/insights/'+RESEARCH_SLUG]=researchPage;
 P['/products/datalense/sample']=datalenseSample;
-P['/products/straight-talking/demo']=straightTalkingDemo;
 /* ================= CASE STUDIES ================= */
 function casePage(c,i){
   const ind=indById(c.ind),next=CASES[(i+1)%CASES.length],prev=CASES[(i-1+CASES.length)%CASES.length];
