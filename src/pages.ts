@@ -86,7 +86,7 @@ P['/']=()=>`
           <p class="finder-lead">${f.a}</p>
           <div class="finder-caps">${f.caps.map((s,k)=>{const cp=capBySlug(s);return `<a class="fcap" style="--k:${k}" href="/capabilities/${cp.slug}"><span>${cp.n}</span><b>${cp.t}</b></a>`;}).join('')}</div>
         </div>
-        ${c?`<a class="finder-case" href="/work#${c.id}" data-cursor="Read"><span class="eyebrow">Related work · ${c.client}</span><b>${c.head}</b><span>${c.ret}</span><em>See the case →</em></a>`:''}
+        ${c?`<a class="finder-case" href="/work/${c.id}" data-cursor="Read"><span class="eyebrow">Related work · ${c.client}</span><b>${c.head}</b><span>${c.ret}</span><em>See the case →</em></a>`:''}
       </div>`;}).join('')}
     </div>
   </div>
@@ -96,7 +96,7 @@ P['/']=()=>`
   ${shead({eyebrow:'Selected work',h:'Recent work.',link:['All case studies','/work']})}
   <ol class="wl" data-hoverlist>
     ${CASES.slice(0,6).map((c,i)=>`
-    <li class="reveal" style="--i:${i%3}"><a href="/work#${c.id}" data-preview="${i}" data-cursor="View">
+    <li class="reveal" style="--i:${i%3}"><a href="/work/${c.id}" data-preview="${i}" data-cursor="View">
       <span class="wl-n">${String(i+1).padStart(2,'0')}</span>
       <span class="wl-client">${c.client}${c.status?` <em class="wl-status">${c.status}</em>`:''}</span>
       <span class="wl-head">${c.head}</span>
@@ -380,6 +380,44 @@ ${phead({crumb:`<a href="/insights">Insights</a><span>/</span>${a.tag}`,title:a.
 <section><div class="wrap">${subscribeBox('article-'+a.slug.slice(0,40))}</div></section>`;
 }
 INSIGHTS.forEach(a=>{P['/insights/'+a.slug]=()=>article(a);});
+/* ================= CASE STUDIES ================= */
+function casePage(c,i){
+  const ind=indById(c.ind),next=CASES[(i+1)%CASES.length],prev=CASES[(i-1+CASES.length)%CASES.length];
+  const acts=[['The challenge',c.ch],['What we did',c.ap],['The return',c.ret]];
+  return `
+<header class="cs-hero dark"><div class="grain" aria-hidden="true"></div><div class="wrap cs-hero-in">
+  <div>
+    <nav class="crumb rise" style="--i:0" aria-label="Breadcrumb"><a href="/work">Work</a><span aria-hidden="true">/</span>${esc(c.client)}</nav>
+    <h1 class="display split cs-h">${split(c.head.replace(/\.$/,''),1)}${dot}</h1>
+    <dl class="cs-meta rise" style="--i:5">
+      <div><dt>Client</dt><dd>${esc(c.client)}</dd></div>
+      ${ind?`<div><dt>Sector</dt><dd><a href="/industries#${ind.id}">${ind.t}</a></dd></div>`:''}
+      <div><dt>Practices</dt><dd>${c.caps.map(s=>{const cp=capBySlug(s);return `<a href="/capabilities/${cp.slug}">${cp.short}</a>`;}).join(', ')}</dd></div>
+      ${c.status?`<div><dt>Status</dt><dd><span class="case-status">${c.status}</span></dd></div>`:''}
+    </dl>
+  </div>
+  <div class="cs-gfx rise" style="--i:3">${gfx(c.gfx)}</div>
+</div></header>
+<section class="cs-story"><div class="wrap">
+  ${acts.map(([t,body],k)=>`<div class="cs-act reveal${k===2?' ret':''}">
+    <span class="cs-n">0${k+1}</span>
+    <h2 class="eyebrow">${t}</h2>
+    <p class="cs-p">${body}</p>
+  </div>`).join('')}
+  <p class="cs-note reveal">Published with the client’s agreement. Ask us and we will walk you through the detail.</p>
+</div></section>
+<section class="cs-next dark"><div class="wrap">
+  <a class="cs-next-a" href="/work/${next.id}" data-cursor="Next">
+    <span class="eyebrow">Next case</span>
+    <span class="cs-next-h">${next.head}</span>
+    <span class="cs-next-c">${esc(next.client)} <i aria-hidden="true">→</i></span>
+  </a>
+  <div class="cs-pn"><a class="tlink" href="/work/${prev.id}">Previous: ${esc(prev.client)}</a><a class="tlink" href="/work">All case studies</a></div>
+</div></section>
+${ctaBand('Got a number like this to move?','Tell us the outcome, the constraint and the date. We will tell you honestly whether we can help.')}`;
+}
+CASES.forEach((c,i)=>{P['/work/'+c.id]=()=>casePage(c,i);});
+
 
 /* ================= ABOUT ================= */
 P['/about']=()=>`

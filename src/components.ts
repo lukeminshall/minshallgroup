@@ -91,6 +91,7 @@ export function caseCard(c,i=0){
         <p class="case-ret"><b>The return.</b> ${c.ret}</p>
       </details>
       <div class="chips">${capTags(c.caps)}</div>
+      <a class="tlink case-go" href="/work/${c.id}" data-cursor="Read">Read the case</a>
     </div>
   </article>`;
 }
@@ -111,7 +112,7 @@ export function insightCard(a,i=0){
 
 export function ctaBand(h,p?,links?){
   return `<section class="cta-band"><div class="wrap cta-in">
-    <div class="reveal"><h2 class="h1">${h}${dot}</h2>${p?`<p class="lede">${p}</p>`:''}</div>
+    <div class="reveal"><h2 class="h1">${h}${/[?!]$/.test(h)?"":dot}</h2>${p?`<p class="lede">${p}</p>`:''}</div>
     <div class="actions reveal" style="--i:1">${links||`${btn('Start a conversation','/contact')}${btn('See the work','/work',true)}`}</div>
   </div></section>`;
 }

@@ -17,7 +17,7 @@ const build=():Item[]=>uniq([
   ...CAPS.map(c=>({t:c.t,s:c.line,h:'/capabilities/'+c.slug,k:'Practice'})),
   ...LANDINGS.map(L=>({t:L.eyebrow,s:L.desc,h:'/'+L.slug,k:'Service'})),
   ...CAPS.flatMap(c=>c.services.map(x=>({t:x.t,s:c.t,h:'/capabilities/'+c.slug,k:'Service'}))),
-  ...CASES.map(c=>({t:c.head,s:c.client,h:'/work#'+c.id,k:'Work'})),
+  ...CASES.map(c=>({t:c.head,s:c.client,h:'/work/'+c.id,k:'Work'})),
   ...PRODUCTS.map(p=>({t:p.t,s:p.line,h:'/products/'+p.slug,k:'Product'})),
   ...INDUSTRIES.map(x=>({t:x.t,s:x.d,h:'/industries#'+x.id,k:'Industry'})),
   ...INSIGHTS.map(i=>({t:i.t,s:i.d,h:'/insights/'+i.slug,k:'Insight'})),

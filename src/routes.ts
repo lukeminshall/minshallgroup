@@ -4,7 +4,7 @@
    and the build-time prerenderer (one HTML file per route + sitemap).
    Capability, product and insight routes are generated from content.ts.
    ===================================================================== */
-import {CAPS,PRODUCTS,INSIGHTS,LANDINGS} from './content';
+import {CAPS,PRODUCTS,INSIGHTS,LANDINGS,CASES} from './content';
 
 export const SITE='https://minshallgroup.com';
 export const BRAND='Minshall Group';
@@ -32,6 +32,7 @@ ROUTES['/digitalsme']={title:t('Website Refresh for Small Businesses from £495'
 ROUTES['/digitalsme/terms']={title:t('Website refresh offer terms'),description:'The terms that apply to the Minshall Group website refresh offer for small businesses.'};
 ROUTES['/privacy']={title:t('Privacy notice'),description:'How Minshall Group (Knexu Limited) uses the information you give us through this website.'};
 PRODUCTS.forEach(p=>{ROUTES['/products/'+p.slug]={title:t(p.t+' — '+p.line.replace(/\.$/,'')),description:p.d};});
+CASES.forEach(c=>{ROUTES['/work/'+c.id]={title:t(`${c.head.replace(/\.$/,'')}: ${c.client}`),description:c.ch};});
 INSIGHTS.forEach(i=>{ROUTES['/insights/'+i.slug]={title:t(i.t),description:i.d};});
 
 /* internal tools: prerendered so deep links work, but hidden from search and the sitemap */
