@@ -15,7 +15,7 @@ export function initPage(){
   ac?.abort();cleanups.splice(0).forEach(f=>f());
   ac=new AbortController();const sig={signal:ac.signal};
   reveals();scrub(sig);rotator();heroZoom(sig);heroField(sig);varFont(sig);velocityMarquee(sig);hscroll(sig);hoverPreview(sig);
-  finder();filters();tabs(sig);stickySteps(sig);magnetic(sig);mobileCta(sig);
+  finder();filters();insightFilter();tabs(sig);stickySteps(sig);magnetic(sig);mobileCta(sig);
   dispatchEvent(new Event('mg:page'));
 }
 export function initGlobal(){cursor();}
@@ -239,6 +239,15 @@ function magnetic(sig){
     b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();const x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2;b.style.transform=`translate(${x*.18}px,${y*.3}px)`;},sig);
     b.addEventListener('pointerleave',()=>{b.style.transform='';},sig);
   });
+}
+
+/* ---------- insights: filter by topic ---------- */
+function insightFilter(){
+  const box=document.querySelector<HTMLElement>('[data-icards]');if(!box)return;
+  const btns=[...document.querySelectorAll<HTMLButtonElement>('[data-itag]')];
+  btns.forEach(b=>b.addEventListener('click',()=>{const t=b.dataset.itag;
+    btns.forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',String(on));});
+    box.querySelectorAll<HTMLElement>('[data-tag]').forEach(c=>{const show=t==='All'||c.dataset.tag===t;c.hidden=!show;if(show)c.classList.add('in');});}));
 }
 
 /* ---------- phones: one clear next step, always a thumb away ----------

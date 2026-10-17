@@ -359,7 +359,8 @@ ${phead({eyebrow:'Insights',title:'Where markets are moving.',lede:'Short, opini
     <div><span class="icard-tag">${INSIGHTS[0].tag} · Latest</span><h2 class="h1">${INSIGHTS[0].t}</h2><p class="lede-s">${INSIGHTS[0].d}</p><span class="tlink">Read · ${INSIGHTS[0].mins} min</span></div>
     <div class="if-gfx">${gfx(capBySlug(INSIGHTS[0].cap).gfx)}</div>
   </a>
-  <div class="icards">${INSIGHTS.slice(1).map(insightCard).join('')}</div>
+  <div class="ifilter" role="group" aria-label="Filter by topic">${['All',...[...new Set(INSIGHTS.slice(1).map(a=>a.tag))]].map((t,i)=>`<button type="button" class="pill-btn${i?'':' on'}" aria-pressed="${!i}" data-itag="${t}">${t}</button>`).join('')}</div>
+  <div class="icards" data-icards>${INSIGHTS.slice(1).map((a,i)=>insightCard(a,i).replace('<a class="icard',`<a data-tag="${a.tag}" class="icard`)).join('')}</div>
 </div></section>
 <section class="soft"><div class="wrap">${subscribeBox('insights')}</div></section>`;
 
@@ -368,6 +369,7 @@ function article(a){
   const cap=capBySlug(a.cap);const more=INSIGHTS.filter(x=>x.slug!==a.slug).slice(0,3);
   return `
 ${phead({crumb:`<a href="/insights">Insights</a><span>/</span>${a.tag}`,title:a.t.replace(/\.$/,''),lede:a.d,meta:`<span class="eyebrow">${d} · ${a.mins} min read</span>`})}
+<script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@type":a.tag==='News'?'NewsArticle':'Article',headline:a.t,description:a.d,datePublished:a.date,dateModified:a.date,author:{"@type":"Organization",name:"Minshall Group",url:"https://minshallgroup.com"},publisher:{"@type":"Organization",name:"Minshall Group",logo:{"@type":"ImageObject",url:"https://minshallgroup.com/apple-touch-icon.png"}},mainEntityOfPage:`https://minshallgroup.com/insights/${a.slug}`,image:"https://minshallgroup.com/og.png"}).replace(/</g,'\\u003c')}</script>
 <section><div class="wrap article">
   <div class="prose lg reveal">${a.body.map(p=>p.startsWith('## ')?`<h2>${p.slice(3)}</h2>`:`<p>${p}</p>`).join('')}</div>
   <aside class="article-side reveal" style="--i:1">
