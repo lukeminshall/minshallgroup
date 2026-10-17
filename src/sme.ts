@@ -4,6 +4,7 @@
    The check posts to /api/audit; the quote is sent through /api/contact.
    ===================================================================== */
 import {SME,SCORE} from './content';
+import {score} from './webmins';
 
 const gbp=n=>'£'+Math.round(n).toLocaleString('en-GB');
 let lastCheck=null;
@@ -45,16 +46,6 @@ function wireCheck(){
   });
 }
 /* ---------- Webmins Score ---------- */
-const essOk=(sig,k)=>k==='bookOrOrder'?!!(sig.booking||sig.ecommerce):k==='tel'?!!sig.tel:!!sig[k];
-function score(j,ind){
-  const I=SCORE.industries.find(x=>x.id===ind)||SCORE.industries[SCORE.industries.length-1];
-  const ess=I.ess.map(([k,t])=>({t,ok:essOk(j.signals,k)}));
-  const fit=Math.round(ess.filter(e=>e.ok).length/ess.length*100);
-  const p={...j.pillars,industry:fit};
-  const total=Math.round(Object.entries(SCORE.weights).reduce((s,[k,w])=>s+(p[k]||0)*(w as number),0));
-  const grade=SCORE.grades.find(([min])=>total>=(min as number))[1];
-  return {I,ess,fit,p,total,grade};
-}
 function bigDial(v,grade){
   const c=2*Math.PI*46,cls=v>=85?'good':v>=70?'okay':v>=50?'mid':'poor';
   return `<div class="ms-ring ${cls}"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" class="sc-bg"/><circle cx="50" cy="50" r="46" class="sc-fg" style="stroke-dasharray:${c};--off:${c*(1-v/100)}"/></svg><div class="ms-num"><b>${v}</b><span>out of 100</span></div></div><p class="ms-label"><span class="eyebrow">Webmins Score</span><b>${grade}</b></p>`;

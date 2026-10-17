@@ -65,6 +65,7 @@ function renderRoute(path) {
   doc = replaceAttr(doc, /(<meta property="og:description" content=")[\s\S]*?(">)/, desc);
   doc = replaceAttr(doc, /(<meta name="twitter:title" content=")[\s\S]*?(">)/, title);
   doc = replaceAttr(doc, /(<meta name="twitter:description" content=")[\s\S]*?(">)/, desc);
+  if (meta.noindex) doc = doc.replace('</head>', '<meta name="robots" content="noindex, nofollow">\n</head>');
   return doc;
 }
 
@@ -78,7 +79,7 @@ for (const path of routes) {
 }
 
 /* 3. Regenerate sitemap.xml from the canonical route list. */
-const urls = routes.map(p => {
+const urls = routes.filter(p => !ROUTES[p].noindex).map(p => {
   const loc = SITE + (p === '/' ? '/' : p);
   const priority = p === '/' ? '1.0' : (p === '/healthcare-consultancy' || p === '/digital-consultancy') ? '0.9' : p === '/privacy' ? '0.3' : '0.8';
   const lastmod = new Date().toISOString().slice(0, 10);

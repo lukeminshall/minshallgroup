@@ -9,6 +9,7 @@ import {initPage} from './motion';
 import {setActive} from './nav';
 import {preselect} from './forms';
 import {initSme} from './sme';
+import {initProspect} from './prospect';
 
 const path=()=>location.pathname.replace(/\/+$/,'')||'/';
 
@@ -24,6 +25,8 @@ function setMeta(p){
   set('meta[property="og:description"]','content',desc);
   set('meta[name="twitter:title"]','content',title);
   set('meta[name="twitter:description"]','content',desc);
+  let rob=document.querySelector('meta[name="robots"]');
+  if(r&&r.noindex){if(!rob){rob=document.createElement('meta');rob.setAttribute('name','robots');document.head.appendChild(rob);}rob.setAttribute('content','noindex, nofollow');}else rob?.remove();
 }
 
 function paint(scroll=true){
@@ -31,7 +34,7 @@ function paint(scroll=true){
   document.getElementById('app').innerHTML=(P[p]||P['/404'])();
   setMeta(p);setActive(p);
   if(scroll&&!location.hash)window.scrollTo({top:0,behavior:'instant' as ScrollBehavior});
-  initPage();preselect();initSme();
+  initPage();preselect();initSme();initProspect();
 }
 
 /* page change: a navy curtain with the brand tile rises, the page swaps
@@ -73,6 +76,6 @@ export function initRouter(){
   /* prerendered markup is already on the page: keep it and just wire it up,
      so entrance animations are not restarted. In dev there is none, so render. */
   const app=document.getElementById('app');
-  if(app.children.length){const p=path();setMeta(p);setActive(p);initPage();preselect();initSme();}
+  if(app.children.length){const p=path();setMeta(p);setActive(p);initPage();preselect();initSme();initProspect();}
   else paint(false);
 }

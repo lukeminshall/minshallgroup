@@ -28,6 +28,10 @@ npm run preview  # serve /dist
 - **Webmins Score** (`SCORE` in content.ts): our own 0–100 score from five pillars (Experience, Findability, Trust, Conversion, Modern & relevant) read from the page by `api/audit.js`, plus sector fit against each industry's essentials. Change weights, grades, sectors and essentials in content.ts; signals are in `readSignals()` in the API.
 - **Analytics:** Microsoft Clarity (project `yz5tnn0my2`) is loaded in `index.html` and described in the privacy notice.
 
+## Internal prospecting tool
+
+`/tools/prospect` (not in menus, sitemap or search) scores a pasted list of prospect websites with the Webmins Score and drafts a personalised outreach email for each, with copy, open-in-email and CSV export. It is locked by `TOOL_PASSWORD`. Lists are kept in the browser only.
+
 ## Environment variables (Vercel → Settings → Environment Variables)
 
 | Name | Needed for | Notes |
@@ -38,6 +42,7 @@ npm run preview  # serve /dist
 | `VERCEL_TOKEN` | Live domain prices from Vercel (.com, .org, .net, .co, .io) | Vercel access token for the team; optional `VERCEL_TEAM_ID` |
 | `GODADDY_KEY`, `GODADDY_SECRET` | Live domain prices from GoDaddy, including .co.uk and .uk | Production key from developer.godaddy.com; GoDaddy restricts API access on smaller accounts |
 | `RESEND_SEGMENT_ID` | Newsletter sign-ups go into this Resend segment | Optional; sign-ups always land in Resend Contacts. The Resend key must have full access (not sending-only) to add contacts |
+| `TOOL_PASSWORD` | Unlocks the internal prospecting tool at `/tools/prospect` | Any strong password; without it the tool is switched off |
 | `PSI_API_KEY` | Google scores in the SME site check | Free key with the PageSpeed Insights API enabled; without it Google refuses most requests and only our own checks show |
 
 Redeploy after adding or changing a variable.

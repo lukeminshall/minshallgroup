@@ -235,29 +235,39 @@ function recommend(checks, psi, signals) {
   return 'refresh';
 }
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).json({ error: 'Method not allowed' }); }
-  let body = req.body; if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
-  let raw = String(body?.url || '').trim();
-  if (!raw || raw.length > 500) return res.status(400).json({ error: 'Enter your website address.' });
+/* Shared by /api/audit (public page) and /api/prospect (internal tool).
+   Returns { status, body }. Set psi:false to skip Google for speed. */
+export async function runAudit(rawUrl, { psi: usePsi = true } = {}) {
+  let raw = String(rawUrl || '').trim();
+  if (!raw || raw.length > 500) return { status: 400, body: { error: 'Enter your website address.' } };
   if (!/^https?:\/\//i.test(raw)) raw = 'https://' + raw;
-  let u; try { u = new URL(raw); } catch { return res.status(400).json({ error: 'That does not look like a website address.' }); }
-  try { await assertPublic(u); } catch (e) { return res.status(400).json({ error: e.message }); }
+  let u; try { u = new URL(raw); } catch { return { status: 400, body: { error: 'That does not look like a website address.' } }; }
+  try { await assertPublic(u); } catch (e) { return { status: 400, body: { error: e.message } }; }
 
-  const [pageR, psi] = await Promise.all([fetchPage(u).then(p => ({ p }), e => ({ e })), pagespeed(u.toString())]);
+  const [pageR, psi] = await Promise.all([
+    fetchPage(u).then(p => ({ p }), e => ({ e })),
+    usePsi ? pagespeed(u.toString()) : Promise.resolve({ error: 'Google check skipped for speed.' })
+  ]);
   if (pageR.e) {
-    const msg = pageR.e.name === 'AbortError' ? 'Your site took too long to respond.' : (pageR.e.message || 'We could not reach that website.');
-    return res.status(422).json({ error: msg });
+    const msg = pageR.e.name === 'AbortError' ? 'The site took too long to respond.' : (pageR.e.message || 'We could not reach that website.');
+    return { status: 422, body: { error: msg } };
   }
   const { checks, signals, title } = htmlChecks(pageR.p);
   const origin = new URL(pageR.p.finalUrl).origin;
   const [robots, sitemap] = await Promise.all([smallFetch(new URL('/robots.txt', origin)), smallFetch(new URL('/sitemap.xml', origin))]);
   const sig = readSignals(pageR.p, { robots, sitemap });
-  res.setHeader('Cache-Control', 'no-store');
-  return res.status(200).json({
+  return { status: 200, body: {
     url: pageR.p.finalUrl, title, checks,
     signals: sig, pillars: pillars(sig, pageR.p, psi), industry: guessIndustry(pageR.p),
     scores: psi.scores || null, lcp: psi.lcp || null, psiError: psi.error || null,
     suggestions: suggestions(checks, psi), recommended: recommend(checks, psi, signals)
-  });
+  } };
+}
+
+export default async function handler(req, res) {
+  if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).json({ error: 'Method not allowed' }); }
+  let body = req.body; if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
+  const r = await runAudit(body?.url);
+  res.setHeader('Cache-Control', 'no-store');
+  return res.status(r.status).json(r.body);
 }

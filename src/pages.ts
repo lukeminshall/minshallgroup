@@ -686,6 +686,31 @@ ${phead({crumb:'<a href="/digitalsme">Website refresh</a><span>/</span>Terms',ey
   <p>These terms and your accepted quote are the whole agreement between us. If there is a conflict, the quote wins. These terms are governed by the law of England and Wales, and the courts of England and Wales have jurisdiction.</p>
 </div></div></section>`;
 
+/* ================= INTERNAL: PROSPECTING TOOL ================= */
+P['/tools/prospect']=()=>`
+${phead({eyebrow:'Internal tool',title:'Prospect list',lede:'Paste prospect websites, get each one’s Webmins Score and a personalised email to send by hand from hello@.'})}
+<section id="prospect"><div class="wrap">
+  <form class="pt-gate" data-gate data-gate-form>
+    <label for="pt-pw"><b>Password</b></label>
+    <div class="pt-row"><input id="pt-pw" name="pw" type="password" autocomplete="current-password" required><button class="btn" type="submit"><span>Unlock</span></button></div>
+    <p class="pt-msg" data-gate-msg role="status"></p>
+  </form>
+  <div data-app hidden>
+    <div class="pt-input">
+      <div class="cfield"><label for="pt-list">Prospects, one per line: <code>website, email, contact name</code> (email and name optional). Up to 50 at a time.</label>
+        <textarea id="pt-list" name="list" rows="7" placeholder="examplecafe.co.uk, jo@examplecafe.co.uk, Jo Smith&#10;smithbuilders.co.uk"></textarea></div>
+      <div class="pt-opts">
+        <div class="cfield"><label for="pt-sender">Sign the emails as</label><input id="pt-sender" name="sender"></div>
+        <label class="pt-check"><input type="checkbox" name="psi"> Include Google scores (slower, about 30 seconds a site)</label>
+        <div class="pt-btns"><button class="btn" type="button" data-run><span>Score these sites</span></button><button class="btn ghost" type="button" data-csv><span>Download CSV</span></button><button class="ulink pt-clear" type="button" data-clear>Clear results</button></div>
+        <p class="pt-count" data-count></p>
+      </div>
+    </div>
+    <div class="pt-rules"><b>Before you send:</b> only cold-email limited companies and LLPs. Sole traders and partnerships need their consent first. Send 15–25 a day from hello@, personalise the first line, and honour every opt-out straight away.</div>
+    <div class="pt-out" data-out></div>
+  </div>
+</div></section>`;
+
 /* ================= 404 ================= */
 P['/404']=()=>`
 ${phead({eyebrow:'404',title:'That page has moved, or never was.',lede:'If you followed a link from knexu.co.uk, most of what was there now lives under Capabilities, Industries and Products.',actions:`${btn('Go home','/')}${btn('Capabilities','/capabilities',true)}`})}`;

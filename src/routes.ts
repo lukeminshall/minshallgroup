@@ -13,7 +13,7 @@ export const DEFAULT_DESC='Minshall Group is a UK consultancy for strategy, heal
 
 const t=s=>`${s} | ${BRAND}`;
 
-export const ROUTES:Record<string,{title:string,description:string}>={
+export const ROUTES:Record<string,{title:string,description:string,noindex?:boolean}>={
   '/':{title:DEFAULT_TITLE,description:DEFAULT_DESC},
   '/capabilities':{title:t('Capabilities — strategy, digital, data & AI, brand'),description:'Four practices, one team and one measure. Strategy & consultancy, digital & product, data, AI & automation, and brand, marketing & growth.'},
   '/industries':{title:t('Industries — Healthcare, Sport, Wellbeing, Universities & Public Sector'),description:'Deep experience in health and care, sport, wellbeing, universities, the public sector and growth companies, with capability that carries further.'},
@@ -33,3 +33,6 @@ ROUTES['/digitalsme/terms']={title:t('Website refresh offer terms'),description:
 ROUTES['/privacy']={title:t('Privacy notice'),description:'How Minshall Group (Knexu Limited) uses the information you give us through this website.'};
 PRODUCTS.forEach(p=>{ROUTES['/products/'+p.slug]={title:t(p.t+' — '+p.line.replace(/\.$/,'')),description:p.d};});
 INSIGHTS.forEach(i=>{ROUTES['/insights/'+i.slug]={title:t(i.t),description:i.d};});
+
+/* internal tools: prerendered so deep links work, but hidden from search and the sitemap */
+ROUTES['/tools/prospect']={title:t('Prospect list'),description:'Internal tool.',noindex:true};
