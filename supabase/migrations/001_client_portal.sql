@@ -8,7 +8,6 @@
 -- invoices and scores; triggers enforce this even if a client edits a row.
 -- =====================================================================
 
-create extension if not exists pgcrypto;
 
 -- ---------- who is an admin ----------
 create table if not exists public.admins (
