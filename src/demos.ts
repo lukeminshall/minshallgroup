@@ -268,16 +268,16 @@ function wireTour(steps:Step[]){
   const moveTo=async(el:Element)=>{const r=el.getBoundingClientRect();cur.style.transform=`translate(${r.left+r.width/2}px,${r.top+r.height/2}px)`;await sleep(900);};
   const play=async()=>{
     const me=++run;layer.hidden=false;document.documentElement.classList.add('touring');
-    for(let i=0;i<steps.length;i++){
+    try{for(let i=0;i<steps.length;i++){
       if(me!==run)return;const s=steps[i],el=document.querySelector(s.sel);if(!el)continue;
       num.textContent=`${i+1}/${steps.length}`;txt.textContent=s.text;
       el.scrollIntoView({behavior:'smooth',block:'center'});await sleep(900);
       document.querySelectorAll('.tour-focus').forEach(x=>x.classList.remove('tour-focus'));el.classList.add('tour-focus');
-      if(s.click){const c=document.querySelector<HTMLElement>(s.click);if(c){await moveTo(c);cur.classList.add('press');(c as any).dispatchEvent(new MouseEvent('mouseenter'));c.click();await sleep(250);cur.classList.remove('press');}}
+      if(s.click){const c=document.querySelector(s.click);if(c){await moveTo(c);cur.classList.add('press');c.dispatchEvent(new MouseEvent('mouseenter'));c.dispatchEvent(new MouseEvent('click',{bubbles:true}));await sleep(250);cur.classList.remove('press');}}
       else await moveTo(el);
       await sleep(s.wait||3200);
-    }
-    stop();
+    }}catch(e){console.error(e);}
+    if(me===run)stop();
   };
   const stop=()=>{run++;layer.hidden=true;document.documentElement.classList.remove('touring');document.querySelectorAll('.tour-focus').forEach(x=>x.classList.remove('tour-focus'));};
   document.querySelectorAll('[data-tour-start]').forEach(b=>b.addEventListener('click',play));
