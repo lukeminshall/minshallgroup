@@ -3,7 +3,7 @@
    Data comes from content.ts; markup helpers from components.ts.
    ===================================================================== */
 import {CAPS,RETURNS,INDUSTRIES,PRODUCTS,CASES,FINDER,STEPS,MODELS,PRINCIPLES,INSIGHTS,CLIENTS,LANDINGS,LEGAL,SME,SCORE,CONTACT} from './content';
-import {split,splitLetters,eyebrow,shead,phead,btn,cards,returnsRow,capTags,caseCard,marquee,insightCard,ctaBand,gfx,capBySlug,indById} from './components';
+import {subscribeBox,split,splitLetters,eyebrow,shead,phead,btn,cards,returnsRow,capTags,caseCard,marquee,insightCard,ctaBand,gfx,capBySlug,indById} from './components';
 import {dot,tile} from './brand';
 import {gRidge,gDial,gNetwork} from './graphics';
 
@@ -352,7 +352,8 @@ ${phead({eyebrow:'Insights',title:'Where markets are moving.',lede:'Short, opini
     <div class="if-gfx">${gfx(capBySlug(INSIGHTS[0].cap).gfx)}</div>
   </a>
   <div class="icards">${INSIGHTS.slice(1).map(insightCard).join('')}</div>
-</div></section>`;
+</div></section>
+<section class="soft"><div class="wrap">${subscribeBox('insights')}</div></section>`;
 
 function article(a){
   const d=new Date(a.date).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
@@ -369,7 +370,8 @@ ${phead({crumb:`<a href="/insights">Insights</a><span>/</span>${a.tag}`,title:a.
 <section class="soft"><div class="wrap">
   ${shead({eyebrow:'Keep reading',h:'More insights.',link:['All insights','/insights']})}
   <div class="icards">${more.map(insightCard).join('')}</div>
-</div></section>`;
+</div></section>
+<section><div class="wrap">${subscribeBox('article-'+a.slug.slice(0,40))}</div></section>`;
 }
 INSIGHTS.forEach(a=>{P['/insights/'+a.slug]=()=>article(a);});
 
@@ -486,7 +488,9 @@ ${phead({eyebrow:'Privacy',title:'Privacy notice',lede:`How ${LEGAL.trading} use
   <p>We do not use advertising trackers. The site also stores a single flag in your browser’s session storage so the opening animation plays only once per visit; it is deleted when you close the tab.</p>
   <h2>How we use it and why</h2>
   <p>We use your details only to reply to your enquiry and, if we go on to work together, to manage that relationship. Our lawful basis is our legitimate interest in responding to people who contact us, or taking steps at your request before entering into a contract.</p>
-  <p>We do not sell your information or use it for marketing lists.</p>
+  <p>We do not sell your information. We only send you marketing emails if you sign up to our newsletter and tick to confirm you want them.</p>
+  <h2>Newsletter</h2>
+  <p>If you sign up, we keep your email address, where you signed up and when, so we can send you our newsletter and prove you asked for it. Our lawful basis is your consent. Every email has an unsubscribe link, and unsubscribing takes effect straight away. Newsletters are sent through Resend.</p>
   <h2>Who processes it for us</h2>
   <p>The website is hosted by Vercel. Usage analytics are provided by Microsoft Clarity. Form submissions are delivered to us by email through Resend, and received in our Microsoft 365 mailbox. Some of these providers may process data outside the UK under appropriate safeguards.</p>
   <h2>How long we keep it</h2>
@@ -632,6 +636,8 @@ P['/digitalsme']=()=>`
   ${shead({eyebrow:'Payments',h:'Paid in three equal parts.',p:'You never pay for work you have not seen. Each invoice is due within seven days.'})}
   <ol class="entry-steps three">${SME.stages.map((s,i)=>`<li class="reveal" style="--i:${i}"><span>${['⅓','⅓','⅓'][i]}</span><b>${s.t}</b><p>${s.d}</p></li>`).join('')}</ol>
 </div></section>
+
+<section class="soft"><div class="wrap">${subscribeBox('digitalsme','Not ready yet? Get the tips.','One short email a month on making a small business website earn its keep. Unsubscribe at any time.')}</div></section>
 
 <section><div class="wrap split-2">
   <div class="reveal">${eyebrow('Questions')}<h2 class="h2">Before you ask.</h2><p class="prose" style="margin-top:20px"><a class="tlink" href="/digitalsme/terms">Read the offer terms</a></p></div>

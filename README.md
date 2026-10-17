@@ -37,6 +37,7 @@ npm run preview  # serve /dist
 | `CONTACT_FROM` | Sender address | Use a Resend-verified domain sender once set up |
 | `VERCEL_TOKEN` | Live domain prices from Vercel (.com, .org, .net, .co, .io) | Vercel access token for the team; optional `VERCEL_TEAM_ID` |
 | `GODADDY_KEY`, `GODADDY_SECRET` | Live domain prices from GoDaddy, including .co.uk and .uk | Production key from developer.godaddy.com; GoDaddy restricts API access on smaller accounts |
+| `RESEND_SEGMENT_ID` | Newsletter sign-ups go into this Resend segment | Optional; sign-ups always land in Resend Contacts. The Resend key must have full access (not sending-only) to add contacts |
 | `PSI_API_KEY` | Google scores in the SME site check | Free key with the PageSpeed Insights API enabled; without it Google refuses most requests and only our own checks show |
 
 Redeploy after adding or changing a variable.

@@ -115,3 +115,16 @@ export function ctaBand(h,p?,links?){
     <div class="actions reveal" style="--i:1">${links||`${btn('Start a conversation','/contact')}${btn('See the work','/work',true)}`}</div>
   </div></section>`;
 }
+
+/* newsletter opt-in (Resend contacts via /api/subscribe) */
+export function subscribeBox(source,h='Practical ideas, once a month.',p='Website, growth and marketing tips for small and growing businesses. No spam, and you can unsubscribe at any time.'){
+  return `<div class="subbox reveal">
+    <div><span class="eyebrow">Newsletter</span><h2 class="h2">${h}</h2><p>${p}</p></div>
+    <form class="sub-form" data-source="${source}" novalidate>
+      <p class="hp" hidden aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+      <div class="sub-row"><label class="sr" for="sub-${source}">Email address</label><input id="sub-${source}" name="email" type="email" required autocomplete="email" placeholder="you@yourbusiness.co.uk"><button class="btn" type="submit"><span>Sign up</span></button></div>
+      <label class="sub-consent"><input type="checkbox" name="consent" required> <span>Yes, send me emails from Minshall Group. See our <a class="ulink" href="/privacy">privacy notice</a>.</span></label>
+      <p class="sub-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>`;
+}

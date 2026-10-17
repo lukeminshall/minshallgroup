@@ -901,3 +901,16 @@ html.loading:not(.lifting) .rise,html.loading:not(.lifting) .split .w>span,html.
 .qb-extra{margin:4px 0 18px}
 .qb-extra li b{color:#fff;font-weight:700}
 @media (max-width:680px){.qb-pkgs.two{grid-template-columns:1fr}.qb-dsearch{flex-direction:column}}
+
+/* ---------- newsletter box ---------- */
+.subbox{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;background:var(--navy);color:#fff;border-radius:var(--r);padding:clamp(28px,4vw,52px);--head:#fff;--ink-2:rgba(255,255,255,.78);--accent:var(--pink)}
+.subbox .h2{margin-bottom:12px}
+.subbox p{color:var(--ink-2);margin:0}
+.sub-row{display:flex;gap:8px;background:#fff;padding:6px;border-radius:999px}
+.sub-row input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:16px;padding:0 16px;color:var(--navy);outline:none}
+.sub-consent{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:14px;color:rgba(255,255,255,.85)}
+.sub-consent input{margin-top:3px;accent-color:var(--pink)}
+.sub-status{margin:10px 0 0;font-size:14px;font-weight:700}
+.sub-status.ok{color:#7FE0B0}.sub-status.err{color:#FF8FAB}
+@media (max-width:1024px){.subbox{grid-template-columns:1fr}}
+@media (max-width:680px){.sub-row{flex-direction:column;border-radius:16px}.sub-row input{padding:12px}.sub-row .btn{width:100%}}
