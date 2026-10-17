@@ -2,6 +2,8 @@
    when the web fonts finish loading. */
 @font-face{font-family:"Manrope Fallback";src:local('Arial'),local('ArialMT');ascent-override:103.3095%;descent-override:29.074%;line-gap-override:0%;size-adjust:103.1851%}
 @font-face{font-family:"Fraunces Fallback";src:local('Georgia');ascent-override:92.9623%;descent-override:24.2386%;size-adjust:105.2039%}
+/* Big light headlines use Fraunces at its display optical size, which is far narrower than Georgia: this fallback matches its width so lines do not re-wrap when the font arrives */
+@font-face{font-family:"Fraunces Display Fallback";src:local('Georgia');ascent-override:123%;descent-override:32%;size-adjust:79.3%}
 /* =====================================================================
    MINSHALL GROUP — design system
    Brand: navy #0A1A3F (primary), pink #FF2E63 (accent, on navy),
@@ -1505,3 +1507,12 @@ html.touring .mcta{display:none}
 @media (max-width:899px){.pp-pre-grid{grid-template-columns:1fr}}
 .prose.lg h2{font-family:var(--fd);font-weight:400;font-size:clamp(26px,2.4vw,34px);line-height:1.15;letter-spacing:-.02em;color:var(--head);margin:46px 0 12px}.prose.lg h2:first-child{margin-top:0}
 .ifilter{display:flex;flex-wrap:wrap;gap:8px;margin:34px 0 22px}.icard[hidden]{display:none}
+
+/* headline widths in em, not ch: ch depends on the loaded font, so it changed the line breaks (and shifted the page) during font loading */
+.hero2-h,.display{font-family:'Fraunces Variable','Fraunces','Fraunces Display Fallback',Georgia,serif}
+.hero2-h{max-width:6.52em}
+.display{max-width:8.5em}
+.sme-hero .display{max-width:7.37em}
+.cs-h,.cs-h.display{max-width:9.07em}
+.rs-h,.rs-h.display{max-width:8.5em}
+.demo-hero .display{max-width:10.2em}
