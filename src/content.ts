@@ -424,6 +424,32 @@ export const SME={
     {slug:'trades',score:96,name:'Brightwell Building Co.',sector:'Building and renovation',package:'rebuild',features:['Quote form above the fold','Services with “from” prices','Interactive before-and-after slider','Areas covered, reviews and FAQs']},
     {slug:'clinic',score:96,name:'Northgate Physio',sector:'Physiotherapy clinic',package:'grow',features:['Online booking with live time slots','Treatments, lengths and prices','Practitioner profiles and patient login','Insurer, parking and access details']}
   ],
+  /* Why we do this: UK figures from DBT Business population estimates 2024. */
+  why:{
+    stats:[['99.8%','of UK businesses are small or medium-sized'],['3 in 5','private-sector jobs are in SMEs'],['Half','of private-sector turnover comes from SMEs']],
+    points:[
+      {t:'Agency standards, SME prices',d:'The same design, engineering and measurement we use for listed companies and the NHS, packaged so a café or a builder can afford it.'},
+      {t:'Growth that stays local',d:'When a local business wins more customers online, that money is spent with local suppliers and pays local wages. That is the growth we want to help create.'},
+      {t:'No lock-in, ever',d:'Fixed prices, no retainer and the code is yours. Take it anywhere within 30 days, or let us host it for £150 a year.'}
+    ]
+  },
+  /* Honest cost comparison. DIY = a template builder on a business plan.
+     Agency = typical UK small-agency ranges. Ours = package + £10 per
+     extra page. 3-year totals include hosting/plan and a domain, not changes. */
+  compare:[
+    {id:'s',label:'Small site',pages:10,eg:'a café or salon',
+      diy:{build:'£0 to £100',year:'£265',hours:'25 to 40 hours',changes:'Your time',total:'about £800',own:'Locked to the platform'},
+      us:{build:'£495',year:'£165',hours:'About 2 hours of questions',changes:'Small fixes included at build; after launch, quoted first',total:'£990',own:'You own the code'},
+      ag:{build:'£3,000 to £6,000',year:'£600 to £1,800',hours:'3 to 5 meetings',changes:'£60 to £95 an hour',total:'£4,800 to £11,400',own:'Often theirs until paid off'}},
+    {id:'m',label:'Growing business',pages:50,eg:'a trades firm or clinic',
+      diy:{build:'£0 to £200',year:'£300',hours:'80 to 120 hours',changes:'Your time',total:'about £1,100',own:'Locked to the platform'},
+      us:{build:'£995',year:'£165',hours:'About 3 hours of questions',changes:'Small fixes included at build; after launch, quoted first',total:'£1,490',own:'You own the code'},
+      ag:{build:'£8,000 to £15,000',year:'£1,200 to £3,000',hours:'6 to 10 meetings',changes:'£60 to £95 an hour',total:'£11,600 to £24,000',own:'Often theirs until paid off'}},
+    {id:'l',label:'Established firm',pages:200,eg:'a multi-site or professional firm',
+      diy:{build:'£0 to £300',year:'£400',hours:'250 hours or more',changes:'Your time',total:'about £1,500',own:'Locked to the platform'},
+      us:{build:'£2,995',year:'£165',hours:'About 4 hours of questions',changes:'Small fixes included at build; after launch, quoted first',total:'£3,490',own:'You own the code'},
+      ag:{build:'£30,000 or more',year:'£1,800 to £6,000',hours:'10 or more meetings',changes:'£75 to £120 an hour, or a retainer',total:'£35,400 or more',own:'Often theirs until paid off'}}
+  ],
   stages:[{t:'To start',d:'Books your slot and starts discovery.'},{t:'Halfway',d:'When you approve the design and first pages.'},{t:'On completion',d:'When the site is live and signed off.'}]
 };
 

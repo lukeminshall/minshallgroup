@@ -560,6 +560,16 @@ P['/digitalsme']=()=>`
   <p class="sme-err" data-err hidden></p>
 </div></section>
 
+<section class="dark why-sme" id="why"><div class="grain" aria-hidden="true"></div><div class="wrap">
+  <div class="why-top">
+    <div><span class="eyebrow">Why we do this</span><h2 class="h2 reveal">Good websites shouldn’t be a big-business privilege.</h2></div>
+    <p class="lede-s reveal" style="--i:1">Small and medium-sized businesses are the UK economy, yet most are priced out of agency work and left with a template they never have time to look after. We built this offer to change that, starting in our own patch.</p>
+  </div>
+  <div class="why-stats">${SME.why.stats.map(([n,t],i)=>`<div class="reveal" style="--i:${i}"><b>${n}</b><span>${t}</span></div>`).join('')}</div>
+  <div class="why-pts">${SME.why.points.map((p,i)=>`<div class="reveal" style="--i:${i}"><span class="why-n">0${i+1}</span><h3>${p.t}</h3><p>${p.d}</p></div>`).join('')}</div>
+  <p class="why-src">UK figures: Department for Business and Trade, Business population estimates 2024.</p>
+</div></section>
+
 <section class="soft" id="packages"><div class="wrap">
   ${shead({eyebrow:'Packages',h:'Three fixed starting prices.',p:`Pick the one that fits and add only what you need. Every site is built and delivered on Vercel: take the code to your own platform within ${SME.handoverDays} days, or we host it and point your domain for ${gbp(SME.hosting)} a year. Prices exclude VAT, if applicable.`})}
   <div class="pkgs">${SME.packages.map((k,i)=>`
@@ -572,6 +582,25 @@ P['/digitalsme']=()=>`
       <p class="pkg-time">Typically ${k.weeks}</p>
       <a class="btn${k.popular?'':' ghost'}" href="#quote" data-pick="${k.id}"><span>Choose ${k.name}</span></a>
     </article>`).join('')}</div>
+</div></section>
+
+<section id="compare"><div class="wrap">
+  ${shead({eyebrow:'The honest maths',h:'Do it yourself, use us, or hire an agency.',p:'What a website really costs over three years, including the hours you would spend. Pick the size closest to yours.'})}
+  <div class="cmp" data-cmp>
+    <div class="cmp-tabs" role="tablist">${SME.compare.map((c,i)=>`<button type="button" role="tab" aria-selected="${i===1}" data-cmp-tab="${c.id}"><b>${c.pages} pages</b><span>${c.label}</span></button>`).join('')}</div>
+    ${SME.compare.map((c,i)=>`<div class="cmp-panel" data-cmp-panel="${c.id}"${i===1?'':' hidden'}>
+      <p class="cmp-eg">About ${c.pages} pages, like ${c.eg}.</p>
+      <div class="cmp-grid">
+        <div class="cmp-col"><h3>Do it yourself</h3><p class="cmp-sub">Template builder, business plan</p></div>
+        <div class="cmp-col us"><span class="cmp-flag">Minshall Group</span><h3>Built for you</h3><p class="cmp-sub">Fixed price, no retainer</p></div>
+        <div class="cmp-col"><h3>Small agency</h3><p class="cmp-sub">Typical UK ranges</p></div>
+        ${([['build','To build'],['year','Each year (hosting, domain)'],['hours','Your time'],['changes','Changes later'],['own','Who owns it']] as const).map(([k,t])=>`
+        <div class="cmp-row"><span class="cmp-k">${t}</span>${(['diy','us','ag'] as const).map(w=>`<span class="cmp-v${w==='us'?' us':''}" data-label="${w==='diy'?'Do it yourself':w==='us'?'Minshall Group':'Small agency'}">${(c as any)[w][k]}</span>`).join('')}</div>`).join('')}
+        <div class="cmp-row tot"><span class="cmp-k">Three years, all in</span>${(['diy','us','ag'] as const).map(w=>`<span class="cmp-v${w==='us'?' us':''}" data-label="${w==='diy'?'Do it yourself':w==='us'?'Minshall Group':'Small agency'}">${(c as any)[w].total}</span>`).join('')}</div>
+      </div>
+    </div>`).join('')}
+    <p class="cmp-note">Honest caveats: DIY is cheapest in cash if you have the time and the eye for it. Agencies bring larger teams, campaigns and account management that we do not include. Our prices exclude VAT, if applicable, and the three-year totals include hosting and a domain but not later changes. Agency ranges are typical UK small-agency prices and vary widely.</p>
+  </div>
 </div></section>
 
 <section id="examples"><div class="wrap">

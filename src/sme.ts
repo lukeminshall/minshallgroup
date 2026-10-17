@@ -13,7 +13,17 @@ export function initSme(){
   const form=document.getElementById('sme-form') as HTMLFormElement;
   if(!form)return;
   lastCheck=null;
-  wireCheck();wireQuote(form);wireReport();scaleExamples();
+  wireCheck();wireQuote(form);wireReport();scaleExamples();wireCompare();
+}
+
+/* ---------- honest cost comparison tabs ---------- */
+function wireCompare(){
+  const box=document.querySelector<HTMLElement>("[data-cmp]");if(!box)return;
+  box.addEventListener("click",e=>{
+    const b=(e.target as HTMLElement).closest<HTMLElement>("[data-cmp-tab]");if(!b)return;
+    box.querySelectorAll("[data-cmp-tab]").forEach(t=>t.setAttribute("aria-selected",String(t===b)));
+    box.querySelectorAll<HTMLElement>("[data-cmp-panel]").forEach(p=>{p.hidden=p.dataset.cmpPanel!==b.dataset.cmpTab;});
+  });
 }
 
 /* ---------- instant check ---------- */

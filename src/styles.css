@@ -1078,3 +1078,36 @@ section[id],[id="sme-results"]{scroll-margin-top:calc(var(--hh) + 10px)}
 .ex-acts{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
 @media (max-width:1024px){.exs{grid-template-columns:1fr}.ex-shot{aspect-ratio:16/10}}
 .ex-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.ex-score{display:inline-flex;align-items:baseline;gap:5px;background:#E5F6EE;color:#13633F;font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px}.ex-score b{font-family:var(--fd);font-weight:400;font-size:18px}
+/* ---------- /digitalsme: why we do this ---------- */
+.why-sme{position:relative;overflow:hidden}.why-sme .wrap{position:relative;z-index:1}
+.why-top{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,6vw,100px);align-items:end}
+.why-top .h2{max-width:16ch;color:#fff}.why-sme .lede-s{color:rgba(255,255,255,.75)}
+.why-stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:70px;border-top:1px solid rgba(255,255,255,.18)}
+.why-stats div{padding:30px 24px 0 0}.why-stats b{display:block;font-family:var(--fd);font-weight:400;font-size:clamp(54px,6.4vw,96px);line-height:1;color:var(--pink);letter-spacing:-.03em}
+.why-stats span{display:block;margin-top:10px;color:rgba(255,255,255,.75);max-width:22ch}
+.why-pts{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:70px}
+.why-pts div{border-radius:20px;padding:30px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.why-n{font-family:var(--fd);font-size:20px;color:var(--pink)}.why-pts h3{font-family:var(--fd);font-weight:400;font-size:28px;line-height:1.1;margin:14px 0 10px;color:#fff}.why-pts p{margin:0;color:rgba(255,255,255,.72)}
+.why-src{margin:30px 0 0;font-size:13px;color:rgba(255,255,255,.5)}
+@media (max-width:900px){.why-top,.why-stats,.why-pts{grid-template-columns:1fr}.why-stats div{padding-bottom:10px}}
+/* ---------- /digitalsme: honest cost comparison ---------- */
+.cmp-tabs{display:inline-flex;gap:6px;padding:6px;border-radius:18px;background:var(--soft);margin-bottom:26px;flex-wrap:wrap}
+.cmp-tabs button{border:0;background:transparent;border-radius:13px;padding:12px 20px;cursor:pointer;text-align:left;font:inherit;color:var(--ink-2)}
+.cmp-tabs button b{display:block;font-family:var(--fd);font-weight:400;font-size:22px;color:var(--navy)}.cmp-tabs button span{font-size:13px}
+.cmp-tabs button[aria-selected=true]{background:var(--navy);color:rgba(255,255,255,.75)}.cmp-tabs button[aria-selected=true] b{color:#fff}
+.cmp-eg{color:var(--muted);margin:0 0 18px}
+.cmp-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr;border-top:1px solid var(--line)}
+.cmp-grid>.cmp-col:first-child{grid-column:2}
+.cmp-col{padding:26px 22px 20px;position:relative}.cmp-col h3{font-family:var(--fd);font-weight:400;font-size:26px;margin:0;color:var(--navy)}.cmp-sub{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.cmp-col.us{background:var(--navy);border-radius:22px 22px 0 0}.cmp-col.us h3{color:#fff}.cmp-col.us .cmp-sub{color:rgba(255,255,255,.65)}
+.cmp-flag{position:absolute;top:-13px;left:22px;background:var(--pink);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+.cmp-row{display:contents}
+.cmp-k,.cmp-v{padding:18px 22px;border-top:1px solid var(--line);font-size:15.5px}
+.cmp-k{font-weight:700;color:var(--navy);padding-left:0}
+.cmp-v.us{background:var(--navy);color:#fff;border-top-color:rgba(255,255,255,.12)}
+.cmp-row.tot .cmp-k,.cmp-row.tot .cmp-v{font-family:var(--fd);font-size:24px;font-weight:400;padding-top:24px;padding-bottom:26px;border-top:2px solid var(--navy)}
+.cmp-row.tot .cmp-v.us{color:var(--pink);border-radius:0 0 22px 22px;border-top-color:var(--pink)}
+.cmp-note{margin:26px 0 0;font-size:14px;color:var(--muted);max-width:80ch}
+@media (max-width:900px){.cmp-grid{grid-template-columns:1fr}.cmp-col{display:none}.cmp-row{display:block;margin-top:18px}.cmp-k{display:block;border:0;padding:10px 0 6px}
+.cmp-v{display:flex;justify-content:space-between;gap:16px;padding:12px 16px;text-align:right}.cmp-v::before{content:attr(data-label);font-weight:600;text-align:left;color:var(--muted)}.cmp-v.us::before{color:rgba(255,255,255,.7)}.cmp-v.us{border-radius:10px}
+.cmp-row.tot .cmp-v.us{border-radius:10px}.cmp-row.tot .cmp-v{font-size:20px}}
