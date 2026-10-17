@@ -658,7 +658,7 @@ html.loading:not(.lifting) .split .w>span,html.loading:not(.lifting) .split .zoo
 .wl-status{margin-left:10px}
 
 /* ---------- responsive ---------- */
-@media (max-width:1180px){
+@media (max-width:1060px){
   .primary{display:none}
   .burger{display:block}
   .mega-in{grid-template-columns:1fr}
@@ -1066,7 +1066,7 @@ section[id],[id="sme-results"]{scroll-margin-top:calc(var(--hh) + 10px)}
 #pt-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--navy);color:#fff;padding:12px 18px;border-radius:10px;font-weight:700;opacity:0;pointer-events:none;transition:.3s;z-index:500;max-width:90vw}
 #pt-toast.show{opacity:1;transform:translate(-50%,0)}#pt-toast.bad{background:var(--pink-d)}
 @media (max-width:1024px){.pp-signin,.pp-grid,.pp-brief{grid-template-columns:1fr}.pp-steps{position:static;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}.pp-stages{grid-template-columns:1fr 1fr}.pp-sum,.pp-g{grid-template-columns:1fr 1fr}.pp-table{display:block;overflow-x:auto}}
-@media (max-width:1180px){.head-login{display:none}}
+@media (max-width:1060px){.head-login{display:none}}
 
 /* ---------- email-me-my-report ---------- */
 .rep{display:grid;grid-template-columns:1fr 1.2fr;gap:30px;align-items:center;margin-top:20px;background:var(--navy);color:#fff;border-radius:var(--r);padding:30px;--head:#fff;--ink-2:rgba(255,255,255,.8)}
@@ -1156,7 +1156,7 @@ section[id],[id="sme-results"]{scroll-margin-top:calc(var(--hh) + 10px)}
 .srch:hover{box-shadow:inset 0 0 0 1.5px currentColor}
 .srch svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .srch kbd{font:700 11px/1 var(--f);opacity:.65;letter-spacing:.04em}
-@media (max-width:1180px){.srch{margin-left:auto;width:46px;height:46px;padding:0;justify-content:center}.srch kbd{display:none}.burger{margin-left:8px}}
+@media (max-width:1060px){.srch{display:inline-flex;margin-left:auto;width:46px;height:46px;padding:0;justify-content:center}.srch kbd{display:none}.burger{margin-left:8px}}
 .pal{position:fixed;inset:0;z-index:300;display:flex;justify-content:center;align-items:flex-start;padding:12vh 16px 16px}
 .pal[hidden]{display:none}
 .pal-bg{position:absolute;inset:0;background:rgba(6,14,36,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transition:opacity .2s}
@@ -1471,3 +1471,24 @@ html.touring .mcta{display:none}
 .cookie{background:#fff;color:var(--ink);box-shadow:0 30px 70px -18px rgba(6,14,36,.55),0 0 0 1px rgba(10,26,63,.08)}
 .cookie p{color:var(--ink-2)}.cookie b{color:var(--navy)}.cookie a{color:var(--pink-d)}
 .cookie .btn.ghost{color:var(--navy);box-shadow:inset 0 0 0 1.5px var(--line)}
+/* tidy desktop header: one line, evenly spaced, search beside log in */
+.navbtn,.head-cta{white-space:nowrap}
+.navbtn{padding:0 12px}
+.srch{display:none}
+.head-srch{gap:8px;margin-left:10px;padding:0 10px}
+.head-srch svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.head-srch kbd{font:700 11px/1 var(--f);padding:4px 6px;border-radius:6px;box-shadow:inset 0 0 0 1px color-mix(in srgb,currentColor 30%,transparent);opacity:.75}
+.head-srch::after{display:none}
+@media (max-width:1240px){.head-srch kbd{display:none}.navbtn{padding:0 10px}}
+.mega-ind{list-style:none;margin:0;padding:0;display:grid;gap:2px;width:100%}
+.mega-ind a{display:block;padding:6px 0;font-weight:600;font-size:15px;color:var(--navy);transition:color .2s,transform .25s var(--ease-out)}
+.mega-ind a:hover{color:var(--pink-d);transform:translateX(4px)}
+.mega-links{display:flex;gap:18px;flex-wrap:wrap}
+/* smoother menus: content eases in a beat after the panel */
+.mega .mega-link,.mega .mega-side>*{opacity:0;transform:translateY(6px);transition:opacity .3s var(--ease),transform .4s var(--ease-out)}
+.navitem.open .mega .mega-link,.navitem.open .mega .mega-side>*{opacity:1;transform:none;transition-delay:.06s}
+.navitem.open .mega .mega-link:nth-child(2){transition-delay:.1s}.navitem.open .mega .mega-link:nth-child(3){transition-delay:.14s}.navitem.open .mega .mega-link:nth-child(4){transition-delay:.18s}
+.site-head::before{content:"";position:fixed;inset:var(--hh) 0 0;background:rgba(6,14,36,.28);opacity:0;pointer-events:none;transition:opacity .3s}
+.site-head.mega-open::before{opacity:1}
+@media (max-width:1060px){.srch{display:inline-flex}}
+.mega-grid{align-content:start}

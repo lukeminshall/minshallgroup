@@ -79,6 +79,7 @@ export function initPalette(){
     else if(e.key==='/'&&!typing){e.preventDefault();openPalette();}
     else if(e.key==='Escape')close();
   });
-  const b=document.getElementById('srch');b?.addEventListener('click',openPalette);
-  if(b&&!/Mac|iP(hone|ad)/.test(navigator.platform))b.querySelector('kbd').textContent='Ctrl K';
+  /* header search buttons are re-rendered with the nav, so listen at the document */
+  document.addEventListener('click',e=>{if((e.target as HTMLElement).closest('[data-srch]'))openPalette();});
+  if(!/Mac|iP(hone|ad)/.test(navigator.platform))document.querySelectorAll('[data-srch] kbd').forEach(k=>{k.textContent='Ctrl K';});
 }

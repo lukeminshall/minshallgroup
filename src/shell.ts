@@ -9,7 +9,6 @@ import {tile,dot} from './brand';
 export const NAV=[
   {label:'Capabilities',href:'/capabilities',mega:'caps'},
   {label:'Websites',href:'/digitalsme',mega:'web'},
-  {label:'Industries',href:'/industries'},
   {label:'Products',href:'/products',mega:'products'},
   {label:'Work',href:'/work'},
   {label:'Insights',href:'/insights'},
@@ -23,10 +22,10 @@ function megaCaps(){
       <a class="mega-link" href="/capabilities/${c.slug}"><span class="mn">${c.n}</span><b>${c.t}</b><span>${c.line}</span></a>`).join('')}
     </div>
     <div class="mega-side">
-      <span class="eyebrow">Latest thinking</span>
-      <a class="mega-feature" href="/insights/${latest.slug}"><b>${latest.t}</b><span>${latest.d}</span><em>Read · ${latest.mins} min</em></a>
-      <a class="tlink" href="/capabilities">All capabilities</a>
-      <a class="tlink" href="/approach">How we work</a>
+      <span class="eyebrow">By sector</span>
+      <ul class="mega-ind">${INDUSTRIES.map(x=>`<li><a href="/industries#${x.id}">${x.t}</a></li>`).join('')}</ul>
+      <a class="mega-feature" href="/insights/${latest.slug}"><b>${latest.t}</b><em>Latest thinking · ${latest.mins} min</em></a>
+      <div class="mega-links"><a class="tlink" href="/capabilities">All capabilities</a><a class="tlink" href="/approach">How we work</a></div>
     </div></div></div>`;
 }
 /* websites and digital support for small businesses */
@@ -65,7 +64,7 @@ export function navMarkup(){
   return NAV.map((g,i)=>g.mega
     ?`<div class="navitem has-mega" data-i="${i}"><a class="navbtn" href="${g.href}" aria-expanded="false" aria-haspopup="true">${g.label}<svg class="chev" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></a>${g.mega==='caps'?megaCaps():g.mega==='web'?megaWeb():megaProducts()}</div>`
     :`<div class="navitem" data-i="${i}"><a class="navbtn" href="${g.href}">${g.label}</a></div>`).join('')
-    +`<a class="navbtn head-login" href="/portal">Log in</a><a class="btn sm mag head-cta" href="/contact"><span>Start a project</span></a>`;
+    +`<button class="navbtn head-srch" type="button" data-srch aria-label="Search the site"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><kbd>⌘K</kbd></button><a class="navbtn head-login" href="/portal">Log in</a><a class="btn sm mag head-cta" href="/contact"><span>Start a project</span></a>`;
 }
 
 export function mobileNavMarkup(){
