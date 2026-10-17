@@ -4,6 +4,13 @@ Marketing site for **Minshall Group** (formerly Knexu): strategy, digital, data 
 
 Vite + TypeScript, no framework. Every route is prerendered to static HTML at build time, then the client takes over navigation (with View Transitions where supported). There are no images to host: every visual is generated SVG themed from CSS variables, plus a canvas particle field in the hero.
 
+## Deploy
+
+The code lives at https://github.com/lukeminshall/minshallgroup and the Vercel project `minshallgroup-site` is connected to it:
+
+- Push to `main` and Vercel builds and publishes https://minshallgroup.com automatically.
+- Push any other branch (or open a pull request) and Vercel builds a private preview link to check first.
+
 ## Run
 
 ```bash
