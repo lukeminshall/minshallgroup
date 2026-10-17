@@ -79,7 +79,8 @@ async function pagespeed(url) {
 function htmlChecks(page) {
   const h = page.html || ''; const lower = h.toLowerCase();
   const m = (re) => h.match(re);
-  const title = (m(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || '').replace(/\s+/g, ' ').trim();
+  const title = (m(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || '').replace(/\s+/g, ' ').trim()
+    .replace(/&amp;/g, '&').replace(/&#0?39;|&apos;/g, "'").replace(/&quot;/g, '"').replace(/&nbsp;/g, ' ').replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n));
   const desc = m(/<meta[^>]+name=["']description["'][^>]*content=["']([^"']*)["']/i)?.[1] || m(/<meta[^>]+content=["']([^"']*)["'][^>]*name=["']description["']/i)?.[1] || '';
   const year = new Date().getFullYear();
   const copyYears = [...h.matchAll(/(?:©|&copy;|copyright)\s*(?:\d{4}\s*[-–]\s*)?(\d{4})/gi)].map(x => +x[1]).filter(y => y > 1995 && y <= year);
@@ -112,7 +113,7 @@ function textOf(h) {
 function readSignals(page, extras) {
   const h = page.html || ''; const text = textOf(h); const t = text.toLowerCase(); const all = h.toLowerCase();
   const has = re => re.test(all);
-  const imgs = h.match(/<img\b[^>]*>/gi) || [];
+  const imgs = h.match(/<img\b[^>]*>/gi) || []; const imgCount = imgs.length;
   const withAlt = imgs.filter(i => /\balt=["'][^"']+["']/i.test(i)).length;
   const ctaRe = /<(a|button)\b[^>]*>([\s\S]{0,120}?)<\/\1>/gi; let cta = 0, m;
   while ((m = ctaRe.exec(h))) { if (/\b(book|contact|call|quote|request|buy|order|enquire|get started|sign up|donate|reserve|shop|join|apply|start)\b/i.test(textOf(m[2]))) cta++; }
@@ -159,8 +160,9 @@ function readSignals(page, extras) {
     registration: /(cqc|care quality commission|hcpc|gmc|gdc|nmc|gphc|registered with)/.test(t),
     delivery: /\b(delivery|shipping)\b/.test(t), returns: /\breturns?\b/.test(t),
     rooms: /\b(rooms|suites|check-in|check in|accommodation)\b/.test(t),
-    modernImages: has(/\.(webp|avif)\b/) || has(/image\/(webp|avif)/),
-    lazy: has(/loading=["']lazy["']/),
+    /* a site with no photos has nothing to optimise, so these pass */
+    modernImages: !imgCount || has(/\.(webp|avif)\b/) || has(/image\/(webp|avif)/),
+    lazy: imgCount < 3 || has(/loading=["']lazy["']/),
     analytics: has(/(googletagmanager|gtag\(|google-analytics|clarity\.ms|plausible|fathom|hotjar)/),
     freshCopy: (() => { const y = new Date().getFullYear(); const ys = [...h.matchAll(/(?:©|&copy;|copyright)\s*(?:\d{4}\s*[-–]\s*)?(\d{4})/gi)].map(x => +x[1]).filter(v => v > 1995 && v <= y); return ys.length ? Math.max(...ys) >= y - 1 : true; })()
   };

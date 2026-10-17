@@ -7,7 +7,7 @@ import {P} from './pages';
 import {ROUTES,DEFAULT_TITLE,DEFAULT_DESC,SITE} from './routes';
 import {initPage} from './motion';
 import {setActive} from './nav';
-import {preselect} from './forms';
+import {preselect,fitBrief} from './forms';
 import {initSme} from './sme';
 import {initProspect} from './prospect';
 import {portalGate} from './portal/gate';
@@ -36,7 +36,7 @@ function paint(scroll=true){
   setMeta(p);setActive(p);
   if(scroll&&!location.hash)window.scrollTo({top:0,behavior:'instant' as ScrollBehavior});
   if(location.hash){const t=document.getElementById(decodeURIComponent(location.hash.slice(1)));if(t)setTimeout(()=>t.scrollIntoView({behavior:'instant' as ScrollBehavior,block:'start'}),60);}
-  initPage();preselect();initSme();initProspect();
+  initPage();preselect();fitBrief();initSme();initProspect();
   portalGate();
 }
 
@@ -80,6 +80,6 @@ export function initRouter(){
   /* prerendered markup is already on the page: keep it and just wire it up,
      so entrance animations are not restarted. In dev there is none, so render. */
   const app=document.getElementById('app');
-  if(app.children.length){const p=path();setMeta(p);setActive(p);initPage();preselect();initSme();initProspect();portalGate();}
+  if(app.children.length){const p=path();setMeta(p);setActive(p);initPage();preselect();fitBrief();initSme();initProspect();portalGate();}
   else paint(false);
 }

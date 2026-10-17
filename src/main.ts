@@ -19,5 +19,5 @@ initPalette();
 const html=document.documentElement;
 if(html.classList.contains('loading')){
   setTimeout(()=>{html.classList.add('lifting');
-    setTimeout(()=>{html.classList.remove('loading','lifting');try{sessionStorage.setItem('mg-intro','1');}catch{}},850);},1000);
+    setTimeout(()=>{html.classList.remove('loading','lifting');try{sessionStorage.setItem('mg-intro','1');}catch{}},600);},700);
 }

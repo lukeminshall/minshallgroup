@@ -609,14 +609,14 @@ html.has-cursor input,html.has-cursor textarea{cursor:text!important}
 .curtain.cover{visibility:visible;transform:none;transition:transform .55s cubic-bezier(.77,0,.18,1)}
 .curtain.leave{visibility:visible;transform:translateY(-100%);transition:transform .7s cubic-bezier(.77,0,.18,1)}
 html.loading .curtain{visibility:visible;transform:none;transition:none}
-html.loading.lifting .curtain{transform:translateY(-100%);transition:transform .85s cubic-bezier(.77,0,.18,1)}
+html.loading.lifting .curtain{transform:translateY(-100%);transition:transform .6s cubic-bezier(.77,0,.18,1)}
 html.loading body{overflow:hidden}
 .curtain-in{display:flex;flex-direction:column;align-items:center;gap:24px}
 .ctile{width:84px;height:84px;overflow:visible}
 .ct-bg{fill:#fff}.ct-m{stroke:var(--navy)}.ct-dot{fill:var(--pink)}
-html.loading .ct-bg{transform-box:fill-box;transform-origin:center;animation:ctpop .55s var(--ease-out) both}
-html.loading .ct-m{stroke-dasharray:1;stroke-dashoffset:1;animation:ctdraw .8s cubic-bezier(.65,0,.35,1) .2s forwards}
-html.loading .ct-dot{transform-box:fill-box;transform-origin:center;opacity:0;animation:ctdrop .6s cubic-bezier(.3,1.6,.55,1) .85s forwards}
+html.loading .ct-bg{transform-box:fill-box;transform-origin:center;animation:ctpop .4s var(--ease-out) both}
+html.loading .ct-m{stroke-dasharray:1;stroke-dashoffset:1;animation:ctdraw .5s cubic-bezier(.65,0,.35,1) .1s forwards}
+html.loading .ct-dot{transform-box:fill-box;transform-origin:center;opacity:0;animation:ctdrop .45s cubic-bezier(.3,1.6,.55,1) .5s forwards}
 @keyframes ctpop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
 @keyframes ctdraw{to{stroke-dashoffset:0}}
 @keyframes ctdrop{from{transform:translateY(-60px);opacity:0}to{transform:none;opacity:1}}
@@ -1166,3 +1166,13 @@ section[id],[id="sme-results"]{scroll-margin-top:calc(var(--hh) + 10px)}
 html.pal-open{overflow:hidden}
 @media (max-width:600px){.pal{padding-top:10px}.pal-list a{grid-template-columns:1fr 16px}.pal-k{grid-row:auto;grid-column:1;margin-bottom:2px}.pal-list small{grid-column:1}.pal-list i{grid-column:2}.pal-foot{display:none}}
 @media (max-width:420px){.hero2-top{gap:6px 13px;font-size:10px;letter-spacing:.14em}.hero2-top span{gap:13px}.hero2-top span+span::before{width:5px;height:5px;margin-left:-8px;margin-right:-1px}}
+/* contact: the brief as a sentence */
+.brief-s{padding:28px 30px;border-radius:var(--r);background:var(--navy);color:#fff;margin-bottom:8px}
+.brief-s .eyebrow{color:var(--pink);margin-bottom:14px}
+.brief-line{margin:0;font-family:var(--fd);font-size:clamp(28px,3.4vw,44px);line-height:1.3;letter-spacing:-.02em}
+.bs{position:relative;display:inline-block}
+.bs select{appearance:none;-webkit-appearance:none;font:inherit;font-style:italic;color:var(--pink);background:none;border:0;border-bottom:2px solid rgba(255,46,99,.45);padding:0 1.05em 2px 0;cursor:pointer;max-width:100%;border-radius:0;transition:border-color .3s}
+.bs select:hover,.bs select:focus{border-color:var(--pink);outline:none}
+.bs select:focus-visible{outline:2px solid #fff;outline-offset:4px}
+.bs::after{content:"";position:absolute;right:.15em;top:50%;width:.32em;height:.32em;border-right:2px solid var(--pink);border-bottom:2px solid var(--pink);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.bs option{color:var(--navy);font-style:normal;font-size:16px}

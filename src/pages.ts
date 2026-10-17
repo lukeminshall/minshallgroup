@@ -34,7 +34,7 @@ P['/']=()=>`
     <p class="scrub" data-scrub>Most firms hand over a strategy and leave. Somebody else builds the platform, somebody else runs the data, somebody else does the brand, and nobody owns the result. We do all four, and we own the result.</p>
     <div class="pink-foot">
       <span class="pink-we">We <span class="rot" id="rot"><b class="on">find the number</b><b>design the route</b><b>build the platform</b><b>tell the story</b><b>prove it moved</b></span></span>
-      <a class="tlink" href="/about">How we got here</a>
+      <a class="tlink" href="/about">Who we are</a>
     </div>
   </div>
   <div class="bigmarq" data-velomarq aria-hidden="true"><div class="bigmarq-track">${[0,1].map(()=>`<div class="bigmarq-row">${CAPS.map(c=>`<span>${c.t}</span><i></i>`).join('')}</div>`).join('')}</div></div>
@@ -93,7 +93,7 @@ P['/']=()=>`
 </div></section>
 
 <section class="worklist-sec"><div class="wrap">
-  ${shead({eyebrow:'Selected work',h:'Recent work.',link:['All work','/work']})}
+  ${shead({eyebrow:'Selected work',h:'Recent work.',link:['All case studies','/work']})}
   <ol class="wl" data-hoverlist>
     ${CASES.slice(0,6).map((c,i)=>`
     <li class="reveal" style="--i:${i%3}"><a href="/work#${c.id}" data-preview="${i}" data-cursor="View">
@@ -106,7 +106,7 @@ P['/']=()=>`
   </ol>
 </div>
 <div class="cwall" role="region" aria-label="Clients">
-  <div class="wrap"><span class="eyebrow">Clients include</span><p class="sr">${CLIENTS.join(', ')}</p></div>
+  <div class="wrap"><span class="eyebrow">Our clients include</span><p class="sr">${CLIENTS.join(', ')}</p></div>
   ${[0,1].map(r=>{const list=r?[...CLIENTS].reverse():CLIENTS;return `<div class="cw-row${r?' rev':''}" aria-hidden="true"><div class="cw-track">${[0,1].map(()=>list.map((c,i)=>`<span class="${(i+r)%2?'it':''}">${c}</span><i></i>`).join('')).join('')}</div></div>`;}).join('')}
 </div>
 <div class="hover-preview" data-preview-box aria-hidden="true">${CASES.slice(0,6).map((c,i)=>`<div class="hpv" data-pv="${i}"><div class="hpv-gfx">${gfx(c.gfx)}</div><p>${c.ret}</p></div>`).join('')}</div>
@@ -146,7 +146,8 @@ P['/']=()=>`
 <section><div class="wrap">
   ${shead({eyebrow:'Insights',h:'Things we have been thinking about.',link:['All insights','/insights']})}
   <div class="icards">${INSIGHTS.slice(0,3).map(insightCard).join('')}</div>
-</div></section>`;
+</div></section>
+<section class="soft"><div class="wrap">${subscribeBox('home')}</div></section>`;
 
 /* ================= CAPABILITIES ================= */
 P['/capabilities']=()=>`
@@ -424,19 +425,19 @@ ${phead({eyebrow:'Contact',title:'Tell us the number you want to move.',lede:'Th
 <section><div class="wrap contact-grid">
   <form id="contact-form" class="cform reveal" novalidate>
     <p class="hp" hidden aria-hidden="true"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
-    <fieldset class="cfield"><legend>What can we help with?</legend>
+    <div class="brief-s" aria-describedby="brief-help">
+      <p id="brief-help" class="eyebrow">Your brief, in one sentence</p>
+      <p class="brief-line">We want to <span class="bs"><label class="sr" for="cf-goal">Goal</label><select id="cf-goal" name="goal">${['grow revenue','win new customers','enter the UK market','launch a product','modernise how we work','put AI to work safely','rebuild our website','refresh our brand'].map(g=>`<option>${g}</option>`).join('')}</select></span> by <span class="bs"><label class="sr" for="cf-when">When</label><select id="cf-when" name="timeline"><option>this quarter</option><option>within six months</option><option selected>this year</option><option>no fixed date</option></select></span>.</p>
+    </div>
+    <fieldset class="cfield"><legend>Which practices might it need? <span class="opt">optional</span></legend>
       <div class="chips-in">${INTERESTS.map((t,i)=>`<label class="chk"><input type="checkbox" name="interest" value="${t}"><span>${t}</span></label>`).join('')}</div>
     </fieldset>
     <div class="row2">
       <div class="cfield"><label for="cf-name">Your name</label><input id="cf-name" name="name" type="text" required autocomplete="name"></div>
       <div class="cfield"><label for="cf-email">Email</label><input id="cf-email" name="email" type="email" required autocomplete="email"></div>
     </div>
-    <div class="row2">
-      <div class="cfield"><label for="cf-org">Organisation <span class="opt">optional</span></label><input id="cf-org" name="organisation" type="text" autocomplete="organization"></div>
-      <div class="cfield"><label for="cf-when">When does it need to change? <span class="opt">optional</span></label>
-        <select id="cf-when" name="timeline"><option value="">Choose one</option><option>This quarter</option><option>Within six months</option><option>This year</option><option>Just exploring</option></select></div>
-    </div>
-    <div class="cfield"><label for="cf-msg">The outcome, the constraint, and anything else we should know</label><textarea id="cf-msg" name="message" rows="5" required></textarea></div>
+    <div class="cfield"><label for="cf-org">Organisation <span class="opt">optional</span></label><input id="cf-org" name="organisation" type="text" autocomplete="organization"></div>
+    <div class="cfield"><label for="cf-msg">What is in the way, and anything else we should know</label><textarea id="cf-msg" name="message" rows="5" required></textarea></div>
     <button class="btn mag" type="submit"><span>Send it over</span></button>
     <p class="cform-status" role="status" aria-live="polite"></p>
     <p class="cform-note">We use your details only to reply. See our <a class="ulink" href="/privacy">privacy notice</a>.</p>

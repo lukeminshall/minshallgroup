@@ -42,7 +42,9 @@ export function initForms(){
     btn.disabled=true;set('Sending…');
     try{
       const fd=new FormData(form);
-      const payload={...Object.fromEntries(fd.entries()),interest:fd.getAll('interest').join(', ')};
+      const goal=String(fd.get('goal')||'');fd.delete('goal');
+      const payload:Record<string,unknown>={...Object.fromEntries(fd.entries()),interest:fd.getAll('interest').join(', ')};
+      if(goal)payload.message=`We want to ${goal} by ${fd.get('timeline')||'no fixed date'}.\n\n${payload.message}`;
       const res=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       if(!res.ok)throw new Error('status '+res.status);
       form.reset();
@@ -50,5 +52,16 @@ export function initForms(){
     }catch{
       set('Something went wrong sending that. Please try again in a moment.','err');
     }finally{btn.disabled=false;}
+  });
+}
+
+/* contact brief: each inline select is as wide as the words chosen */
+export function fitBrief(){
+  document.querySelectorAll<HTMLSelectElement>('.bs select').forEach(sel=>{
+    const fit=()=>{const m=document.createElement('span');const cs=getComputedStyle(sel);
+      m.style.cssText=`position:absolute;visibility:hidden;white-space:pre;font:${cs.font};letter-spacing:${cs.letterSpacing}`;
+      m.textContent=sel.options[sel.selectedIndex]?.text||'';document.body.appendChild(m);
+      sel.style.width=`calc(${m.getBoundingClientRect().width}px + 1.15em)`;m.remove();};
+    sel.addEventListener('change',fit);fit();document.fonts?.ready.then(fit);
   });
 }

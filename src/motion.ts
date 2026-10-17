@@ -95,7 +95,7 @@ function heroField(sig){
     if(on&&!RM)raf=requestAnimationFrame(draw);
   };
   const start=()=>{if(on)return;on=true;raf=requestAnimationFrame(draw);},stop=()=>{on=false;cancelAnimationFrame(raf);};
-  const boot=()=>{size();cv.classList.add('in');if(RM){draw(performance.now());return;}
+  const boot=()=>{size();cv.classList.add('in');if(RM||!FINE){on=false;draw(performance.now());addEventListener('resize',()=>{size();draw(performance.now());},sig);return;}
     const io=new IntersectionObserver(([e])=>e.isIntersecting&&!document.hidden?start():stop());io.observe(cv);
     cleanups.push(()=>{io.disconnect();stop();});
     document.addEventListener('visibilitychange',()=>document.hidden?stop():start(),sig);
@@ -103,7 +103,7 @@ function heroField(sig){
     addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect();tmx=e.clientX-r.left;tmy=e.clientY-r.top;if(mx<-999){mx=tmx;my=tmy;}},{passive:true,...sig});
     document.addEventListener('pointerleave',()=>{tmx=tmy=-9999;},sig);};
   const ric=(window as any).requestIdleCallback||((f)=>setTimeout(f,300));
-  const id=ric(boot,{timeout:1200});cleanups.push(()=>{(window as any).cancelIdleCallback?.(id);clearTimeout(id);});
+  const go=()=>ric(boot,{timeout:2500});let id:any;if(document.readyState==='complete')id=go();else addEventListener('load',()=>{id=go();},{once:true,...sig});cleanups.push(()=>{(window as any).cancelIdleCallback?.(id);clearTimeout(id);});
 }
 
 /* ---------- hero type that thickens and softens near the cursor ---------- */
