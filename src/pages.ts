@@ -369,7 +369,7 @@ function article(a){
   return `
 ${phead({crumb:`<a href="/insights">Insights</a><span>/</span>${a.tag}`,title:a.t.replace(/\.$/,''),lede:a.d,meta:`<span class="eyebrow">${d} · ${a.mins} min read</span>`})}
 <section><div class="wrap article">
-  <div class="prose lg reveal">${a.body.map(p=>`<p>${p}</p>`).join('')}</div>
+  <div class="prose lg reveal">${a.body.map(p=>p.startsWith('## ')?`<h2>${p.slice(3)}</h2>`:`<p>${p}</p>`).join('')}</div>
   <aside class="article-side reveal" style="--i:1">
     ${eyebrow('Related practice')}<a class="mega-link" href="/capabilities/${cap.slug}"><span class="mn">${cap.n}</span><b>${cap.t}</b><span>${cap.line}</span></a>
     <a class="btn sm mag" href="/contact"><span>Talk to us about this</span></a>
