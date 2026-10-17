@@ -420,9 +420,9 @@ export const SME={
   domainTry:['.co.uk','.uk','.com','.org'],
   /* concept sites at public/examples/<slug>/ (fictional businesses, clearly labelled) */
   examples:[
-    {slug:'cafe',name:'Larder & Loaf',sector:'Café and bakery',package:'refresh',features:['Menu with prices and dietary tags','Opening hours that highlight today','Table booking and cake orders','Reviews, map and Instagram']},
-    {slug:'trades',name:'Brightwell Building Co.',sector:'Building and renovation',package:'rebuild',features:['Quote form above the fold','Services with “from” prices','Interactive before-and-after slider','Areas covered, reviews and FAQs']},
-    {slug:'clinic',name:'Northgate Physio',sector:'Physiotherapy clinic',package:'grow',features:['Online booking with live time slots','Treatments, lengths and prices','Practitioner profiles and patient login','Insurer, parking and access details']}
+    {slug:'cafe',score:96,name:'Larder & Loaf',sector:'Café and bakery',package:'refresh',features:['Menu with prices and dietary tags','Opening hours that highlight today','Table booking and cake orders','Reviews, map and Instagram']},
+    {slug:'trades',score:96,name:'Brightwell Building Co.',sector:'Building and renovation',package:'rebuild',features:['Quote form above the fold','Services with “from” prices','Interactive before-and-after slider','Areas covered, reviews and FAQs']},
+    {slug:'clinic',score:96,name:'Northgate Physio',sector:'Physiotherapy clinic',package:'grow',features:['Online booking with live time slots','Treatments, lengths and prices','Practitioner profiles and patient login','Insurer, parking and access details']}
   ],
   stages:[{t:'To start',d:'Books your slot and starts discovery.'},{t:'Halfway',d:'When you approve the design and first pages.'},{t:'On completion',d:'When the site is live and signed off.'}]
 };

@@ -1077,3 +1077,4 @@ section[id],[id="sme-results"]{scroll-margin-top:calc(var(--hh) + 10px)}
 .ex .ticks{margin-bottom:18px;flex:1}.ex .ticks li{font-weight:500;font-size:15px}
 .ex-acts{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
 @media (max-width:1024px){.exs{grid-template-columns:1fr}.ex-shot{aspect-ratio:16/10}}
+.ex-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.ex-score{display:inline-flex;align-items:baseline;gap:5px;background:#E5F6EE;color:#13633F;font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px}.ex-score b{font-family:var(--fd);font-weight:400;font-size:18px}

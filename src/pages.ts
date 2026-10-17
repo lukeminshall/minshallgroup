@@ -582,7 +582,7 @@ P['/digitalsme']=()=>`
         <iframe src="/examples/${x.slug}/" title="${esc(x.name)} preview" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
       </a>
       <div class="ex-body">
-        <span class="ex-pk">${pk.name} · from ${gbp(pk.price)}</span>
+        <div class="ex-top"><span class="ex-pk">${pk.name} · from ${gbp(pk.price)}</span>${x.score?`<a class="ex-score" href="/digitalsme?url=${encodeURIComponent('minshallgroup.com/examples/'+x.slug+'/')}" title="Run the check on this site"><b>${x.score}</b> Webmins</a>`:''}</div>
         <h3>${esc(x.name)}</h3><p class="ex-sector">${esc(x.sector)} · concept</p>
         <ul class="ticks">${x.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul>
         <div class="ex-acts"><a class="tlink" href="/examples/${x.slug}/" target="_blank" rel="noopener">View the site</a><a class="ulink" href="#quote" data-pick="${x.package}">Choose ${pk.name}</a></div>
