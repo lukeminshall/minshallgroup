@@ -22,11 +22,11 @@ export default async function handler(req, res) {
   const body = {
     email, unsubscribed: false,
     ...(first ? { first_name: first } : {}), ...(rest.length ? { last_name: rest.join(' ') } : {}),
-    properties: [
-      { key: 'source', value: source || 'website' },
-      { key: 'company', value: company || '' },
-      { key: 'consent', value: `opt-in on minshallgroup.com ${new Date().toISOString()}` }
-    ],
+    properties: {
+      source: source || 'website',
+      company: company || '',
+      consent: `opt-in on minshallgroup.com ${new Date().toISOString()}`
+    },
     ...(process.env.RESEND_SEGMENT_ID ? { segments: [{ id: process.env.RESEND_SEGMENT_ID }] } : {})
   };
   try {
