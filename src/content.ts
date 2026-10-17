@@ -421,7 +421,7 @@ export const SME={
   stages:[{t:'To start',d:'Books your slot and starts discovery.'},{t:'Halfway',d:'When you approve the design and first pages.'},{t:'On completion',d:'When the site is live and signed off.'}]
 };
 
-/* ---------------- MINSHALL SCORE (site check) ----------------
+/* ---------------- WEBMINS SCORE (site check) ----------------
    Our own 0–100 website score. Pillars come from api/audit.js; industry
    fit is measured against what customers expect in each sector. Tune the
    weights and essentials here. Signal ids match api/audit.js readSignals. */

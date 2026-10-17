@@ -25,7 +25,7 @@ npm run preview  # serve /dist
 - Home, Capabilities (4 practice pages), Industries, Products (DataLense, Straight Talking), Work, Approach, Insights, About, Contact, Privacy.
 - **Search landing pages** (`LANDINGS` in content.ts): `/healthcare-consultancy`, `/digital-consultancy`, `/uk-market-entry`, `/healthcare-site-selection`. Each has its own title, keyword H1, FAQ and FAQPage structured data.
 - **SME offer** (`SME` in content.ts): `/digitalsme` with an instant site check (`api/audit.js`), packages, a live quote builder and three-stage payments; terms at `/digitalsme/terms`. Link straight to a check with `/digitalsme?url=example.co.uk`.
-- **Minshall Score** (`SCORE` in content.ts): our own 0–100 score from five pillars (Experience, Findability, Trust, Conversion, Modern & relevant) read from the page by `api/audit.js`, plus sector fit against each industry's essentials. Change weights, grades, sectors and essentials in content.ts; signals are in `readSignals()` in the API.
+- **Webmins Score** (`SCORE` in content.ts): our own 0–100 score from five pillars (Experience, Findability, Trust, Conversion, Modern & relevant) read from the page by `api/audit.js`, plus sector fit against each industry's essentials. Change weights, grades, sectors and essentials in content.ts; signals are in `readSignals()` in the API.
 - **Analytics:** Microsoft Clarity (project `yz5tnn0my2`) is loaded in `index.html` and described in the privacy notice.
 
 ## Environment variables (Vercel → Settings → Environment Variables)

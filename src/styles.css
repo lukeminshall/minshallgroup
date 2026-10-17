@@ -843,7 +843,7 @@ html.loading:not(.lifting) .rise,html.loading:not(.lifting) .split .w>span,html.
 .mega-sme b{color:var(--pink-d)}
 @media (max-width:1024px){.sme-band-in,.sme-band.slim .sme-band-in{grid-template-columns:1fr}}
 
-/* ---------- Minshall Score ---------- */
+/* ---------- Webmins Score ---------- */
 .ms{display:grid;grid-template-columns:340px 1fr;gap:20px;margin-bottom:20px}
 .ms-dial{background:var(--navy);color:#fff;border-radius:var(--r);padding:34px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
 .ms-ring{position:relative;width:220px;height:220px}

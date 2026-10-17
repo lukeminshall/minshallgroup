@@ -44,7 +44,7 @@ function wireCheck(){
     finally{clearInterval(iv);q('[data-loading]').hidden=true;btn.disabled=false;}
   });
 }
-/* ---------- Minshall Score ---------- */
+/* ---------- Webmins Score ---------- */
 const essOk=(sig,k)=>k==='bookOrOrder'?!!(sig.booking||sig.ecommerce):k==='tel'?!!sig.tel:!!sig[k];
 function score(j,ind){
   const I=SCORE.industries.find(x=>x.id===ind)||SCORE.industries[SCORE.industries.length-1];
@@ -57,7 +57,7 @@ function score(j,ind){
 }
 function bigDial(v,grade){
   const c=2*Math.PI*46,cls=v>=85?'good':v>=70?'okay':v>=50?'mid':'poor';
-  return `<div class="ms-ring ${cls}"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" class="sc-bg"/><circle cx="50" cy="50" r="46" class="sc-fg" style="stroke-dasharray:${c};--off:${c*(1-v/100)}"/></svg><div class="ms-num"><b>${v}</b><span>out of 100</span></div></div><p class="ms-label"><span class="eyebrow">Minshall Score</span><b>${grade}</b></p>`;
+  return `<div class="ms-ring ${cls}"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" class="sc-bg"/><circle cx="50" cy="50" r="46" class="sc-fg" style="stroke-dasharray:${c};--off:${c*(1-v/100)}"/></svg><div class="ms-num"><b>${v}</b><span>out of 100</span></div></div><p class="ms-label"><span class="eyebrow">Webmins Score</span><b>${grade}</b></p>`;
 }
 function paintScore(j,q,ind){
   const r=score(j,ind);
@@ -76,7 +76,7 @@ function render(j,q){
   const sel=q('[data-industry]') as HTMLSelectElement;
   if(j.pillars){sel.value=j.industry||'other';paintScore(j,q,sel.value);sel.onchange=()=>paintScore(j,q,sel.value);}
   q('[data-scores]').innerHTML=s?[ring('Speed (mobile)',s.performance),ring('Search basics',s.seo),ring('Accessibility',s.accessibility),ring('Best practice',s.bestPractices)].join(''):'';
-  const note=q('[data-psi-note]');note.hidden=!!s;note.textContent=s?'':(j.psiError?`${j.psiError} Your Minshall Score above does not depend on it.`:'Google’s scores are not available right now.');
+  const note=q('[data-psi-note]');note.hidden=!!s;note.textContent=s?'':(j.psiError?`${j.psiError} Your Webmins Score above does not depend on it.`:'Google’s scores are not available right now.');
   q('[data-checks]').innerHTML=j.checks.map(c=>`<li class="${c.ok?'ok':'no'}"><i aria-hidden="true"></i><span>${c.label}${c.detail?`<small>${esc(c.detail)}</small>`:''}</span><em class="sr">${c.ok?'Passed':'Needs work'}</em></li>`).join('');
   q('[data-fixes]').innerHTML=j.suggestions.length?j.suggestions.map(x=>`<li>${esc(x)}</li>`).join(''):'<li>Your site covers the basics well. A refresh would focus on content and design.</li>';
   const pk=SME.packages.find(p=>p.id===j.recommended)||SME.packages[0];
@@ -175,7 +175,7 @@ function wireQuote(form:HTMLFormElement){
     const set=(m,c='')=>{status.textContent=m;status.className='cform-status'+(c?' '+c:'');};
     if(!form.checkValidity()){const bad=form.querySelector<HTMLElement>(':invalid');bad?.focus();set('Please add your name, email, business name, and tick that you have read the terms.','err');return;}
     const q=calc(),fd=new FormData(form);
-    const ms=lastCheck?.mscore?`\nMinshall Score: ${lastCheck.mscore.total}/100 (${lastCheck.mscore.grade}), sector ${lastCheck.mscore.industry}, sector fit ${lastCheck.mscore.fit}. Pillars: ${Object.entries(lastCheck.mscore.pillars).map(([k,v])=>`${k} ${v}`).join(', ')}.`:'';
+    const ms=lastCheck?.mscore?`\nWebmins Score: ${lastCheck.mscore.total}/100 (${lastCheck.mscore.grade}), sector ${lastCheck.mscore.industry}, sector fit ${lastCheck.mscore.fit}. Pillars: ${Object.entries(lastCheck.mscore.pillars).map(([k,v])=>`${k} ${v}`).join(', ')}.`:'';
     const check=lastCheck?ms+`\nSite check (${lastCheck.url}): `+(lastCheck.scores?`speed ${lastCheck.scores.performance}, SEO ${lastCheck.scores.seo}, accessibility ${lastCheck.scores.accessibility}, best practice ${lastCheck.scores.bestPractices}`:'no Google scores')+`; recommended ${lastCheck.recommended}.`:'';
     const message=['WEBSITE REFRESH QUOTE REQUEST',
       ...q.lines.map(l=>`- ${l[0]}: ${gbp(l[1])}`),

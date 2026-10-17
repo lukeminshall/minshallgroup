@@ -108,7 +108,7 @@ P['/']=()=>`
 </section>
 
 <section class="sme-band"><div class="wrap sme-band-in">
-  <div class="reveal"><span class="eyebrow">Small business?</span><h2 class="h1">Your website, refreshed from £495.</h2><p class="lede">Get a free instant check: a score, plain-English fixes and a fixed price in two minutes.</p></div>
+  <div class="reveal"><span class="eyebrow">Small business?</span><h2 class="h1">Your website, refreshed from £495.</h2><p class="lede">Get a free instant check: your Webmins Score, plain-English fixes and a fixed price in two minutes.</p></div>
   <form class="sme-check reveal" style="--i:1" action="/digitalsme" method="get" data-sme-jump>
     <label class="sr" for="band-url">Your website address</label>
     <input id="band-url" name="url" type="text" inputmode="url" placeholder="yourbusiness.co.uk" required>
@@ -517,13 +517,13 @@ P['/digitalsme']=()=>`
   <div class="wrap">
     <h1 class="eyebrow kicker rise" style="--i:0">Website refresh for small businesses</h1>
     <p class="display split">${split('Your website, refreshed. From £495',1)}${dot}</p>
-    <p class="lede rise" style="--i:6">Paste your website address for a free instant check. You get a score, plain-English fixes and the package that suits you, then build a fixed quote in two minutes.</p>
+    <p class="lede rise" style="--i:6">Paste your website address for a free instant check. You get your Webmins Score, plain-English fixes and the package that suits you, then build a fixed quote in two minutes.</p>
     <form class="sme-check rise" style="--i:7" id="sme-check" novalidate>
       <label class="sr" for="sme-url">Your website address</label>
       <input id="sme-url" name="url" type="text" inputmode="url" autocomplete="url" placeholder="yourbusiness.co.uk" required>
       <button class="btn" type="submit"><span>Check my site</span></button>
     </form>
-    <p class="sme-note rise" style="--i:8">Free. Get your Minshall Score across experience, findability, trust, conversion and relevance, compared with what customers expect in your sector. Takes about 20 seconds.</p>
+    <p class="sme-note rise" style="--i:8">Free. Get your Webmins Score across experience, findability, trust, conversion and relevance, compared with what customers expect in your sector. Takes about 20 seconds.</p>
   </div>
 </header>
 

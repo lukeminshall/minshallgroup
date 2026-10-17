@@ -28,7 +28,7 @@ export const ROUTES:Record<string,{title:string,description:string}>={
 const CAP_SEO={strategy:'Strategy Consultancy & UK Market Entry',digital:'Digital Product, Web & Platform Development','data-ai':'Data, AI & Automation Consultancy','brand-growth':'Brand, Marketing & Growth Agency'};
 CAPS.forEach(c=>{ROUTES['/capabilities/'+c.slug]={title:t(CAP_SEO[c.slug]||c.t),description:c.d};});
 LANDINGS.forEach(L=>{ROUTES['/'+L.slug]={title:L.seoTitle,description:L.desc};});
-ROUTES['/digitalsme']={title:t('Website Refresh for Small Businesses from £495'),description:'Free instant website check, then a fixed-price refresh from £495. Three packages, clear add-ons, paid in three stages. For UK small businesses.'};
+ROUTES['/digitalsme']={title:t('Website Refresh for Small Businesses from £495'),description:'Free instant website check with your Webmins Score, then a fixed-price refresh from £495. Three packages, clear add-ons, paid in three stages. For UK small businesses.'};
 ROUTES['/digitalsme/terms']={title:t('Website refresh offer terms'),description:'The terms that apply to the Minshall Group website refresh offer for small businesses.'};
 ROUTES['/privacy']={title:t('Privacy notice'),description:'How Minshall Group (Knexu Limited) uses the information you give us through this website.'};
 PRODUCTS.forEach(p=>{ROUTES['/products/'+p.slug]={title:t(p.t+' — '+p.line.replace(/\.$/,'')),description:p.d};});

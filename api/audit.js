@@ -101,7 +101,7 @@ function htmlChecks(page) {
   return { checks, signals, title };
 }
 
-/* ---------- Minshall Score: our own signals and pillars ----------
+/* ---------- Webmins Score: our own signals and pillars ----------
    Every signal is read from the page itself, so the score works without
    Google. Pillars are 0–100 from weighted signals; the overall score and
    the industry fit are combined in the browser (see src/content.ts SCORE). */
