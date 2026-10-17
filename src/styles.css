@@ -1330,3 +1330,8 @@ html,body{overflow-x:clip}
 .rs-key li{display:grid;grid-template-columns:12px 1fr auto;gap:12px;align-items:center}
 .rs-key li::before{margin:0;order:0}.rs-key li b{margin:0}
 .rs-hero .lede{margin-top:26px}
+.rs-towns{border-top:1px solid var(--line);margin-top:20px}
+.rs-town{display:grid;grid-template-columns:54px minmax(0,1.2fr) minmax(0,1fr) 56px;gap:18px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+.rs-tk{font-family:var(--fd);font-size:22px;color:var(--pink-d)}
+.rs-tt{font-family:var(--fd);font-size:clamp(19px,1.8vw,26px);color:var(--head);line-height:1.15}.rs-tt small{display:block;font-family:var(--f);font-size:13px;color:var(--muted);margin-top:3px}
+@media (max-width:899px){.rs-town{grid-template-columns:40px minmax(0,1fr) 48px;gap:12px}.rs-town .rs-sbar{grid-column:2/4;grid-row:2}}

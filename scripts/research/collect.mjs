@@ -9,7 +9,7 @@ import fs from 'node:fs';
 
 const AREAS = { 'West Yorkshire': 'West Yorkshire', 'South Yorkshire': 'South Yorkshire', 'North Yorkshire': 'North Yorkshire', 'East Yorkshire': 'East Riding of Yorkshire', 'York': 'York', 'Hull': 'Kingston upon Hull' };
 const COUNTY = { 'York': 'North Yorkshire', 'Hull': 'East Yorkshire' };
-const PER_SECTOR = Number(process.env.PER || 70);
+const PER_SECTOR = process.env.ALL ? Infinity : Number(process.env.PER || 70);  /* ALL=1 checks every mapped business */
 const SEED = 20261017;
 
 const SECTOR = tags => {
@@ -69,7 +69,7 @@ for (const [label, name] of Object.entries(AREAS)) {
     const t = e.tags || {}; const sector = SECTOR(t); const web = t.website || t['contact:website'];
     if (!sector || !web || SKIP.test(web) || t.brand || t['brand:wikidata']) continue;
     const d = domainOf(web); if (!d) continue;
-    rows.push({ domain: d, url: /^https?:/.test(web) ? web : 'https://' + web, sector, county: COUNTY[label] || label, town: t['addr:city'] || t['addr:town'] || '' });
+    rows.push({ domain: d, url: /^https?:/.test(web) ? web : 'https://' + web, sector, county: COUNTY[label] || label, town: t['addr:city'] || t['addr:town'] || '', postcode: (t['addr:postcode'] || '').toUpperCase().trim() });
   }
   await new Promise(r => setTimeout(r, 4000)); /* be kind to the public Overpass servers */
 }
@@ -80,5 +80,5 @@ const rand = rng(SEED); const bySector = {};
 pool.forEach(r => (bySector[r.sector] ||= []).push(r));
 const sample = Object.values(bySector).flatMap(list => list.map(r => [rand(), r]).sort((a, b) => a[0] - b[0]).slice(0, PER_SECTOR).map(x => x[1]));
 fs.mkdirSync('research/raw', { recursive: true });
-fs.writeFileSync('research/raw/sample.json', JSON.stringify({ created: new Date().toISOString(), pool: pool.length, poolBySector: Object.fromEntries(Object.entries(bySector).map(([k, v]) => [k, v.length])), sample }, null, 1));
+fs.writeFileSync('research/raw/sample.json', JSON.stringify({ created: new Date().toISOString(), mode: process.env.ALL ? 'all' : 'sample', pool: pool.length, poolBySector: Object.fromEntries(Object.entries(bySector).map(([k, v]) => [k, v.length])), sample }, null, 1));
 console.log('pool', pool.length, Object.fromEntries(Object.entries(bySector).map(([k, v]) => [k, v.length])), 'sample', sample.length);

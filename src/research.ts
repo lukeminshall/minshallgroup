@@ -22,6 +22,10 @@ function bars(list:{t:string,pct:number|null}[],cls=''){
   return `<ul class="rs-bars ${cls}">${list.map(b=>`<li><span class="rs-bt">${b.t}</span><span class="rs-bv"><i style="--w:${b.pct??0}%"></i></span><b>${pc(b.pct)}</b></li>`).join('')}</ul>`;
 }
 
+/* ties share the top spot: "Leeds and Wakefield come" */
+function topTowns(){const T=(Y as any).towns,best=T.filter(t=>t.avg===T[0].avg).map(t=>t.t);
+  return best.length>1?`${best.slice(0,-1).join(', ')} and ${best[best.length-1]} come`:`${best[0]} comes`;}
+
 export function researchPage(){
   const worst=Y.basics.slice(0,3),sec=Y.sectors,top=sec[0],bottom=sec[sec.length-1];
   const P:[string,string][]= [['experience','Experience'],['findability','Findability'],['trust','Trust'],['conversion','Conversion'],['modern','Modern & relevant']];
@@ -89,6 +93,13 @@ ${Y.counties.some(c=>c.avg!=null)?`<section class="soft"><div class="wrap">
   <div class="rs-counties">${Y.counties.map((c,i)=>`<div class="rs-county reveal" style="--i:${i}"><span>${c.t}</span>${c.avg!=null?`<b>${c.avg}</b><small>${c.n} sites · ${c.behind}% falling behind</small>`:`<b class="na">–</b><small>Too few sites mapped to report fairly (${c.n})</small>`}</div>`).join('')}</div>
 </div></section>`:''}
 
+${((Y as any).towns||[]).length?`<section><div class="wrap">
+  <h2 class="eyebrow">Town by town</h2>
+  <p class="rs-big">${topTowns()} out on top. ${(Y as any).towns[(Y as any).towns.length-1].t} has the most to gain.</p>
+  <div class="rs-towns">${(Y as any).towns.map((t,i)=>`<div class="rs-town reveal" style="--i:${i%4}"><span class="rs-tk">${t.k}</span><span class="rs-tt">${t.t}<small>${t.n} sites · ${t.noForm}% without an enquiry form</small></span><span class="rs-sbar"><i class="${bandCls(t.avg)}" style="--w:${t.avg}%"></i></span><b class="rs-sv">${t.avg}</b></div>`).join('')}</div>
+  <p class="rs-cap">Average Webmins Score by postcode area.</p>
+</div></section>`:''}
+
 <section><div class="wrap rs-split">
   <div class="reveal"><h2 class="eyebrow">What to do about it</h2><p class="rs-big">Five fixes, in order.</p></div>
   <ol class="rs-fix reveal" style="--i:1">
@@ -110,7 +121,7 @@ ${Y.counties.some(c=>c.avg!=null)?`<section class="soft"><div class="wrap">
 </div></section>
 
 <section><div class="wrap rs-split">
-  <div><h2 class="eyebrow">Method</h2><p class="rs-p">We drew the sample from OpenStreetMap, the open map of the world, taking places in West, South, North and East Yorkshire (including York and Hull) that list their own website. We excluded chains (a website shared by three or more places), public bodies and social media pages, leaving ${Y.pool.toLocaleString('en-GB')} independent businesses. We then took a random sample of up to 70 per sector.</p>
+  <div><h2 class="eyebrow">Method</h2><p class="rs-p">We drew the sample from OpenStreetMap, the open map of the world, taking places in West, South, North and East Yorkshire (including York and Hull) that list their own website. We excluded chains (a website shared by three or more places), public bodies and social media pages, leaving ${Y.pool.toLocaleString('en-GB')} independent businesses. ${(Y as any).mode==='all'?'We checked every one of them.':'We then took a random sample of up to 70 per sector.'} Town results group sites by postcode area and are shown only where at least 40 sites were scored.</p>
     <p class="rs-p">Each homepage was checked once in October 2026 by the Webmins Score, which looks at experience, findability, trust, conversion and how current a site is, plus what customers expect in that sector. ${Y.unreachable}% of listed websites did not load and are not scored. We checked the homepage only and did not run Google’s speed test, so results reflect what a visitor sees first rather than a full audit. No business is named.</p></div>
   <div><h2 class="eyebrow">Use this research</h2><p class="rs-p">You are welcome to quote and share these findings with a link to this page. Map data © OpenStreetMap contributors, available under the Open Database Licence.</p>
     <div class="rs-share"><a class="btn sm ghost" href="https://www.linkedin.com/sharing/share-offsite/?url=${share}" target="_blank" rel="noopener"><span>Share on LinkedIn</span></a><a class="btn sm ghost" href="mailto:?subject=${encodeURIComponent(Y.title)}&body=${share}"><span>Email it</span></a></div>

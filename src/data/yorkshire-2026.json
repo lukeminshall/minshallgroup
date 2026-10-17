@@ -1,42 +1,42 @@
 {
  "title": "The state of Yorkshire small business websites 2026",
  "sampleDrawn": "2026-10-17",
- "checked": 543,
- "reachable": 474,
+ "checked": 4184,
+ "reachable": 3628,
  "unreachable": 13,
  "pool": 4184,
- "avg": 62,
+ "avg": 61,
  "median": 66,
  "bands": {
   "excellent": 8,
-  "good": 34,
-  "needs": 36,
-  "behind": 23
+  "good": 33,
+  "needs": 34,
+  "behind": 25
  },
  "pillars": {
-  "experience": 72,
-  "findability": 69,
-  "trust": 73,
+  "experience": 71,
+  "findability": 68,
+  "trust": 72,
   "conversion": 48,
-  "modern": 51
+  "modern": 50
  },
  "hist": [
-  0,
-  10,
-  39,
-  30,
-  29,
-  70,
-  99,
-  122,
-  69,
-  6
+  1,
+  144,
+  310,
+  235,
+  229,
+  466,
+  753,
+  862,
+  551,
+  77
  ],
  "basics": [
   {
    "k": "social",
    "t": "Preview image when shared",
-   "pct": 41
+   "pct": 42
   },
   {
    "k": "form",
@@ -46,27 +46,32 @@
   {
    "k": "analytics",
    "t": "Visitor analytics",
-   "pct": 51
-  },
-  {
-   "k": "contact",
-   "t": "Tap-to-call or email link",
-   "pct": 53
+   "pct": 45
   },
   {
    "k": "h1",
    "t": "One clear main heading",
-   "pct": 54
+   "pct": 50
+  },
+  {
+   "k": "contact",
+   "t": "Tap-to-call or email link",
+   "pct": 52
   },
   {
    "k": "desc",
    "t": "Search description",
-   "pct": 60
+   "pct": 57
   },
   {
    "k": "title",
    "t": "Clear page title",
-   "pct": 71
+   "pct": 72
+  },
+  {
+   "k": "fresh",
+   "t": "Looks up to date",
+   "pct": 90
   },
   {
    "k": "speed",
@@ -74,14 +79,9 @@
    "pct": 90
   },
   {
-   "k": "fresh",
-   "t": "Looks up to date",
-   "pct": 91
-  },
-  {
    "k": "mobile",
    "t": "Set up for phones",
-   "pct": 92
+   "pct": 91
   },
   {
    "k": "https",
@@ -93,7 +93,7 @@
   {
    "k": "video",
    "t": "Video",
-   "pct": 15
+   "pct": 12
   },
   {
    "k": "chat",
@@ -113,7 +113,7 @@
   {
    "k": "ld",
    "t": "Structured data for Google and AI search",
-   "pct": 50
+   "pct": 53
   },
   {
    "k": "booking",
@@ -123,47 +123,47 @@
   {
    "k": "social",
    "t": "Social media linked",
-   "pct": 73
+   "pct": 70
   },
   {
    "k": "privacy",
    "t": "Privacy notice",
-   "pct": 77
+   "pct": 75
   }
  ],
  "sectors": [
   {
    "id": "clinic",
    "t": "Health, beauty and wellbeing",
-   "n": 57,
-   "avg": 67,
+   "n": 305,
+   "avg": 65,
    "median": 69,
    "fit": 47,
    "bands": {
-    "excellent": 14,
+    "excellent": 10,
     "good": 35,
-    "needs": 40,
-    "behind": 11
+    "needs": 38,
+    "behind": 16
    },
    "pillars": {
-    "experience": 76,
-    "findability": 77,
-    "trust": 79,
-    "conversion": 53,
-    "modern": 60
+    "experience": 74,
+    "findability": 73,
+    "trust": 76,
+    "conversion": 51,
+    "modern": 57
    },
    "ess": [
     {
-     "t": "Prices shown",
-     "pct": 11
+     "t": "Professional registration shown",
+     "pct": 13
     },
     {
-     "t": "Professional registration shown",
-     "pct": 19
+     "t": "Prices shown",
+     "pct": 18
     },
     {
      "t": "Reviews shown",
-     "pct": 39
+     "pct": 37
     },
     {
      "t": "Map or directions",
@@ -171,15 +171,15 @@
     },
     {
      "t": "Practitioners introduced",
-     "pct": 65
+     "pct": 60
     },
     {
      "t": "Book online",
-     "pct": 75
+     "pct": 79
     },
     {
      "t": "Privacy notice",
-     "pct": 81
+     "pct": 79
     }
    ]
   },
@@ -235,100 +235,49 @@
    ]
   },
   {
-   "id": "trades",
-   "t": "Trades and construction",
-   "n": 59,
-   "avg": 63,
-   "median": 64,
-   "fit": 34,
-   "bands": {
-    "excellent": 7,
-    "good": 34,
-    "needs": 41,
-    "behind": 19
-   },
-   "pillars": {
-    "experience": 72,
-    "findability": 75,
-    "trust": 72,
-    "conversion": 49,
-    "modern": 54
-   },
-   "ess": [
-    {
-     "t": "Areas covered",
-     "pct": 7
-    },
-    {
-     "t": "Accreditations shown",
-     "pct": 24
-    },
-    {
-     "t": "Reviews shown",
-     "pct": 31
-    },
-    {
-     "t": "Photos of past work",
-     "pct": 37
-    },
-    {
-     "t": "Tap-to-call phone number",
-     "pct": 44
-    },
-    {
-     "t": "Quote or enquiry form",
-     "pct": 46
-    },
-    {
-     "t": "Address or location",
-     "pct": 47
-    }
-   ]
-  },
-  {
    "id": "professional",
    "t": "Professional services",
-   "n": 66,
-   "avg": 63,
-   "median": 72,
+   "n": 218,
+   "avg": 64,
+   "median": 71,
    "fit": 51,
    "bands": {
-    "excellent": 14,
-    "good": 41,
-    "needs": 20,
-    "behind": 26
+    "excellent": 15,
+    "good": 37,
+    "needs": 24,
+    "behind": 23
    },
    "pillars": {
     "experience": 74,
     "findability": 69,
     "trust": 78,
-    "conversion": 46,
-    "modern": 49
+    "conversion": 49,
+    "modern": 51
    },
    "ess": [
     {
-     "t": "Case studies or clients",
+     "t": "LinkedIn linked",
      "pct": 38
     },
     {
-     "t": "LinkedIn linked",
-     "pct": 42
+     "t": "Case studies or clients",
+     "pct": 40
     },
     {
      "t": "Enquiry form",
-     "pct": 44
-    },
-    {
-     "t": "Structured data for search",
      "pct": 47
     },
     {
      "t": "News or insights",
-     "pct": 53
+     "pct": 49
+    },
+    {
+     "t": "Structured data for search",
+     "pct": 51
     },
     {
      "t": "Address or location",
-     "pct": 64
+     "pct": 63
     },
     {
      "t": "Team introduced",
@@ -339,73 +288,175 @@
   {
    "id": "retail",
    "t": "Independent shops",
-   "n": 64,
-   "avg": 60,
-   "median": 64,
-   "fit": 32,
+   "n": 1237,
+   "avg": 62,
+   "median": 67,
+   "fit": 37,
    "bands": {
-    "excellent": 5,
-    "good": 38,
-    "needs": 30,
-    "behind": 28
+    "excellent": 8,
+    "good": 36,
+    "needs": 32,
+    "behind": 24
    },
    "pillars": {
-    "experience": 72,
-    "findability": 67,
-    "trust": 69,
-    "conversion": 49,
-    "modern": 48
+    "experience": 71,
+    "findability": 69,
+    "trust": 72,
+    "conversion": 52,
+    "modern": 51
    },
    "ess": [
     {
-     "t": "Delivery information",
-     "pct": 17
-    },
-    {
      "t": "Returns policy",
-     "pct": 20
-    },
-    {
-     "t": "Reviews shown",
-     "pct": 25
+     "pct": 26
     },
     {
      "t": "Newsletter sign-up",
-     "pct": 25
+     "pct": 26
     },
     {
      "t": "Prices shown",
      "pct": 28
     },
     {
+     "t": "Reviews shown",
+     "pct": 29
+    },
+    {
+     "t": "Delivery information",
+     "pct": 38
+    },
+    {
      "t": "Buy online",
-     "pct": 34
+     "pct": 41
     },
     {
      "t": "Social links",
-     "pct": 75
+     "pct": 72
+    }
+   ]
+  },
+  {
+   "id": "trades",
+   "t": "Trades and construction",
+   "n": 237,
+   "avg": 62,
+   "median": 67,
+   "fit": 35,
+   "bands": {
+    "excellent": 7,
+    "good": 39,
+    "needs": 32,
+    "behind": 22
+   },
+   "pillars": {
+    "experience": 71,
+    "findability": 73,
+    "trust": 73,
+    "conversion": 50,
+    "modern": 53
+   },
+   "ess": [
+    {
+     "t": "Areas covered",
+     "pct": 8
+    },
+    {
+     "t": "Accreditations shown",
+     "pct": 21
+    },
+    {
+     "t": "Reviews shown",
+     "pct": 29
+    },
+    {
+     "t": "Photos of past work",
+     "pct": 32
+    },
+    {
+     "t": "Tap-to-call phone number",
+     "pct": 44
+    },
+    {
+     "t": "Quote or enquiry form",
+     "pct": 51
+    },
+    {
+     "t": "Address or location",
+     "pct": 57
+    }
+   ]
+  },
+  {
+   "id": "fitness",
+   "t": "Gyms and fitness",
+   "n": 136,
+   "avg": 61,
+   "median": 66,
+   "fit": 35,
+   "bands": {
+    "excellent": 7,
+    "good": 26,
+    "needs": 43,
+    "behind": 24
+   },
+   "pillars": {
+    "experience": 72,
+    "findability": 69,
+    "trust": 73,
+    "conversion": 46,
+    "modern": 52
+   },
+   "ess": [
+    {
+     "t": "Free trial offer",
+     "pct": 1
+    },
+    {
+     "t": "Reviews shown",
+     "pct": 20
+    },
+    {
+     "t": "Prices shown",
+     "pct": 22
+    },
+    {
+     "t": "Membership options",
+     "pct": 35
+    },
+    {
+     "t": "Class timetable",
+     "pct": 44
+    },
+    {
+     "t": "Instagram linked",
+     "pct": 56
+    },
+    {
+     "t": "Book online",
+     "pct": 66
     }
    ]
   },
   {
    "id": "hospitality",
    "t": "Hotels and places to stay",
-   "n": 59,
-   "avg": 60,
+   "n": 299,
+   "avg": 59,
    "median": 64,
-   "fit": 39,
+   "fit": 38,
    "bands": {
-    "excellent": 7,
-    "good": 31,
-    "needs": 41,
-    "behind": 22
+    "excellent": 6,
+    "good": 30,
+    "needs": 37,
+    "behind": 26
    },
    "pillars": {
-    "experience": 72,
+    "experience": 71,
     "findability": 66,
-    "trust": 70,
-    "conversion": 48,
-    "modern": 49
+    "trust": 69,
+    "conversion": 47,
+    "modern": 48
    },
    "ess": [
     {
@@ -414,125 +465,74 @@
     },
     {
      "t": "Prices shown",
-     "pct": 24
+     "pct": 23
+    },
+    {
+     "t": "Reviews shown",
+     "pct": 26
     },
     {
      "t": "Photo gallery",
      "pct": 31
     },
     {
-     "t": "Reviews shown",
-     "pct": 32
-    },
-    {
      "t": "Map or directions",
-     "pct": 41
+     "pct": 40
     },
     {
      "t": "Rooms or spaces described",
-     "pct": 66
-    },
-    {
-     "t": "Book online",
-     "pct": 71
-    }
-   ]
-  },
-  {
-   "id": "fitness",
-   "t": "Gyms and fitness",
-   "n": 62,
-   "avg": 59,
-   "median": 64,
-   "fit": 33,
-   "bands": {
-    "excellent": 3,
-    "good": 26,
-    "needs": 44,
-    "behind": 27
-   },
-   "pillars": {
-    "experience": 69,
-    "findability": 69,
-    "trust": 70,
-    "conversion": 43,
-    "modern": 52
-   },
-   "ess": [
-    {
-     "t": "Free trial offer",
-     "pct": 2
-    },
-    {
-     "t": "Reviews shown",
-     "pct": 13
-    },
-    {
-     "t": "Prices shown",
-     "pct": 24
-    },
-    {
-     "t": "Membership options",
-     "pct": 32
-    },
-    {
-     "t": "Class timetable",
-     "pct": 39
-    },
-    {
-     "t": "Instagram linked",
-     "pct": 55
-    },
-    {
-     "t": "Book online",
      "pct": 65
+    },
+    {
+     "t": "Book online",
+     "pct": 72
     }
    ]
   },
   {
    "id": "cafe",
    "t": "Cafés, pubs and restaurants",
-   "n": 59,
-   "avg": 57,
-   "median": 61,
-   "fit": 41,
+   "n": 1148,
+   "avg": 58,
+   "median": 62,
+   "fit": 44,
    "bands": {
-    "excellent": 3,
-    "good": 20,
-    "needs": 46,
+    "excellent": 5,
+    "good": 29,
+    "needs": 34,
     "behind": 31
    },
    "pillars": {
-    "experience": 67,
-    "findability": 64,
+    "experience": 68,
+    "findability": 65,
     "trust": 69,
-    "conversion": 44,
-    "modern": 45
+    "conversion": 42,
+    "modern": 47
    },
    "ess": [
     {
      "t": "Reviews shown",
-     "pct": 8
+     "pct": 17
     },
     {
      "t": "Tap-to-call phone number",
-     "pct": 29
+     "pct": 32
     },
     {
      "t": "Map or directions",
-     "pct": 36
+     "pct": 39
     },
     {
      "t": "Opening hours",
      "pct": 44
     },
     {
-     "t": "Menu on the site",
-     "pct": 49
+     "t": "Instagram linked",
+     "pct": 51
     },
     {
-     "t": "Instagram linked",
-     "pct": 54
+     "t": "Menu on the site",
+     "pct": 55
     },
     {
      "t": "Book a table or order online",
@@ -544,32 +544,116 @@
  "counties": [
   {
    "t": "West Yorkshire",
-   "n": 213,
-   "avg": 63,
-   "behind": 22
+   "n": 1701,
+   "avg": 62,
+   "behind": 23
   },
   {
    "t": "South Yorkshire",
-   "n": 54,
-   "avg": 61,
-   "behind": 17
-  },
-  {
-   "t": "North Yorkshire",
-   "n": 190,
+   "n": 420,
    "avg": 60,
    "behind": 26
   },
   {
+   "t": "North Yorkshire",
+   "n": 1387,
+   "avg": 60,
+   "behind": 27
+  },
+  {
    "t": "East Yorkshire",
-   "n": 17,
-   "avg": null
+   "n": 120,
+   "avg": 58,
+   "behind": 30
   }
  ],
+ "towns": [
+  {
+   "k": "LS",
+   "t": "Leeds",
+   "n": 653,
+   "avg": 63,
+   "behind": 20,
+   "noForm": 55
+  },
+  {
+   "k": "WF",
+   "t": "Wakefield",
+   "n": 179,
+   "avg": 63,
+   "behind": 20,
+   "noForm": 52
+  },
+  {
+   "k": "HD",
+   "t": "Huddersfield",
+   "n": 361,
+   "avg": 62,
+   "behind": 23,
+   "noForm": 57
+  },
+  {
+   "k": "DL",
+   "t": "Northallerton and the Dales",
+   "n": 163,
+   "avg": 62,
+   "behind": 24,
+   "noForm": 52
+  },
+  {
+   "k": "BD",
+   "t": "Bradford",
+   "n": 319,
+   "avg": 61,
+   "behind": 26,
+   "noForm": 54
+  },
+  {
+   "k": "HU",
+   "t": "Hull",
+   "n": 67,
+   "avg": 61,
+   "behind": 25,
+   "noForm": 52
+  },
+  {
+   "k": "YO",
+   "t": "York, Selby and the coast",
+   "n": 508,
+   "avg": 60,
+   "behind": 28,
+   "noForm": 59
+  },
+  {
+   "k": "HG",
+   "t": "Harrogate",
+   "n": 160,
+   "avg": 60,
+   "behind": 28,
+   "noForm": 54
+  },
+  {
+   "k": "S",
+   "t": "Sheffield, Rotherham and Barnsley",
+   "n": 342,
+   "avg": 59,
+   "behind": 27,
+   "noForm": 58
+  },
+  {
+   "k": "HX",
+   "t": "Halifax",
+   "n": 88,
+   "avg": 55,
+   "behind": 38,
+   "noForm": 67
+  }
+ ],
+ "mode": "all",
  "noForm": 56,
- "noAnalytics": 49,
- "noLd": 50,
- "noDesc": 40,
- "outdated": 9,
- "noMobile": 8
+ "noAnalytics": 55,
+ "noLd": 47,
+ "noDesc": 43,
+ "outdated": 10,
+ "noMobile": 9
 }

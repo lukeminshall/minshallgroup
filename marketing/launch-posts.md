@@ -59,19 +59,21 @@ If you'd like me to look at your site personally, drop your web address below an
 
 ## 4. Research: the state of Yorkshire's small business websites
 
-We checked 474 independent business websites across Yorkshire. Cafés, builders, clinics, shops, gyms, hotels and charities.
+We checked the websites of 3,628 independent Yorkshire businesses. Cafés, builders, clinics, shops, gyms, hotels and charities, from Leeds to Hull.
 
-The average Webmins Score was 62 out of 100.
+The average Webmins Score was 61 out of 100.
 
 Most sites are not broken. They have just stopped keeping up:
 
 • 56% have no enquiry form on the homepage
-• 49% have no visitor analytics, so the owner cannot see what is working
-• Half give Google and AI assistants no structured information about the business
-• Only 8% of café and restaurant sites show their reviews
+• 55% have no visitor analytics, so the owner cannot see what is working
+• 47% give Google and AI assistants no structured information about the business
+• Only 17% of café, pub and restaurant sites show their reviews, and 44% show opening hours
 
-None of these needs a new website. Most take an afternoon.
+Town by town, Leeds and Wakefield came out on top. Halifax has the most to gain.
 
-The full report, sector by sector, with the five fixes we would make first: https://minshallgroup.com/insights/state-of-yorkshire-small-business-websites-2026
+None of these fixes needs a new website. Most take an afternoon.
+
+The full report, sector by sector and town by town: https://minshallgroup.com/insights/state-of-yorkshire-small-business-websites-2026
 
 And if you want to see how yours compares, the check is free: https://minshallgroup.com/digitalsme

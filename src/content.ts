@@ -219,7 +219,7 @@ export const PRINCIPLES=[
 export const INSIGHTS=[
   {slug:'state-of-yorkshire-small-business-websites-2026',tag:'Research',cap:'digital',date:'2026-10-17',mins:6,custom:true,
     t:'The state of Yorkshire’s small business websites 2026',
-    d:'We checked hundreds of independent business websites across Yorkshire. Sector by sector, here is how they score and what to fix first.',
+    d:'We checked 3,628 independent business websites across Yorkshire. Sector by sector and town by town, here is how they score and what to fix first.',
     body:[]},
   {slug:'knexu-is-now-minshall-group',tag:'News',cap:'strategy',date:'2026-10-16',mins:3,
     t:'Knexu is now Minshall Group',

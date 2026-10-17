@@ -2,7 +2,10 @@
    src/data/yorkshire-2026.json. No business is named in the output. */
 import fs from 'node:fs';
 const rows = fs.readFileSync('research/raw/results.jsonl', 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
-const { pool, created } = JSON.parse(fs.readFileSync('research/raw/sample.json', 'utf8'));
+const { pool, created, mode, sample } = JSON.parse(fs.readFileSync('research/raw/sample.json', 'utf8'));
+/* older result rows predate the postcode field: join it from the sample */
+const pcOf = Object.fromEntries(sample.map(s => [s.domain, s.postcode || '']));
+rows.forEach(r => { r.postcode ||= pcOf[r.domain] || ''; });
 const ok = rows.filter(r => r.ok);
 const pct = (a, f) => a.length ? Math.round(a.filter(f).length / a.length * 100) : null;
 const avg = (a, f) => a.length ? Math.round(a.reduce((s, r) => s + f(r), 0) / a.length) : null;
@@ -29,12 +32,18 @@ const counties = ['West Yorkshire', 'South Yorkshire', 'North Yorkshire', 'East 
   const a = ok.filter(r => r.county === c); return a.length >= 30 ? { t: c, n: a.length, avg: avg(a, r => r.total), behind: pct(a, r => r.total < 50) } : { t: c, n: a.length, avg: null };
 });
 
+/* towns by postcode area; S covers Sheffield, Rotherham and Barnsley */
+const AREA = { LS: 'Leeds', BD: 'Bradford', HD: 'Huddersfield', HX: 'Halifax', WF: 'Wakefield', S: 'Sheffield, Rotherham and Barnsley', DN: 'Doncaster', YO: 'York, Selby and the coast', HG: 'Harrogate', DL: 'Northallerton and the Dales', HU: 'Hull' };
+const areaOf = pc => (pc.match(/^[A-Z]+/) || [''])[0];
+const towns = Object.entries(AREA).map(([k, t]) => { const a = ok.filter(r => areaOf(r.postcode) === k);
+  return { k, t, n: a.length, avg: avg(a, r => r.total), behind: pct(a, r => r.total < 50), noForm: pct(a, r => !r.checks?.form) }; })
+  .filter(x => x.n >= 40).sort((a, b) => b.avg - a.avg);
 const out = {
   title: 'The state of Yorkshire small business websites 2026', sampleDrawn: created.slice(0, 10), checked: rows.length, reachable: ok.length,
   unreachable: pct(rows, r => !r.ok), pool,
   avg: avg(ok, r => r.total), median: median(ok.map(r => r.total)), bands: bands(ok), pillars: pillars(ok), hist,
-  basics, extras, sectors, counties,
+  basics, extras, sectors, counties, towns, mode,
   noForm: pct(ok, r => !r.checks?.form), noAnalytics: pct(ok, r => !r.checks?.analytics), noLd: pct(ok, r => !r.signals?.ld), noDesc: pct(ok, r => !r.checks?.desc), outdated: pct(ok, r => r.checks?.fresh === false), noMobile: pct(ok, r => !r.checks?.mobile)
 };
 fs.writeFileSync('src/data/yorkshire-2026.json', JSON.stringify(out, null, 1));
-console.log(JSON.stringify({ n: out.reachable, avg: out.avg, median: out.median, bands: out.bands, unreachable: out.unreachable, pillars: out.pillars, sectors: out.sectors.map(s => [s.id, s.n, s.avg]), counties: out.counties, basics: out.basics.map(b => [b.k, b.pct]), extras: out.extras.map(b => [b.k, b.pct]) }, null, 0));
+console.log(JSON.stringify({ n: out.reachable, avg: out.avg, median: out.median, bands: out.bands, unreachable: out.unreachable, pillars: out.pillars, sectors: out.sectors.map(s => [s.id, s.n, s.avg]), counties: out.counties, towns: out.towns.map(t => [t.k, t.n, t.avg]), basics: out.basics.map(b => [b.k, b.pct]), extras: out.extras.map(b => [b.k, b.pct]) }, null, 0));
