@@ -19,23 +19,32 @@ export default async function handler(req, res) {
   const key = process.env.RESEND_API_KEY;
   if (!key) return res.status(500).json({ error: 'Sign-up is not configured yet.' });
   const [first, ...rest] = name.split(/\s+/);
+  const when = new Date().toISOString();
   const body = {
     email, unsubscribed: false,
     ...(first ? { first_name: first } : {}), ...(rest.length ? { last_name: rest.join(' ') } : {}),
-    properties: {
-      source: source || 'website',
-      company: company || '',
-      consent: `opt-in on minshallgroup.com ${new Date().toISOString()}`
-    },
     ...(process.env.RESEND_SEGMENT_ID ? { segments: [{ id: process.env.RESEND_SEGMENT_ID }] } : {})
   };
   try {
     const r = await fetch('https://api.resend.com/contacts', {
       method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body)
     });
-    if (r.ok || r.status === 409) return res.status(200).json({ ok: true });
-    console.error('Resend contacts error', r.status, await r.text());
-    return res.status(502).json({ error: 'We could not sign you up just now. Please try again later.' });
+    if (!r.ok && r.status !== 409) {
+      console.error('Resend contacts error', r.status, await r.text());
+      return res.status(502).json({ error: 'We could not sign you up just now. Please try again later.' });
+    }
+    /* consent record: a dated note to our own inbox (best effort) */
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: process.env.CONTACT_FROM || 'Minshall Group Website <website@minshallgroup.com>',
+        to: process.env.CONTACT_TO || 'hello@minshallgroup.com',
+        subject: `Newsletter sign-up: ${email}`,
+        text: `New newsletter opt-in on minshallgroup.com\n\nEmail: ${email}\nName: ${name || '—'}\nCompany: ${company || '—'}\nSigned up on: ${source || 'website'}\nConsent ticked: yes\nTime (UTC): ${when}\n\nKeep this email as the record of consent.\n`
+      })
+    }).catch(() => {});
+    console.log('Newsletter opt-in', { email, source: source || 'website', when });
+    return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('Subscribe handler error', err);
     return res.status(500).json({ error: 'Server error' });
