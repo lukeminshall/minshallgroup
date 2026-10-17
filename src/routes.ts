@@ -39,3 +39,21 @@ INSIGHTS.forEach(i=>{ROUTES['/insights/'+i.slug]={title:t(i.t),description:i.d};
 /* internal tools: prerendered so deep links work, but hidden from search and the sitemap */
 ROUTES['/tools/prospect']={title:t('Prospect list'),description:'Internal tool.',noindex:true};
 ROUTES['/portal']={title:t('Client portal'),description:'Log in to your Minshall Group project.',noindex:true};
+
+/* Search snippets: keep titles to what Google shows (about 60 characters)
+   and descriptions under 160. Drop the brand suffix before cutting words. */
+/* hand-written titles where the automatic one would be cut short */
+const SEO_TITLES:Record<string,string>={
+  '/industries':'Industries: health, sport, wellbeing, universities, public sector',
+  '/insights/cookie-consent-and-analytics-for-small-businesses':t('Cookie consent and analytics: a small business guide'),
+  '/insights/yorkshire-website-research-published':t('We checked 3,628 Yorkshire business websites'),
+  '/work/neurotech-uk':t('Taking a medical wearable to the UK')
+};
+for(const [k,v] of Object.entries(SEO_TITLES))if(ROUTES[k])ROUTES[k].title=v;
+const clip=(s:string,n:number)=>s.length<=n?s:s.slice(0,n-1).replace(/[\s,;:.]+\S*$/,'')+'…';
+for(const k of Object.keys(ROUTES)){
+  const r=ROUTES[k];let title=r.title.replace(/ — /g,': ');
+  const suffix=` | ${BRAND}`;
+  if(title.length>65&&title.endsWith(suffix)){const bare=title.slice(0,-suffix.length);title=bare.length<=65?bare:clip(bare,65);}
+  r.title=title;r.description=clip(r.description,158);
+}
