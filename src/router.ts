@@ -62,6 +62,7 @@ function onClick(e){
   if(!href||!href.startsWith('/')||href.startsWith('//'))return;
   if(a.target&&a.target!=='_self')return;
   if(a.hasAttribute('download'))return;
+  if(href.startsWith('/examples/'))return;
   const u=new URL(href,location.origin);
   const to=u.pathname.replace(/\/+$/,'')||'/';
   e.preventDefault();

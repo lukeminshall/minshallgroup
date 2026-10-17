@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brightwell Building Co. | Extensions and renovations (concept site)</title>
+<meta name="description" content="A concept website by Minshall Group for a fictional building and renovation firm.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23FFC531'/%3E%3Cpath d='M6 22 16 9l10 13z' fill='%231B1D21'/%3E%3C/svg%3E">
+<style>
+:root{--ink:#1B1D21;--ink2:#2A2D33;--yellow:#FFC531;--paper:#F4F3EF;--muted:#666A72;--line:#DEDBD2}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;background:var(--paper);color:var(--ink);font-size:17px;line-height:1.6}
+a{color:inherit}
+.concept{background:#0A1A3F;color:#fff;font-weight:600;font-size:13px;text-align:center;padding:8px 12px}.concept a{color:#FF8FAB}
+.wrap{max-width:1160px;margin:0 auto;padding:0 22px}
+header{position:sticky;top:0;z-index:5;background:var(--ink);color:#fff}
+.bar{display:flex;align-items:center;justify-content:space-between;height:70px;gap:20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px;letter-spacing:-.02em;text-decoration:none}
+.logo i{width:34px;height:34px;background:var(--yellow);border-radius:6px;display:grid;place-items:center}
+.logo i:before{content:"";border:10px solid transparent;border-bottom:14px solid var(--ink);transform:translateY(-5px)}
+nav{display:flex;gap:22px;font-weight:600;font-size:15px}nav a{text-decoration:none;opacity:.8}nav a:hover{opacity:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--yellow);color:var(--ink);padding:14px 22px;border-radius:8px;font-weight:800;text-decoration:none;border:0;cursor:pointer;font-size:15.5px}
+.btn.dark{background:var(--ink);color:#fff}
+.hero{background:var(--ink);color:#fff;padding-bottom:70px}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:start;padding-top:56px}
+.kick{display:inline-block;background:rgba(255,197,49,.15);color:var(--yellow);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:999px}
+h1{font-size:clamp(40px,5.6vw,68px);line-height:1.02;letter-spacing:-.03em;margin:16px 0;font-weight:900}
+h1 span{color:var(--yellow)}
+.hero p{color:#C9CCD2;font-size:19px;max-width:32em}
+.ticks{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:10px}
+.ticks li{display:flex;gap:10px;align-items:center;font-weight:600}.ticks li:before{content:"✓";width:24px;height:24px;border-radius:50%;background:var(--yellow);color:var(--ink);display:grid;place-items:center;font-size:13px;font-weight:900;flex:none}
+.quote{background:#fff;color:var(--ink);border-radius:14px;padding:26px;display:grid;gap:12px;box-shadow:0 30px 60px rgba(0,0,0,.35)}
+.quote h2{margin:0;font-size:24px;letter-spacing:-.02em}
+.quote label{display:grid;gap:5px;font-weight:700;font-size:14px}
+.quote input,.quote select,.quote textarea{font:inherit;padding:12px;border:1.5px solid var(--line);border-radius:8px;background:var(--paper)}
+.quote .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quote small{color:var(--muted);font-size:13px}
+.trust{background:var(--yellow)}
+.trust .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding-top:22px;padding-bottom:22px}
+.trust div{font-weight:800;font-size:15px;display:flex;gap:10px;align-items:center}
+.trust b{font-size:26px;font-weight:900}
+section{padding:72px 0}
+h2.t{font-size:clamp(32px,4vw,48px);letter-spacing:-.03em;margin:0 0 8px;font-weight:900}
+.lead{color:var(--muted);margin:0 0 30px;font-size:18px}
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.svc{background:#fff;border-radius:14px;padding:24px;border:1px solid var(--line)}
+.svc h3{margin:12px 0 6px;font-size:20px}.svc p{margin:0;color:var(--muted);font-size:15.5px}
+.svc .ic{width:44px;height:44px;border-radius:10px;background:var(--ink);display:grid;place-items:center;color:var(--yellow);font-weight:900}
+.svc .from{display:block;margin-top:12px;font-weight:800}
+.ba{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;user-select:none}
+.ba .after,.ba .before{position:absolute;inset:0}
+.ba .before{background:repeating-linear-gradient(90deg,#8A8579 0 2px,transparent 2px 60px),linear-gradient(#A7A194,#7D786D);clip-path:inset(0 calc(100% - var(--p,50%)) 0 0)}
+.ba .after{background:linear-gradient(180deg,#DDE7EE 0 55%,#C9B79C 55% 100%)}
+.ba .after:before{content:"";position:absolute;left:12%;right:12%;top:20%;bottom:30%;background:linear-gradient(90deg,#fff 0 30%,#BFD3E0 30% 70%,#fff 70%);border:6px solid #fff;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+.ba .lab{position:absolute;top:14px;padding:6px 12px;border-radius:999px;font-weight:800;font-size:13px;background:rgba(0,0,0,.6);color:#fff}
+.ba .l1{left:14px}.ba .l2{right:14px}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize}
+.ba .knob{position:absolute;top:0;bottom:0;left:var(--p,50%);width:4px;background:var(--yellow);transform:translateX(-2px);pointer-events:none}
+.ba .knob:after{content:"⟷";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;font-weight:900}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:s}
+.steps div{background:#fff;border-radius:14px;padding:22px;border-top:4px solid var(--yellow)}
+.steps b{display:block;font-size:18px;margin-bottom:4px}.steps p{margin:0;color:var(--muted);font-size:15px}
+.dark{background:var(--ink);color:#fff}.dark .lead{color:#AEB2BA}
+.areas{display:flex;flex-wrap:wrap;gap:8px}.areas span{background:var(--ink2);padding:9px 14px;border-radius:999px;font-weight:600}
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.rev{background:#fff;border-radius:14px;padding:24px;margin:0;border:1px solid var(--line)}
+.rev .s{color:#E0A800;letter-spacing:2px}.rev footer{color:var(--muted);font-weight:600;font-size:14px;margin-top:8px}
+details{background:#fff;border-radius:12px;padding:16px 20px;border:1px solid var(--line);margin-bottom:8px}
+summary{font-weight:800;cursor:pointer}details p{color:var(--muted);margin:10px 0 0}
+.site-foot{background:#111215;color:#9EA3AB;padding:40px 0;font-size:15px}.site-foot .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.callbar{display:none}
+@media (max-width:900px){nav{display:none}.hero .wrap,.services,.reviews{grid-template-columns:1fr}.trust .wrap,.steps{grid-template-columns:1fr 1fr}
+.callbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:fixed;left:10px;right:10px;bottom:10px;z-index:9}.callbar .btn{box-shadow:0 10px 30px rgba(0,0,0,.3)}body{padding-bottom:76px}}
+</style>
+</head>
+<body>
+<div class="concept">Concept site by Minshall Group. Brightwell Building Co. is a fictional business. <a href="/digitalsme" target="_top">See website packages</a></div>
+<header><div class="wrap bar">
+  <a class="logo" href="#top"><i></i>Brightwell</a>
+  <nav><a href="#services">Services</a><a href="#work">Our work</a><a href="#areas">Areas</a><a href="#faq">FAQs</a></nav>
+  <a class="btn" href="tel:+440000000000">Call for a quote</a>
+</div></header>
+<main id="top">
+<section class="hero" style="padding-top:0"><div class="wrap">
+  <div>
+    <span class="kick">Extensions · Lofts · Renovations</span>
+    <h1>Building work done <span>properly</span>, on time and on budget.</h1>
+    <p>A family firm building extensions, loft conversions and full renovations. One team from drawings to handover, with a fixed price agreed before we start.</p>
+    <ul class="ticks"><li>Fixed, itemised quotes</li><li>Your own project manager</li><li>10-year workmanship guarantee</li></ul>
+  </div>
+  <form class="quote" onsubmit="event.preventDefault();this.querySelector('small').textContent='This is a concept site, so the form is switched off. On a real site we would reply within one working day.';">
+    <h2>Get a free quote</h2>
+    <label>What do you need?<select><option>House extension</option><option>Loft conversion</option><option>Kitchen or bathroom</option><option>Full renovation</option><option>Something else</option></select></label>
+    <div class="two"><label>Postcode<input required placeholder="e.g. LS1 3HB"></label><label>When?<select><option>As soon as possible</option><option>Within 3 months</option><option>Within 6 months</option><option>Just planning</option></select></label></div>
+    <label>Name<input required autocomplete="name"></label>
+    <div class="two"><label>Phone<input type="tel" autocomplete="tel"></label><label>Email<input type="email" required autocomplete="email"></label></div>
+    <label>Tell us a little more<textarea rows="3" placeholder="Single-storey rear extension, about 4m deep…"></textarea></label>
+    <button class="btn" type="submit">Request my free quote</button>
+    <small>We reply within one working day. No hard sell.</small>
+  </form>
+</div></section>
+<div class="trust"><div class="wrap">
+  <div><b>4.9★</b> example rating</div><div><b>10yr</b> guarantee</div><div><b>£5m</b> insured</div><div>Accreditation logos go here</div>
+</div></div>
+
+<section id="services"><div class="wrap">
+  <h2 class="t">What we do</h2><p class="lead">Every quote is fixed and itemised, so you know exactly what you are paying for.</p>
+  <div class="services">
+    <div class="svc"><span class="ic">01</span><h3>House extensions</h3><p>Single and double storey, kitchen extensions and wraparounds, including planning drawings.</p><span class="from">From £45,000</span></div>
+    <div class="svc"><span class="ic">02</span><h3>Loft conversions</h3><p>Dormer, hip-to-gable and Velux conversions, with building control sign-off.</p><span class="from">From £38,000</span></div>
+    <div class="svc"><span class="ic">03</span><h3>Kitchens &amp; bathrooms</h3><p>Design, strip-out, plumbing, electrics, tiling and fitting by one team.</p><span class="from">From £9,500</span></div>
+    <div class="svc"><span class="ic">04</span><h3>Full renovations</h3><p>Whole-house refurbishments, project managed from start to finish.</p><span class="from">Priced after survey</span></div>
+    <div class="svc"><span class="ic">05</span><h3>Structural work</h3><p>Knock-throughs, steels and open-plan living, with engineer's calculations.</p><span class="from">From £4,500</span></div>
+    <div class="svc"><span class="ic">06</span><h3>Garden rooms</h3><p>Insulated, powered rooms for offices, studios or gyms.</p><span class="from">From £18,000</span></div>
+  </div>
+</div></section>
+
+<section id="work" style="padding-top:0"><div class="wrap">
+  <h2 class="t">Before and after</h2><p class="lead">Drag the slider to see a rear extension come together.</p>
+  <div class="ba" id="ba"><div class="after"></div><div class="before"></div><span class="lab l1">Before</span><span class="lab l2">After</span><span class="knob"></span><input type="range" min="0" max="100" value="50" aria-label="Compare before and after"></div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <h2 class="t">How it works</h2><p class="lead">No surprises, from first visit to handover.</p>
+  <div class="steps">
+    <div><b>1. Free survey</b><p>We visit, measure and talk through what you want.</p></div>
+    <div><b>2. Fixed quote</b><p>An itemised price and a start date, in writing.</p></div>
+    <div><b>3. Build</b><p>Weekly updates from your project manager.</p></div>
+    <div><b>4. Handover</b><p>Snagging, sign-off and your 10-year guarantee.</p></div>
+  </div>
+</div></section>
+
+<section class="dark" id="areas"><div class="wrap">
+  <h2 class="t">Areas we cover</h2><p class="lead">Within about 30 miles of our yard. Not sure if we cover you? Ask.</p>
+  <div class="areas"><span>Leeds</span><span>Harrogate</span><span>Wetherby</span><span>Otley</span><span>Ilkley</span><span>Horsforth</span><span>Garforth</span><span>Wakefield</span><span>Bradford</span></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2 class="t">What customers say</h2><p class="lead">Example reviews for this concept.</p>
+  <div class="reviews">
+    <figure class="rev"><div class="s">★★★★★</div><blockquote style="margin:6px 0 0">“Finished a week early and to budget. The site was tidy every single day.”</blockquote><footer>Example review · Extension</footer></figure>
+    <figure class="rev"><div class="s">★★★★★</div><blockquote style="margin:6px 0 0">“The itemised quote made it easy to compare. No extras appeared at the end.”</blockquote><footer>Example review · Loft</footer></figure>
+    <figure class="rev"><div class="s">★★★★★</div><blockquote style="margin:6px 0 0">“Great communication. Weekly photos while we were away made all the difference.”</blockquote><footer>Example review · Renovation</footer></figure>
+  </div>
+</div></section>
+
+<section id="faq" style="padding-top:0"><div class="wrap" style="max-width:820px">
+  <h2 class="t">FAQs</h2>
+  <details><summary>Do you handle planning permission?</summary><p>Yes. We arrange drawings and submit the application, or work with your architect.</p></details>
+  <details><summary>How soon can you start?</summary><p>Usually within 6 to 10 weeks of agreeing the quote. Your quote shows the start date.</p></details>
+  <details><summary>How do payments work?</summary><p>A small deposit, then stage payments as agreed milestones are reached. Never full payment up front.</p></details>
+  <details><summary>Are you insured?</summary><p>Yes, with public liability insurance to £5 million. Certificates are available on request.</p></details>
+</div></section>
+</main>
+<footer class="site-foot"><div class="wrap"><span>Brightwell Building Co. · fictional concept</span><span>Built by <a href="/digitalsme" target="_top">Minshall Group</a> · Rebuild package</span></div></footer>
+<div class="callbar"><a class="btn dark" href="tel:+440000000000">Call us</a><a class="btn" href="#top">Free quote</a></div>
+<script>
+(function(){var b=document.getElementById('ba'),r=b.querySelector('input');function u(){b.style.setProperty('--p',r.value+'%');}r.addEventListener('input',u);u();})();
+</script>
+</body>
+</html>

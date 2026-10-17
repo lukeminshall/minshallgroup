@@ -13,7 +13,7 @@ export function initSme(){
   const form=document.getElementById('sme-form') as HTMLFormElement;
   if(!form)return;
   lastCheck=null;
-  wireCheck();wireQuote(form);wireReport();
+  wireCheck();wireQuote(form);wireReport();scaleExamples();
 }
 
 /* ---------- instant check ---------- */
@@ -207,4 +207,11 @@ function wireQuote(form:HTMLFormElement){
     }catch{set('Something went wrong sending that. Please try again in a moment.','err');}
     finally{btn.disabled=false;}
   });
+}
+
+/* live example previews: scale each 1280px-wide iframe to fit its card */
+function scaleExamples(){
+  const shots=[...document.querySelectorAll<HTMLElement>('.ex-shot')];if(!shots.length)return;
+  const fit=()=>shots.forEach(s=>s.style.setProperty('--sc',String(s.clientWidth/1280)));
+  fit();const ro=new ResizeObserver(fit);shots.forEach(s=>ro.observe(s));
 }

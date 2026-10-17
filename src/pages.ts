@@ -6,6 +6,7 @@ import {CAPS,RETURNS,INDUSTRIES,PRODUCTS,CASES,FINDER,STEPS,MODELS,PRINCIPLES,IN
 import {subscribeBox,split,splitLetters,eyebrow,shead,phead,btn,cards,returnsRow,capTags,caseCard,marquee,insightCard,ctaBand,gfx,capBySlug,indById} from './components';
 import {dot,tile} from './brand';
 import {gRidge,gDial,gNetwork} from './graphics';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 export const P:Record<string,()=>string>={};
 
@@ -571,6 +572,22 @@ P['/digitalsme']=()=>`
       <p class="pkg-time">Typically ${k.weeks}</p>
       <a class="btn${k.popular?'':' ghost'}" href="#quote" data-pick="${k.id}"><span>Choose ${k.name}</span></a>
     </article>`).join('')}</div>
+</div></section>
+
+<section id="examples"><div class="wrap">
+  ${shead({eyebrow:'Examples',h:'See what we build.',p:'Three concept sites for fictional businesses, one for each package. Open them on your phone too: every site is built mobile first.'})}
+  <div class="exs">${SME.examples.map((x,i)=>{const pk=SME.packages.find(k=>k.id===x.package);return `
+    <article class="ex reveal" style="--i:${i}">
+      <a class="ex-shot" href="/examples/${x.slug}/" target="_blank" rel="noopener" aria-label="Open the ${esc(x.name)} example site in a new tab" data-cursor="Open">
+        <iframe src="/examples/${x.slug}/" title="${esc(x.name)} preview" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+      </a>
+      <div class="ex-body">
+        <span class="ex-pk">${pk.name} · from ${gbp(pk.price)}</span>
+        <h3>${esc(x.name)}</h3><p class="ex-sector">${esc(x.sector)} · concept</p>
+        <ul class="ticks">${x.features.map(f=>`<li>${esc(f)}</li>`).join('')}</ul>
+        <div class="ex-acts"><a class="tlink" href="/examples/${x.slug}/" target="_blank" rel="noopener">View the site</a><a class="ulink" href="#quote" data-pick="${x.package}">Choose ${pk.name}</a></div>
+      </div>
+    </article>`;}).join('')}</div>
 </div></section>
 
 <section id="quote"><div class="wrap">
