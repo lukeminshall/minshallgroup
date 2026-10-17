@@ -99,5 +99,5 @@ export function footerMarkup(){
         <h2 class="fh foot-h2">Consultancy</h2><ul>${LANDINGS.map(L=>`<li><a href="/${L.slug}">${L.eyebrow}</a></li>`).join('')}<li><a href="/digitalsme">Websites for small businesses</a></li></ul></div>
       <div><h2 class="fh">Group</h2><ul><li><a href="/work">Work</a></li><li><a href="/approach">Approach</a></li><li><a href="/insights">Insights</a></li><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/portal">Client login</a></li>${PRODUCTS.map(p=>`<li><a href="/products/${p.slug}">${p.t}</a></li>`).join('')}</ul></div>
     </div>
-    <div class="wrap foot-base"><span>© ${new Date().getFullYear()} ${LEGAL.trading}. Formerly Knexu. <a href="/privacy">Privacy</a></span><span>${LEGAL.trading} is a trading name of ${LEGAL.company}, registered in ${LEGAL.reg.replace('&','&amp;')}, company no. ${LEGAL.number}. Registered office: ${LEGAL.office}.</span></div>`;
+    <div class="wrap foot-base"><span>© ${new Date().getFullYear()} ${LEGAL.trading}. Formerly Knexu. <a href="/privacy">Privacy</a> · <a href="/privacy#cookies" data-cookie-settings>Cookie settings</a></span><span>${LEGAL.trading} is a trading name of ${LEGAL.company}, registered in ${LEGAL.reg.replace('&','&amp;')}, company no. ${LEGAL.number}. Registered office: ${LEGAL.office}.</span></div>`;
 }

@@ -8,12 +8,14 @@ import {initRouter} from './router';
 import {initForms} from './forms';
 import {initGlobal} from './motion';
 import {initPalette} from './palette';
+import {initConsent} from './consent';
 
 buildShell();
 initForms();
 initRouter();
 initGlobal();
 initPalette();
+initConsent();
 
 /* first visit: the tile draws itself, then the curtain lifts */
 const html=document.documentElement;

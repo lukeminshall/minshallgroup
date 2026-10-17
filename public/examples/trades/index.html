@@ -239,5 +239,6 @@ details p{color:var(--muted);margin:12px 0 0;max-width:40em}
   setTimeout(function(){document.querySelectorAll('.rv:not(.in)').forEach(function(el){if(el.getBoundingClientRect().top<innerHeight){el.classList.add('in');el.querySelectorAll('[data-n]').forEach(function(n){n.textContent=(+n.dataset.n).toFixed(+(n.dataset.d||0));});}});},1800);
 })();
 </script>
+<script src="/examples/consent.js" defer></script>
 </body>
 </html>
