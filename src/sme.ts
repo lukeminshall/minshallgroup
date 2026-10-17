@@ -28,9 +28,19 @@ function wireCompare(){
 
 /* ---------- instant check ---------- */
 const LOADING=['Fetching your site…','Running Google’s mobile speed test…','Checking search basics…','Looking for enquiry forms and contact details…','Scoring accessibility…','Nearly there…'];
-function ring(label,v){
-  const c=2*Math.PI*42,val=v===null?0:v,cls=v===null?'na':v>=90?'good':v>=50?'mid':'poor';
-  return `<div class="score ${cls}"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" class="sc-bg"/><circle cx="50" cy="50" r="42" class="sc-fg" style="stroke-dasharray:${c};--off:${c*(1-val/100)}"/></svg><b>${v===null?'–':v}</b><span>${label}</span></div>`;
+/* Google's own bands: 90–100 good, 50–89 needs work, 0–49 poor */
+const band=v=>v===null?['na','Not available']:v>=90?['good','Good']:v>=50?['mid','Needs work']:['poor','Poor'];
+function ring(label,v,target='Good is 90+'){
+  const c=2*Math.PI*42,val=v===null?0:v,[cls,word]=band(v);
+  return `<div class="score ${cls}"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" class="sc-bg"/><circle cx="50" cy="50" r="42" class="sc-fg" style="stroke-dasharray:${c};--off:${c*(1-val/100)}"/></svg><b>${v===null?'–':v}</b><span>${label}</span><em class="sc-band">${word}</em><small class="sc-t">${target}</small></div>`;
+}
+/* Largest Contentful Paint on mobile: good ≤2.5s, needs work ≤4s, poor above */
+function lcpTile(txt){
+  const n=txt?parseFloat(String(txt).replace(',','.')):NaN;
+  if(isNaN(n))return '';
+  const [cls,word]=n<=2.5?['good','Good']:n<=4?['mid','Needs work']:['poor','Poor'];
+  const pct=Math.max(4,Math.min(100,100-(n-1)/5*100));
+  return `<div class="score ${cls}"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" class="sc-bg"/><circle cx="50" cy="50" r="42" class="sc-fg" style="stroke-dasharray:${2*Math.PI*42};--off:${2*Math.PI*42*(1-pct/100)}"/></svg><b class="sc-s">${n.toFixed(1)}s</b><span>Main content on mobile</span><em class="sc-band">${word}</em><small class="sc-t">Good is 2.5s or less</small></div>`;
 }
 function wireCheck(){
   const f=document.getElementById('sme-check') as HTMLFormElement,sec=document.getElementById('sme-results');
@@ -76,7 +86,7 @@ function render(j,q){
   q('[data-out-title]').textContent=j.title?`How ${j.title.slice(0,60)} is doing.`:'Here is how your site is doing.';
   const sel=q('[data-industry]') as HTMLSelectElement;
   if(j.pillars){sel.value=j.industry||'other';paintScore(j,q,sel.value);sel.onchange=()=>paintScore(j,q,sel.value);}
-  q('[data-scores]').innerHTML=s?[ring('Speed (mobile)',s.performance),ring('Search basics',s.seo),ring('Accessibility',s.accessibility),ring('Best practice',s.bestPractices)].join(''):'';
+  q('[data-scores]').innerHTML=s?[ring('Speed (mobile)',s.performance),ring('Search basics',s.seo),ring('Accessibility',s.accessibility),lcpTile(j.lcp)].join(''):'';
   const note=q('[data-psi-note]');note.hidden=!!s;note.textContent=s?'':(j.psiError?`${j.psiError} Your Webmins Score above does not depend on it.`:'Google’s scores are not available right now.');
   q('[data-checks]').innerHTML=j.checks.map(c=>`<li class="${c.ok?'ok':'no'}"><i aria-hidden="true"></i><span>${c.label}${c.detail?`<small>${esc(c.detail)}</small>`:''}</span><em class="sr">${c.ok?'Passed':'Needs work'}</em></li>`).join('');
   q('[data-fixes]').innerHTML=j.suggestions.length?j.suggestions.map(x=>`<li>${esc(x)}</li>`).join(''):'<li>Your site covers the basics well. A refresh would focus on content and design.</li>';
@@ -196,7 +206,7 @@ function wireQuote(form:HTMLFormElement){
     if(!form.checkValidity()){const bad=form.querySelector<HTMLElement>(':invalid');bad?.focus();set('Please add your name, email, business name, and tick that you have read the terms.','err');return;}
     const q=calc(),fd=new FormData(form);
     const ms=lastCheck?.mscore?`\nWebmins Score: ${lastCheck.mscore.total}/100 (${lastCheck.mscore.grade}), sector ${lastCheck.mscore.industry}, sector fit ${lastCheck.mscore.fit}. Pillars: ${Object.entries(lastCheck.mscore.pillars).map(([k,v])=>`${k} ${v}`).join(', ')}.`:'';
-    const check=lastCheck?ms+`\nSite check (${lastCheck.url}): `+(lastCheck.scores?`speed ${lastCheck.scores.performance}, SEO ${lastCheck.scores.seo}, accessibility ${lastCheck.scores.accessibility}, best practice ${lastCheck.scores.bestPractices}`:'no Google scores')+`; recommended ${lastCheck.recommended}.`:'';
+    const check=lastCheck?ms+`\nSite check (${lastCheck.url}): `+(lastCheck.scores?`speed ${lastCheck.scores.performance}, SEO ${lastCheck.scores.seo}, accessibility ${lastCheck.scores.accessibility}`:'no Google scores')+`; recommended ${lastCheck.recommended}.`:'';
     const message=['WEBSITE REFRESH QUOTE REQUEST',
       ...q.lines.map(l=>`- ${l[0]}: ${gbp(l[1])}`),
       `Pages: ${q.n}`,`Build total: ${gbp(q.total)} (ex VAT)`,

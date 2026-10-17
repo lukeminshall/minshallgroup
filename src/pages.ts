@@ -540,7 +540,8 @@ P['/digitalsme']=()=>`
       </div>
     </div>
     <div class="ess-box"><h3 class="sme-h3" data-ess-title>What customers expect in your sector</h3><ul class="ess" data-ess></ul></div>
-    <div class="lh-row"><h3 class="sme-h3">Google’s technical view</h3><div class="scores" data-scores></div><p class="psi-note" data-psi-note hidden></p></div>
+    <div class="lh-row"><div class="lh-head"><h3 class="sme-h3">Google’s technical view</h3><ul class="bands" aria-label="What the colours mean"><li class="good"><i></i>Good 90 to 100</li><li class="mid"><i></i>Needs work 50 to 89</li><li class="poor"><i></i>Poor 0 to 49</li></ul></div><div class="scores" data-scores></div><p class="psi-note" data-psi-note hidden></p>
+      <p class="clar-note"><b>What about real visitors?</b> These scores come from Google testing your site. To see how real people use it (where they click, scroll and give up) you need Microsoft Clarity installed on the site itself, so we cannot read it from outside. Rebuild and Grow include it, and your monthly re-check in the client portal links straight to it.</p></div>
     <div class="sme-grid">
       <div><h3 class="sme-h3">What we checked</h3><ul class="checks" data-checks></ul></div>
       <div><h3 class="sme-h3">What we would fix first</h3><ol class="fixes" data-fixes></ol>
