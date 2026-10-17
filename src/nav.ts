@@ -46,7 +46,11 @@ function toggleMobile(open){
 }
 function wireMobile(){
   burger.addEventListener('click',()=>toggleMobile(burger.getAttribute('aria-expanded')!=='true'));
-  mnav.addEventListener('click',e=>{if((e.target as HTMLElement).closest('a'))toggleMobile(false);});
+  mnav.addEventListener('click',e=>{
+    const t=e.target as HTMLElement,tog=t.closest<HTMLButtonElement>('.mn-tog');
+    if(tog){const ul=tog.closest('.mn-item').querySelector<HTMLElement>('.mn-sub');const open=tog.getAttribute('aria-expanded')!=='true';
+      tog.setAttribute('aria-expanded',String(open));ul.hidden=!open;requestAnimationFrame(()=>ul.classList.toggle('on',open));return;}
+    if(t.closest('a'))toggleMobile(false);});
 }
 
 let lastY=0;

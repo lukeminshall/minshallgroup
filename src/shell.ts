@@ -69,9 +69,18 @@ export function navMarkup(){
 }
 
 export function mobileNavMarkup(){
-  const links=[['Capabilities','/capabilities'],...CAPS.map(c=>[c.t,'/capabilities/'+c.slug,'sub']),['Websites','/digitalsme'],...WEB_LINKS.map(l=>[l.t,l.h,'sub']),['Industries','/industries'],['Products','/products'],['Work','/work'],['Approach','/approach'],['Insights','/insights'],['About','/about'],['Contact','/contact'],['Client login','/portal']];
-  return `<div class="mnav-in"><nav aria-label="Mobile">${links.map(([t,h,s],i)=>`<a class="${s?'sub':''}" style="--i:${i}" href="${h}">${t}</a>`).join('')}</nav>
-    <div class="mnav-foot"><a href="mailto:${CONTACT.email}">${CONTACT.email}</a></div></div>`;
+  /* big numbered items; the two groups open in place rather than making one long list */
+  const groups:[string,string,[string,string][]?][]=[
+    ['Capabilities','/capabilities',CAPS.map(c=>[c.t,'/capabilities/'+c.slug] as [string,string])],
+    ['Websites','/digitalsme',WEB_LINKS.map(l=>[l.t,l.h] as [string,string])],
+    ['Work','/work'],['Industries','/industries'],['Products','/products'],['Approach','/approach'],['Insights','/insights'],['About','/about']];
+  return `<div class="mnav-in"><nav aria-label="Mobile"><ol class="mn-list">${groups.map(([t,h,subs],i)=>`
+    <li class="mn-item" style="--i:${i}"><div class="mn-row"><a class="mn-a" href="${h}"><span class="mn-n">0${i+1}</span>${t}</a>${subs?`<button class="mn-tog" type="button" aria-expanded="false" aria-label="Show ${t} pages"><i></i></button>`:''}</div>
+      ${subs?`<ul class="mn-sub" hidden>${subs.map(([st,sh])=>`<li><a href="${sh}">${st}</a></li>`).join('')}</ul>`:''}</li>`).join('')}</ol></nav>
+    <div class="mn-foot" style="--i:${groups.length}">
+      <a class="btn mn-cta" href="/contact"><span>Start a project</span></a>
+      <div class="mn-links"><a href="/digitalsme">Free website check</a><a href="/portal">Client login</a><a href="mailto:${CONTACT.email}">${CONTACT.email}</a></div>
+    </div></div>`;
 }
 
 export function footerMarkup(){

@@ -15,7 +15,7 @@ export function initPage(){
   ac?.abort();cleanups.splice(0).forEach(f=>f());
   ac=new AbortController();const sig={signal:ac.signal};
   reveals();scrub(sig);rotator();heroZoom(sig);heroField(sig);varFont(sig);velocityMarquee(sig);hscroll(sig);hoverPreview(sig);
-  finder();filters();tabs(sig);stickySteps(sig);magnetic(sig);
+  finder();filters();tabs(sig);stickySteps(sig);magnetic(sig);mobileCta(sig);
   dispatchEvent(new Event('mg:page'));
 }
 export function initGlobal(){cursor();}
@@ -76,10 +76,12 @@ function heroZoom(sig){
 function heroField(sig){
   const cv=document.querySelector<HTMLCanvasElement>('[data-field]');if(!cv)return;
   const ctx=cv.getContext('2d');if(!ctx)return;
-  let W=0,H=0,dpr=1,pts:number[]=[],gap=34,mx=-9999,my=-9999,tmx=-9999,tmy=-9999,on=false,raf=0,t0=performance.now();
+  let W=0,H=0,dpr=1,pts:number[]=[],gap=34,mx=-9999,my=-9999,tmx=-9999,tmy=-9999,on=false,raf=0,t0=performance.now(),lastF=0,touchT=0;
   const size=()=>{const r=cv.getBoundingClientRect();dpr=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;
     gap=W<700?30:36;pts=[];for(let y=gap/2;y<H;y+=gap)for(let x=gap/2;x<W;x+=gap)pts.push(x,y);};
   const draw=(now:number)=>{
+    /* touch screens: 30fps is plenty and kinder to batteries; a touch fades after a moment */
+    if(!FINE||W<900){if(now-lastF<33){if(on)raf=requestAnimationFrame(draw);return;}lastF=now;if(touchT&&now-touchT>1400){tmx=tmy=-9999;touchT=0;}}
     const t=(now-t0)/1000;mx+=(tmx-mx)*.12;my+=(tmy-my)*.12;
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
     const R=W<700?140:220;
@@ -95,13 +97,14 @@ function heroField(sig){
     if(on&&!RM)raf=requestAnimationFrame(draw);
   };
   const start=()=>{if(on)return;on=true;raf=requestAnimationFrame(draw);},stop=()=>{on=false;cancelAnimationFrame(raf);};
-  const boot=()=>{size();cv.classList.add('in');if(RM||!FINE){on=false;draw(performance.now());addEventListener('resize',()=>{size();draw(performance.now());},sig);return;}
+  const boot=()=>{size();cv.classList.add('in');if(RM){draw(performance.now());return;}
     const io=new IntersectionObserver(([e])=>e.isIntersecting&&!document.hidden?start():stop());io.observe(cv);
     cleanups.push(()=>{io.disconnect();stop();});
     document.addEventListener('visibilitychange',()=>document.hidden?stop():start(),sig);
     addEventListener('resize',size,sig);
     addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect();tmx=e.clientX-r.left;tmy=e.clientY-r.top;if(mx<-999){mx=tmx;my=tmy;}},{passive:true,...sig});
-    document.addEventListener('pointerleave',()=>{tmx=tmy=-9999;},sig);};
+    document.addEventListener('pointerleave',()=>{tmx=tmy=-9999;},sig);
+    cv.parentElement.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')return;const r=cv.getBoundingClientRect();tmx=mx=e.clientX-r.left;tmy=my=e.clientY-r.top;touchT=performance.now();},{passive:true,...sig});};
   const ric=(window as any).requestIdleCallback||((f)=>setTimeout(f,300));
   const go=()=>ric(boot,{timeout:2500});let id:any;if(document.readyState==='complete')id=go();else addEventListener('load',()=>{id=go();},{once:true,...sig});cleanups.push(()=>{(window as any).cancelIdleCallback?.(id);clearTimeout(id);});
 }
@@ -147,6 +150,14 @@ function hscroll(sig){
     const i=Math.min(panels.length-1,Math.floor(p*(panels.length+.6)));count.textContent=String(i+1).padStart(2,'0');};
   addEventListener('scroll',upd,{passive:true,...sig});addEventListener('resize',measure,sig);
   measure();document.fonts?.ready.then(measure);
+  /* phones: native swipe, with the counter, dots and a focus effect following the card in view */
+  const all=[...track.querySelectorAll<HTMLElement>('.hpanel')];
+  const dots=document.createElement('div');dots.className='hdots';dots.setAttribute('aria-hidden','true');dots.innerHTML=all.map(()=>'<i></i>').join('');track.after(dots);
+  const swipe=()=>{if(on())return;const mid=track.scrollLeft+track.clientWidth/2;let best=0,bd=1e9;
+    all.forEach((p,i)=>{const c=p.offsetLeft+p.offsetWidth/2,d=Math.abs(c-mid);if(d<bd){bd=d;best=i;}});
+    all.forEach((p,i)=>p.classList.toggle('dim',i!==best));[...dots.children].forEach((d,i)=>d.classList.toggle('on',i===best));
+    count.textContent=String(Math.min(best,panels.length-1)+1).padStart(2,'0');};
+  track.addEventListener('scroll',()=>requestAnimationFrame(swipe),{passive:true,...sig});swipe();
 }
 
 /* ---------- list rows with a preview that follows the cursor ---------- */
@@ -228,6 +239,22 @@ function magnetic(sig){
     b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();const x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2;b.style.transform=`translate(${x*.18}px,${y*.3}px)`;},sig);
     b.addEventListener('pointerleave',()=>{b.style.transform='';},sig);
   });
+}
+
+/* ---------- phones: one clear next step, always a thumb away ----------
+   Appears once the hero has gone, hides near the footer call to action
+   and on pages that are already the next step. */
+function mobileCta(sig){
+  const b=document.getElementById('mcta');if(!b)return;
+  const p=location.pathname,sme=p.startsWith('/digitalsme');
+  const off=p==='/contact'||p.startsWith('/portal')||p.startsWith('/tools')||p==='/digitalsme/terms';
+  b.setAttribute('href',sme?'#quote':'/contact');b.querySelector('span').textContent=sme?'Build my quote':'Start a project';
+  const foot=document.querySelector('.foot-cta');
+  const upd=()=>{if(off){b.classList.remove('on');return;}
+    const fr=foot?.getBoundingClientRect();const nearFoot=fr&&fr.top<innerHeight;
+    const show=scrollY>innerHeight*.9&&!nearFoot&&!document.body.classList.contains('menu-open');
+    b.classList.toggle('on',show);b.setAttribute('aria-hidden',String(!show));b.tabIndex=show?0:-1;};
+  addEventListener('scroll',upd,{passive:true,...sig});upd();
 }
 
 /* ---------- the cursor is the brand full stop ----------

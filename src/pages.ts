@@ -383,7 +383,7 @@ INSIGHTS.forEach(a=>{P['/insights/'+a.slug]=()=>article(a);});
 
 /* ================= ABOUT ================= */
 P['/about']=()=>`
-${phead({eyebrow:'About',title:'One team for the whole journey.',lede:'Minshall Group brings strategy, digital, data and brand together under one senior team. We are hired to move a number, and we stay until it moves.'})}
+${phead({eyebrow:'About',title:'One team, from the first question to the last number.',lede:'Minshall Group brings strategy, digital, data and brand together under one senior team. We are hired to move a number, and we stay until it moves.'})}
 <section><div class="wrap split-2">
   <div class="reveal">${eyebrow('Our story')}<h2 class="h2">From Knexu to Minshall Group.</h2></div>
   <div class="prose reveal" style="--i:1">
