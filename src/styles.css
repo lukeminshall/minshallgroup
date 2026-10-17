@@ -622,7 +622,7 @@ html.loading .ct-dot{transform-box:fill-box;transform-origin:center;opacity:0;an
 @keyframes ctdrop{from{transform:translateY(-60px);opacity:0}to{transform:none;opacity:1}}
 .curtain-label{font-family:var(--fd);font-weight:300;font-size:clamp(26px,3vw,44px);letter-spacing:-.02em;color:#fff;opacity:0;transform:translateY(14px);transition:opacity .4s .15s,transform .5s var(--ease-out) .15s}
 .curtain.cover .curtain-label,html.loading .curtain-label{opacity:1;transform:none}
-html.loading:not(.lifting) .rise,html.loading:not(.lifting) .split .w>span,html.loading:not(.lifting) .split .zoomdot{animation-play-state:paused}
+html.loading:not(.lifting) .split .w>span,html.loading:not(.lifting) .split .zoomdot{animation-play-state:paused}
 
 /* ---------- UK market entry (strategy page) ---------- */
 .entry{overflow:hidden}
