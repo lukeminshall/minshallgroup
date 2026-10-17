@@ -1,3 +1,7 @@
+/* Metric-matched fallbacks (generated with Capsize) so text does not move
+   when the web fonts finish loading. */
+@font-face{font-family:"Manrope Fallback";src:local('Arial'),local('ArialMT');ascent-override:103.3095%;descent-override:29.074%;line-gap-override:0%;size-adjust:103.1851%}
+@font-face{font-family:"Fraunces Fallback";src:local('Georgia');ascent-override:92.9623%;descent-override:24.2386%;size-adjust:105.2039%}
 /* =====================================================================
    MINSHALL GROUP — design system
    Brand: navy #0A1A3F (primary), pink #FF2E63 (accent, on navy),
@@ -13,8 +17,8 @@
   --paper:#FFFFFF;--soft:#F3F4F8;--line:#E2E5EE;
   --accent:var(--pink-d);           /* small accent text on light grounds */
   --head:var(--navy);               /* headline colour */
-  --fd:'Fraunces Variable','Fraunces',Georgia,'Times New Roman',serif;
-  --f:'Manrope Variable','Manrope',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --fd:'Fraunces Variable','Fraunces','Fraunces Fallback',Georgia,'Times New Roman',serif;
+  --f:'Manrope Variable','Manrope','Manrope Fallback',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
   --wrap:1320px;--gut:clamp(20px,4.5vw,64px);
   --ease:cubic-bezier(.22,.61,.36,1);--ease-out:cubic-bezier(.16,1,.3,1);
   --r:10px;--r-s:6px;
