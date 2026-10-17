@@ -20,8 +20,9 @@ export async function viewAdmin(el:HTMLElement,rerender:()=>void){
       <td><span class="pp-badge st-${p.stage}">${p.stage}</span></td><td>${sub.has(p.id)?'Submitted':'—'}</td><td>${open(p.id)||'—'}</td><td>${owed(p.id)?gbp(owed(p.id)):'—'}</td>
       <td><button class="btn sm ghost" data-pick="${p.id}"><span>Manage</span></button></td></tr>`).join('')}</tbody></table></div>
     <div data-manage></div>`;
-  el.querySelectorAll<HTMLElement>('[data-pick]').forEach(b=>b.addEventListener('click',()=>{S.current=all.find(p=>p.id===b.dataset.pick);try{localStorage.setItem('mg-portal-current',S.current.id);}catch{};manage(el.querySelector('[data-manage]'),rerender);}));
-  if(S.current)manage(el.querySelector('[data-manage]'),rerender);
+  const show=()=>manage(el.querySelector('[data-manage]'),rerender).catch(e=>{(el.querySelector('[data-manage]') as HTMLElement).innerHTML=`<div class="pp-card"><p>${esc(e.message||'Could not load this project')}</p></div>`;});
+  el.querySelectorAll<HTMLElement>('[data-pick]').forEach(b=>b.addEventListener('click',()=>{S.current=all.find(p=>p.id===b.dataset.pick);try{localStorage.setItem('mg-portal-current',S.current.id);}catch{};show();}));
+  if(S.current)await show();
 }
 
 async function manage(box:HTMLElement,rerender){
@@ -47,7 +48,7 @@ async function manage(box:HTMLElement,rerender){
       <h4 class="pp-h4">Files</h4><ul class="pp-files">${(files.data||[]).map(f=>`<li><button type="button" class="ulink" data-file="${esc(f.path)}">${esc(f.name)}</button> <small>${f.kind} · ${Math.round((f.size||0)/1024)} KB</small></li>`).join('')||'<li class="pp-muted">None</li>'}</ul></div>
 
     <div class="pp-card"><h3 class="pp-h">Requests</h3>
-      ${(reqs.data||[]).length?`<ul class="pp-reqs">${reqs.data.map(r=>`<li><details data-req="${r.id}"><summary><span class="pp-badge s-${r.status}">${r.status.replace('_',' ')}</span><b>${esc(r.title)}</b><small>${r.kind} · ${date(r.created_at)}${r.quote_gbp!=null?' · '+gbp(r.quote_gbp):''}</small></summary>
+      ${(reqs.data||[]).length?`<ul class="pp-reqs">${reqs.data.map(r=>`<li><details data-req="${r.id}"><summary><span class="pp-badge s-${r.status||'new'}">${(r.status||'new').replace('_',' ')}</span><b>${esc(r.title)}</b><small>${r.kind} · ${date(r.created_at)}${r.quote_gbp!=null?' · '+gbp(r.quote_gbp):''}</small></summary>
         <form class="pp-inline" data-rq="${r.id}"><label>Quote £<input name="quote" type="number" min="0" value="${r.quote_gbp??''}"></label><button class="btn sm ghost" name="act" value="quote"><span>Send quote</span></button>
           <select name="status">${['new','in_progress','done','declined'].map(s=>`<option${s===r.status?' selected':''}>${s}</option>`).join('')}</select><button class="btn sm ghost" name="act" value="status"><span>Update status</span></button></form>
         <div class="pp-req-body" data-body></div></details></li>`).join('')}</ul>`:'<p class="pp-muted">No requests.</p>'}</div>

@@ -58,3 +58,6 @@ export async function upload(file:File,kind='brief',tag=''){
   return check(await sb.from('files').insert({client_id:S.current.id,path,name:(tag?tag+': ':'')+file.name,kind,size:file.size}).select().single());
 }
 export async function fileUrl(path){const r=await sb.storage.from('client-files').createSignedUrl(path,3600);return r.data?.signedUrl||'';}
+
+/* test hook: lets automated checks swap in stand-in login/data clients */
+export function __test(o:{sb?:any,clerk?:any}){if(o.sb)sb=o.sb;if(o.clerk)clerk=o.clerk;}

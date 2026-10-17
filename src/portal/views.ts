@@ -85,7 +85,7 @@ export async function viewRequests(el:HTMLElement){
   const reqs=check(await sb.from('requests').select('*').eq('client_id',p.id).order('created_at',{ascending:false}))||[];
   el.innerHTML=`<div class="pp-grid">
     <div class="pp-col"><h3 class="pp-h">Your requests</h3>
-      ${reqs.length?`<ul class="pp-reqs">${reqs.map(r=>`<li><details data-req="${r.id}"><summary><span class="pp-badge s-${r.status}">${RS[r.status]}</span><b>${esc(r.title)}</b><small>${r.kind} · ${date(r.created_at)}${r.quote_gbp!=null?' · '+gbp(r.quote_gbp):''}</small></summary><div class="pp-req-body" data-body></div></details></li>`).join('')}</ul>`:'<p class="pp-muted">No requests yet.</p>'}
+      ${reqs.length?`<ul class="pp-reqs">${reqs.map(r=>`<li><details data-req="${r.id}"><summary><span class="pp-badge s-${r.status||'new'}">${RS[r.status]||RS.new}</span><b>${esc(r.title)}</b><small>${r.kind} · ${date(r.created_at)}${r.quote_gbp!=null?' · '+gbp(r.quote_gbp):''}</small></summary><div class="pp-req-body" data-body></div></details></li>`).join('')}</ul>`:'<p class="pp-muted">No requests yet.</p>'}
     </div>
     <form class="pp-col pp-card" novalidate>
       <h3 class="pp-h">New request</h3>
