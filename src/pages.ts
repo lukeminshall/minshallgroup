@@ -7,6 +7,7 @@ import {subscribeBox,split,splitLetters,eyebrow,shead,phead,btn,cards,returnsRow
 import {dot,tile} from './brand';
 import {gRidge,gDial,gNetwork} from './graphics';
 import {researchPage,RESEARCH_SLUG} from './research';
+import {datalenseSample,straightTalkingDemo} from './demos';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 export const P:Record<string,()=>string>={};
@@ -261,7 +262,7 @@ ${ctaBand('Want a demo?','We run short, structured demonstrations on your own da
 
 P['/products/datalense']=()=>`
 ${phead({crumb:'<a href="/products">Products</a><span>/</span>DataLense',title:'Know the site before you sign the lease.',lede:'DataLense is healthcare commercial intelligence: where the next site should go, who is already there, and what the population around it actually needs, before the capital is committed.',gfx:'radar',
-  actions:`<a class="btn mag" href="https://datalense.org" target="_blank" rel="noopener"><span>Visit datalense.org</span></a>${btn('Request a catchment','/contact',true)}`,meta:'<span class="status live">Live</span>'})}
+  actions:`${btn('See a sample report','/products/datalense/sample')}<a class="btn ghost" href="https://datalense.org" target="_blank" rel="noopener"><span>Visit datalense.org</span></a>`,meta:'<span class="status live">Live</span>'})}
 <section><div class="wrap split-2">
   <div class="reveal">${eyebrow('The problem')}<h2 class="h2">The wrong site is the most expensive mistake in the sector.</h2></div>
   <div class="prose reveal" style="--i:1"><p>Site selection in independent healthcare is usually decided on instinct, a rent quote and whatever someone already knows about the town. The data to do it properly exists, but it is spread across provider registers, census tables, deprivation indices, waiting-time publications and workforce returns, each in a different shape.</p><p>DataLense joins it up around a real drivetime catchment and scores the market, so the decision is made on evidence and the evidence says what it does not know.</p></div>
@@ -283,7 +284,7 @@ ${ctaBand('Considering a site?','Send us the postcode. We will run the catchment
 
 P['/products/straight-talking']=()=>`
 ${phead({crumb:'<a href="/products">Products</a><span>/</span>Straight Talking',title:'A compliance cost, turned into evidence.',lede:'Straight Talking is the patient-reported spine for a whole clinical journey: one capture surface from first contact to outcome, with the mandated instruments layered on top.',gfx:'layers',
-  actions:`${btn('Join the first cohort','/contact')}`,meta:'<span class="status">First cohort · October 2026</span>'})}
+  actions:`${btn('Try the live demo','/products/straight-talking/demo')}${btn('Join the first cohort','/contact',true)}`,meta:'<span class="status">First cohort · October 2026</span>'})}
 <section><div class="wrap split-2">
   <div class="reveal">${eyebrow('The problem')}<h2 class="h2">Feedback collected once, at the end, from the few who reply.</h2></div>
   <div class="prose reveal" style="--i:1"><p>Most providers collect patient feedback at one point, usually by email, from a small share of patients. It satisfies a reporting requirement and tells the organisation almost nothing it can act on, or negotiate with.</p><p>Straight Talking treats the patient’s voice as a continuous record across the journey. Capture rate comes first; validated instruments sit on the same spine; experience and outcome live on one record.</p></div>
@@ -382,6 +383,8 @@ ${phead({crumb:`<a href="/insights">Insights</a><span>/</span>${a.tag}`,title:a.
 }
 INSIGHTS.forEach(a=>{P['/insights/'+a.slug]=()=>article(a);});
 P['/insights/'+RESEARCH_SLUG]=researchPage;
+P['/products/datalense/sample']=datalenseSample;
+P['/products/straight-talking/demo']=straightTalkingDemo;
 /* ================= CASE STUDIES ================= */
 function casePage(c,i){
   const ind=indById(c.ind),next=CASES[(i+1)%CASES.length],prev=CASES[(i-1+CASES.length)%CASES.length];

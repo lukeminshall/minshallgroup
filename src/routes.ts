@@ -31,6 +31,8 @@ LANDINGS.forEach(L=>{ROUTES['/'+L.slug]={title:L.seoTitle,description:L.desc};})
 ROUTES['/digitalsme']={title:t('Website Refresh for Small Businesses from £495'),description:'Free instant website check with your Webmins Score, then a fixed-price refresh from £495. Three packages, clear add-ons, paid in three stages. For UK small businesses.'};
 ROUTES['/digitalsme/terms']={title:t('Website refresh offer terms'),description:'The terms that apply to the Minshall Group website refresh offer for small businesses.'};
 ROUTES['/privacy']={title:t('Privacy notice'),description:'How Minshall Group (Knexu Limited) uses the information you give us through this website.'};
+ROUTES['/products/datalense/sample']={title:t('DataLense sample catchment report'),description:'See what a DataLense healthcare catchment report looks like: drivetime map, market score, competitors, population health, workforce and coverage status. Illustrative data.'};
+ROUTES['/products/straight-talking/demo']={title:t('Straight Talking live demo'),description:'Answer as a patient and watch the provider dashboard update live, then see a sample patient-reported outcomes report. Illustrative data.'};
 PRODUCTS.forEach(p=>{ROUTES['/products/'+p.slug]={title:t(p.t+' — '+p.line.replace(/\.$/,'')),description:p.d};});
 CASES.forEach(c=>{ROUTES['/work/'+c.id]={title:t(`${c.head.replace(/\.$/,'')}: ${c.client}`),description:c.ch};});
 INSIGHTS.forEach(i=>{ROUTES['/insights/'+i.slug]={title:t(i.t),description:i.d};});
