@@ -14,7 +14,7 @@ const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
 export function initPage(){
   ac?.abort();cleanups.splice(0).forEach(f=>f());
   ac=new AbortController();const sig={signal:ac.signal};
-  reveals();scrub(sig);rotator();heroZoom(sig);varFont(sig);velocityMarquee(sig);hscroll(sig);hoverPreview(sig);
+  reveals();scrub(sig);rotator();heroZoom(sig);heroField(sig);varFont(sig);velocityMarquee(sig);hscroll(sig);hoverPreview(sig);
   finder();filters();tabs(sig);stickySteps(sig);magnetic(sig);
   dispatchEvent(new Event('mg:page'));
 }
@@ -67,6 +67,43 @@ function heroZoom(sig){
   const t=setTimeout(()=>{measure();upd();},1300);cleanups.push(()=>clearTimeout(t));
   addEventListener('scroll',upd,{passive:true,...sig});
   addEventListener('resize',()=>{measure();upd();},sig);
+}
+
+/* ---------- hero: a living field of points ----------
+   A quiet grid that breathes, and bends towards the cursor in brand pink:
+   the number moving. Starts after first paint, pauses off screen and in
+   background tabs, and stays still for reduced motion. */
+function heroField(sig){
+  const cv=document.querySelector<HTMLCanvasElement>('[data-field]');if(!cv)return;
+  const ctx=cv.getContext('2d');if(!ctx)return;
+  let W=0,H=0,dpr=1,pts:number[]=[],gap=34,mx=-9999,my=-9999,tmx=-9999,tmy=-9999,on=false,raf=0,t0=performance.now();
+  const size=()=>{const r=cv.getBoundingClientRect();dpr=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;
+    gap=W<700?30:36;pts=[];for(let y=gap/2;y<H;y+=gap)for(let x=gap/2;x<W;x+=gap)pts.push(x,y);};
+  const draw=(now:number)=>{
+    const t=(now-t0)/1000;mx+=(tmx-mx)*.12;my+=(tmy-my)*.12;
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+    const R=W<700?140:220;
+    for(let i=0;i<pts.length;i+=2){
+      const bx=pts[i],by=pts[i+1];
+      const w=Math.sin(bx*.012+t*.8)*Math.cos(by*.014-t*.6);          /* slow swell */
+      let x=bx,y=by+w*5,dx=x-mx,dy=y-my,d=Math.sqrt(dx*dx+dy*dy),k=0;
+      if(d<R){k=1-d/R;k*=k;x-=dx*k*.45;y-=dy*k*.45;}
+      const r=.9+Math.max(0,w)*.7+k*2.6;
+      ctx.fillStyle=k>.02?`rgba(255,46,99,${.25+k*.75})`:`rgba(255,255,255,${.09+Math.max(0,w)*.1})`;
+      ctx.fillRect(x-r/2,y-r/2,r,r);
+    }
+    if(on&&!RM)raf=requestAnimationFrame(draw);
+  };
+  const start=()=>{if(on)return;on=true;raf=requestAnimationFrame(draw);},stop=()=>{on=false;cancelAnimationFrame(raf);};
+  const boot=()=>{size();cv.classList.add('in');if(RM){draw(performance.now());return;}
+    const io=new IntersectionObserver(([e])=>e.isIntersecting&&!document.hidden?start():stop());io.observe(cv);
+    cleanups.push(()=>{io.disconnect();stop();});
+    document.addEventListener('visibilitychange',()=>document.hidden?stop():start(),sig);
+    addEventListener('resize',size,sig);
+    addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect();tmx=e.clientX-r.left;tmy=e.clientY-r.top;if(mx<-999){mx=tmx;my=tmy;}},{passive:true,...sig});
+    document.addEventListener('pointerleave',()=>{tmx=tmy=-9999;},sig);};
+  const ric=(window as any).requestIdleCallback||((f)=>setTimeout(f,300));
+  const id=ric(boot,{timeout:1200});cleanups.push(()=>{(window as any).cancelIdleCallback?.(id);clearTimeout(id);});
 }
 
 /* ---------- hero type that thickens and softens near the cursor ---------- */

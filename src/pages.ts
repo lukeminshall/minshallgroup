@@ -14,6 +14,7 @@ export const P:Record<string,()=>string>={};
 P['/']=()=>`
 <section class="hero2 dark" id="hero" data-hero>
   <div class="hero2-pin">
+    <canvas class="hero-field" data-field aria-hidden="true"></canvas>
     <div class="grain" aria-hidden="true"></div>
     <div class="wrap hero2-in">
       <div class="fadebox"><div class="hero2-top rise" style="--i:0"><span>Strategy</span><span>Digital</span><span>Data &amp; AI</span><span>Brand</span></div></div>
@@ -103,7 +104,10 @@ P['/']=()=>`
       <span class="wl-arrow" aria-hidden="true">→</span>
     </a></li>`).join('')}
   </ol>
-  <p class="clients-line reveal"><span class="eyebrow">Clients include</span>${CLIENTS.join('<i></i>')}</p>
+</div>
+<div class="cwall" role="region" aria-label="Clients">
+  <div class="wrap"><span class="eyebrow">Clients include</span><p class="sr">${CLIENTS.join(', ')}</p></div>
+  ${[0,1].map(r=>{const list=r?[...CLIENTS].reverse():CLIENTS;return `<div class="cw-row${r?' rev':''}" aria-hidden="true"><div class="cw-track">${[0,1].map(()=>list.map((c,i)=>`<span class="${(i+r)%2?'it':''}">${c}</span><i></i>`).join('')).join('')}</div></div>`;}).join('')}
 </div>
 <div class="hover-preview" data-preview-box aria-hidden="true">${CASES.slice(0,6).map((c,i)=>`<div class="hpv" data-pv="${i}"><div class="hpv-gfx">${gfx(c.gfx)}</div><p>${c.ret}</p></div>`).join('')}</div>
 </section>

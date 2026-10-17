@@ -7,11 +7,13 @@ import {buildShell} from './nav';
 import {initRouter} from './router';
 import {initForms} from './forms';
 import {initGlobal} from './motion';
+import {initPalette} from './palette';
 
 buildShell();
 initForms();
 initRouter();
 initGlobal();
+initPalette();
 
 /* first visit: the tile draws itself, then the curtain lifts */
 const html=document.documentElement;
