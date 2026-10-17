@@ -34,6 +34,7 @@ function paint(scroll=true){
   document.getElementById('app').innerHTML=(P[p]||P['/404'])();
   setMeta(p);setActive(p);
   if(scroll&&!location.hash)window.scrollTo({top:0,behavior:'instant' as ScrollBehavior});
+  if(location.hash){const t=document.getElementById(decodeURIComponent(location.hash.slice(1)));if(t)setTimeout(()=>t.scrollIntoView({behavior:'instant' as ScrollBehavior,block:'start'}),60);}
   initPage();preselect();initSme();initProspect();
 }
 

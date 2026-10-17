@@ -8,10 +8,10 @@ import {tile,dot} from './brand';
 
 export const NAV=[
   {label:'Capabilities',href:'/capabilities',mega:'caps'},
+  {label:'Websites',href:'/digitalsme',mega:'web'},
   {label:'Industries',href:'/industries'},
   {label:'Products',href:'/products',mega:'products'},
   {label:'Work',href:'/work'},
-  {label:'Approach',href:'/approach'},
   {label:'Insights',href:'/insights'},
   {label:'About',href:'/about'}
 ];
@@ -26,7 +26,26 @@ function megaCaps(){
       <span class="eyebrow">Latest thinking</span>
       <a class="mega-feature" href="/insights/${latest.slug}"><b>${latest.t}</b><span>${latest.d}</span><em>Read · ${latest.mins} min</em></a>
       <a class="tlink" href="/capabilities">All capabilities</a>
-      <a class="mega-sme" href="/digitalsme"><b>Small business?</b> Website refresh from £495 →</a>
+      <a class="tlink" href="/approach">How we work</a>
+    </div></div></div>`;
+}
+/* websites and digital support for small businesses */
+export const WEB_LINKS=[
+  {mn:'Free',t:'Website check',d:'Your Webmins Score, fixes and a recommended package in 20 seconds.',h:'/digitalsme'},
+  {mn:'From £495',t:'Website packages',d:'Refresh, Rebuild or Grow. Fixed prices, paid in three stages.',h:'/digitalsme#packages'},
+  {mn:'£150 a year',t:'Hosting and support',d:'Hosting, your domain secured and pointed, and help after launch.',h:'/digitalsme#support'},
+  {mn:'Two minutes',t:'Build your quote',d:'Pick a package and add-ons, and see your price straight away.',h:'/digitalsme#quote'}
+];
+function megaWeb(){
+  return `<div class="mega" role="region" aria-label="Websites"><div class="wrap mega-in">
+    <div class="mega-grid c4">${WEB_LINKS.map(l=>`
+      <a class="mega-link" href="${l.h}"><span class="mn">${l.mn}</span><b>${l.t}</b><span>${l.d}</span></a>`).join('')}
+    </div>
+    <div class="mega-side">
+      <span class="eyebrow">Bigger projects</span>
+      <p>Platforms, portals, apps, data and AI for growing and larger organisations.</p>
+      <a class="tlink" href="/digital-consultancy">Digital consultancy</a>
+      <a class="tlink" href="/capabilities/digital">Digital &amp; Product practice</a>
     </div></div></div>`;
 }
 function megaProducts(){
@@ -43,13 +62,13 @@ function megaProducts(){
 
 export function navMarkup(){
   return NAV.map((g,i)=>g.mega
-    ?`<div class="navitem has-mega" data-i="${i}"><a class="navbtn" href="${g.href}" aria-expanded="false" aria-haspopup="true">${g.label}<svg class="chev" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></a>${g.mega==='caps'?megaCaps():megaProducts()}</div>`
+    ?`<div class="navitem has-mega" data-i="${i}"><a class="navbtn" href="${g.href}" aria-expanded="false" aria-haspopup="true">${g.label}<svg class="chev" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></a>${g.mega==='caps'?megaCaps():g.mega==='web'?megaWeb():megaProducts()}</div>`
     :`<div class="navitem" data-i="${i}"><a class="navbtn" href="${g.href}">${g.label}</a></div>`).join('')
     +`<a class="btn sm mag head-cta" href="/contact"><span>Start a project</span></a>`;
 }
 
 export function mobileNavMarkup(){
-  const links=[['Capabilities','/capabilities'],...CAPS.map(c=>[c.t,'/capabilities/'+c.slug,'sub']),['Industries','/industries'],['Products','/products'],['Work','/work'],['Approach','/approach'],['Insights','/insights'],['About','/about'],['Contact','/contact']];
+  const links=[['Capabilities','/capabilities'],...CAPS.map(c=>[c.t,'/capabilities/'+c.slug,'sub']),['Websites','/digitalsme'],...WEB_LINKS.map(l=>[l.t,l.h,'sub']),['Industries','/industries'],['Products','/products'],['Work','/work'],['Approach','/approach'],['Insights','/insights'],['About','/about'],['Contact','/contact']];
   return `<div class="mnav-in"><nav aria-label="Mobile">${links.map(([t,h,s],i)=>`<a class="${s?'sub':''}" style="--i:${i}" href="${h}">${t}</a>`).join('')}</nav>
     <div class="mnav-foot"><a href="mailto:${CONTACT.email}">${CONTACT.email}</a></div></div>`;
 }

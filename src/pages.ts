@@ -632,6 +632,19 @@ P['/digitalsme']=()=>`
   ].map((s,i)=>`<li class="reveal" style="--i:${i}"><span class="sn">0${i+1}</span><b>${s[0]}</b><p>${s[1]}</p></li>`).join('')}</ol>
 </div></section>
 
+<section id="support"><div class="wrap">
+  ${shead({eyebrow:'Hosting and support',h:'Looked after once it is live.',p:'Your site does not stop at launch. Here is what we can look after for you, and what it costs.'})}
+  ${cards([
+    {n:`${gbp(SME.hosting)} a year`,t:'Hosting',d:'We host your site on Vercel, point your domain to it, keep the security certificate current and keep it online. Renews yearly; leave any time with your code.'},
+    {n:'At cost',t:'Domains',d:'We check availability and secure the domain for you. The first year goes on your first invoice and renewals are billed at cost. The domain is always yours.'},
+    {n:'Included',t:'Launch support',d:'We fix anything we built that goes wrong in the first 30 days, free. Grow packages also include 30 days of small changes.'},
+    {n:'On request',t:'Changes and updates',d:'Need a new page, new prices or a seasonal update after that? Tell us what you need and we will quote it before we start.'},
+    {n:'Rebuild and Grow',t:'Analytics and reporting',d:'Microsoft Clarity shows how visitors use your site, and we send a before-and-after Webmins Score at launch.'},
+    {n:`${SME.handoverDays} days`,t:'Prefer to host it yourself?',d:`We place the finished code on Vercel and you have ${SME.handoverDays} days to move it to the platform of your choice.`}
+  ])}
+  <div class="actions reveal">${btn('Ask about support','/contact?interest=Digital')}${btn('Build your quote','#quote',true)}</div>
+</div></section>
+
 <section class="dark"><div class="grain" aria-hidden="true"></div><div class="wrap" style="position:relative">
   ${shead({eyebrow:'Payments',h:'Paid in three equal parts.',p:'You never pay for work you have not seen. Each invoice is due within seven days.'})}
   <ol class="entry-steps three">${SME.stages.map((s,i)=>`<li class="reveal" style="--i:${i}"><span>${['⅓','⅓','⅓'][i]}</span><b>${s.t}</b><p>${s.d}</p></li>`).join('')}</ol>

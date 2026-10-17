@@ -953,3 +953,4 @@ html.loading:not(.lifting) .rise,html.loading:not(.lifting) .split .w>span,html.
 .pt-subj{margin:0 0 8px;font-size:14.5px}
 .pt-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 @media (max-width:1024px){.pt-input{grid-template-columns:1fr}.pt-ind{margin-left:0}}
+section[id],[id="sme-results"]{scroll-margin-top:calc(var(--hh) + 10px)}
