@@ -501,7 +501,8 @@ const SME_FAQ=[
   {q:'How quickly will my site be ready?',a:'Refresh sites usually take two weeks, Rebuild three to four, and Grow five to six, from the day we have your content and the first payment. Your quote confirms the dates.'},
   {q:'What do I need to provide?',a:'Your logo, any photos you want to use, access to your current site and domain, and an hour for a kick-off call. If you do not want to write the words, add our copywriting option.'},
   {q:'Do I keep my domain name?',a:'Yes. Your domain stays yours. We point it at the new site when it is ready to go live.'},
-  {q:'What does hosting cost?',a:`Hosting is ${gbp(SME.hosting)} a year, on your existing domain or a new one. It covers hosting, a security certificate and keeping the site online.`},
+  {q:'Do I have to host with you?',a:`No. We build your site and place it on Vercel. You can take the code and use it on your own platform: you have ${SME.handoverDays} days from delivery to move it. Or we host it for you and point it to your domain for ${gbp(SME.hosting)} a year.`},
+  {q:'What does hosting with you include?',a:`For ${gbp(SME.hosting)} a year we host your site, point your domain to it, keep the security certificate current and keep it online. It renews each year and you can leave at any time with your code.`},
   {q:'What if I need a new domain?',a:'Choose “Please secure one for me” in the quote builder to check availability and price. We register it for you and add the first year to your first invoice. The domain is yours.'},
   {q:'Who owns the website?',a:'Once the final payment is made, the design and content we create for you are yours. The terms explain exactly how this works.'},
   {q:'Is this for businesses only?',a:'Yes. This offer is for businesses and organisations, not for personal or household use.'}
@@ -545,7 +546,7 @@ P['/digitalsme']=()=>`
 </div></section>
 
 <section class="soft" id="packages"><div class="wrap">
-  ${shead({eyebrow:'Packages',h:'Three fixed starting prices.',p:'Pick the one that fits. Add only what you need. Prices exclude VAT, if applicable.'})}
+  ${shead({eyebrow:'Packages',h:'Three fixed starting prices.',p:`Pick the one that fits and add only what you need. Every site is built and delivered on Vercel: take the code to your own platform within ${SME.handoverDays} days, or we host it and point your domain for ${gbp(SME.hosting)} a year. Prices exclude VAT, if applicable.`})}
   <div class="pkgs">${SME.packages.map((k,i)=>`
     <article class="pkg reveal${k.popular?' pop':''}" style="--i:${i}">
       ${k.popular?'<span class="pkg-flag">Most chosen</span>':''}
@@ -573,7 +574,7 @@ P['/digitalsme']=()=>`
       <fieldset class="qb-step"><legend><span>3</span>What else do you need?</legend>
         <div class="qb-addons">${SME.addons.map(a=>`<label class="qb-add" data-addon="${a.id}"><input type="checkbox" name="addon" value="${a.id}"><span><b>${a.t}</b><small>${a.d}</small></span><em data-addon-price>+${gbp(a.price)}</em></label>`).join('')}</div>
       </fieldset>
-      <fieldset class="qb-step"><legend><span>4</span>Your domain and hosting</legend>
+      <fieldset class="qb-step"><legend><span>4</span>Domain and hosting</legend>
         <p class="qb-sub">Do you want us to secure a domain for you, or do you already have one?</p>
         <div class="qb-pkgs two">
           <label class="qb-pkg"><input type="radio" name="dmode" value="need"><span><b>Please secure one for me</b><small>Check availability and price here. Added to your first invoice.</small></span></label>
@@ -585,7 +586,11 @@ P['/digitalsme']=()=>`
           <p class="qb-hint" data-dmsg>Type a name, with or without an ending. We check .co.uk, .uk, .com and .org.</p>
           <ul class="qb-dres" data-dres></ul>
         </div>
-        <p class="qb-hint">Hosting is ${gbp(SME.hosting)} a year, on your existing domain or a new one.</p>
+        <p class="qb-sub" style="margin-top:22px">Who hosts the finished site?</p>
+        <div class="qb-pkgs two">
+          <label class="qb-pkg"><input type="radio" name="hosting" value="us" checked><span><b>Host it for me</b><em>${gbp(SME.hosting)} a year</em><small>We host it on Vercel and point your domain to it</small></span></label>
+          <label class="qb-pkg"><input type="radio" name="hosting" value="self"><span><b>I will host it myself</b><em>No hosting fee</em><small>We place the code on Vercel; you have ${SME.handoverDays} days to move it to your own platform</small></span></label>
+        </div>
       </fieldset>
       <fieldset class="qb-step"><legend><span>5</span>About you</legend>
         <div class="row2">
@@ -619,7 +624,7 @@ P['/digitalsme']=()=>`
     ['Check','Run the free check and see what to fix first.'],
     ['Quote','Build your quote here. We confirm it within one working day.'],
     ['Build','A kick-off call, then we design and build. You approve the design halfway.'],
-    ['Launch','We put the site live on your domain and send a before-and-after score.']
+    ['Deliver',`We place your finished site on Vercel. Take the code to your own platform within ${SME.handoverDays} days, or let us host it and point your domain for ${gbp(SME.hosting)} a year.`]
   ].map((s,i)=>`<li class="reveal" style="--i:${i}"><span class="sn">0${i+1}</span><b>${s[0]}</b><p>${s[1]}</p></li>`).join('')}</ol>
 </div></section>
 
@@ -641,21 +646,23 @@ ${phead({crumb:'<a href="/digitalsme">Website refresh</a><span>/</span>Terms',ey
   <h2>1. Who we are and who this is for</h2>
   <p>These terms are between you and ${LEGAL.company}, trading as ${LEGAL.trading} (company number ${LEGAL.number}, registered office ${LEGAL.office}). The offer is for businesses and organisations only, not for consumers.</p>
   <h2>2. Your quote and what is included</h2>
-  <p>Your quote sets out the package, the number of pages, any add-ons, the price, the hosting fee and the expected dates. Only what is listed in your accepted quote is included. Anything else is extra work, which we will price and agree with you in writing before we do it.</p>
+  <p>Your quote sets out the package, the number of pages, any add-ons, the price, whether we host the site, any domain fee and the expected dates. Only what is listed in your accepted quote is included. Anything else is extra work, which we will price and agree with you in writing before we do it.</p>
   <p>Package prices are starting prices for the stated number of pages. Additional pages are charged at ${gbp(SME.extraPage)} each. All prices exclude VAT, if applicable.</p>
   <h2>3. Accepting the quote</h2>
   <p>A contract starts when you confirm the quote in writing (email is fine) and we receive the first payment. The prices on our website give an indication. Your confirmed written quote is what applies.</p>
   <h2>4. Payments</h2>
   <p>The price is paid in three equal parts:</p>
   <ul class="ticks"><li><b>One third to start.</b> This books your slot and pays for discovery and design.</li><li><b>One third at the halfway point,</b> when we show you the design and first pages for approval.</li><li><b>One third on completion,</b> when the site is ready to go live.</li></ul>
-  <p>Invoices are due within seven days. If a payment is late, we may pause work until it is paid, and the timetable moves accordingly. We put the site live on your domain once the final payment is received.</p>
+  <p>Invoices are due within seven days. If a payment is late, we may pause work until it is paid, and the timetable moves accordingly. We deliver the finished site once the final payment is received.</p>
   <h2>5. What we need from you</h2>
   <p>You agree to provide content, images, logins and approvals promptly. Our dates depend on this. If we are waiting on you for more than 30 days, we may invoice the next stage of the work completed so far and reschedule the remaining work.</p>
   <p>You confirm that you have the right to use everything you give us, such as text, images and logos, and that it does not infringe anyone else’s rights.</p>
   <h2>6. Revisions</h2>
   <p>Each package includes two rounds of changes to the design and one round of changes to the finished pages. Further changes, or changes of direction after approval, are charged as extra work.</p>
-  <h2>7. Hosting, domains and third-party services</h2>
-  <p>Hosting is ${gbp(SME.hosting)} a year, billed separately from the build, and renews each year unless either of us gives notice. You keep ownership of your domain name.</p>
+  <h2>7. Delivery, hosting and domains</h2>
+  <p><b>Delivery.</b> We build your website and place the finished code on Vercel. You can then choose either of the following.</p>
+  <ul class="ticks"><li><b>Host it yourself.</b> You can take the code and use it on any platform you choose. You have ${SME.handoverDays} days from delivery to move it, and we will give you access to the code or a copy of it. After ${SME.handoverDays} days we may remove our copy of the delivered site, unless you have chosen our hosting.</li><li><b>We host it.</b> We host the site and point your domain to it for ${gbp(SME.hosting)} a year, billed separately from the build. Hosting renews each year unless either of us gives notice. If you leave, we give you the code to take with you.</li></ul>
+  <p>You keep ownership of your domain name in either case.</p>
   <p>If you ask us to secure a domain, we register it on your behalf and in your name where the registry allows. The first year’s fee is added to your first invoice, and renewals are billed at cost each year unless you take the domain over. Prices shown in the quote builder are indicative and confirmed in your quote. Availability is checked at the time of your quote; a domain is not reserved until it is registered, which we do once the first invoice is paid.</p>
   <p> Where your site uses third-party services, for example for hosting, email delivery, customer logins or analytics, those services run under their providers’ own terms. If your usage goes beyond their free allowances, we will tell you before passing on any cost.</p>
   <h2>8. Who owns the website</h2>

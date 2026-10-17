@@ -387,7 +387,7 @@ export const SME={
   packages:[
     {id:'refresh',name:'Refresh',price:495,pages:10,weeks:'2 weeks',
       for:'Your site works, but it looks dated and says too little.',
-      includes:['Up to 10 pages rewritten and refreshed','Modern, mobile-first design','News or blog section you can update','Speed and accessibility fixes','Page titles and descriptions for Google','Launch on our managed hosting']},
+      includes:['Up to 10 pages rewritten and refreshed','Modern, mobile-first design','News or blog section you can update','Speed and accessibility fixes','Page titles and descriptions for Google','Delivered on Vercel, ready to go live']},
     {id:'rebuild',name:'Rebuild',price:995,pages:50,weeks:'3–4 weeks',popular:true,
       for:'You need a proper site that brings in enquiries.',
       includes:['Everything in Refresh, up to 50 pages','Enquiry forms delivered to your inbox','Visitor analytics with Microsoft Clarity','Google Search Console and sitemap set up','Before-and-after score report']},
@@ -407,7 +407,8 @@ export const SME={
     {id:'gbp',t:'Google Business Profile set-up',d:'Show up properly in local search and Maps.',price:50,in:[]}
   ],
   extraPage:10,
-  hosting:150,            /* per year, on the client's existing or new domain */
+  hosting:150,            /* per year: we host it and point the client's domain at it */
+  handoverDays:30,        /* days after delivery to move the code to their own platform */
   /* Domains: api/domain.js asks every connected registrar (Vercel, GoDaddy)
      and the cheapest first-year price is shown, converted to pounds at
      usdToGbp where needed, rounded up, plus domainAdmin. With no registrar

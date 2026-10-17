@@ -152,12 +152,13 @@ function wireQuote(form:HTMLFormElement){
     const extra:[string,string][]=[];
     if(domain)extra.push([`Domain ${domain.name}, first year`,domain.gbp?`${gbp(domain.gbp)} on first invoice`:'Price on request']);
     else if(dmode==='need')extra.push(['Domain','Check availability above']);
-    extra.push(['Hosting',`${gbp(SME.hosting)} a year`]);
+    const hosting=(form.querySelector('input[name=hosting]:checked') as HTMLInputElement)?.value||'us';
+    extra.push(hosting==='us'?['Hosting, with your domain pointed',`${gbp(SME.hosting)} a year`]:['Self-hosting: code handover',`Move within ${SME.handoverDays} days`]);
     form.querySelector('[data-extra]').innerHTML=extra.map(l=>`<li><span>${esc(l[0])}</span><b>${l[1]}</b></li>`).join('');
     form.querySelector('[data-lines]').innerHTML=lines.map(l=>`<li><span>${l[0]}</span><b>${gbp(l[1])}</b></li>`).join('');
     form.querySelector('[data-total]').textContent=gbp(total);
     form.querySelector('[data-stages]').innerHTML=SME.stages.map((s,i)=>`<li><span>${s.t}${i===0&&domain?.gbp?' + domain':''}</span><b>${gbp(parts[i])}</b></li>`).join('');
-    return {pk,n,extra:extra,extraPages:extraP,lines,total,parts,domain,dmode};
+    return {pk,n,extra:extra,extraPages:extraP,lines,total,parts,domain,dmode,hosting};
   };
   form.addEventListener('input',calc);form.addEventListener('change',calc);calc();
   wireDomains(form,calc);
@@ -180,7 +181,7 @@ function wireQuote(form:HTMLFormElement){
       ...q.lines.map(l=>`- ${l[0]}: ${gbp(l[1])}`),
       `Pages: ${q.n}`,`Build total: ${gbp(q.total)} (ex VAT)`,
       q.dmode==='need'?`Domain: please secure ${q.domain?`${q.domain.name} (${q.domain.gbp?gbp(q.domain.gbp)+' first year, on first invoice':'price on request'}; priced via ${q.domain.src==='table'?'our price table':q.domain.src||'n/a'})`:'(no domain picked yet)'}`:`Domain: has own domain ${fd.get('domain')||'(not given)'}`,
-      `Hosting: ${gbp(SME.hosting)} a year`,
+      q.hosting==='us'?`Hosting: we host and point their domain, ${gbp(SME.hosting)} a year`:`Hosting: client will self-host; code handover within ${SME.handoverDays} days of delivery`,
       `Payments: ${SME.stages.map((s,i)=>`${s.t} ${gbp(q.parts[i])}`).join(' / ')}`,
       `Current website: ${fd.get('website')||'not given'}`,check,
       `Notes: ${fd.get('notes')||'none'}`,'Terms accepted: yes'].filter(Boolean).join('\n');
