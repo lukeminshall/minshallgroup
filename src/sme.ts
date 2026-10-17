@@ -13,7 +13,7 @@ export function initSme(){
   const form=document.getElementById('sme-form') as HTMLFormElement;
   if(!form)return;
   lastCheck=null;
-  wireCheck();wireQuote(form);
+  wireCheck();wireQuote(form);wireReport();
 }
 
 /* ---------- instant check ---------- */
@@ -108,6 +108,25 @@ function wireDomains(form:HTMLFormElement,calc){
   form.querySelector('[data-dcheck]').addEventListener('click',run);
   input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();run();}});
   mode();
+}
+
+/* ---------- email me my report ---------- */
+function wireReport(){
+  const f=document.querySelector<HTMLFormElement>('[data-report]');if(!f)return;
+  f.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const st=f.querySelector('.sub-status'),btn=f.querySelector('button');const set=(m,c='')=>{st.textContent=m;st.className='sub-status'+(c?' '+c:'');};
+    const fd=new FormData(f);
+    if(!lastCheck){set('Run the check first.','err');return;}
+    if(!f.checkValidity()){set((f.querySelector('input[name=email]') as HTMLInputElement).validity.valid?'Please tick the box so we can email your report.':'Please enter a valid email address.','err');return;}
+    btn.disabled=true;set('Sending your report…');
+    try{
+      const r=await fetch('/api/report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:lastCheck.url,email:fd.get('email'),consent:!!fd.get('consent'),optin:!!fd.get('optin'),sector:(document.querySelector('[data-industry]') as HTMLSelectElement)?.value,total:lastCheck.mscore?.total,grade:lastCheck.mscore?.grade,'bot-field':fd.get('bot-field')||''})});
+      const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error);
+      set('Sent. Check your inbox in a minute or two.','ok');f.reset();
+    }catch(err){set(err.message||'Something went wrong. Please try again.','err');}
+    finally{btn.disabled=false;}
+  });
 }
 
 /* ---------- quote builder ---------- */

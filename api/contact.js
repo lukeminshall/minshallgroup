@@ -59,9 +59,34 @@ export default async function handler(req, res) {
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ from: f, to: t, subject, text, reply_to: email })
   });
+  /* Auto-reply to the enquirer. Fixed wording only, never echoing what
+     they typed (apart from a short first name), so the form cannot be used
+     to send arbitrary content to other people. */
+  const autoReply = async () => {
+    const first = name.split(/\s+/)[0].replace(/[^\p{L}' -]/gu, '').slice(0, 30);
+    const isQuote = /^website refresh/i.test(interest);
+    const lines = isQuote ? [
+      `Hello${first ? ' ' + first : ''},`, '',
+      'Thank you for your website quote request. It is with us, and we will confirm the price and your dates within one working day.', '',
+      'You do not need to book a call. The next step is to create your client account, where you can answer your onboarding questions, upload your logo and photos, and follow progress:',
+      'https://minshallgroup.com/portal', '',
+      'You can read our offer terms here: https://minshallgroup.com/digitalsme/terms'
+    ] : [
+      `Hello${first ? ' ' + first : ''},`, '',
+      'Thank you for getting in touch with Minshall Group. Your message is with us and someone senior will reply within two working days.', '',
+      'If it is about a website for a small business, you can also check your current site and build a fixed-price quote at https://minshallgroup.com/digitalsme'
+    ];
+    lines.push('', 'Minshall Group', 'hello@minshallgroup.com · minshallgroup.com', '', 'You are receiving this because this address was entered on our contact form. If that was not you, you can ignore this email.');
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ from, to: email, subject: isQuote ? 'Your website quote request: Minshall Group' : 'Thank you for getting in touch: Minshall Group', text: lines.join('\n'), reply_to: to })
+    }).catch(() => null);
+    if (!r || !r.ok) console.error('Auto-reply failed', r && r.status);
+  };
+
   try {
     let r = await send(from, to);
-    if (r.ok) { console.log('Enquiry sent via primary route to', to); return res.status(200).json({ ok: true }); }
+    if (r.ok) { console.log('Enquiry sent via primary route to', to); await autoReply(); return res.status(200).json({ ok: true }); }
     console.error('Resend primary route failed', r.status, await r.text());
     r = await send(fallbackFrom, fallbackTo);
     if (r.ok) { console.log('Enquiry sent via fallback route to', fallbackTo); return res.status(200).json({ ok: true }); }

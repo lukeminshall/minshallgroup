@@ -503,7 +503,7 @@ ${phead({eyebrow:'Privacy',title:'Privacy notice',lede:`How ${LEGAL.trading} use
 const gbp=n=>'£'+n.toLocaleString('en-GB');
 const SME_FAQ=[
   {q:'How quickly will my site be ready?',a:'Refresh sites usually take two weeks, Rebuild three to four, and Grow five to six, from the day we have your content and the first payment. Your quote confirms the dates.'},
-  {q:'What do I need to provide?',a:'Your logo, any photos you want to use, access to your current site and domain, and an hour for a kick-off call. If you do not want to write the words, add our copywriting option.'},
+  {q:'What do I need to provide?',a:'Your logo, any photos you want to use, and about 15 minutes to answer our online onboarding questions in your client portal. There is no kick-off call to book: everything happens online. If you do not want to write the words, add our copywriting option.'},
   {q:'Do I keep my domain name?',a:'Yes. Your domain stays yours. We point it at the new site when it is ready to go live.'},
   {q:'Do I have to host with you?',a:`No. We build your site and place it on Vercel. You can take the code and use it on your own platform: you have ${SME.handoverDays} days from delivery to move it. Or we host it for you and point it to your domain for ${gbp(SME.hosting)} a year.`},
   {q:'What does hosting with you include?',a:`For ${gbp(SME.hosting)} a year we host your site, point your domain to it, keep the security certificate current and keep it online. It renews each year and you can leave at any time with your code.`},
@@ -545,6 +545,16 @@ P['/digitalsme']=()=>`
       <div><h3 class="sme-h3">What we would fix first</h3><ol class="fixes" data-fixes></ol>
         <div class="sme-rec" data-rec></div></div>
     </div>
+    <form class="rep" data-report novalidate>
+      <div><h3 class="sme-h3">Email me this report</h3><p>Keep your score and fixes, or forward them to whoever looks after your website.</p></div>
+      <div>
+        <p class="hp" hidden aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <div class="sub-row rep-row"><label class="sr" for="rep-email">Email address</label><input id="rep-email" name="email" type="email" required autocomplete="email" placeholder="you@yourbusiness.co.uk"><button class="btn" type="submit"><span>Send my report</span></button></div>
+        <label class="sub-consent"><input type="checkbox" name="consent" required> <span>Email my report to this address.</span></label>
+        <label class="sub-consent"><input type="checkbox" name="optin"> <span>Also send me one practical website tip a month (optional). See our <a class="ulink" href="/privacy">privacy notice</a>.</span></label>
+        <p class="sub-status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
   </div>
   <p class="sme-err" data-err hidden></p>
 </div></section>
@@ -627,7 +637,7 @@ P['/digitalsme']=()=>`
   <ol class="steps-row">${[
     ['Check','Run the free check and see what to fix first.'],
     ['Quote','Build your quote here. We confirm it within one working day.'],
-    ['Build','A kick-off call, then we design and build. You approve the design halfway.'],
+    ['Onboard and build','Answer the onboarding questions online in your client portal, then we design and build. You approve the design there too.'],
     ['Deliver',`We place your finished site on Vercel. Take the code to your own platform within ${SME.handoverDays} days, or let us host it and point your domain for ${gbp(SME.hosting)} a year.`]
   ].map((s,i)=>`<li class="reveal" style="--i:${i}"><span class="sn">0${i+1}</span><b>${s[0]}</b><p>${s[1]}</p></li>`).join('')}</ol>
 </div></section>

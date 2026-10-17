@@ -14,7 +14,17 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}');}catch{return {};}};
 const save=s=>{try{localStorage.setItem(KEY,JSON.stringify(s));}catch{}};
 
-type Row={site:string,email:string,name:string,status:'queued'|'running'|'done'|'error',error?:string,res?:any,ind?:string};
+type Row={site:string,email:string,name:string,status:'queued'|'running'|'done'|'error',error?:string,res?:any,ind?:string,sent?:string[],optout?:boolean};
+/* outreach sequence: email 1, follow-up after 4 days, last note 6 days later */
+const GAP=[0,4,6];const DAY=864e5;
+const stepOf=(r:Row)=>Math.min((r.sent||[]).length,2);
+function dueInfo(r:Row){
+  const sent=r.sent||[];if(r.optout)return {label:'Opted out',cls:'off'};
+  if(sent.length>=3)return {label:'Sequence complete',cls:'off'};
+  if(!sent.length)return {label:'Ready to send email 1',cls:'due'};
+  const due=new Date(sent[sent.length-1]).getTime()+GAP[sent.length]*DAY;
+  const now=Date.now();return due<=now?{label:`Follow-up ${sent.length} due now`,cls:'due'}:{label:`Follow-up ${sent.length} due ${new Date(due).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}`,cls:'wait'};
+}
 let rows:Row[]=[];let key='';
 
 export function initProspect(){
@@ -41,6 +51,14 @@ export function initProspect(){
   $('[data-csv]').addEventListener('click',()=>csv());
   root.addEventListener('input',e=>{const t=e.target as HTMLElement;if(t.matches('[name=sender],[name=list]'))persist(root);});
   root.addEventListener('change',e=>{const t=e.target as HTMLSelectElement;if(t.matches('[data-ind]')){rows[+t.dataset.ind].ind=t.value;persist(root);paint();}});
+  root.addEventListener('click',e=>{
+    const t=(e.target as HTMLElement).closest<HTMLElement>('[data-mark]');if(!t)return;
+    const r=rows[+t.dataset.i];
+    if(t.dataset.mark==='sent'){r.sent=[...(r.sent||[]),new Date().toISOString()];}
+    if(t.dataset.mark==='optout'){if(!confirm('Mark as opted out? No more emails will be drafted for them.'))return;r.optout=true;}
+    if(t.dataset.mark==='reset'){if(!confirm('Reset the sequence for this prospect?'))return;r.sent=[];r.optout=false;}
+    persist(root);paint();
+  });
   root.addEventListener('click',async e=>{
     const b=(e.target as HTMLElement).closest<HTMLElement>('[data-copy]');if(!b)return;
     const i=+b.dataset.i,d=draft(rows[i]);const text=b.dataset.copy==='subject'?d.subject:d.body;
@@ -51,7 +69,8 @@ export function initProspect(){
   function paint(){
     const out=$('[data-out]');
     out.innerHTML=rows.length?rows.map((r,i)=>card(r,i)).join(''):'<p class="pt-empty">No prospects scored yet. Paste a list above and press Score.</p>';
-    $('[data-count]').textContent=rows.length?`${rows.filter(r=>r.status==='done').length} of ${rows.length} scored`:'';
+    const due=rows.filter(r=>r.status==='done'&&dueInfo(r).cls==='due').length;
+    $('[data-count]').textContent=rows.length?`${rows.filter(r=>r.status==='done').length} of ${rows.length} scored · ${due} to send today`:'';
   }
   async function run(root){
     const lines=$('[name=list]').value.split('\n').map(l=>l.trim()).filter(Boolean).slice(0,50);
@@ -84,7 +103,7 @@ function bizName(r){
   const fromTitle=t.sort((a,b)=>a.length-b.length).find(s=>s.length>=3&&s.length<=40);
   return fromTitle||r.site.replace(/^www\./,'').split('.')[0].replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
 }
-function draft(r:Row){
+function draft(r:Row,step=stepOf(r)){
   const j=r.res,s=score(j,r.ind||j.industry),biz=bizName(r);
   const first=(r.name||'').split(/\s+/)[0];
   const missing=s.ess.filter(e=>!e.ok).map(e=>`Missing: ${e.t.toLowerCase()}. Customers now expect this on a ${s.I.t.toLowerCase()} website.`);
@@ -92,7 +111,20 @@ function draft(r:Row){
   const pk=SME.packages.find(p=>p.id===j.recommended)||SME.packages[0];
   const link=`https://minshallgroup.com/digitalsme?url=${encodeURIComponent(r.site)}`;
   const sender=(load().sender||'Luke Minshall').trim();
-  const subject=`${biz}: your website scored ${s.total}/100`;
+  const subject0=`${biz}: your website scored ${s.total}/100`;
+  const optOut=`If you'd rather not hear from us again, just reply and say so and we won't contact you again.`;
+  const sign=[`Best wishes,`,sender,`Minshall Group`,`hello@minshallgroup.com · minshallgroup.com`];
+  if(step===1){
+    const subject=`Re: ${subject0}`;
+    const body=[`Hi ${first||'there'},`,'',`Just following up on my note about ${biz}'s website. If you only change one thing, I would start here:`,'',fixes[0]||'Sharpen the home page so visitors know within a few seconds what you do and how to get in touch.','',`Your full report is still here: ${link}`,'',`If it would help, I can send a fixed quote, with nothing to commit to.`,'',...sign,'',optOut].join('\n');
+    return {subject,body,s,biz,step};
+  }
+  if(step===2){
+    const subject=`Last note: ${biz}'s website`;
+    const body=[`Hi ${first||'there'},`,'',`I won't keep chasing. If improving the website becomes a priority, you can build a fixed-price quote in about two minutes, with no calls needed:`,'',`https://minshallgroup.com/digitalsme#quote`,'',`All the best with ${biz}.`,'',...sign,'',optOut].join('\n');
+    return {subject,body,s,biz,step};
+  }
+  const subject=subject0;
   const body=[
     `Hi ${first||'there'},`,'',
     `I ran ${biz}'s website through our Webmins Score, which checks how well a small business website turns visitors into enquiries. It scored ${s.total} out of 100 (${s.grade.toLowerCase()}), measured against what customers expect from a ${s.I.t.toLowerCase()} website.`,'',
@@ -100,9 +132,9 @@ function draft(r:Row){
     `You can see the full breakdown here. It's free and takes about 20 seconds:\n${link}`,'',
     `We fix exactly this kind of thing for a fixed price. Our ${pk.name} package starts at ${gbp(pk.price)}. If it would help, I'm happy to talk it through, with no obligation.`,'',
     `Best wishes,`,sender,`Minshall Group`,`hello@minshallgroup.com · minshallgroup.com`,'',
-    `If you'd rather not hear from us again, just reply and say so and we won't contact you again.`
+    optOut
   ].join('\n');
-  return {subject,body,s,biz};
+  return {subject,body,s,biz,step};
 }
 
 function card(r:Row,i:number){
@@ -116,7 +148,8 @@ function card(r:Row,i:number){
       <label class="pt-ind"><span class="sr">Sector</span><select data-ind="${i}">${SCORE.industries.map(x=>`<option value="${x.id}"${x.id===(r.ind||r.res.industry)?' selected':''}>${x.t}</option>`).join('')}</select></label>
     </div>
     <div class="pt-pills">${Object.entries(s.p).map(([k,v])=>`<span>${k==='industry'?'Sector fit':(SCORE.pillars.find(p=>p.id===k)?.t||k)} <b>${v}</b></span>`).join('')}</div>
-    <details class="pt-mail"><summary>Draft email</summary>
+    <p class="pt-due ${dueInfo(r).cls}">${dueInfo(r).label}${(r.sent||[]).length?` · last sent ${new Date(r.sent[r.sent.length-1]).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}`:''}</p>
+    ${r.optout||(r.sent||[]).length>=3?'':`<details class="pt-mail"><summary>${['Email 1: introduction','Email 2: follow-up','Email 3: last note'][d.step]}</summary>
       <p class="pt-subj"><b>Subject:</b> ${esc(d.subject)}</p>
       <pre>${esc(d.body)}</pre>
     </details>
@@ -124,13 +157,16 @@ function card(r:Row,i:number){
       <button class="btn sm ghost" type="button" data-copy="subject" data-i="${i}">Copy subject</button>
       <button class="btn sm ghost" type="button" data-copy="body" data-i="${i}">Copy email</button>
       ${mail?`<a class="btn sm" href="${mail}"><span>Open in email</span></a>`:''}
-    </div>
+      <button class="btn sm" type="button" data-mark="sent" data-i="${i}"><span>Mark email ${d.step+1} sent</span></button>
+      <button class="ulink pt-clear" type="button" data-mark="optout" data-i="${i}">Opted out</button>
+    </div>`}
+    ${(r.sent||[]).length||r.optout?`<button class="ulink pt-clear" type="button" data-mark="reset" data-i="${i}">Reset sequence</button>`:''}
   </article>`;
 }
 
 function csv(){
-  const head=['Website','Business','Contact','Email','Score','Grade','Sector','Subject','Email body','Check link'];
-  const lines=rows.filter(r=>r.status==='done').map(r=>{const d=draft(r);return [r.site,d.biz,r.name,r.email,d.s.total,d.s.grade,d.s.I.t,d.subject,d.body,`https://minshallgroup.com/digitalsme?url=${encodeURIComponent(r.site)}`];});
+  const head=['Website','Business','Contact','Email','Score','Grade','Sector','Status','Emails sent','Last sent','Next subject','Next email body','Check link'];
+  const lines=rows.filter(r=>r.status==='done').map(r=>{const d=draft(r);const sent=r.sent||[];return [r.site,d.biz,r.name,r.email,d.s.total,d.s.grade,d.s.I.t,dueInfo(r).label,sent.length,sent.length?sent[sent.length-1].slice(0,10):'',d.subject,d.body,`https://minshallgroup.com/digitalsme?url=${encodeURIComponent(r.site)}`];});
   const q=v=>`"${String(v??'').replace(/"/g,'""')}"`;
   const blob=new Blob([[head,...lines].map(l=>l.map(q).join(',')).join('\r\n')],{type:'text/csv'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`prospects-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(a.href);
