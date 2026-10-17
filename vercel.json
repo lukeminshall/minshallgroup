@@ -1,0 +1,150 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/consultancy",
+      "destination": "https://minshallgroup.com/capabilities/strategy",
+      "permanent": true
+    },
+    {
+      "source": "/sport",
+      "destination": "https://minshallgroup.com/industries#sport",
+      "permanent": true
+    },
+    {
+      "source": "/health",
+      "destination": "https://minshallgroup.com/industries#health",
+      "permanent": true
+    },
+    {
+      "source": "/healthcare",
+      "destination": "https://minshallgroup.com/industries#health",
+      "permanent": true
+    },
+    {
+      "source": "/wellbeing",
+      "destination": "https://minshallgroup.com/industries#wellbeing",
+      "permanent": true
+    },
+    {
+      "source": "/academia",
+      "destination": "https://minshallgroup.com/industries#education",
+      "permanent": true
+    },
+    {
+      "source": "/public",
+      "destination": "https://minshallgroup.com/industries#public",
+      "permanent": true
+    },
+    {
+      "source": "/private",
+      "destination": "https://minshallgroup.com/industries#growth",
+      "permanent": true
+    },
+    {
+      "source": "/digital",
+      "destination": "https://minshallgroup.com/capabilities/digital",
+      "permanent": true
+    },
+    {
+      "source": "/digital/datalense",
+      "destination": "https://minshallgroup.com/products/datalense",
+      "permanent": true
+    },
+    {
+      "source": "/digital/straight-talking",
+      "destination": "https://minshallgroup.com/products/straight-talking",
+      "permanent": true
+    },
+    {
+      "source": "/digital/knexusport",
+      "destination": "https://minshallgroup.com/products",
+      "permanent": true
+    },
+    {
+      "source": "/digital/how-we-build",
+      "destination": "https://minshallgroup.com/approach",
+      "permanent": true
+    },
+    {
+      "source": "/case-studies",
+      "destination": "https://minshallgroup.com/work",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.minshallgroup.com"
+        }
+      ],
+      "destination": "https://minshallgroup.com/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "knexu.co.uk"
+        }
+      ],
+      "destination": "https://minshallgroup.com/",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.knexu.co.uk"
+        }
+      ],
+      "destination": "https://minshallgroup.com/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "knexu.co.uk"
+        }
+      ],
+      "destination": "https://minshallgroup.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.knexu.co.uk"
+        }
+      ],
+      "destination": "https://minshallgroup.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.minshallgroup.com"
+        }
+      ],
+      "destination": "https://minshallgroup.com/:path*",
+      "permanent": true
+    }
+  ],
+  "functions": {
+    "api/audit.js": {
+      "maxDuration": 60
+    },
+    "api/contact.js": {
+      "maxDuration": 10
+    }
+  }
+}
