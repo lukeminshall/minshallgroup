@@ -4,6 +4,7 @@
 @font-face{font-family:"Fraunces Fallback";src:local('Georgia');ascent-override:92.9623%;descent-override:24.2386%;size-adjust:105.2039%}
 /* Big light headlines use Fraunces at its display optical size, which is far narrower than Georgia: this fallback matches its width so lines do not re-wrap when the font arrives */
 @font-face{font-family:"Fraunces Display Fallback";src:local('Georgia');ascent-override:123%;descent-override:32%;size-adjust:79.3%}
+@font-face{font-family:"Fraunces Display Fallback";font-style:italic;src:local('Georgia Italic'),local('Georgia-Italic');ascent-override:135%;descent-override:35%;size-adjust:72.3%}
 /* =====================================================================
    MINSHALL GROUP — design system
    Brand: navy #0A1A3F (primary), pink #FF2E63 (accent, on navy),
