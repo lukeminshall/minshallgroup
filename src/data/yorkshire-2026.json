@@ -1,0 +1,575 @@
+{
+ "title": "The state of Yorkshire small business websites 2026",
+ "sampleDrawn": "2026-10-17",
+ "checked": 543,
+ "reachable": 474,
+ "unreachable": 13,
+ "pool": 4184,
+ "avg": 62,
+ "median": 66,
+ "bands": {
+  "excellent": 8,
+  "good": 34,
+  "needs": 36,
+  "behind": 23
+ },
+ "pillars": {
+  "experience": 72,
+  "findability": 69,
+  "trust": 73,
+  "conversion": 48,
+  "modern": 51
+ },
+ "hist": [
+  0,
+  10,
+  39,
+  30,
+  29,
+  70,
+  99,
+  122,
+  69,
+  6
+ ],
+ "basics": [
+  {
+   "k": "social",
+   "t": "Preview image when shared",
+   "pct": 41
+  },
+  {
+   "k": "form",
+   "t": "Enquiry form",
+   "pct": 44
+  },
+  {
+   "k": "analytics",
+   "t": "Visitor analytics",
+   "pct": 51
+  },
+  {
+   "k": "contact",
+   "t": "Tap-to-call or email link",
+   "pct": 53
+  },
+  {
+   "k": "h1",
+   "t": "One clear main heading",
+   "pct": 54
+  },
+  {
+   "k": "desc",
+   "t": "Search description",
+   "pct": 60
+  },
+  {
+   "k": "title",
+   "t": "Clear page title",
+   "pct": 71
+  },
+  {
+   "k": "speed",
+   "t": "Server responds in under 1.5s",
+   "pct": 90
+  },
+  {
+   "k": "fresh",
+   "t": "Looks up to date",
+   "pct": 91
+  },
+  {
+   "k": "mobile",
+   "t": "Set up for phones",
+   "pct": 92
+  },
+  {
+   "k": "https",
+   "t": "Secure (HTTPS)",
+   "pct": 95
+  }
+ ],
+ "extras": [
+  {
+   "k": "video",
+   "t": "Video",
+   "pct": 15
+  },
+  {
+   "k": "chat",
+   "t": "Live chat or WhatsApp link",
+   "pct": 20
+  },
+  {
+   "k": "newsletter",
+   "t": "Newsletter sign-up",
+   "pct": 22
+  },
+  {
+   "k": "reviews",
+   "t": "Reviews on the site",
+   "pct": 26
+  },
+  {
+   "k": "ld",
+   "t": "Structured data for Google and AI search",
+   "pct": 50
+  },
+  {
+   "k": "booking",
+   "t": "Mentions booking or appointments",
+   "pct": 54
+  },
+  {
+   "k": "social",
+   "t": "Social media linked",
+   "pct": 73
+  },
+  {
+   "k": "privacy",
+   "t": "Privacy notice",
+   "pct": 77
+  }
+ ],
+ "sectors": [
+  {
+   "id": "clinic",
+   "t": "Health, beauty and wellbeing",
+   "n": 57,
+   "avg": 67,
+   "median": 69,
+   "fit": 47,
+   "bands": {
+    "excellent": 14,
+    "good": 35,
+    "needs": 40,
+    "behind": 11
+   },
+   "pillars": {
+    "experience": 76,
+    "findability": 77,
+    "trust": 79,
+    "conversion": 53,
+    "modern": 60
+   },
+   "ess": [
+    {
+     "t": "Prices shown",
+     "pct": 11
+    },
+    {
+     "t": "Professional registration shown",
+     "pct": 19
+    },
+    {
+     "t": "Reviews shown",
+     "pct": 39
+    },
+    {
+     "t": "Map or directions",
+     "pct": 40
+    },
+    {
+     "t": "Practitioners introduced",
+     "pct": 65
+    },
+    {
+     "t": "Book online",
+     "pct": 75
+    },
+    {
+     "t": "Privacy notice",
+     "pct": 81
+    }
+   ]
+  },
+  {
+   "id": "charity",
+   "t": "Charities and community",
+   "n": 48,
+   "avg": 65,
+   "median": 71,
+   "fit": 65,
+   "bands": {
+    "excellent": 8,
+    "good": 50,
+    "needs": 25,
+    "behind": 17
+   },
+   "pillars": {
+    "experience": 74,
+    "findability": 68,
+    "trust": 74,
+    "conversion": 50,
+    "modern": 49
+   },
+   "ess": [
+    {
+     "t": "Newsletter sign-up",
+     "pct": 38
+    },
+    {
+     "t": "Charity number shown",
+     "pct": 54
+    },
+    {
+     "t": "Contact or volunteer form",
+     "pct": 58
+    },
+    {
+     "t": "Donate online",
+     "pct": 71
+    },
+    {
+     "t": "News or stories",
+     "pct": 71
+    },
+    {
+     "t": "Social links",
+     "pct": 79
+    },
+    {
+     "t": "Privacy notice",
+     "pct": 83
+    }
+   ]
+  },
+  {
+   "id": "trades",
+   "t": "Trades and construction",
+   "n": 59,
+   "avg": 63,
+   "median": 64,
+   "fit": 34,
+   "bands": {
+    "excellent": 7,
+    "good": 34,
+    "needs": 41,
+    "behind": 19
+   },
+   "pillars": {
+    "experience": 72,
+    "findability": 75,
+    "trust": 72,
+    "conversion": 49,
+    "modern": 54
+   },
+   "ess": [
+    {
+     "t": "Areas covered",
+     "pct": 7
+    },
+    {
+     "t": "Accreditations shown",
+     "pct": 24
+    },
+    {
+     "t": "Reviews shown",
+     "pct": 31
+    },
+    {
+     "t": "Photos of past work",
+     "pct": 37
+    },
+    {
+     "t": "Tap-to-call phone number",
+     "pct": 44
+    },
+    {
+     "t": "Quote or enquiry form",
+     "pct": 46
+    },
+    {
+     "t": "Address or location",
+     "pct": 47
+    }
+   ]
+  },
+  {
+   "id": "professional",
+   "t": "Professional services",
+   "n": 66,
+   "avg": 63,
+   "median": 72,
+   "fit": 51,
+   "bands": {
+    "excellent": 14,
+    "good": 41,
+    "needs": 20,
+    "behind": 26
+   },
+   "pillars": {
+    "experience": 74,
+    "findability": 69,
+    "trust": 78,
+    "conversion": 46,
+    "modern": 49
+   },
+   "ess": [
+    {
+     "t": "Case studies or clients",
+     "pct": 38
+    },
+    {
+     "t": "LinkedIn linked",
+     "pct": 42
+    },
+    {
+     "t": "Enquiry form",
+     "pct": 44
+    },
+    {
+     "t": "Structured data for search",
+     "pct": 47
+    },
+    {
+     "t": "News or insights",
+     "pct": 53
+    },
+    {
+     "t": "Address or location",
+     "pct": 64
+    },
+    {
+     "t": "Team introduced",
+     "pct": 67
+    }
+   ]
+  },
+  {
+   "id": "retail",
+   "t": "Independent shops",
+   "n": 64,
+   "avg": 60,
+   "median": 64,
+   "fit": 32,
+   "bands": {
+    "excellent": 5,
+    "good": 38,
+    "needs": 30,
+    "behind": 28
+   },
+   "pillars": {
+    "experience": 72,
+    "findability": 67,
+    "trust": 69,
+    "conversion": 49,
+    "modern": 48
+   },
+   "ess": [
+    {
+     "t": "Delivery information",
+     "pct": 17
+    },
+    {
+     "t": "Returns policy",
+     "pct": 20
+    },
+    {
+     "t": "Reviews shown",
+     "pct": 25
+    },
+    {
+     "t": "Newsletter sign-up",
+     "pct": 25
+    },
+    {
+     "t": "Prices shown",
+     "pct": 28
+    },
+    {
+     "t": "Buy online",
+     "pct": 34
+    },
+    {
+     "t": "Social links",
+     "pct": 75
+    }
+   ]
+  },
+  {
+   "id": "hospitality",
+   "t": "Hotels and places to stay",
+   "n": 59,
+   "avg": 60,
+   "median": 64,
+   "fit": 39,
+   "bands": {
+    "excellent": 7,
+    "good": 31,
+    "needs": 41,
+    "behind": 22
+   },
+   "pillars": {
+    "experience": 72,
+    "findability": 66,
+    "trust": 70,
+    "conversion": 48,
+    "modern": 49
+   },
+   "ess": [
+    {
+     "t": "Video tour",
+     "pct": 12
+    },
+    {
+     "t": "Prices shown",
+     "pct": 24
+    },
+    {
+     "t": "Photo gallery",
+     "pct": 31
+    },
+    {
+     "t": "Reviews shown",
+     "pct": 32
+    },
+    {
+     "t": "Map or directions",
+     "pct": 41
+    },
+    {
+     "t": "Rooms or spaces described",
+     "pct": 66
+    },
+    {
+     "t": "Book online",
+     "pct": 71
+    }
+   ]
+  },
+  {
+   "id": "fitness",
+   "t": "Gyms and fitness",
+   "n": 62,
+   "avg": 59,
+   "median": 64,
+   "fit": 33,
+   "bands": {
+    "excellent": 3,
+    "good": 26,
+    "needs": 44,
+    "behind": 27
+   },
+   "pillars": {
+    "experience": 69,
+    "findability": 69,
+    "trust": 70,
+    "conversion": 43,
+    "modern": 52
+   },
+   "ess": [
+    {
+     "t": "Free trial offer",
+     "pct": 2
+    },
+    {
+     "t": "Reviews shown",
+     "pct": 13
+    },
+    {
+     "t": "Prices shown",
+     "pct": 24
+    },
+    {
+     "t": "Membership options",
+     "pct": 32
+    },
+    {
+     "t": "Class timetable",
+     "pct": 39
+    },
+    {
+     "t": "Instagram linked",
+     "pct": 55
+    },
+    {
+     "t": "Book online",
+     "pct": 65
+    }
+   ]
+  },
+  {
+   "id": "cafe",
+   "t": "Cafés, pubs and restaurants",
+   "n": 59,
+   "avg": 57,
+   "median": 61,
+   "fit": 41,
+   "bands": {
+    "excellent": 3,
+    "good": 20,
+    "needs": 46,
+    "behind": 31
+   },
+   "pillars": {
+    "experience": 67,
+    "findability": 64,
+    "trust": 69,
+    "conversion": 44,
+    "modern": 45
+   },
+   "ess": [
+    {
+     "t": "Reviews shown",
+     "pct": 8
+    },
+    {
+     "t": "Tap-to-call phone number",
+     "pct": 29
+    },
+    {
+     "t": "Map or directions",
+     "pct": 36
+    },
+    {
+     "t": "Opening hours",
+     "pct": 44
+    },
+    {
+     "t": "Menu on the site",
+     "pct": 49
+    },
+    {
+     "t": "Instagram linked",
+     "pct": 54
+    },
+    {
+     "t": "Book a table or order online",
+     "pct": 66
+    }
+   ]
+  }
+ ],
+ "counties": [
+  {
+   "t": "West Yorkshire",
+   "n": 213,
+   "avg": 63,
+   "behind": 22
+  },
+  {
+   "t": "South Yorkshire",
+   "n": 54,
+   "avg": 61,
+   "behind": 17
+  },
+  {
+   "t": "North Yorkshire",
+   "n": 190,
+   "avg": 60,
+   "behind": 26
+  },
+  {
+   "t": "East Yorkshire",
+   "n": 17,
+   "avg": null
+  }
+ ],
+ "noForm": 56,
+ "noAnalytics": 49,
+ "noLd": 50,
+ "noDesc": 40,
+ "outdated": 9,
+ "noMobile": 8
+}

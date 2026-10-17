@@ -54,3 +54,24 @@ See the packages: https://minshallgroup.com/digitalsme#packages
 ## Comment to pin under post 2
 
 If you'd like me to look at your site personally, drop your web address below and I'll reply with your score and the one change I'd make first.
+
+---
+
+## 4. Research: the state of Yorkshire's small business websites
+
+We checked 474 independent business websites across Yorkshire. Cafés, builders, clinics, shops, gyms, hotels and charities.
+
+The average Webmins Score was 62 out of 100.
+
+Most sites are not broken. They have just stopped keeping up:
+
+• 56% have no enquiry form on the homepage
+• 49% have no visitor analytics, so the owner cannot see what is working
+• Half give Google and AI assistants no structured information about the business
+• Only 8% of café and restaurant sites show their reviews
+
+None of these needs a new website. Most take an afternoon.
+
+The full report, sector by sector, with the five fixes we would make first: https://minshallgroup.com/insights/state-of-yorkshire-small-business-websites-2026
+
+And if you want to see how yours compares, the check is free: https://minshallgroup.com/digitalsme

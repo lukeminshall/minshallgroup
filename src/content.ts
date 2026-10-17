@@ -217,6 +217,10 @@ export const PRINCIPLES=[
    Short, opinionated pieces. Add one by appending to this array: it gets
    its own page at /insights/<slug>, a card on /insights and the sitemap. */
 export const INSIGHTS=[
+  {slug:'state-of-yorkshire-small-business-websites-2026',tag:'Research',cap:'digital',date:'2026-10-17',mins:6,custom:true,
+    t:'The state of Yorkshire’s small business websites 2026',
+    d:'We checked hundreds of independent business websites across Yorkshire. Sector by sector, here is how they score and what to fix first.',
+    body:[]},
   {slug:'knexu-is-now-minshall-group',tag:'News',cap:'strategy',date:'2026-10-16',mins:3,
     t:'Knexu is now Minshall Group',
     d:'Same people, same standards, a broader offer. Why we changed our name, and what it means for clients.',

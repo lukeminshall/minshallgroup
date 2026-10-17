@@ -6,6 +6,7 @@ import {CAPS,RETURNS,INDUSTRIES,PRODUCTS,CASES,FINDER,STEPS,MODELS,PRINCIPLES,IN
 import {subscribeBox,split,splitLetters,eyebrow,shead,phead,btn,cards,returnsRow,capTags,caseCard,marquee,insightCard,ctaBand,gfx,capBySlug,indById} from './components';
 import {dot,tile} from './brand';
 import {gRidge,gDial,gNetwork} from './graphics';
+import {researchPage,RESEARCH_SLUG} from './research';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 export const P:Record<string,()=>string>={};
@@ -380,6 +381,7 @@ ${phead({crumb:`<a href="/insights">Insights</a><span>/</span>${a.tag}`,title:a.
 <section><div class="wrap">${subscribeBox('article-'+a.slug.slice(0,40))}</div></section>`;
 }
 INSIGHTS.forEach(a=>{P['/insights/'+a.slug]=()=>article(a);});
+P['/insights/'+RESEARCH_SLUG]=researchPage;
 /* ================= CASE STUDIES ================= */
 function casePage(c,i){
   const ind=indById(c.ind),next=CASES[(i+1)%CASES.length],prev=CASES[(i-1+CASES.length)%CASES.length];
