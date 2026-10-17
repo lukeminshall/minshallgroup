@@ -315,6 +315,7 @@ ${phead({eyebrow:'Work',title:'The challenge, what we did, and the return.',lede
       <button class="pill-btn on" data-find="all" aria-pressed="true">All</button>${INDUSTRIES.map(x=>`<button class="pill-btn" data-find="${x.id}" aria-pressed="false">${x.t}</button>`).join('')}</div>
     <p class="fcount" aria-live="polite"><b data-fcount>${CASES.length}</b> engagements</p>
   </div>
+  <h2 class="sr">Case studies</h2>
   <div class="cases grid">${CASES.map((c,i)=>caseCard(c,i).replace('<article ',`<article id="${c.id}" `)).join('')}</div>
   <p class="empty" data-empty hidden>Nothing matches that combination yet. <button class="ulink" data-freset>Clear filters</button></p>
 </div></section>

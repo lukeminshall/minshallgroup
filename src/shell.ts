@@ -64,7 +64,7 @@ export function navMarkup(){
   return NAV.map((g,i)=>g.mega
     ?`<div class="navitem has-mega" data-i="${i}"><a class="navbtn" href="${g.href}" aria-expanded="false" aria-haspopup="true">${g.label}<svg class="chev" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></a>${g.mega==='caps'?megaCaps():g.mega==='web'?megaWeb():megaProducts()}</div>`
     :`<div class="navitem" data-i="${i}"><a class="navbtn" href="${g.href}">${g.label}</a></div>`).join('')
-    +`<button class="navbtn head-srch" type="button" data-srch aria-label="Search the site"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><kbd>⌘K</kbd></button><a class="navbtn head-login" href="/portal">Log in</a><a class="btn sm mag head-cta" href="/contact"><span>Start a project</span></a>`;
+    +`<button class="navbtn head-srch" type="button" data-srch><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span class="sr">Search</span><kbd aria-hidden="true">⌘K</kbd></button><a class="navbtn head-login" href="/portal">Log in</a><a class="btn sm mag head-cta" href="/contact"><span>Start a project</span></a>`;
 }
 
 export function mobileNavMarkup(){
