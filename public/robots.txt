@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /tools/
+Disallow: /portal
 
 Sitemap: https://minshallgroup.com/sitemap.xml

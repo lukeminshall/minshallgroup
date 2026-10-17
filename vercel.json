@@ -145,6 +145,21 @@
     },
     "api/contact.js": {
       "maxDuration": 10
+    },
+    "api/portal-rescore.js": {
+      "maxDuration": 60
+    },
+    "api/cron-rescore.js": {
+      "maxDuration": 300
+    },
+    "api/prospect.js": {
+      "maxDuration": 60
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron-rescore",
+      "schedule": "0 6 1 * *"
+    }
+  ]
 }

@@ -182,7 +182,9 @@ function wireQuote(form:HTMLFormElement){
         name:fd.get('name'),email:fd.get('email'),organisation:fd.get('organisation'),
         interest:`Website refresh – ${q.pk.name}`,timeline:'',message,'bot-field':fd.get('bot-field')||''})});
       if(!r.ok)throw new Error();
-      set(`Thank you. Your quote for ${gbp(q.total)} is with us, and we will confirm it and your dates within one working day.`,'ok');
+      try{localStorage.setItem('mg-quote',JSON.stringify({package:q.pk.id,pages:q.n,addons:fd.getAll('addon'),total:q.total,organisation:fd.get('organisation'),website:fd.get('website'),dmode:q.dmode,domain:q.domain?.name||fd.get('domain')||'',hosting:q.hosting}));}catch{}
+      set(`Thank you. Your quote for ${gbp(q.total)} is with us, and we will confirm it within one working day.`,'ok');
+      status.insertAdjacentHTML('beforeend',' <a class="ulink" href="/portal">Create your client account now</a> to start your onboarding questions straight away.');
     }catch{set('Something went wrong sending that. Please try again in a moment.','err');}
     finally{btn.disabled=false;}
   });

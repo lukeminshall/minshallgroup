@@ -36,6 +36,7 @@ function paint(scroll=true){
   if(scroll&&!location.hash)window.scrollTo({top:0,behavior:'instant' as ScrollBehavior});
   if(location.hash){const t=document.getElementById(decodeURIComponent(location.hash.slice(1)));if(t)setTimeout(()=>t.scrollIntoView({behavior:'instant' as ScrollBehavior,block:'start'}),60);}
   initPage();preselect();initSme();initProspect();
+  if(document.querySelector('[data-portal]'))import('./portal/index').then(m=>m.initPortal());
 }
 
 /* page change: a navy curtain with the brand tile rises, the page swaps
@@ -77,6 +78,6 @@ export function initRouter(){
   /* prerendered markup is already on the page: keep it and just wire it up,
      so entrance animations are not restarted. In dev there is none, so render. */
   const app=document.getElementById('app');
-  if(app.children.length){const p=path();setMeta(p);setActive(p);initPage();preselect();initSme();initProspect();}
+  if(app.children.length){const p=path();setMeta(p);setActive(p);initPage();preselect();initSme();initProspect();if(document.querySelector('[data-portal]'))import('./portal/index').then(m=>m.initPortal());}
   else paint(false);
 }

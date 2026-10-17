@@ -699,6 +699,11 @@ ${phead({crumb:'<a href="/digitalsme">Website refresh</a><span>/</span>Terms',ey
   <p>These terms and your accepted quote are the whole agreement between us. If there is a conflict, the quote wins. These terms are governed by the law of England and Wales, and the courts of England and Wales have jurisdiction.</p>
 </div></div></section>`;
 
+/* ================= CLIENT PORTAL ================= */
+P['/portal']=()=>`
+${phead({eyebrow:'Client portal',title:'Your project, online',lede:'Onboarding, progress, approvals, change requests, invoices and performance, all in one place. No calls needed.'})}
+<section id="portal-root"><div class="wrap"><div data-portal><p class="pp-loading">Loading your portal…</p></div></div></section>`;
+
 /* ================= INTERNAL: PROSPECTING TOOL ================= */
 P['/tools/prospect']=()=>`
 ${phead({eyebrow:'Internal tool',title:'Prospect list',lede:'Paste prospect websites, get each one’s Webmins Score and a personalised email to send by hand from hello@.'})}

@@ -36,3 +36,4 @@ INSIGHTS.forEach(i=>{ROUTES['/insights/'+i.slug]={title:t(i.t),description:i.d};
 
 /* internal tools: prerendered so deep links work, but hidden from search and the sitemap */
 ROUTES['/tools/prospect']={title:t('Prospect list'),description:'Internal tool.',noindex:true};
+ROUTES['/portal']={title:t('Client portal'),description:'Log in to your Minshall Group project.',noindex:true};

@@ -28,6 +28,23 @@ npm run preview  # serve /dist
 - **Webmins Score** (`SCORE` in content.ts): our own 0–100 score from five pillars (Experience, Findability, Trust, Conversion, Modern & relevant) read from the page by `api/audit.js`, plus sector fit against each industry's essentials. Change weights, grades, sectors and essentials in content.ts; signals are in `readSignals()` in the API.
 - **Analytics:** Microsoft Clarity (project `yz5tnn0my2`) is loaded in `index.html` and described in the privacy notice.
 
+## Client portal (`/portal`)
+
+Clients log in (Clerk), start their project from their quote, answer the onboarding questionnaire (replaces the kick-off call; edit the questions in `src/portal/brief.ts`), upload content, follow the five stages, approve the design, raise change requests and approve quotes, see invoices, and track their site's Webmins Score (re-checked monthly by a Vercel cron). Admins get an Admin tab to manage every project. Data lives in Supabase with row-level security (`supabase/migrations/001_client_portal.sql`); emails go through Resend.
+
+Code: `src/portal/` (loaded only on /portal), `api/portal-notify.js`, `api/portal-rescore.js`, `api/cron-rescore.js`, `api/_lib/portal.js`.
+
+### One-time setup
+
+1. **Supabase**: create a project (region: London). In *SQL Editor*, paste and run `supabase/migrations/001_client_portal.sql`. From *Project Settings → API* copy the Project URL, the `anon` key and the `service_role` key.
+2. **Clerk**: create an application (email and Google sign-in). Copy the publishable key and secret key. In Clerk, *Integrations → Supabase → Activate* and copy the Clerk domain it shows. In Supabase, *Authentication → Sign In / Providers → Third-party auth → Add provider → Clerk* and paste that domain. For the production Clerk instance, Clerk asks for DNS records on minshallgroup.com: add them in Vercel DNS.
+3. **Vercel → Settings → Environment Variables** (Production):
+   `VITE_CLERK_PUBLISHABLE_KEY`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` (public, built into the page),
+   `CLERK_SECRET_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `CRON_SECRET` (any long random string). Then redeploy.
+4. **Make yourself admin**: sign up at /portal, copy your user id (`user_…`) from the Clerk dashboard, and in Supabase SQL run `insert into public.admins (user_id, note) values ('user_…', 'Luke');`.
+
+Until the keys are set, /portal shows a friendly "being set up" message.
+
 ## Internal prospecting tool
 
 `/tools/prospect` (not in menus, sitemap or search) scores a pasted list of prospect websites with the Webmins Score and drafts a personalised outreach email for each, with copy, open-in-email and CSV export. It is locked by `TOOL_PASSWORD`. Lists are kept in the browser only.
@@ -42,6 +59,9 @@ npm run preview  # serve /dist
 | `VERCEL_TOKEN` | Live domain prices from Vercel (.com, .org, .net, .co, .io) | Vercel access token for the team; optional `VERCEL_TEAM_ID` |
 | `GODADDY_KEY`, `GODADDY_SECRET` | Live domain prices from GoDaddy, including .co.uk and .uk | Production key from developer.godaddy.com; GoDaddy restricts API access on smaller accounts |
 | `RESEND_SEGMENT_ID` | Newsletter sign-ups go into this Resend segment | Optional; sign-ups always land in Resend Contacts. The Resend key must have full access (not sending-only) to add contacts |
+| `VITE_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY` | Client portal logins | From Clerk |
+| `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` | Client portal data and files | From Supabase; the service role key is server-only |
+| `CRON_SECRET` | Monthly re-check of live client sites | Any long random string |
 | `TOOL_PASSWORD` | Unlocks the internal prospecting tool at `/tools/prospect` | Any strong password; without it the tool is switched off |
 | `PSI_API_KEY` | Google scores in the SME site check | Free key with the PageSpeed Insights API enabled; without it Google refuses most requests and only our own checks show |
 

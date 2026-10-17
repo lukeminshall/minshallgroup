@@ -46,6 +46,7 @@ function megaWeb(){
       <p>Platforms, portals, apps, data and AI for growing and larger organisations.</p>
       <a class="tlink" href="/digital-consultancy">Digital consultancy</a>
       <a class="tlink" href="/capabilities/digital">Digital &amp; Product practice</a>
+      <a class="mega-sme" href="/portal"><b>Already a client?</b> Log in to your project →</a>
     </div></div></div>`;
 }
 function megaProducts(){
@@ -64,11 +65,11 @@ export function navMarkup(){
   return NAV.map((g,i)=>g.mega
     ?`<div class="navitem has-mega" data-i="${i}"><a class="navbtn" href="${g.href}" aria-expanded="false" aria-haspopup="true">${g.label}<svg class="chev" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></a>${g.mega==='caps'?megaCaps():g.mega==='web'?megaWeb():megaProducts()}</div>`
     :`<div class="navitem" data-i="${i}"><a class="navbtn" href="${g.href}">${g.label}</a></div>`).join('')
-    +`<a class="btn sm mag head-cta" href="/contact"><span>Start a project</span></a>`;
+    +`<a class="navbtn head-login" href="/portal">Log in</a><a class="btn sm mag head-cta" href="/contact"><span>Start a project</span></a>`;
 }
 
 export function mobileNavMarkup(){
-  const links=[['Capabilities','/capabilities'],...CAPS.map(c=>[c.t,'/capabilities/'+c.slug,'sub']),['Websites','/digitalsme'],...WEB_LINKS.map(l=>[l.t,l.h,'sub']),['Industries','/industries'],['Products','/products'],['Work','/work'],['Approach','/approach'],['Insights','/insights'],['About','/about'],['Contact','/contact']];
+  const links=[['Capabilities','/capabilities'],...CAPS.map(c=>[c.t,'/capabilities/'+c.slug,'sub']),['Websites','/digitalsme'],...WEB_LINKS.map(l=>[l.t,l.h,'sub']),['Industries','/industries'],['Products','/products'],['Work','/work'],['Approach','/approach'],['Insights','/insights'],['About','/about'],['Contact','/contact'],['Client login','/portal']];
   return `<div class="mnav-in"><nav aria-label="Mobile">${links.map(([t,h,s],i)=>`<a class="${s?'sub':''}" style="--i:${i}" href="${h}">${t}</a>`).join('')}</nav>
     <div class="mnav-foot"><a href="mailto:${CONTACT.email}">${CONTACT.email}</a></div></div>`;
 }
@@ -87,7 +88,7 @@ export function footerMarkup(){
       <div><h2 class="fh">Capabilities</h2><ul>${CAPS.map(c=>`<li><a href="/capabilities/${c.slug}">${c.t}</a></li>`).join('')}</ul></div>
       <div><h2 class="fh">Industries</h2><ul>${INDUSTRIES.map(x=>`<li><a href="/industries#${x.id}">${x.t}</a></li>`).join('')}</ul>
         <h2 class="fh foot-h2">Consultancy</h2><ul>${LANDINGS.map(L=>`<li><a href="/${L.slug}">${L.eyebrow}</a></li>`).join('')}<li><a href="/digitalsme">Websites for small businesses</a></li></ul></div>
-      <div><h2 class="fh">Group</h2><ul><li><a href="/work">Work</a></li><li><a href="/approach">Approach</a></li><li><a href="/insights">Insights</a></li><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li>${PRODUCTS.map(p=>`<li><a href="/products/${p.slug}">${p.t}</a></li>`).join('')}</ul></div>
+      <div><h2 class="fh">Group</h2><ul><li><a href="/work">Work</a></li><li><a href="/approach">Approach</a></li><li><a href="/insights">Insights</a></li><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/portal">Client login</a></li>${PRODUCTS.map(p=>`<li><a href="/products/${p.slug}">${p.t}</a></li>`).join('')}</ul></div>
     </div>
     <div class="wrap foot-base"><span>© ${new Date().getFullYear()} ${LEGAL.trading}. Formerly Knexu. <a href="/privacy">Privacy</a></span><span>${LEGAL.trading} is a trading name of ${LEGAL.company}, registered in ${LEGAL.reg.replace('&','&amp;')}, company no. ${LEGAL.number}. Registered office: ${LEGAL.office}.</span></div>`;
 }
