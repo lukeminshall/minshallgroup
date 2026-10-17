@@ -26,8 +26,10 @@
 <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        /* load after the page so it never competes with first paint */
+        var go=function(){t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);};
+        if(l.readyState==="complete")setTimeout(go,1200);else c.addEventListener("load",function(){setTimeout(go,1200);});
     })(window, document, "clarity", "script", "yz5tnn0my2");
 </script>
 <link rel="stylesheet" href="/src/styles.css">
