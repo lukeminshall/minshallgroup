@@ -33,6 +33,8 @@ const pre = [/^fraunces-latin-opsz-normal.*\.woff2$/, /^manrope-latin-wght-norma
   .map(re => assets.find(f => re.test(f))).filter(Boolean)
   .map(f => `<link rel="preload" href="/assets/${f}" as="font" type="font/woff2" crossorigin>`).join('\n');
 shell = shell.replace('</head>', pre + '\n</head>');
+/* inline the stylesheet: phones then paint without waiting for a second request */
+shell = shell.replace(/<link rel="stylesheet"[^>]*href="\/assets\/([^"]+\.css)"[^>]*>/, (m, f) => `<style>${readFileSync(join(DIST, 'assets', f), 'utf8').replace(/<\/style/gi, '<\\/style')}</style>`);
 /* bake the header, mobile menu and footer into the shell once */
 shell = shell
   .replace('<span id="brand-tile"></span>', () => `<span id="brand-tile">${tile()}</span>`)
