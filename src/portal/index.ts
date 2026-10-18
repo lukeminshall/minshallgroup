@@ -34,7 +34,7 @@ async function render(){
   if(!document.body.contains(root))return;
   if(!clerk.user){
     S.user=null;
-    const q=savedQuote();
+    const q=savedQuote();document.body.classList.toggle('pp-hot',!!q);
     root.innerHTML=q?`${journey(3)}<div class="pp-signin pp-signin-q">
       <div><h2 class="h2">Your quote is ready. Create your account to start.</h2><p class="lede-s">It takes about 30 seconds. Your onboarding opens straight after, with your choices already filled in. No payment is taken now: we confirm your quote within one working day, then send the first invoice.</p>
         <div class="actions"><button class="btn" data-up><span>Create my account</span></button><button class="btn ghost" data-in><span>I already have one</span></button></div></div>
@@ -52,7 +52,7 @@ async function render(){
     root.querySelector('[data-up]').addEventListener('click',()=>clerk.openSignUp({}));
     return;
   }
-  S.user=clerk.user;
+  S.user=clerk.user;document.body.classList.remove('pp-hot');
   document.querySelectorAll('.head-login').forEach(a=>{a.textContent='Your portal';});
   try{
     const [projects,admins]=await Promise.all([sb.from('clients').select('*').order('created_at',{ascending:true}),sb.from('admins').select('user_id').eq('user_id',clerk.user.id)]);

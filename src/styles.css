@@ -1851,3 +1851,6 @@ html.touring .cookie{display:none}
 .pp-qsum{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;border-radius:16px;background:var(--soft);margin:0 0 28px}
 .pp-qsum p{margin:4px 0 0;font-weight:700;color:var(--navy)}
 .pp-start.from-quote .pp-qpart{display:none}
+body.pp-hot .phead{min-height:0;padding-top:112px;padding-bottom:30px}body.pp-hot .phead .lede,body.pp-hot .phead .display{display:none}
+.pp-signin-q .h2{margin-bottom:14px}
+@media (max-width:700px){body.pp-hot .phead{padding-top:96px;padding-bottom:22px}}
