@@ -1556,3 +1556,8 @@ html.touring .cookie{display:none}
 .pvid video{display:block;width:100%;height:auto;aspect-ratio:16/9;border-radius:var(--r);background:var(--navy);box-shadow:0 40px 80px -40px rgba(10,26,63,.45)}
 .pvid figcaption{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:14px;color:var(--muted);font-size:15px}
 .foot-li{display:inline-flex;align-items:center;gap:10px;color:#fff;font-weight:700}.foot-li svg{width:20px;height:20px;fill:currentColor}.foot-li:hover{color:var(--pink)}
+/* phones: headlines arrive quickly, so the page reads as loaded sooner */
+@media (max-width:899px){
+  .js .split .w>span{animation-duration:.5s;animation-delay:calc(var(--i)*25ms)}
+  .js .rise{animation-duration:.5s;animation-delay:calc(var(--i,0)*40ms)}
+}
