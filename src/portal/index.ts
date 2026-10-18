@@ -50,6 +50,11 @@ async function render(){
     </div>`;
     root.querySelector('[data-in]').addEventListener('click',()=>clerk.openSignIn({}));
     root.querySelector('[data-up]').addEventListener('click',()=>clerk.openSignUp({}));
+    /* straight from the quote: open sign-up at once, and start the project as soon as the account exists */
+    if(q&&new URLSearchParams(location.search).get('from')==='quote'){
+      let seen=false;try{seen=sessionStorage.getItem('mg-su-open')==='1';sessionStorage.setItem('mg-su-open','1');sessionStorage.setItem('mg-autostart','1');}catch{}
+      if(!seen)setTimeout(()=>{if(!clerk.user)clerk.openSignUp({});},350);
+    }
     return;
   }
   S.user=clerk.user;document.body.classList.remove('pp-hot');
@@ -192,6 +197,9 @@ function startProject(){
     return {pk,total};
   };
   f.addEventListener('input',calc);f.addEventListener('change',calc);calc();
+  /* came straight from the quote and has just signed up: start without asking again */
+  let auto=false;try{auto=fromQ&&!!q.organisation&&sessionStorage.getItem('mg-autostart')==='1';sessionStorage.removeItem('mg-autostart');}catch{}
+  if(auto){el.querySelector('.pp-start-grid')?.classList.add('pp-auto');setTimeout(()=>el.querySelector<HTMLButtonElement>('[data-start]')?.click(),250);}
   el.querySelector('[data-edit-q]')?.addEventListener('click',ev=>{f.classList.remove('from-quote');(ev.currentTarget as HTMLElement).closest('.pp-qsum')?.remove();f.querySelector<HTMLElement>('.pp-qpart')?.scrollIntoView({behavior:'smooth',block:'start'});});
   el.querySelector('[data-start]').addEventListener('click',async()=>{
     if(!f.checkValidity()){const bad=f.querySelector(':invalid') as HTMLElement;bad?.focus();bad?.scrollIntoView({behavior:'smooth',block:'center'});toast('Please add your business name',true);return;}
@@ -208,6 +216,6 @@ function startProject(){
       notify('project_started');
       if(row.website)api('/api/portal-rescore',{clientId:row.id}).catch(()=>{});
       location.hash='onboarding';
-    }catch(err){toast(err.message,true);btn.disabled=false;}
+    }catch(err){toast(err.message,true);btn.disabled=false;el.querySelector('.pp-start-grid')?.classList.remove('pp-auto');}
   });
 }

@@ -370,6 +370,67 @@ ${phead({eyebrow:'Insights',title:'Where markets are moving.',lede:'Short, opini
 </div></section>
 <section class="soft"><div class="wrap">${subscribeBox('insights')}</div></section>`;
 
+/* the website price builder: on /digitalsme, and inside /start when a small business website is chosen */
+export function quoteForm(){
+  return `
+  <form class="qb" id="sme-form" novalidate>
+    <p class="hp" hidden aria-hidden="true"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+    <div class="qb-main">
+      <fieldset class="qb-step"><legend><span>1</span>Your package</legend>
+        <div class="qb-pkgs">${SME.packages.map((k,i)=>`<label class="qb-pkg"><input type="radio" name="package" value="${k.id}"${k.popular?' checked':''}><span><b>${k.name}</b><em>from ${gbp(k.price)}</em><small>Up to ${k.pages} pages</small></span></label>`).join('')}</div>
+      </fieldset>
+      <fieldset class="qb-step"><legend><span>2</span>How many pages?</legend>
+        <div class="qb-pages"><input type="range" name="pages" id="qb-pages" aria-label="Number of pages" min="1" max="250" value="8" aria-describedby="qb-pages-out"><label class="qb-num"><input type="number" id="qb-pages-num" min="1" max="250" value="8" aria-label="Number of pages, typed"><span data-pages-out>pages</span></label></div>
+        <p class="qb-hint" data-pages-hint></p>
+      </fieldset>
+      <fieldset class="qb-step"><legend><span>3</span>What else do you need?</legend>
+        <div class="qb-addons">${SME.addons.map(a=>`<label class="qb-add" data-addon="${a.id}"><input type="checkbox" name="addon" value="${a.id}"><span><b>${a.t}</b><small>${a.d}</small></span><em data-addon-price>+${gbp(a.price)}</em></label>`).join('')}</div>
+      </fieldset>
+      <fieldset class="qb-step"><legend><span>4</span>Domain and hosting</legend>
+        <p class="qb-sub">Do you want us to secure a domain for you, or do you already have one?</p>
+        <div class="qb-pkgs two">
+          <label class="qb-pkg"><input type="radio" name="dmode" value="need"><span><b>Please secure one for me</b><small>Check availability and price here. Added to your first invoice.</small></span></label>
+          <label class="qb-pkg"><input type="radio" name="dmode" value="have" checked><span><b>I already have a domain</b><small>We host your new site on it</small></span></label>
+        </div>
+        <div class="qb-dpanel" data-dhave><div class="cfield"><label for="qb-domain">Your domain <span class="opt">optional</span></label><input id="qb-domain" name="domain" placeholder="yourbusiness.co.uk" autocomplete="off"></div></div>
+        <div class="qb-dpanel" data-dneed hidden>
+          <div class="qb-dsearch"><label class="sr" for="qb-dname">Domain name to check</label><input id="qb-dname" placeholder="yourbusiness" autocomplete="off"><button type="button" class="btn sm" data-dcheck><span>Check availability</span></button></div>
+          <p class="qb-hint" data-dmsg>Type a name, with or without an ending. We check .co.uk, .uk, .com and .org.</p>
+          <ul class="qb-dres" data-dres></ul>
+        </div>
+        <p class="qb-sub" style="margin-top:22px">Who hosts the finished site?</p>
+        <div class="qb-pkgs two">
+          <label class="qb-pkg"><input type="radio" name="hosting" value="us" checked><span><b>Host it for me</b><em>${gbp(SME.hosting)} a year</em><small>We host it on Vercel and point your domain to it</small></span></label>
+          <label class="qb-pkg"><input type="radio" name="hosting" value="self"><span><b>I will host it myself</b><em>No hosting fee</em><small>We place the code on Vercel; you have ${SME.handoverDays} days to move it to your own platform</small></span></label>
+        </div>
+      </fieldset>
+      <fieldset class="qb-step"><legend><span>5</span>Your business</legend>
+        <div class="row2">
+          <div class="cfield"><label for="qb-biz">Business name</label><input id="qb-biz" name="organisation" required autocomplete="organization"></div>
+          <div class="cfield"><label for="qb-site">Current website <span class="opt">optional</span></label><input id="qb-site" name="website" inputmode="url" placeholder="yourbusiness.co.uk"></div>
+        </div>
+        <div class="cfield"><label for="qb-notes">Anything else we should know? <span class="opt">optional</span></label><textarea id="qb-notes" name="notes" rows="3"></textarea></div>
+      </fieldset>
+    </div>
+    <aside class="qb-sum" aria-live="polite">
+      <span class="eyebrow">Your quote</span>
+      <ul class="qb-lines" data-lines></ul>
+      <p class="qb-total"><span>Build total</span><b data-total>£0</b></p>
+      <ul class="qb-lines qb-extra" data-extra></ul>
+      <ol class="qb-stages" data-stages></ol>
+      <label class="qb-agree"><input type="checkbox" name="agree" required> <span>I have read the <a class="ulink" href="/digitalsme/terms" target="_blank" rel="noopener">offer terms</a>.</span></label>
+      <button class="btn qb-go" type="submit"><span>Continue: create your account</span></button>
+      <p class="qb-small qb-what">Next, create your account (about 30 seconds) and your onboarding opens straight away. Your choices come with you.</p>
+      <p class="cform-status" role="status" aria-live="polite"></p>
+      <details class="qb-later"><summary>Not ready yet? Email me this quote</summary>
+        <div class="cfield"><label for="qb-name">Your name</label><input id="qb-name" name="name" autocomplete="name"></div>
+        <div class="cfield"><label for="qb-email">Email</label><input id="qb-email" name="email" type="email" autocomplete="email"></div>
+        <button class="btn ghost sm" type="button" data-qb-email><span>Email me this quote</span></button>
+      </details>
+      <p class="qb-small">No payment now. We confirm your quote and dates within one working day, then invoice the first payment. Prices exclude VAT, if applicable.</p>
+    </aside>
+  </form>`;
+}
 /* the website journey: one path, shown where people are on it */
 export function journey(at:number){
   const S=[['Check your site','Optional, 20 seconds'],['Price it','Two minutes'],['Create your account','About 30 seconds'],['Onboarding','In your own time']];
@@ -490,7 +551,7 @@ ${phead({eyebrow:'About',title:'One team, from the first question to the last nu
 
 /* ================= CONTACT ================= */
 const INTERESTS=[...CAPS.map(c=>c.short),'UK market entry',...PRODUCTS.map(p=>p.t),'Associate network','Something else'];
-P['/start']=startPage;
+P['/start']=()=>startPage(quoteForm());
 
 P['/contact']=()=>`
 ${phead({eyebrow:'Contact',title:'Tell us the number you want to move.',lede:'The outcome you want, the constraint in the way, and the date it has to change by. We will tell you honestly whether we are the right people.',actions:`<a class="tlink" href="/start">Want a fixed quote? Build a full brief instead</a>`})}
@@ -715,63 +776,7 @@ P['/digitalsme']=()=>`
 <section id="quote"><div class="wrap">
   ${shead({eyebrow:'Build your quote',h:'Your price, in two minutes.',p:'Choose what you need and the price updates as you go. When it looks right, create your account and start your onboarding straight away. Your choices come with you.'})}
   ${journey(2)}
-  <form class="qb" id="sme-form" novalidate>
-    <p class="hp" hidden aria-hidden="true"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
-    <div class="qb-main">
-      <fieldset class="qb-step"><legend><span>1</span>Your package</legend>
-        <div class="qb-pkgs">${SME.packages.map((k,i)=>`<label class="qb-pkg"><input type="radio" name="package" value="${k.id}"${k.popular?' checked':''}><span><b>${k.name}</b><em>from ${gbp(k.price)}</em><small>Up to ${k.pages} pages</small></span></label>`).join('')}</div>
-      </fieldset>
-      <fieldset class="qb-step"><legend><span>2</span>How many pages?</legend>
-        <div class="qb-pages"><input type="range" name="pages" id="qb-pages" aria-label="Number of pages" min="1" max="250" value="8" aria-describedby="qb-pages-out"><label class="qb-num"><input type="number" id="qb-pages-num" min="1" max="250" value="8" aria-label="Number of pages, typed"><span data-pages-out>pages</span></label></div>
-        <p class="qb-hint" data-pages-hint></p>
-      </fieldset>
-      <fieldset class="qb-step"><legend><span>3</span>What else do you need?</legend>
-        <div class="qb-addons">${SME.addons.map(a=>`<label class="qb-add" data-addon="${a.id}"><input type="checkbox" name="addon" value="${a.id}"><span><b>${a.t}</b><small>${a.d}</small></span><em data-addon-price>+${gbp(a.price)}</em></label>`).join('')}</div>
-      </fieldset>
-      <fieldset class="qb-step"><legend><span>4</span>Domain and hosting</legend>
-        <p class="qb-sub">Do you want us to secure a domain for you, or do you already have one?</p>
-        <div class="qb-pkgs two">
-          <label class="qb-pkg"><input type="radio" name="dmode" value="need"><span><b>Please secure one for me</b><small>Check availability and price here. Added to your first invoice.</small></span></label>
-          <label class="qb-pkg"><input type="radio" name="dmode" value="have" checked><span><b>I already have a domain</b><small>We host your new site on it</small></span></label>
-        </div>
-        <div class="qb-dpanel" data-dhave><div class="cfield"><label for="qb-domain">Your domain <span class="opt">optional</span></label><input id="qb-domain" name="domain" placeholder="yourbusiness.co.uk" autocomplete="off"></div></div>
-        <div class="qb-dpanel" data-dneed hidden>
-          <div class="qb-dsearch"><label class="sr" for="qb-dname">Domain name to check</label><input id="qb-dname" placeholder="yourbusiness" autocomplete="off"><button type="button" class="btn sm" data-dcheck><span>Check availability</span></button></div>
-          <p class="qb-hint" data-dmsg>Type a name, with or without an ending. We check .co.uk, .uk, .com and .org.</p>
-          <ul class="qb-dres" data-dres></ul>
-        </div>
-        <p class="qb-sub" style="margin-top:22px">Who hosts the finished site?</p>
-        <div class="qb-pkgs two">
-          <label class="qb-pkg"><input type="radio" name="hosting" value="us" checked><span><b>Host it for me</b><em>${gbp(SME.hosting)} a year</em><small>We host it on Vercel and point your domain to it</small></span></label>
-          <label class="qb-pkg"><input type="radio" name="hosting" value="self"><span><b>I will host it myself</b><em>No hosting fee</em><small>We place the code on Vercel; you have ${SME.handoverDays} days to move it to your own platform</small></span></label>
-        </div>
-      </fieldset>
-      <fieldset class="qb-step"><legend><span>5</span>Your business</legend>
-        <div class="row2">
-          <div class="cfield"><label for="qb-biz">Business name</label><input id="qb-biz" name="organisation" required autocomplete="organization"></div>
-          <div class="cfield"><label for="qb-site">Current website <span class="opt">optional</span></label><input id="qb-site" name="website" inputmode="url" placeholder="yourbusiness.co.uk"></div>
-        </div>
-        <div class="cfield"><label for="qb-notes">Anything else we should know? <span class="opt">optional</span></label><textarea id="qb-notes" name="notes" rows="3"></textarea></div>
-      </fieldset>
-    </div>
-    <aside class="qb-sum" aria-live="polite">
-      <span class="eyebrow">Your quote</span>
-      <ul class="qb-lines" data-lines></ul>
-      <p class="qb-total"><span>Build total</span><b data-total>£0</b></p>
-      <ul class="qb-lines qb-extra" data-extra></ul>
-      <ol class="qb-stages" data-stages></ol>
-      <label class="qb-agree"><input type="checkbox" name="agree" required> <span>I have read the <a class="ulink" href="/digitalsme/terms" target="_blank" rel="noopener">offer terms</a>.</span></label>
-      <button class="btn qb-go" type="submit"><span>Continue: create your account</span></button>
-      <p class="qb-small qb-what">Next, create your account (about 30 seconds) and your onboarding opens straight away. Your choices come with you.</p>
-      <p class="cform-status" role="status" aria-live="polite"></p>
-      <details class="qb-later"><summary>Not ready yet? Email me this quote</summary>
-        <div class="cfield"><label for="qb-name">Your name</label><input id="qb-name" name="name" autocomplete="name"></div>
-        <div class="cfield"><label for="qb-email">Email</label><input id="qb-email" name="email" type="email" autocomplete="email"></div>
-        <button class="btn ghost sm" type="button" data-qb-email><span>Email me this quote</span></button>
-      </details>
-      <p class="qb-small">No payment now. We confirm your quote and dates within one working day, then invoice the first payment. Prices exclude VAT, if applicable.</p>
-    </aside>
-  </form>
+  ${quoteForm()}
 </div></section>
 
 <section class="soft"><div class="wrap">

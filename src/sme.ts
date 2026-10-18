@@ -44,6 +44,7 @@ function lcpTile(txt){
 }
 function wireCheck(){
   const f=document.getElementById('sme-check') as HTMLFormElement,sec=document.getElementById('sme-results');
+  if(!f||!sec)return;
   const pre=new URLSearchParams(location.search).get('url');
   if(pre){(f.elements.namedItem('url') as HTMLInputElement).value=pre;setTimeout(()=>f.requestSubmit(),400);}
   const q=s=>sec.querySelector(s) as HTMLElement;

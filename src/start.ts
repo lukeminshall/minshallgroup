@@ -26,7 +26,7 @@ const BUDGET=['Under £10k','£10k to £25k','£25k to £50k','£50k to £100k',
 
 const radios=(name:string,opts:string[])=>opts.map(o=>`<label class="chk"><input type="radio" name="${name}" value="${o}"><span>${o}</span></label>`).join('');
 
-export function startPage(){
+export function startPage(quote=''){
   return `
 ${phead({eyebrow:'Start a project',title:'Build your brief. Get a fixed quote.',lede:'Strategy, data, a digital build or a brand. Tell us the outcome and the shape of the work, and within two working days we send back a short written proposal with a fixed price. No call needed to get started.'})}
 <section class="st-sec"><div class="wrap st-grid">
@@ -35,10 +35,7 @@ ${phead({eyebrow:'Start a project',title:'Build your brief. Get a fixed quote.',
     <fieldset class="st-step"><legend><b>01</b> What kind of project is it?</legend>
       <div class="st-types">${START_TYPES.map(t=>`<label class="st-type"><input type="radio" name="type" value="${t.id}"><span><b>${t.t}</b><small>${t.d}</small></span></label>`).join('')}</div>
     </fieldset>
-    <div class="st-web" data-st-web hidden>
-      <p><b>Small business websites have their own instant quote.</b> Three fixed packages from £495, priced in two minutes, with a free check of your current site first.</p>
-      <a class="btn" href="/digitalsme#quote"><span>Price my website</span></a>
-    </div>
+
     <div data-st-rest>
       <fieldset class="st-step"><legend><b>02</b> What is in scope? <span class="opt">tick all that apply</span></legend>
         <div class="chips-in" data-st-scope><p class="st-hint">Choose a project type first.</p></div>
@@ -89,7 +86,12 @@ ${phead({eyebrow:'Start a project',title:'Build your brief. Get a fixed quote.',
       <ol class="next"><li>A short written proposal, scoped to your number, within two working days.</li><li>A fixed price and a timeline, with the stages set out.</li><li>A call only if you want one. Someone senior either way.</li></ol>
     </div>
   </aside>
-</div></section>`;
+</div>
+${quote?`<div class="wrap st-webq" data-st-web hidden>
+  <div class="st-webq-head"><span class="eyebrow">Small business websites</span><h2 class="h2">Price your website.</h2><p>Three fixed packages from £495. Choose what you need, the price updates as you go, then create your account and start your onboarding straight away.</p></div>
+  ${quote}
+</div>`:''}
+</section>`;
 }
 
 export function initStart(){
@@ -105,7 +107,9 @@ export function initStart(){
 
   const setType=()=>{
     const t=type();const web=t?.id==='website';
-    form.querySelector<HTMLElement>('[data-st-web]')!.hidden=!web;
+    const wq=form.closest('section')!.querySelector<HTMLElement>('[data-st-web]');
+    if(wq){wq.hidden=!web;$('.st-prev').hidden=web;form.closest('.st-grid')!.classList.toggle('is-web',web);
+      if(web)setTimeout(()=>wq.scrollIntoView({behavior:'smooth',block:'start'}),60);}
     form.querySelector<HTMLElement>('[data-st-rest]')!.hidden=web;
     if(t&&!web){
       scopeBox.innerHTML=[...t.scope,'Not sure yet'].map(s=>`<label class="chk"><input type="checkbox" name="scope" value="${s}"><span>${s}</span></label>`).join('');
