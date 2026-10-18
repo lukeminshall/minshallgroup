@@ -2,9 +2,29 @@
    PORTAL VIEWS — onboarding questionnaire, requests, billing, performance.
    ===================================================================== */
 import {unreadForClient,markSeen,sb,S,esc,gbp,date,check,notify,api,toast,upload,fileUrl} from './core';
-import {BRIEF} from './brief';
+import {BRIEF,STYLES} from './brief';
 import {SME,SCORE} from '../content';
 import {score} from '../webmins';
+
+/* ---------- the design brief, summarised from the answers ---------- */
+export function fmtAnswer(f,v){
+  if(v==null||v===''||(Array.isArray(v)&&!v.length))return '—';
+  if(f.type==='scale')return Object.entries(v).map(([k,n])=>{const [a,b]=k.split(' / ');const x=Number(n);return x===3?`${a} or ${b}: either`:`${x<3?a:b}${Math.abs(x-3)===2?' (strongly)':''}`;}).join(' · ');
+  if(f.type==='examples')return v.map(r=>`${r.url}${r.like?': '+r.like:''}`).join(' · ');
+  return Array.isArray(v)?v.join(', '):String(v);
+}
+export function briefSummary(A){
+  const st=STYLES.find(x=>x.t===A.direction);const sc=A.scales||{};
+  const bar=(k,n)=>{const [a,b]=k.split(' / ');return `<div class="db-scale"><span>${esc(a)}</span><i>${[1,2,3,4,5].map(i=>`<b class="${i===Number(n)?'on':''}"></b>`).join('')}</i><span>${esc(b)}</span></div>`;};
+  const row=(t,v)=>v&&String(v).trim()?`<div class="db-row"><dt>${t}</dt><dd>${esc(v)}</dd></div>`:'';
+  return `<div class="pp-card db"><h3 class="pp-h">Design brief</h3>
+    <div class="db-top">${st?`<div class="db-dir"><span class="pp-swatch" style="background:${st.bg};color:${st.ink};font-family:${st.font}" aria-hidden="true"><b>Aa</b><i style="background:${st.accent}"></i><em style="background:${st.ink}"></em><em style="background:${st.ink};width:40%"></em></span><div><small>Direction</small><b>${esc(st.t)}</b><span>${esc(st.d)}</span></div></div>`:'<p class="pp-muted">No style direction chosen yet.</p>'}
+      ${(A.words||[]).length?`<div class="db-words"><small>In three words</small><p>${A.words.map(w=>`<span>${esc(w)}</span>`).join('')}</p></div>`:''}</div>
+    ${Object.keys(sc).length?`<div class="db-scales">${Object.entries(sc).map(([k,n])=>bar(k,n)).join('')}</div>`:''}
+    <dl class="db-dl">${row('Main job',A.action)}${row('Tone',A.tone)}${row('Colours',A.colours)}${row('First five seconds',A.feel)}${row('Photography',A.photos)}${row('Avoid',A.dislikes)}</dl>
+    ${(A.examples||[]).length?`<h4 class="pp-h4">Sites they like</h4><ul class="db-ex">${A.examples.map(r=>`<li><a class="ulink" href="${/^https?:/.test(r.url)?esc(r.url):'https://'+esc(r.url)}" target="_blank" rel="noopener">${esc(r.url||'')}</a>${r.like?` <span>${esc(r.like)}</span>`:''}</li>`).join('')}</ul>`:''}
+  </div>`;
+}
 
 /* ---------- onboarding questionnaire ---------- */
 export async function viewOnboarding(el:HTMLElement){
@@ -23,14 +43,20 @@ export async function viewOnboarding(el:HTMLElement){
     const hint=x.hint?`<small class="pp-hint">${esc(x.hint)}</small>`:'';
     if(x.type==='textarea')return `<div class="cfield"><label for="${id}">${esc(x.label)}${req}</label>${hint}<textarea id="${id}" name="${x.id}" rows="4" placeholder="${esc(x.placeholder||'')}"${locked?' disabled':''}>${esc(v||'')}</textarea></div>`;
     if(x.type==='choice')return `<fieldset class="cfield"><legend>${esc(x.label)}${req}</legend>${hint}<div class="chips-in">${x.options.map(o=>`<label class="chk"><input type="radio" name="${x.id}" value="${esc(o)}"${v===o?' checked':''}${locked?' disabled':''}><span>${esc(o)}</span></label>`).join('')}</div></fieldset>`;
-    if(x.type==='multi')return `<fieldset class="cfield"><legend>${esc(x.label)}${req}</legend>${hint}<div class="chips-in">${x.options.map(o=>`<label class="chk"><input type="checkbox" name="${x.id}" value="${esc(o)}"${(v||[]).includes(o)?' checked':''}${locked?' disabled':''}><span>${esc(o)}</span></label>`).join('')}</div></fieldset>`;
+    if(x.type==='multi')return `<fieldset class="cfield"${x.max?` data-max="${x.max}"`:''}><legend>${esc(x.label)}${req}</legend>${hint}${x.max?`<small class="pp-hint">Choose up to ${x.max}.</small>`:''}<div class="chips-in">${x.options.map(o=>`<label class="chk"><input type="checkbox" name="${x.id}" value="${esc(o)}"${(v||[]).includes(o)?' checked':''}${locked?' disabled':''}><span>${esc(o)}</span></label>`).join('')}</div></fieldset>`;
+    if(x.type==='visual')return `<fieldset class="cfield"><legend>${esc(x.label)}${req}</legend>${hint}<div class="pp-styles">${STYLES.map(st=>`<label class="pp-style"><input type="radio" name="${x.id}" value="${esc(st.t)}"${v===st.t?' checked':''}${locked?' disabled':''}>
+        <span class="pp-swatch" style="background:${st.bg};color:${st.ink};font-family:${st.font}" aria-hidden="true"><b>Aa</b><i style="background:${st.accent}"></i><em style="background:${st.ink}"></em><em style="background:${st.ink};width:40%"></em></span>
+        <span class="pp-st-t"><b>${esc(st.t)}</b><small>${esc(st.d)}</small></span></label>`).join('')}</div></fieldset>`;
+    if(x.type==='scale'){const val=v||{};return `<fieldset class="cfield"><legend>${esc(x.label)}</legend>${hint}<div class="pp-scales">${x.pairs.map(([a,b2],i)=>`<div class="pp-scale"><span>${esc(a)}</span><input type="range" min="1" max="5" step="1" name="${x.id}" data-pair="${esc(a)} / ${esc(b2)}" value="${val[a+' / '+b2]||3}" aria-label="${esc(a)} or ${esc(b2)}"${locked?' disabled':''}><span>${esc(b2)}</span></div>`).join('')}</div></fieldset>`;}
+    if(x.type==='examples'){const rows=[...(v||[]),{url:'',like:''},{url:'',like:''},{url:'',like:''}].slice(0,3);
+      return `<fieldset class="cfield"><legend>${esc(x.label)}</legend>${hint}<div class="pp-examples">${rows.map((r,i)=>`<div class="pp-ex"><span class="pp-ex-n">${i+1}</span><label class="sr" for="${id}-u${i}">Website ${i+1}</label><input id="${id}-u${i}" data-ex="url" data-i="${i}" value="${esc(r.url||'')}" placeholder="example.co.uk"${locked?' disabled':''}><label class="sr" for="${id}-l${i}">What you like</label><input id="${id}-l${i}" data-ex="like" data-i="${i}" value="${esc(r.like||'')}" placeholder="What you like about it"${locked?' disabled':''}></div>`).join('')}</div></fieldset>`;}
     if(x.type==='files'){const mine=files.filter(fl=>(fl.name||'').startsWith(x.label+': '));
       return `<div class="cfield"><label>${esc(x.label)}</label>${hint}${locked?'':`<label class="pp-drop"><input type="file" multiple data-upload="${x.id}" data-tag="${esc(x.label)}"><span>Choose files or drag them here</span></label>`}<ul class="pp-files">${mine.map(fl=>`<li>${esc(fl.name.replace(x.label+': ',''))} <small>${Math.round((fl.size||0)/1024)} KB</small></li>`).join('')}</ul></div>`;}
     return `<div class="cfield"><label for="${id}">${esc(x.label)}${req}</label>${hint}<input id="${id}" name="${x.id}" value="${esc(v||'')}" placeholder="${esc(x.placeholder||'')}"${locked?' disabled':''}></div>`;
   }
   function paint(){
     const s=BRIEF[step];
-    el.innerHTML=`<div class="pp-brief">
+    el.innerHTML=`${brief.submitted_at&&A.direction?briefSummary(A):''}<div class="pp-brief">
       <ol class="pp-steps">${BRIEF.map((x,i)=>`<li><button type="button" data-step="${i}" class="${i===step?'on':''} ${done(x)?'ok':''}"><span>${done(x)?'✓':i+1}</span>${esc(x.t)}</button></li>`).join('')}</ol>
       <form class="pp-card" novalidate>
         ${brief.submitted_at?`<p class="pp-banner">Submitted ${date(brief.submitted_at)}. ${locked?'Your project has moved on, so answers are locked; raise a request for any changes.':'You can still make changes until design starts.'}</p>`:''}
@@ -43,7 +69,11 @@ export async function viewOnboarding(el:HTMLElement){
     const form=el.querySelector('form');
     let t=0;
     form.addEventListener('input',()=>{collect(form);clearTimeout(t);el.querySelector('[data-saved]').textContent='Saving…';t=window.setTimeout(save,700);});
-    form.addEventListener('change',()=>{collect(form);clearTimeout(t);t=window.setTimeout(save,300);});
+    form.addEventListener('change',e=>{
+      const fs=(e.target as HTMLElement).closest<HTMLElement>('[data-max]');
+      if(fs){const max=+fs.dataset.max,boxes=[...fs.querySelectorAll<HTMLInputElement>('input[type=checkbox]')];const n=boxes.filter(b=>b.checked).length;boxes.forEach(b=>{if(!b.checked)b.disabled=n>=max;});}
+      collect(form);clearTimeout(t);t=window.setTimeout(save,300);});
+    form.querySelectorAll<HTMLElement>('[data-max]').forEach(fs=>{const max=+fs.dataset.max,boxes=[...fs.querySelectorAll<HTMLInputElement>('input[type=checkbox]')];if(boxes.filter(b=>b.checked).length>=max)boxes.forEach(b=>{if(!b.checked)b.disabled=true;});});
     el.querySelectorAll<HTMLElement>('[data-step]').forEach(b=>b.addEventListener('click',()=>{step=+b.dataset.step;paint();scrollUp();}));
     el.querySelector('[data-prev]')?.addEventListener('click',()=>{step--;paint();scrollUp();});
     el.querySelector('[data-next]')?.addEventListener('click',()=>{step++;paint();scrollUp();});
@@ -56,6 +86,9 @@ export async function viewOnboarding(el:HTMLElement){
   function collect(form){
     for(const x of BRIEF[step].fields){
       if(x.type==='files')continue;
+      if(x.type==='scale'){const o={};form.querySelectorAll(`input[name="${x.id}"]`).forEach((i:any)=>{o[i.dataset.pair]=+i.value;});A[x.id]=o;continue;}
+      if(x.type==='examples'){A[x.id]=[0,1,2].map(i=>({url:(form.querySelector(`[data-ex="url"][data-i="${i}"]`) as any)?.value.trim()||'',like:(form.querySelector(`[data-ex="like"][data-i="${i}"]`) as any)?.value.trim()||''})).filter(r=>r.url||r.like);continue;}
+      if(x.type==='visual'){A[x.id]=(form.querySelector(`input[name="${x.id}"]:checked`) as any)?.value||'';continue;}
       if(x.type==='multi')A[x.id]=[...form.querySelectorAll(`input[name="${x.id}"]:checked`)].map((i:any)=>i.value);
       else if(x.type==='choice')A[x.id]=(form.querySelector(`input[name="${x.id}"]:checked`) as any)?.value||'';
       else A[x.id]=(form.querySelector(`[name="${x.id}"]`) as any)?.value||'';

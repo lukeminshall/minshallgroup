@@ -2,9 +2,21 @@
    ONBOARDING QUESTIONNAIRE — replaces the kick-off call.
    Edit freely: each section becomes a step; answers save as the client
    types and land in public.briefs.answers keyed by field id.
-   Field types: text, textarea, choice (one), multi (many), files (upload).
+   Field types: text, textarea, choice (one), multi (many, `max` caps it),
+   files (upload), visual (pick one style tile), scale (this-or-that sliders,
+   1 to 5 between two words), examples (up to three sites and what they like).
    ===================================================================== */
-export type Field={id:string,label:string,type:'text'|'textarea'|'choice'|'multi'|'files',hint?:string,options?:string[],required?:boolean,placeholder?:string};
+export type Style={t:string,d:string,bg:string,ink:string,accent:string,font:string};
+export type Field={id:string,label:string,type:'text'|'textarea'|'choice'|'multi'|'files'|'visual'|'scale'|'examples',hint?:string,options?:string[],required?:boolean,placeholder?:string,max?:number,styles?:Style[],pairs?:[string,string][]};
+
+/* style directions shown as small tiles in the brief */
+export const STYLES:Style[]=[
+  {t:'Warm and crafted',d:'Natural colours, big photos, a handmade feel',bg:'#F3EDE3',ink:'#23392D',accent:'#B5552B',font:'Georgia, serif'},
+  {t:'Clean and modern',d:'Lots of white space, simple shapes, crisp type',bg:'#FFFFFF',ink:'#14171A',accent:'#2F6FEB',font:'system-ui, sans-serif'},
+  {t:'Bold and confident',d:'Strong colour, big headlines, plenty of energy',bg:'#121316',ink:'#FFFFFF',accent:'#FFC531',font:'Impact, sans-serif'},
+  {t:'Premium and editorial',d:'Elegant type, dark tones, magazine layouts',bg:'#0A1A3F',ink:'#FFFFFF',accent:'#E9A27E',font:'Georgia, serif'},
+  {t:'Calm and caring',d:'Soft colours, gentle shapes, reassuring words',bg:'#EEF4F1',ink:'#1F4A44',accent:'#E9A27E',font:'system-ui, sans-serif'}
+];
 export type Section={id:string,t:string,intro:string,fields:Field[]};
 
 export const BRIEF:Section[]=[
@@ -19,12 +31,21 @@ export const BRIEF:Section[]=[
     {id:'top',label:'Your top three services or products, most important first',type:'textarea',required:true,placeholder:'1. Breakfast and brunch\n2. Celebration cakes to order\n3. Private hire in the evenings'},
     {id:'offers',label:'Any offers, prices or packages to show?',type:'textarea',hint:'Optional. Prices shown clearly often increase enquiries.'}
   ]},
-  {id:'brand',t:'Look and feel',intro:'Help us match the design to your brand and to sites you like.',fields:[
+  {id:'brand',t:'Your brand',intro:'The basics we need to match your brand.',fields:[
     {id:'logo',label:'Upload your logo',type:'files',hint:'Best as SVG, PNG or a high-resolution JPG. No logo? Say so below; we can tidy one up.'},
     {id:'colours',label:'Brand colours, if you have them',type:'text',placeholder:'Dark green and cream'},
     {id:'tone',label:'How should the website sound?',type:'choice',options:['Friendly and relaxed','Professional and calm','Premium and polished','Bold and energetic','Warm and caring']},
-    {id:'likes',label:'Websites you like, and what you like about them',type:'textarea',placeholder:'example.co.uk: clean, big photos, easy to book'},
-    {id:'competitors',label:'Your main competitors’ websites',type:'textarea',placeholder:'One per line'}
+    {id:'words',label:'Pick three words you would like people to use about your business',type:'multi',max:3,options:['Friendly','Expert','Trusted','Local','Modern','Traditional','Premium','Affordable','Creative','Calm','Fun','Bold','Caring','Quick','Independent','Family-run']}
+  ]},
+  {id:'style',t:'Your style',intro:'Most people find it easier to react to things than describe them. There are no wrong answers, and you can change your mind later.',fields:[
+    {id:'direction',label:'Which of these feels most like you?',type:'visual',required:true,hint:'Pick the closest. We will make it your own.'},
+    {id:'scales',label:'This or that',type:'scale',hint:'Slide towards the side that suits you. Leave it in the middle if you do not mind.',pairs:[['Classic','Modern'],['Minimal','Rich and detailed'],['Calm','Energetic'],['Light','Dark'],['Photo-led','Words-led'],['Serious','Playful']]},
+    {id:'examples',label:'Websites you like, and what you like about each',type:'examples',hint:'Any websites at all, not only ones in your industry. What you like can be small: the colours, the photos, how easy it is to book.'},
+    {id:'mood',label:'Upload images that capture the feel you want (optional)',type:'files',hint:'Screenshots, photos, Pinterest or Instagram saves, a leaflet you love. Anything visual helps.'},
+    {id:'dislikes',label:'Anything you definitely do not want?',type:'textarea',placeholder:'No stock photos of people shaking hands. Nothing too corporate.'},
+    {id:'photos',label:'Photography',type:'choice',options:['We have good photos of our own','We will take new photos','We would like a professional shoot (we can arrange one)','Please use carefully chosen stock photos','Not sure yet']},
+    {id:'feel',label:'When someone lands on your homepage, what should they feel in the first five seconds?',type:'textarea',placeholder:'That we are friendly, local and easy to book with.'},
+    {id:'competitors',label:'Your main competitors’ websites',type:'textarea',placeholder:'One per line. Tell us if there is anything they do well or badly.'}
   ]},
   {id:'pages',t:'Pages and content',intro:'Choose the pages you need. We will suggest structure and wording; you approve everything before it goes live.',fields:[
     {id:'pages',label:'Which pages do you need?',type:'multi',required:true,options:['Home','About us','Services','Individual service pages','Prices','Gallery or portfolio','Reviews','Team','FAQs','News or blog','Booking','Shop','Contact','Privacy notice']},

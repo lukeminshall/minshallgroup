@@ -8,6 +8,7 @@ import {dot,tile} from './brand';
 import {gRidge,gDial,gNetwork} from './graphics';
 import {researchPage,RESEARCH_SLUG} from './research';
 import {datalenseSample,straightTalkingDemo} from './demos';
+import {STYLES} from './portal/brief';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 export const P:Record<string,()=>string>={};
@@ -672,6 +673,19 @@ P['/digitalsme']=()=>`
         <div class="ex-acts"><a class="tlink" href="/examples/${x.slug}/" target="_blank" rel="noopener">View the site</a><a class="ulink" href="#quote" data-pick="${x.package}">Choose ${pk.name}</a></div>
       </div>
     </article>`;}).join('')}</div>
+</div></section>
+
+<section class="soft look-sec" id="your-look"><div class="wrap">
+  ${shead({eyebrow:'Your look',h:'How we get your look right, without a meeting.',p:'Most people find it easier to react to design than describe it, so our onboarding is built around showing, not telling. It takes about 15 minutes, in your own time.'})}
+  <div class="look-grid">
+    <ol class="look-steps">
+      <li class="reveal"><b>Pick a direction</b><p>Choose the style that feels most like you, then slide between pairs like classic or modern, calm or energetic.</p></li>
+      <li class="reveal" style="--i:1"><b>Show us what you like</b><p>Up to three websites you admire, any industry, and what you like about each. Upload screenshots, photos or anything visual.</p></li>
+      <li class="reveal" style="--i:2"><b>Tell us what to avoid</b><p>The things you do not want, and how a visitor should feel in the first five seconds.</p></li>
+      <li class="reveal" style="--i:3"><b>See it, then shape it</b><p>We turn your answers into a one-page design brief, design your homepage in that direction and send a live preview. Two rounds of design changes are included.</p></li>
+    </ol>
+    <div class="look-tiles reveal" style="--i:1" aria-label="The five style directions in the onboarding">${STYLES.map(st=>`<div class="look-tile"><span class="pp-swatch" style="background:${st.bg};color:${st.ink};font-family:${st.font}" aria-hidden="true"><b>Aa</b><i style="background:${st.accent}"></i><em style="background:${st.ink}"></em><em style="background:${st.ink};width:40%"></em></span><b>${st.t}</b></div>`).join('')}</div>
+  </div>
 </div></section>
 
 <section id="quote"><div class="wrap">

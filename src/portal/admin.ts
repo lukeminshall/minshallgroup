@@ -6,7 +6,7 @@
    ===================================================================== */
 import {sb,S,esc,gbp,date,check,notify,api,toast,upload,fileUrl,unreadForTeam,markSeen} from './core';
 import {BRIEF,STAGES} from './brief';
-import {openRequest} from './views';
+import {openRequest,briefSummary,fmtAnswer} from './views';
 
 export async function viewAdmin(el:HTMLElement,rerender:()=>void){
   const all=S.projects;
@@ -48,7 +48,8 @@ async function manage(box:HTMLElement,rerender){
       <button class="btn sm" type="submit"><span>Save</span></button></form>
 
     <div class="pp-card"><h3 class="pp-h">Brief ${brief.data?.submitted_at?`<small>submitted ${date(brief.data.submitted_at)}</small>`:'<small>not submitted yet</small>'}</h3>
-      ${BRIEF.map(s=>`<h4 class="pp-h4">${esc(s.t)}</h4><dl class="pp-dl">${s.fields.filter(f=>f.type!=='files').map(f=>`<dt>${esc(f.label)}</dt><dd>${esc(Array.isArray(A[f.id])?A[f.id].join(', '):A[f.id]||'—')}</dd>`).join('')}</dl>`).join('')}
+      ${A.direction?briefSummary(A):''}
+      <details class="pp-all"><summary>All answers</summary>${BRIEF.map(s=>`<h4 class="pp-h4">${esc(s.t)}</h4><dl class="pp-dl">${s.fields.filter(f=>f.type!=='files').map(f=>`<dt>${esc(f.label)}</dt><dd>${esc(fmtAnswer(f,A[f.id]))}</dd>`).join('')}</dl>`).join('')}</details>
       <h4 class="pp-h4">Files</h4><ul class="pp-files">${(files.data||[]).map(f=>`<li><button type="button" class="ulink" data-file="${esc(f.path)}">${esc(f.name)}</button> <small>${f.kind} · ${Math.round((f.size||0)/1024)} KB</small></li>`).join('')||'<li class="pp-muted">None</li>'}</ul></div>
 
     <form class="pp-card" data-msg><h3 class="pp-h">Message ${esc(p.owner_name||p.business_name)}</h3>
