@@ -27,7 +27,12 @@ export function initConsent(){
   const v=read();
   /* a self-playing demo tour (?tour=1) is being watched or recorded: do not cover it */
   const touring=new URLSearchParams(location.search).get('tour')==='1';
-  if(v)tell(v);else if(!touring)setTimeout(show,1500);
+  /* ask once the visitor starts using the page (first scroll, tap or key), so the
+     opening view is not covered; nothing sets cookies before they answer */
+  if(v)tell(v);else if(!touring){
+    const go=()=>{['scroll','pointerdown','keydown'].forEach(t=>removeEventListener(t,go));setTimeout(show,600);};
+    ['scroll','pointerdown','keydown'].forEach(t=>addEventListener(t,go,{passive:true,once:true}));
+  }
   /* the Clarity tag loads late, so repeat the stored choice once it has */
   addEventListener('load',()=>setTimeout(()=>{const s=read();if(s)tell(s);},2500));
   document.addEventListener('click',e=>{if((e.target as HTMLElement).closest('[data-cookie-settings]')){e.preventDefault();show();}});

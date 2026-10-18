@@ -1561,3 +1561,6 @@ html.touring .cookie{display:none}
   .js .split .w>span{animation-duration:.5s;animation-delay:calc(var(--i)*25ms)}
   .js .rise{animation-duration:.5s;animation-delay:calc(var(--i,0)*40ms)}
 }
+/* paragraphs show at once and only slide into place, so they count as painted straight away */
+.js p.rise{opacity:1;animation-name:riseT}
+@keyframes riseT{from{transform:translateY(14px)}to{transform:none}}
