@@ -7,9 +7,12 @@
    1 to 5 between two words), examples (up to three sites and what they like).
    ===================================================================== */
 export type Style={t:string,d:string,bg:string,ink:string,accent:string,font:string};
-export type Field={id:string,label:string,type:'text'|'textarea'|'choice'|'multi'|'files'|'visual'|'scale'|'examples',hint?:string,options?:string[],required?:boolean,placeholder?:string,max?:number,styles?:Style[],pairs?:[string,string][]};
+export type Field={inspire?:boolean,id:string,label:string,type:'text'|'textarea'|'choice'|'multi'|'files'|'visual'|'scale'|'examples',hint?:string,options?:string[],required?:boolean,placeholder?:string,max?:number,styles?:Style[],pairs?:[string,string][]};
 
 /* style directions shown as small tiles in the brief */
+/* what a client confirms before uploading anything that may appear on their website */
+export const IMAGE_DECLARATION='I confirm that I own these images, logos and documents or have permission to use them on our website. This includes permission from anyone who can be recognised in a photo, and any licence needed for stock or professionally taken photos. Minshall Group may crop, edit and optimise them for the website.';
+
 export const STYLES:Style[]=[
   {t:'Warm and crafted',d:'Natural colours, big photos, a handmade feel',bg:'#F3EDE3',ink:'#23392D',accent:'#B5552B',font:'Georgia, serif'},
   {t:'Clean and modern',d:'Lots of white space, simple shapes, crisp type',bg:'#FFFFFF',ink:'#14171A',accent:'#2F6FEB',font:'system-ui, sans-serif'},
@@ -41,7 +44,7 @@ export const BRIEF:Section[]=[
     {id:'direction',label:'Which of these feels most like you?',type:'visual',required:true,hint:'Pick the closest. We will make it your own.'},
     {id:'scales',label:'This or that',type:'scale',hint:'Slide towards the side that suits you. Leave it in the middle if you do not mind.',pairs:[['Classic','Modern'],['Minimal','Rich and detailed'],['Calm','Energetic'],['Light','Dark'],['Photo-led','Words-led'],['Serious','Playful']]},
     {id:'examples',label:'Websites you like, and what you like about each',type:'examples',hint:'Any websites at all, not only ones in your industry. What you like can be small: the colours, the photos, how easy it is to book.'},
-    {id:'mood',label:'Upload images that capture the feel you want (optional)',type:'files',hint:'Screenshots, photos, Pinterest or Instagram saves, a leaflet you love. Anything visual helps.'},
+    {id:'mood',label:'Upload images that capture the feel you want (optional)',type:'files',inspire:true,hint:'Screenshots, photos, Pinterest or Instagram saves, a leaflet you love. These are for inspiration only: we will never put them on your website.'},
     {id:'dislikes',label:'Anything you definitely do not want?',type:'textarea',placeholder:'No stock photos of people shaking hands. Nothing too corporate.'},
     {id:'photos',label:'Photography',type:'choice',options:['We have good photos of our own','We will take new photos','We would like a professional shoot (we can arrange one)','Please use carefully chosen stock photos','Not sure yet']},
     {id:'feel',label:'When someone lands on your homepage, what should they feel in the first five seconds?',type:'textarea',placeholder:'That we are friendly, local and easy to book with.'},

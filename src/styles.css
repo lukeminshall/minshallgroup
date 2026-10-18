@@ -1683,3 +1683,17 @@ html.touring .cookie{display:none}
 @media (max-width:600px){.cp{grid-template-columns:1fr;justify-items:center;text-align:left}}
 @media (prefers-reduced-motion:reduce){.cp-steps li.now::before{animation:none}}
 .pp-addon input:disabled+span{cursor:default;background:#F7F8FB;box-shadow:inset 0 0 0 1.5px var(--line)}.pp-addon input:disabled+span i{background-color:#1F9D63}.pp-addon input:disabled+span em{color:#13633F}
+/* image permission declaration */
+.pp-declare{background:#fff;border-radius:14px;padding:16px 18px;box-shadow:inset 0 0 0 1.5px var(--line);display:grid;gap:12px}
+.pp-declare p{margin:0;font-size:14.5px;color:var(--ink-2);line-height:1.55}.pp-declare p b{display:block;color:var(--navy);margin-bottom:4px}
+.pp-declare-ok{display:flex;gap:10px;align-items:flex-start;font-weight:700;color:var(--navy);font-size:14.5px;cursor:pointer}
+.pp-declare-ok input{width:20px;height:20px;margin:0;flex:none;accent-color:var(--pink)}
+.pp-drop.locked{opacity:.5;cursor:not-allowed;pointer-events:none}
+.pp-declared{margin:0;font-size:13.5px;font-weight:700;color:#13633F}
+/* upload boxes: the whole area is the button; the browser's raw control is hidden */
+.pp-drop{position:relative;display:grid;place-items:center;gap:6px;min-height:96px;padding:20px;transition:border-color .2s,background .2s}
+.pp-drop input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0}
+.pp-drop span{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--navy)}
+.pp-drop span::before{content:"";width:22px;height:22px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF2E63' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 16V4M7 9l5-5 5 5M4 20h16'/%3E%3C/svg%3E") no-repeat center/contain}
+.pp-drop:hover,.pp-drop:focus-within{border-color:var(--pink);background:#FFF6F8}
+.pp-drop.locked span::before{filter:grayscale(1)}

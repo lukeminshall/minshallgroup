@@ -2,7 +2,7 @@
    PORTAL VIEWS — onboarding questionnaire, requests, billing, performance.
    ===================================================================== */
 import {unreadForClient,markSeen,sb,S,esc,gbp,date,check,notify,api,toast,upload,fileUrl} from './core';
-import {BRIEF,STYLES} from './brief';
+import {BRIEF,STYLES,IMAGE_DECLARATION} from './brief';
 import {checkProgress} from '../progress';
 import {SME,SCORE} from '../content';
 import {score} from '../webmins';
@@ -22,7 +22,7 @@ export function briefSummary(A){
     <div class="db-top">${st?`<div class="db-dir"><span class="pp-swatch" style="background:${st.bg};color:${st.ink};font-family:${st.font}" aria-hidden="true"><b>Aa</b><i style="background:${st.accent}"></i><em style="background:${st.ink}"></em><em style="background:${st.ink};width:40%"></em></span><div><small>Direction</small><b>${esc(st.t)}</b><span>${esc(st.d)}</span></div></div>`:'<p class="pp-muted">No style direction chosen yet.</p>'}
       ${(A.words||[]).length?`<div class="db-words"><small>In three words</small><p>${A.words.map(w=>`<span>${esc(w)}</span>`).join('')}</p></div>`:''}</div>
     ${Object.keys(sc).length?`<div class="db-scales">${Object.entries(sc).map(([k,n])=>bar(k,n)).join('')}</div>`:''}
-    <dl class="db-dl">${row('Main job',A.action)}${row('Tone',A.tone)}${row('Colours',A.colours)}${row('First five seconds',A.feel)}${row('Photography',A.photos)}${row('Avoid',A.dislikes)}</dl>
+    <dl class="db-dl">${row('Main job',A.action)}${row('Tone',A.tone)}${row('Colours',A.colours)}${row('First five seconds',A.feel)}${row('Photography',A.photos)}${row('Avoid',A.dislikes)}${row('Image permissions',A.imageRights?.agreed?`Confirmed by ${A.imageRights.by||'the client'} on ${date(A.imageRights.at)}`:'Not confirmed yet (no images uploaded)')}</dl>
     ${(A.examples||[]).length?`<h4 class="pp-h4">Sites they like</h4><ul class="db-ex">${A.examples.map(r=>`<li><a class="ulink" href="${/^https?:/.test(r.url)?esc(r.url):'https://'+esc(r.url)}" target="_blank" rel="noopener">${esc(r.url||'')}</a>${r.like?` <span>${esc(r.like)}</span>`:''}</li>`).join('')}</ul>`:''}
   </div>`;
 }
@@ -51,8 +51,14 @@ export async function viewOnboarding(el:HTMLElement){
     if(x.type==='scale'){const val=v||{};return `<fieldset class="cfield"><legend>${esc(x.label)}</legend>${hint}<div class="pp-scales">${x.pairs.map(([a,b2],i)=>`<div class="pp-scale"><span>${esc(a)}</span><input type="range" min="1" max="5" step="1" name="${x.id}" data-pair="${esc(a)} / ${esc(b2)}" value="${val[a+' / '+b2]||3}" aria-label="${esc(a)} or ${esc(b2)}"${locked?' disabled':''}><span>${esc(b2)}</span></div>`).join('')}</div></fieldset>`;}
     if(x.type==='examples'){const rows=[...(v||[]),{url:'',like:''},{url:'',like:''},{url:'',like:''}].slice(0,3);
       return `<fieldset class="cfield"><legend>${esc(x.label)}</legend>${hint}<div class="pp-examples">${rows.map((r,i)=>`<div class="pp-ex"><span class="pp-ex-n">${i+1}</span><label class="sr" for="${id}-u${i}">Website ${i+1}</label><input id="${id}-u${i}" data-ex="url" data-i="${i}" value="${esc(r.url||'')}" placeholder="example.co.uk"${locked?' disabled':''}><label class="sr" for="${id}-l${i}">What you like</label><input id="${id}-l${i}" data-ex="like" data-i="${i}" value="${esc(r.like||'')}" placeholder="What you like about it"${locked?' disabled':''}></div>`).join('')}</div></fieldset>`;}
+    if(x.type==='files'&&!x.inspire&&!A.imageRights?.agreed&&!locked){
+      /* uploads that may go on the website stay locked until the client confirms they have permission */
+      return `<div class="cfield"><label>${esc(x.label)}</label>${hint}<div class="pp-declare"><p><b>Before you upload</b>${esc(IMAGE_DECLARATION)}</p>
+        <label class="pp-declare-ok"><input type="checkbox" data-declare> <span>I confirm this, on behalf of ${esc(p.business_name||'my business')}</span></label></div>
+        <div class="pp-drop locked" aria-disabled="true"><span>Tick the box above to upload</span></div></div>`;}
     if(x.type==='files'){const mine=files.filter(fl=>(fl.name||'').startsWith(x.label+': '));
-      return `<div class="cfield"><label>${esc(x.label)}</label>${hint}${locked?'':`<label class="pp-drop"><input type="file" multiple data-upload="${x.id}" data-tag="${esc(x.label)}"><span>Choose files or drag them here</span></label>`}<ul class="pp-files">${mine.map(fl=>`<li>${esc(fl.name.replace(x.label+': ',''))} <small>${Math.round((fl.size||0)/1024)} KB</small></li>`).join('')}</ul></div>`;}
+      const ok=!x.inspire&&A.imageRights?.agreed?`<p class="pp-declared">✓ Image permissions confirmed${A.imageRights.by?' by '+esc(A.imageRights.by):''} on ${date(A.imageRights.at)}</p>`:'';
+      return `<div class="cfield"><label>${esc(x.label)}</label>${hint}${ok}${locked?'':`<label class="pp-drop"><input type="file" multiple data-upload="${x.id}" data-tag="${esc(x.label)}"><span>Choose files or drag them here</span></label>`}<ul class="pp-files">${mine.map(fl=>`<li>${esc(fl.name.replace(x.label+': ',''))} <small>${Math.round((fl.size||0)/1024)} KB</small></li>`).join('')}</ul></div>`;}
     return `<div class="cfield"><label for="${id}">${esc(x.label)}${req}</label>${hint}<input id="${id}" name="${x.id}" value="${esc(v||'')}" placeholder="${esc(x.placeholder||'')}"${locked?' disabled':''}></div>`;
   }
   function paint(){
@@ -79,6 +85,11 @@ export async function viewOnboarding(el:HTMLElement){
     el.querySelector('[data-prev]')?.addEventListener('click',()=>{step--;paint();scrollUp();});
     el.querySelector('[data-next]')?.addEventListener('click',()=>{step++;paint();scrollUp();});
     el.querySelector('[data-submit]')?.addEventListener('click',submit);
+    el.querySelectorAll<HTMLInputElement>('[data-declare]').forEach(cb=>cb.addEventListener('change',async()=>{
+      if(!cb.checked)return;
+      A.imageRights={agreed:true,by:S.user?.fullName||S.user?.primaryEmailAddress?.emailAddress||'',at:new Date().toISOString(),text:IMAGE_DECLARATION};
+      await save();toast('Thank you. You can upload your images now.');paint();
+    }));
     el.querySelectorAll<HTMLInputElement>('[data-upload]').forEach(inp=>inp.addEventListener('change',async()=>{
       const list=[...inp.files];if(!list.length)return;toast(`Uploading ${list.length} file${list.length>1?'s':''}…`);
       try{for(const fl of list){if(fl.size>25*1024*1024){toast(`${fl.name} is over 25 MB`,true);continue;}files.push(await upload(fl,'brief',inp.dataset.tag));}toast('Uploaded');paint();}catch(e){toast(e.message,true);}

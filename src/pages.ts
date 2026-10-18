@@ -801,6 +801,7 @@ ${phead({crumb:'<a href="/digitalsme">Website refresh</a><span>/</span>Terms',ey
   <h2>5. What we need from you</h2>
   <p>You agree to provide content, images, logins and approvals promptly. Our dates depend on this. If we are waiting on you for more than 30 days, we may invoice the next stage of the work completed so far and reschedule the remaining work.</p>
   <p>You confirm that you have the right to use everything you give us, such as text, images and logos, and that it does not infringe anyone else’s rights.</p>
+  <p>For photos and images, this includes permission from anyone who can be recognised in them and any licence needed for stock or professionally taken photos. Our client portal asks you to confirm this before you upload, and keeps a record of when you did. If someone makes a claim about content you supplied, you agree to cover our reasonable costs of dealing with it. We may decline or remove content that we reasonably believe is unlawful or that you do not have permission to use. Where we source images for you, we use properly licensed images.</p>
   <h2>6. Revisions</h2>
   <p>Each package includes two rounds of changes to the design and one round of changes to the finished pages. Further changes, or changes of direction after approval, are charged as extra work.</p>
   <h2>7. Delivery, hosting and domains</h2>
