@@ -14,6 +14,7 @@ const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
 export function initPage(){
   ac?.abort();cleanups.splice(0).forEach(f=>f());
   ac=new AbortController();const sig={signal:ac.signal};
+  document.body.dataset.route=location.pathname;
   reveals();scrub(sig);rotator();heroZoom(sig);heroField(sig);varFont(sig);velocityMarquee(sig);hscroll(sig);hoverPreview(sig);
   finder();filters();insightFilter();tabs(sig);stickySteps(sig);magnetic(sig);mobileCta(sig);
   dispatchEvent(new Event('mg:page'));

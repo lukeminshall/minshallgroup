@@ -86,6 +86,24 @@ export function footerMarkup(){
   return `<div class="foot-cta"><div class="wrap">
       <span class="eyebrow on-dark">Start a conversation</span>
       <a class="foot-big" href="/contact"><span>Let’s move</span> <span class="nw"><em>the number</em>${dot}<span class="foot-arrow" aria-hidden="true">→</span></span></a>
+      <div class="foot-forms">
+        <form class="enq-form foot-form" novalidate aria-labelledby="fq-h">
+          <h2 class="fh" id="fq-h">Quick enquiry</h2>
+          <p class="hp" hidden aria-hidden="true"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <input type="hidden" name="interest" value="Quick enquiry">
+          <div class="fq-row"><label class="sr" for="fq-name">Your name</label><input id="fq-name" name="name" required autocomplete="name" placeholder="Your name"><label class="sr" for="fq-email">Email</label><input id="fq-email" name="email" type="email" required autocomplete="email" placeholder="Email"></div>
+          <label class="sr" for="fq-msg">What do you need?</label><textarea id="fq-msg" name="message" rows="2" required placeholder="The number you want to move, in a sentence"></textarea>
+          <div class="fq-foot"><button class="btn sm" type="submit"><span>Send enquiry</span></button><p class="cform-status" role="status" aria-live="polite"></p></div>
+        </form>
+        <form class="sub-form foot-sub" data-source="footer" novalidate aria-labelledby="fn-h">
+          <h2 class="fh" id="fn-h">Newsletter</h2>
+          <p class="fn-p">Practical ideas on strategy, websites and growth, once a month.</p>
+          <p class="hp" hidden aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <div class="sub-row"><label class="sr" for="fn-email">Email address</label><input id="fn-email" name="email" type="email" required autocomplete="email" placeholder="you@company.co.uk"><button class="btn sm" type="submit"><span>Subscribe</span></button></div>
+          <label class="sub-consent"><input type="checkbox" name="consent" required> <span>Yes, send me emails from Minshall Group. See our <a href="/privacy">privacy notice</a>.</span></label>
+          <p class="sub-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
     </div></div>
     <div class="wrap foot-grid">
       <div class="foot-brand">
@@ -95,8 +113,8 @@ export function footerMarkup(){
       </div>
       <div><h2 class="fh">Capabilities</h2><ul>${CAPS.map(c=>`<li><a href="/capabilities/${c.slug}">${c.t}</a></li>`).join('')}</ul></div>
       <div><h2 class="fh">Industries</h2><ul>${INDUSTRIES.map(x=>`<li><a href="/industries#${x.id}">${x.t}</a></li>`).join('')}</ul>
-        <h2 class="fh foot-h2">Consultancy</h2><ul>${LANDINGS.map(L=>`<li><a href="/${L.slug}">${L.eyebrow}</a></li>`).join('')}<li><a href="/digitalsme">Websites for small businesses</a></li></ul></div>
-      <div><h2 class="fh">Group</h2><ul><li><a href="/work">Work</a></li><li><a href="/approach">Approach</a></li><li><a href="/insights">Insights</a></li><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/portal">Client login</a></li>${PRODUCTS.map(p=>`<li><a href="/products/${p.slug}">${p.t}</a></li>`).join('')}</ul></div>
+        <h2 class="fh foot-h2">Consultancy</h2><ul>${LANDINGS.map(L=>`<li><a href="/${L.slug}">${L.eyebrow}</a></li>`).join('')}<li><a href="/digitalsme">Websites for small businesses, from £495</a></li></ul></div>
+      <div><h2 class="fh">Group</h2><ul><li><a href="/work">Case studies</a></li><li><a href="/approach">Approach</a></li><li><a href="/insights">Insights</a></li><li><a href="/about">About us</a></li><li><a href="/contact">Contact</a></li><li><a href="/portal">Client login</a></li>${PRODUCTS.map(p=>`<li><a href="/products/${p.slug}">${p.t}</a></li>`).join('')}</ul></div>
     </div>
     <div class="wrap foot-base"><span>© ${new Date().getFullYear()} ${LEGAL.trading}. Formerly Knexu. <a href="/privacy">Privacy</a> · <a href="/privacy#cookies" data-cookie-settings>Cookie settings</a></span><span>${LEGAL.trading} is a trading name of ${LEGAL.company}, registered in ${LEGAL.reg.replace('&','&amp;')}, company no. ${LEGAL.number}. Registered office: ${LEGAL.office}.</span></div>`;
 }

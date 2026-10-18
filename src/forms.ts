@@ -30,7 +30,7 @@ export function initForms(){
   });
   document.addEventListener('submit',async e=>{
     const form=e.target;
-    if(!(form instanceof HTMLFormElement)||form.id!=='contact-form')return;
+    if(!(form instanceof HTMLFormElement)||(form.id!=='contact-form'&&!form.classList.contains('enq-form')))return;
     e.preventDefault();
     const status=form.querySelector('.cform-status');
     const btn=form.querySelector<HTMLButtonElement>('button[type=submit]');
