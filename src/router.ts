@@ -82,6 +82,6 @@ export function initRouter(){
   /* prerendered markup is already on the page: keep it and just wire it up,
      so entrance animations are not restarted. In dev there is none, so render. */
   const app=document.getElementById('app');
-  if(app.children.length){const p=path();setMeta(p);setActive(p);initPage();preselect();fitBrief();initSme();initDemos();initProspect();portalGate();}
+  if(app.children.length){const p=path();setMeta(p);setActive(p);initPage();preselect();fitBrief();initSme();initStart();initDemos();initProspect();portalGate();}
   else paint(false);
 }
