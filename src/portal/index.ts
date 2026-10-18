@@ -49,7 +49,8 @@ async function render(){
   if(!mine.length&&!S.isAdmin){try{if(!sessionStorage.getItem('mg-signup-'+clerk.user.id)){sessionStorage.setItem('mg-signup-'+clerk.user.id,'1');api('/api/portal-notify',{event:'signed_up'}).catch(()=>{});}}catch{}}
   const saved=(()=>{try{return localStorage.getItem('mg-portal-current');}catch{return null;}})();
   S.current=S.projects.find(p=>p.id===saved)||mine[0]||(S.isAdmin?S.projects[0]:null)||null;
-  let tab=location.hash.slice(1)||'overview';
+  /* the team lands on the admin dashboard; clients on their overview */
+  let tab=location.hash.slice(1)||(S.isAdmin?'admin':'overview');
   if(tab==='admin'&&!S.isAdmin)tab='overview';
   if(!S.current&&tab!=='admin'){shell('start');return startProject();}
   /* unread updates: for the client on their project, for the team across every project */
