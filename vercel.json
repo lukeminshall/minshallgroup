@@ -3,6 +3,11 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/insights/yorkshire-website-research-published",
+      "destination": "https://minshallgroup.com/insights/state-of-yorkshire-small-business-websites-2026",
+      "permanent": true
+    },
+    {
       "source": "/insights/the-capture-rate-problem",
       "destination": "https://minshallgroup.com/insights/feedback-in-the-moment",
       "permanent": true

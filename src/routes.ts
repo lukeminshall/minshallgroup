@@ -22,6 +22,7 @@ export const ROUTES:Record<string,{title:string,description:string,noindex?:bool
   '/approach':{title:t('Approach — diagnose, design, build, grow'),description:'How we work: four stages, four engagement models and six principles we hold to, all organised around a single measurable outcome.'},
   '/insights':{title:t('Insights — where markets are moving'),description:'Short, opinionated pieces on strategy, data, AI, digital products and growth.'},
   '/about':{title:t('About — one team for the whole journey'),description:'Minshall Group, formerly Knexu, brings strategy, digital, data and brand together under one senior team, measured on the return.'},
+  '/start':{title:t('Start a project — build your brief, get a fixed quote'),description:'Strategy, data, digital or brand. Build your project brief online and get a short written proposal with a fixed price within two working days.'},
   '/contact':{title:t('Contact — tell us the number you want to move'),description:'Start a conversation with Minshall Group. The outcome you want, the constraint in the way, and the date it has to change by.'}
 };
 /* search-facing titles for the practices: the phrase people type, first */
@@ -47,7 +48,9 @@ ROUTES['/portal']={title:t('Client portal'),description:'Log in to your Minshall
 const SEO_TITLES:Record<string,string>={
   '/industries':'Industries: health, sport, wellbeing, universities, public sector',
   '/insights/cookie-consent-and-analytics-for-small-businesses':t('Cookie consent and analytics: a small business guide'),
-  '/insights/yorkshire-website-research-published':t('We checked 3,628 Yorkshire business websites'),
+  '/insights/state-of-adult-social-care-2026':t('The state of adult social care in England, 2026'),
+  '/insights/nhs-elective-backlog-and-the-independent-sector-2026':t('The NHS elective backlog and the independent sector, 2026'),
+  '/insights/private-patients-pmi-and-self-pay-2026':t('Private patients, PMI and self-pay in 2026'),
   '/work/neurotech-uk':t('Taking a medical wearable to the UK')
 };
 for(const [k,v] of Object.entries(SEO_TITLES))if(ROUTES[k])ROUTES[k].title=v;

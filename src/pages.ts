@@ -3,6 +3,7 @@
    Data comes from content.ts; markup helpers from components.ts.
    ===================================================================== */
 import {CAPS,RETURNS,INDUSTRIES,PRODUCTS,CASES,FINDER,STEPS,MODELS,PRINCIPLES,INSIGHTS,CLIENTS,LANDINGS,LEGAL,SME,SCORE,CONTACT} from './content';
+import {startPage} from './start';
 import {subscribeBox,split,splitLetters,eyebrow,shead,phead,btn,cards,returnsRow,capTags,caseCard,marquee,insightCard,ctaBand,gfx,capBySlug,indById} from './components';
 import {dot,tile} from './brand';
 import {gRidge,gDial,gNetwork} from './graphics';
@@ -21,11 +22,11 @@ P['/']=()=>`
     <div class="grain" aria-hidden="true"></div>
     <div class="wrap hero2-in">
       <div class="fadebox"><div class="hero2-top rise" style="--i:0"><span>Strategy</span><span>Digital</span><span>Data &amp; AI</span><span>Brand</span></div></div>
-      <h1 class="hero2-h split" data-vf>${splitLetters('Strategy measured by the <em>return</em>, not the recommendation',1)}<span class="dot zoomdot" data-zoomdot aria-hidden="true"></span></h1>
+      <h1 class="hero2-h split" data-vf>${splitLetters('Strategy measured by the <em>return</em>, not the recommendation',1)}<span class="dot zoomdot" data-zoomdot aria-hidden="true"></span></h1>
       <div class="hero2-foot">
         <p class="hero2-lede rise" style="--i:7">We are a strategy, digital, data and brand group. Clients bring us a number that needs to move. We work out how, build what it takes, and stay until it has moved.</p>
         <div class="actions rise" style="--i:8">${btn('Start a conversation','/contact')}${btn('See the work','/work',true)}</div>
-        <a class="hero2-web rise" style="--i:9" href="/digitalsme"><span>Need a website?</span> Fixed prices from £495. See options, price it and start online tonight <i aria-hidden="true">→</i></a>
+        <a class="hero2-web rise" style="--i:9" href="/digitalsme"><small>Small business websites</small><span>Fixed prices from £495, quoted online</span><i aria-hidden="true">→</i></a>
       </div>
       <div class="fadebox"><a class="hero2-scroll rise" style="--i:9" href="#intro"><i aria-hidden="true"></i>Scroll</a></div>
     </div>
@@ -369,6 +370,15 @@ ${phead({eyebrow:'Insights',title:'Where markets are moving.',lede:'Short, opini
 </div></section>
 <section class="soft"><div class="wrap">${subscribeBox('insights')}</div></section>`;
 
+/* horizontal bar chart for data-led articles; handles negative values */
+function barChart(c){
+  const max=Math.max(...c.bars.map(b=>Math.abs(b.v)))||1;const pct=/%/.test(c.unit);const signed=/change/i.test(c.unit);
+  const dp=Math.max(...c.bars.map(b=>(String(b.v).split('.')[1]||'').length));
+  const fmt=v=>(signed&&v>0?'+':'')+(pct?v.toFixed(dp)+'%':v.toLocaleString('en-GB',{minimumFractionDigits:dp,maximumFractionDigits:dp}));
+  return `<figure class="achart"><figcaption><b>${c.t}</b><span>${c.unit}</span></figcaption>
+    <div class="ac-rows">${c.bars.map(b=>`<div class="ac-row${b.v<0?' neg':''}${/^(All|England)\b/.test(b.l)?' avg':''}"><span class="ac-l">${b.l}</span><span class="ac-track"><i style="--w:${(Math.abs(b.v)/max*100).toFixed(1)}%"></i></span><span class="ac-v">${fmt(b.v)}</span></div>`).join('')}</div>
+    <p class="ac-src">Source: ${c.src}</p></figure>`;
+}
 function article(a){
   const d=new Date(a.date).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
   const cap=capBySlug(a.cap);const more=INSIGHTS.filter(x=>x.slug!==a.slug).slice(0,3);
@@ -376,10 +386,14 @@ function article(a){
 ${phead({crumb:`<a href="/insights">Insights</a><span>/</span>${a.tag}`,title:a.t.replace(/\.$/,''),lede:a.d,meta:`<span class="eyebrow">${d} · ${a.mins} min read</span>`})}
 <script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@type":a.tag==='News'?'NewsArticle':'Article',headline:a.t,description:a.d,datePublished:a.date,dateModified:a.date,author:{"@type":"Organization",name:"Minshall Group",url:"https://minshallgroup.com"},publisher:{"@type":"Organization",name:"Minshall Group",logo:{"@type":"ImageObject",url:"https://minshallgroup.com/apple-touch-icon.png"}},mainEntityOfPage:`https://minshallgroup.com/insights/${a.slug}`,image:"https://minshallgroup.com/og.png"}).replace(/</g,'\\u003c')}</script>
 <section><div class="wrap article">
-  <div class="prose lg reveal">${a.body.map(p=>p.startsWith('## ')?`<h2>${p.slice(3)}</h2>`:`<p>${p}</p>`).join('')}</div>
+  <div class="article-main">
+  ${a.stats?`<div class="astats reveal">${a.stats.map(x=>`<div><b>${x.n}</b><span>${x.l}</span></div>`).join('')}</div>`:''}
+  <div class="prose lg reveal">${a.body.map(p=>{const m=p.match(/^\[\[chart:(\d+)\]\]$/);if(m)return a.charts?.[+m[1]]?barChart(a.charts[+m[1]]):'';return p.startsWith('## ')?`<h2>${p.slice(3)}</h2>`:p.startsWith('What this means:')?`<p class="wtm"><b>What this means:</b>${p.slice(16)}</p>`:`<p>${p}</p>`;}).join('')}</div>
+  ${a.sources?`<div class="asources reveal">${eyebrow('Sources')}<ol>${a.sources.map(x=>`<li><a href="${x.u}" target="_blank" rel="noopener">${x.t}</a></li>`).join('')}</ol><p>Figures are taken from the sources above as published. Where we have calculated a share or a change ourselves, the chart or text says so.</p></div>`:''}
+  </div>
   <aside class="article-side reveal" style="--i:1">
     ${eyebrow('Related practice')}<a class="mega-link" href="/capabilities/${cap.slug}"><span class="mn">${cap.n}</span><b>${cap.t}</b><span>${cap.line}</span></a>
-    <a class="btn sm mag" href="/contact"><span>Talk to us about this</span></a>
+    <a class="btn sm mag" href="/start?type=${({'data-ai':'data','brand-growth':'brand'} as any)[a.cap]||a.cap}"><span>Talk to us about this</span></a>
   </aside>
 </div></section>
 <section class="soft"><div class="wrap">
@@ -470,8 +484,10 @@ ${phead({eyebrow:'About',title:'One team, from the first question to the last nu
 
 /* ================= CONTACT ================= */
 const INTERESTS=[...CAPS.map(c=>c.short),'UK market entry',...PRODUCTS.map(p=>p.t),'Associate network','Something else'];
+P['/start']=startPage;
+
 P['/contact']=()=>`
-${phead({eyebrow:'Contact',title:'Tell us the number you want to move.',lede:'The outcome you want, the constraint in the way, and the date it has to change by. We will tell you honestly whether we are the right people.'})}
+${phead({eyebrow:'Contact',title:'Tell us the number you want to move.',lede:'The outcome you want, the constraint in the way, and the date it has to change by. We will tell you honestly whether we are the right people.',actions:`<a class="tlink" href="/start">Want a fixed quote? Build a full brief instead</a>`})}
 <section><div class="wrap contact-grid">
   <form id="contact-form" class="cform reveal" novalidate>
     <p class="hp" hidden aria-hidden="true"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>

@@ -28,7 +28,9 @@ function reveals(){
   const els=[...document.querySelectorAll<HTMLElement>('.reveal,.steps-row li')];
   if(RM||!('IntersectionObserver' in window)){els.forEach(e=>e.classList.add('in'));return;}
   const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
-  els.forEach(e=>io.observe(e));cleanups.push(()=>io.disconnect());
+  /* tall blocks (long articles) can never show 12% of themselves at once, so they reveal as soon as they enter */
+  const io0=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io0.unobserve(en.target);}}),{threshold:0,rootMargin:'0px 0px -6% 0px'});
+  els.forEach(e=>(e.offsetHeight>innerHeight*.8?io0:io).observe(e));cleanups.push(()=>{io.disconnect();io0.disconnect();});
   const t=setTimeout(()=>els.forEach(e=>{if(e.getBoundingClientRect().top<innerHeight)e.classList.add('in');}),1800);
   cleanups.push(()=>clearTimeout(t));
 }

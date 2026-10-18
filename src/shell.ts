@@ -66,8 +66,8 @@ export function navMarkup(){
     :`<div class="navitem" data-i="${i}"><a class="navbtn" href="${g.href}">${g.label}</a></div>`).join('')
     +`<button class="navbtn head-srch" type="button" data-srch><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span class="sr">Search</span><kbd aria-hidden="true">⌘K</kbd></button><a class="navbtn head-login" href="/portal">Client login</a><div class="cta-pick"><button class="btn sm head-cta" type="button" aria-expanded="false" aria-controls="cta-menu" data-cta-pick><span>Start a project</span></button>
       <div class="cta-menu" id="cta-menu" role="menu" hidden>
-        <a role="menuitem" href="/digitalsme#quote"><span class="cta-k">From £495</span><b>A new website</b><small>See prices, build your quote and start online. No call needed.</small></a>
-        <a role="menuitem" href="/contact"><span class="cta-k">Consultancy</span><b>Strategy, data or a bigger build</b><small>Tell us the outcome you need and we will reply within two working days.</small></a>
+        <a role="menuitem" href="/start"><span class="cta-k">Strategy · Data · Digital · Brand</span><b>Build your brief</b><small>Tell us the outcome and the shape of the work. A fixed-price proposal within two working days.</small></a>
+        <a role="menuitem" href="/digitalsme#quote"><span class="cta-k">Small business websites</span><b>Price a website online</b><small>Three fixed packages from £495, quoted in two minutes.</small></a>
         <a class="cta-login" role="menuitem" href="/portal">Already working with us? <b>Client login →</b></a>
       </div></div>`;
 }
@@ -82,8 +82,8 @@ export function mobileNavMarkup(){
     <li class="mn-item" style="--i:${i}"><div class="mn-row"><a class="mn-a" href="${h}"><span class="mn-n">0${i+1}</span>${t}</a>${subs?`<button class="mn-tog" type="button" aria-expanded="false" aria-label="Show ${t} pages"><i></i></button>`:''}</div>
       ${subs?`<ul class="mn-sub" hidden>${subs.map(([st,sh])=>`<li><a href="${sh}">${st}</a></li>`).join('')}</ul>`:''}</li>`).join('')}</ol></nav>
     <div class="mn-foot" style="--i:${groups.length}">
-      <div class="mn-ctas"><a class="btn mn-cta" href="/digitalsme#quote"><span>Get a website</span></a><a class="btn ghost mn-cta" href="/contact"><span>Talk to us</span></a></div>
-      <div class="mn-links"><a href="/digitalsme">Free website check</a><a href="/portal">Client login</a><a href="mailto:${CONTACT.email}">${CONTACT.email}</a></div>
+      <div class="mn-ctas"><a class="btn mn-cta" href="/start"><span>Start a project</span></a><a class="btn ghost mn-cta" href="/contact"><span>Talk to us</span></a></div>
+      <div class="mn-links"><a href="/digitalsme">Small business websites</a><a href="/portal">Client login</a><a href="mailto:${CONTACT.email}">${CONTACT.email}</a></div>
     </div></div>`;
 }
 

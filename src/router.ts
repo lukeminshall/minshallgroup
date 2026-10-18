@@ -9,6 +9,7 @@ import {initPage} from './motion';
 import {setActive} from './nav';
 import {preselect,fitBrief} from './forms';
 import {initSme} from './sme';
+import {initStart} from './start';
 import {initDemos} from './demos';
 import {initProspect} from './prospect';
 import {portalGate} from './portal/gate';
@@ -37,7 +38,7 @@ function paint(scroll=true){
   setMeta(p);setActive(p);
   if(scroll&&!location.hash)window.scrollTo({top:0,behavior:'instant' as ScrollBehavior});
   if(location.hash){const t=document.getElementById(decodeURIComponent(location.hash.slice(1)));if(t)setTimeout(()=>t.scrollIntoView({behavior:'instant' as ScrollBehavior,block:'start'}),60);}
-  initPage();preselect();fitBrief();initSme();initDemos();initProspect();
+  initPage();preselect();fitBrief();initSme();initStart();initDemos();initProspect();
   portalGate();
 }
 
@@ -50,7 +51,7 @@ export function render(scroll=true){
   if(RMQ.matches||!cur){paint(scroll);return;}
   if(busy){paint(scroll);return;}
   busy=true;
-  const r=ROUTES[path()];document.getElementById('curtain-label').textContent=r?r.title.split(' | ')[0].split(' — ')[0]:'Minshall Group';
+  const r=ROUTES[path()];document.getElementById('curtain-label').textContent=r&&path()!=='/'?r.title.split(' | ')[0].split(' — ')[0].split(':')[0]:'';
   cur.classList.remove('leave');cur.classList.add('cover');
   setTimeout(()=>{paint(scroll);cur.classList.add('leave');
     setTimeout(()=>{cur.classList.remove('cover','leave');busy=false;},700);},560);
