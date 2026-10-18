@@ -25,6 +25,7 @@ P['/']=()=>`
       <div class="hero2-foot">
         <p class="hero2-lede rise" style="--i:7">We are a strategy, digital, data and brand group. Clients bring us a number that needs to move. We work out how, build what it takes, and stay until it has moved.</p>
         <div class="actions rise" style="--i:8">${btn('Start a conversation','/contact')}${btn('See the work','/work',true)}</div>
+        <a class="hero2-web rise" style="--i:9" href="/digitalsme"><span>Need a website?</span> Fixed prices from £495. See options, price it and start online tonight <i aria-hidden="true">→</i></a>
       </div>
       <div class="fadebox"><a class="hero2-scroll rise" style="--i:9" href="#intro"><i aria-hidden="true"></i>Scroll</a></div>
     </div>
@@ -580,6 +581,7 @@ P['/digitalsme']=()=>`
       <button class="btn" type="submit"><span>Check my site</span></button>
     </form>
     <p class="sme-note rise" style="--i:8">Free. Get your Webmins Score across experience, findability, trust, conversion and relevance, compared with what customers expect in your sector. Takes about 20 seconds.</p>
+    <nav class="sme-routes rise" style="--i:9" aria-label="Website options"><a href="#packages"><b>Packages and prices</b><span>From £495, fixed</span></a><a href="#examples"><b>Example sites</b><span>See what we build</span></a><a href="#quote"><b>Build your quote</b><span>Then start online, no call</span></a><a href="/portal"><b>Client login</b><span>Already started?</span></a></nav>
   </div>
 </header>
 

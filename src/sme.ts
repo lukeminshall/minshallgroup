@@ -223,7 +223,7 @@ function wireQuote(form:HTMLFormElement){
       if(!r.ok)throw new Error();
       try{localStorage.setItem('mg-quote',JSON.stringify({package:q.pk.id,pages:q.n,addons:fd.getAll('addon'),total:q.total,organisation:fd.get('organisation'),website:fd.get('website'),dmode:q.dmode,domain:q.domain?.name||fd.get('domain')||'',hosting:q.hosting}));}catch{}
       set(`Thank you. Your quote for ${gbp(q.total)} is with us, and we will confirm it within one working day.`,'ok');
-      status.insertAdjacentHTML('beforeend',' <a class="ulink" href="/portal">Create your client account now</a> to start your onboarding questions straight away.');
+      status.insertAdjacentHTML('afterend',`<div class="qb-next"><b>Want to get going now?</b><p>Create your client account and your quote is carried over. You can answer your onboarding questions tonight, at your own pace. Nothing is charged until we confirm.</p><a class="btn" href="/portal"><span>Create my account and start</span></a></div>`);
     }catch{set('Something went wrong sending that. Please try again in a moment.','err');}
     finally{btn.disabled=false;}
   });

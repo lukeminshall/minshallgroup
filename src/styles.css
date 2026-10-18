@@ -1697,3 +1697,33 @@ html.touring .cookie{display:none}
 .pp-drop span::before{content:"";width:22px;height:22px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF2E63' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 16V4M7 9l5-5 5 5M4 20h16'/%3E%3C/svg%3E") no-repeat center/contain}
 .pp-drop:hover,.pp-drop:focus-within{border-color:var(--pink);background:#FFF6F8}
 .pp-drop.locked span::before{filter:grayscale(1)}
+/* header: Start a project chooser */
+.cta-pick{position:relative;margin-left:14px}
+.cta-pick .head-cta{margin:0}
+.cta-menu{position:absolute;right:0;top:calc(100% + 12px);width:360px;background:#fff;color:var(--navy);border-radius:18px;padding:8px;box-shadow:0 30px 70px -20px rgba(6,14,36,.45),0 0 0 1px rgba(10,26,63,.06);opacity:0;transform:translateY(-6px);transition:opacity .2s,transform .25s var(--ease-out);z-index:120}
+.cta-menu.on{opacity:1;transform:none}
+.cta-menu a{display:grid;gap:2px;padding:14px 16px;border-radius:12px;text-decoration:none;transition:background .2s}
+.cta-menu a:hover,.cta-menu a:focus-visible{background:var(--soft);outline:none}
+.cta-k{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--pink-d)}
+.cta-menu b{font-family:var(--fd);font-weight:400;font-size:20px;color:var(--navy)}
+.cta-menu small{font-size:13.5px;color:var(--muted);line-height:1.45}
+.cta-menu .cta-login{display:block;margin-top:4px;border-top:1px solid var(--line);border-radius:0 0 12px 12px;font-size:14px;color:var(--ink-2)}
+.cta-menu .cta-login b{font-family:var(--f);font-size:14px;font-weight:800;color:var(--navy)}
+/* mobile menu: two routes */
+.mn-ctas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mn-ctas .btn.ghost{color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.4);background:transparent}
+/* home hero: website route */
+.hero2-web{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:22px;padding:12px 18px;border-radius:999px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);font-size:15px;text-decoration:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);transition:background .25s}
+.hero2-web span{color:#fff;font-weight:800}.hero2-web i{font-style:normal;color:var(--pink);transition:transform .3s var(--ease-out)}
+.hero2-web:hover{background:rgba(255,255,255,.14)}.hero2-web:hover i{transform:translateX(4px)}
+/* /digitalsme: quick routes */
+.sme-routes{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:28px;max-width:860px}
+.sme-routes a{display:grid;gap:2px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);text-decoration:none;transition:background .25s,transform .25s}
+.sme-routes a:hover{background:rgba(255,255,255,.14);transform:translateY(-2px)}
+.sme-routes b{color:#fff;font-size:15px}.sme-routes span{color:rgba(255,255,255,.65);font-size:13px}
+.sme-routes a:last-child{box-shadow:inset 0 0 0 1px rgba(255,46,99,.5)}
+@media (max-width:760px){.sme-routes{grid-template-columns:1fr 1fr}}
+/* quote: next step */
+.qb-next{margin-top:16px;padding:20px;border-radius:16px;background:var(--navy);color:#fff;display:grid;gap:8px}
+.qb-next b{font-family:var(--fd);font-weight:400;font-size:22px}.qb-next p{margin:0;color:rgba(255,255,255,.75);font-size:15px}.qb-next .btn{justify-self:start;margin-top:6px}
+@media (min-width:900px){.hero2-web{white-space:nowrap;flex-wrap:nowrap}}

@@ -16,7 +16,7 @@ export function buildShell(){
   nav.innerHTML=navMarkup();
   mnav.innerHTML=mobileNavMarkup();
   document.getElementById('site-foot').innerHTML=footerMarkup();
-  wireMega();wireMobile();wireScroll();
+  wireMega();wireMobile();wireScroll();wirePick();
 }
 
 function closeMegas(){nav.querySelectorAll('.navitem.open').forEach(n=>{n.classList.remove('open');n.querySelector('.navbtn').setAttribute('aria-expanded','false');});head.classList.remove('mega-open');syncSolid();}
@@ -66,4 +66,14 @@ function wireScroll(){
 export function setActive(path){
   nav.querySelectorAll<HTMLAnchorElement>('.navbtn').forEach(a=>{const h=a.getAttribute('href');a.classList.toggle('is-active',path===h||path.startsWith(h+'/'));});
   closeMegas();
+}
+
+/* "Start a project" asks which kind: a website (self-serve) or consultancy */
+function wirePick(){
+  const b=nav.querySelector<HTMLButtonElement>('[data-cta-pick]'),m=nav.querySelector<HTMLElement>('#cta-menu');if(!b||!m)return;
+  const set=(open:boolean)=>{b.setAttribute('aria-expanded',String(open));m.hidden=!open;requestAnimationFrame(()=>m.classList.toggle('on',open));if(open)closeMegas();};
+  b.addEventListener('click',e=>{e.stopPropagation();set(m.hidden);if(!m.hidden)m.querySelector<HTMLElement>('a')?.focus({preventScroll:true});});
+  m.addEventListener('click',e=>{if((e.target as HTMLElement).closest('a'))set(false);});
+  document.addEventListener('click',e=>{if(!m.hidden&&!m.contains(e.target as Node))set(false);});
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&!m.hidden){set(false);b.focus();}});
 }
