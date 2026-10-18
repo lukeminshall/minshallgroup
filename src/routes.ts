@@ -17,7 +17,7 @@ export const ROUTES:Record<string,{title:string,description:string,noindex?:bool
   '/':{title:DEFAULT_TITLE,description:DEFAULT_DESC},
   '/capabilities':{title:t('Capabilities — strategy, digital, data & AI, brand'),description:'Four practices, one team and one measure. Strategy & consultancy, digital & product, data, AI & automation, and brand, marketing & growth.'},
   '/industries':{title:t('Industries — Healthcare, Sport, Wellbeing, Universities & Public Sector'),description:'Deep experience in health and care, sport, wellbeing, universities, the public sector and growth companies, with capability that carries further.'},
-  '/products':{title:t('Products — DataLense and Straight Talking'),description:'Products we own and operate, each born from client work: DataLense for healthcare commercial intelligence and Straight Talking for patient-reported outcomes.'},
+  '/products':{title:t('Products — DataLense and Straight Talking'),description:'Products we own and operate, each born from client work: DataLense for healthcare commercial intelligence and Straight Talking for in-the-moment patient feedback.'},
   '/work':{title:t('Work — the challenge, what we did, and the return'),description:'Selected engagements across strategy, digital, data and brand, filterable by capability and industry.'},
   '/approach':{title:t('Approach — diagnose, design, build, grow'),description:'How we work: four stages, four engagement models and six principles we hold to, all organised around a single measurable outcome.'},
   '/insights':{title:t('Insights — where markets are moving'),description:'Short, opinionated pieces on strategy, data, AI, digital products and growth.'},
@@ -32,6 +32,7 @@ ROUTES['/digitalsme']={title:t('Website Refresh for Small Businesses from £495'
 ROUTES['/digitalsme/terms']={title:t('Website refresh offer terms'),description:'The terms that apply to the Minshall Group website refresh offer for small businesses.'};
 ROUTES['/privacy']={title:t('Privacy notice'),description:'How Minshall Group (Knexu Limited) uses the information you give us through this website.'};
 ROUTES['/products/datalense/sample']={title:t('DataLense sample catchment report'),description:'See what a DataLense healthcare catchment report looks like: drivetime map, market score, competitors, population health, workforce and coverage status. Illustrative data.'};
+ROUTES['/products/straight-talking/demo']={title:t('Straight Talking live demo'),description:'Give feedback as a patient and watch it reach the service, routed to the right person, and appear on the waiting-room screen. Made-up data.'};
 PRODUCTS.forEach(p=>{ROUTES['/products/'+p.slug]={title:t(p.t+' — '+p.line.replace(/\.$/,'')),description:p.d};});
 CASES.forEach(c=>{ROUTES['/work/'+c.id]={title:t(`${c.head.replace(/\.$/,'')}: ${c.client}`),description:c.ch};});
 INSIGHTS.forEach(i=>{ROUTES['/insights/'+i.slug]={title:t(i.t),description:i.d};});

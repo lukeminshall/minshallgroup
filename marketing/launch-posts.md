@@ -10,7 +10,7 @@ Knexu is now Minshall Group.
 
 Same people, same clients, same way of working. Every engagement is still scoped to a number: new revenue, recovered margin or unlocked capital.
 
-What changed is what it takes to move those numbers. A self-referral strategy needed a booking journey to make it real. A site decision needed a catchment model, so we built one, and it became DataLense. A patient-reported outcomes obligation became Straight Talking. New services needed a position, a brand and a launch. Overseas companies asked us to take their products into the UK.
+What changed is what it takes to move those numbers. A self-referral strategy needed a booking journey to make it real. A site decision needed a catchment model, so we built one, and it became DataLense. The push to hear from patients more often became Straight Talking. New services needed a position, a brand and a launch. Overseas companies asked us to take their products into the UK.
 
 The work now spans strategy, digital, data and brand at once, and the Knexu name was hiding that. There was a practical reason to act now, too: we are exploring the sale of Knexusport, and two businesses with almost the same name would only confuse people.
 

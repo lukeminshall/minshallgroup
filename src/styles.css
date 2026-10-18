@@ -1518,3 +1518,20 @@ html.touring .mcta{display:none}
 .rs-h,.rs-h.display{max-width:8.5em}
 .demo-hero .display{max-width:10.2em}
 .wp.vh,.score.poor .sc-band{color:#A30E38}
+/* straight talking demo (patient feedback) */
+.st-faces{display:grid;grid-template-columns:1fr;gap:8px;margin-top:6px}
+.st-faces button{display:flex;justify-content:space-between;align-items:center;min-height:46px;padding:0 14px;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);color:var(--navy);transition:transform .15s,background .2s}
+.st-faces button span{color:#F5A524;letter-spacing:2px;font-size:15px}.st-faces button small{font-weight:700;font-size:14px}
+.st-faces button:hover{box-shadow:inset 0 0 0 1.5px var(--navy)}.st-faces button.on{background:var(--pink);transform:scale(.97)}
+.st-share{margin:10px 0 0;font-size:12.5px;font-weight:700;color:var(--good,#13633F)}
+.st-board-sec{padding:clamp(50px,7vw,100px) 0}
+.st-board{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;background:#0E2250;color:#fff;border-radius:var(--r);padding:clamp(22px,3vw,40px)}
+.st-bq h3{font-family:var(--fd);font-weight:400;font-size:26px;margin:0 0 16px;color:#fff}
+.st-bq ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.st-bq li{background:rgba(255,255,255,.06);border-radius:14px;padding:16px 18px}
+.st-bq li.new{animation:feedin .6s var(--ease-out);background:rgba(255,46,99,.16)}
+.st-bq q{display:block;font-family:var(--fd);font-size:21px;line-height:1.3;quotes:"“" "”"}
+.st-bq span{display:block;margin-top:8px;font-size:13px;color:#F5C26B}
+.st-bq.ysd li{font-size:15px;color:rgba(255,255,255,.85);line-height:1.55}.st-bq.ysd b{color:#FF8FAB}
+.st-feed li span{min-width:0}
+@media (max-width:899px){.st-board{grid-template-columns:1fr}}

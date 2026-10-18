@@ -121,65 +121,57 @@ ${tourLayer()}`;
 
 /* ---------------- STRAIGHT TALKING ---------------- */
 export function straightTalkingDemo(){
-  const stages=[['Before treatment',92],['Week 6',81],['Discharge',74],['6 months',63]];
+  const faces=[['1','Poor'],['2','Not great'],['3','Mixed'],['4','Good'],['5','Wonderful']];
   return `
 <header class="demo-hero dark"><div class="grain" aria-hidden="true"></div><div class="wrap">
   <nav class="crumb rise" style="--i:0" aria-label="Breadcrumb"><a href="/products">Products</a><span aria-hidden="true">/</span><a href="/products/straight-talking">Straight Talking</a><span aria-hidden="true">/</span>Demo</nav>
-  <h1 class="display split">${split('Answer as a patient. Watch the clinic see it',1)}${dot}</h1>
-  <p class="lede rise" style="--i:5">The patient app and the provider dashboard are one connected loop. Fill in the phone on the left and the dashboard updates as you go.</p>
-  <div class="actions rise" style="--i:6"><button class="btn" type="button" data-tour-start><span>Watch the 60-second tour</span></button><a class="btn ghost" href="/contact?interest=Straight%20Talking"><span>Join the first cohort</span></a></div>
-  <p class="demo-flag rise" style="--i:7">Demo with illustrative data. No real patient information.</p>
+  <h1 class="display split">${split('Say it straight. Watch it land',1)}${dot}</h1>
+  <p class="lede rise" style="--i:5">Give feedback as a patient on the phone. The service sees it straight away, routed to the right person, and kind words appear on the waiting-room screen for the next patient.</p>
+  <div class="actions rise" style="--i:6"><button class="btn" type="button" data-tour-start><span>Watch the 45-second tour</span></button><a class="btn ghost" href="/contact?interest=Straight%20Talking"><span>Join the first cohort</span></a></div>
+  <p class="demo-flag rise" style="--i:7">Demo with made-up feedback. No real patient information.</p>
 </div></header>
 
 <section class="st-demo" data-demo="straight"><div class="wrap st-grid">
-  <div class="st-phone" data-step="phone"><div class="st-notch"></div><div class="st-screen" data-st-screen>
-    <div class="st-app-top"><b>Straight Talking</b><span>Northfield Physio · demo</span></div>
-    <div class="st-q" data-st-q="0"><span class="st-stage">Before treatment</span><h3>How bad is your pain today?</h3><p class="st-help">0 is no pain, 10 is the worst imaginable.</p>
-      <div class="st-scale" data-st-scale>${Array.from({length:11},(_,i)=>`<button type="button" data-v="${i}">${i}</button>`).join('')}</div></div>
-    <div class="st-q" data-st-q="1" hidden><span class="st-stage">Before treatment</span><h3>How much does it limit your day?</h3>
-      <div class="st-opts">${['Not at all','A little','Moderately','A lot','I cannot do my usual activities'].map((t,i)=>`<button type="button" data-v="${i}">${t}</button>`).join('')}</div></div>
-    <div class="st-q" data-st-q="2" hidden><span class="st-stage">Week 6</span><h3>And your pain now?</h3>
-      <div class="st-scale" data-st-scale>${Array.from({length:11},(_,i)=>`<button type="button" data-v="${i}">${i}</button>`).join('')}</div></div>
-    <div class="st-q" data-st-q="3" hidden><div class="st-done"><span>✓</span><h3>Thank you.</h3><p>Your physiotherapist can see your progress. We will check in again at discharge.</p><button type="button" class="st-restart" data-st-restart>Start again</button></div></div>
+  <div class="st-phone" data-step="phone"><div class="st-notch"></div><div class="st-screen">
+    <div class="st-app-top"><b>Straight Talking</b><span>Riverside Health Centre</span></div>
+    <div class="st-q" data-st-q="0"><span class="st-stage">Your visit today</span><h3>How was your care today?</h3><p class="st-help">Your feedback is anonymous.</p>
+      <div class="st-faces">${faces.map(([v,t])=>`<button type="button" data-v="${v}" aria-label="${t}"><span>${'★'.repeat(+v)}</span><small>${t}</small></button>`).join('')}</div></div>
+    <div class="st-q" data-st-q="1" hidden><span class="st-stage" data-st-word></span><h3>What would you like to tell us?</h3>
+      <div class="st-opts"><button type="button" data-k="compliment">Say thank you</button><button type="button" data-k="concern">Raise a concern</button><button type="button" data-k="comment">Share a thought</button></div></div>
+    <div class="st-q" data-st-q="2" hidden><span class="st-stage">In a few words</span><h3 data-st-ask>What stood out?</h3>
+      <div class="st-opts" data-st-say></div></div>
+    <div class="st-q" data-st-q="3" hidden><div class="st-done"><span>✓</span><h3>Thank you.</h3><p data-st-thanks>The team will see this today.</p><button type="button" class="st-restart" data-st-restart>Give more feedback</button></div></div>
   </div></div>
   <div class="st-dash" data-step="dash">
-    <div class="st-dash-top"><b>Provider dashboard</b><span class="st-live"><i></i>Live</span></div>
+    <div class="st-dash-top"><b>Service dashboard · Riverside Health Centre</b><span class="st-live"><i></i>Live</span></div>
     <div class="st-kpis">
-      <div><span>Responses today</span><b data-st-today>37</b></div>
-      <div><span>Capture rate, this month</span><b data-st-cap>84%</b></div>
-      <div><span>Average pain change</span><b data-st-chg>−3.1</b></div>
+      <div><span>Feedback today</span><b data-st-today>23</b></div>
+      <div><span>Positive</span><b data-st-pos>87%</b></div>
+      <div><span>Concerns to follow up</span><b data-st-open>1</b></div>
     </div>
-    <div class="st-feed-h">Latest submissions</div>
+    <div class="st-feed-h">Latest feedback</div>
     <ul class="st-feed" data-st-feed>
-      <li><b>Patient 4821</b><span>Week 6 · pain 3 (was 7)</span><em class="up">Improving</em></li>
-      <li><b>Patient 4790</b><span>Discharge · pain 1 (was 6)</span><em class="up">Improving</em></li>
-      <li><b>Patient 4815</b><span>Week 6 · pain 8 (was 5)</span><em class="flag">Flag for clinician</em></li>
+      <li><b>★★★★★</b><span>“Sam on reception made a stressful morning easy.”</span><em class="up">To the team</em></li>
+      <li><b>★★</b><span>“Waited 40 minutes with no update.”</span><em class="flag">To the manager</em></li>
+      <li><b>★★★★</b><span>“Clear explanation of what happens next.”</span><em class="up">To the team</em></li>
     </ul>
-    <div class="st-feed-h">Capture rate by stage</div>
-    <ul class="st-stages">${stages.map(([t,v])=>`<li><span>${t}</span><span class="dv"><i style="--w:${v}%"></i></span><b>${v}%</b></li>`).join('')}</ul>
   </div>
 </div></section>
 
-<section class="soft st-report"><div class="wrap">
-  <div class="dl-head" data-step="report"><div><span class="eyebrow">Sample outcomes report</span><h2 class="h2">MSK physiotherapy cohort, quarter 3</h2><p class="dl-sub">412 patients · fictional provider · illustrative data</p></div>
-    <button class="btn sm ghost" type="button" onclick="window.print()"><span>Save as PDF</span></button></div>
-  <div class="dl-kpis">
-    <div class="dl-kpi dk"><span>Captured at every stage</span><b>63%</b><small>answered before, during and after treatment</small></div>
-    <div class="dl-kpi"><span>Patients improved</span><b>78%</b><small>meaningful pain reduction by discharge</small></div>
-    <div class="dl-kpi"><span>Average pain change</span><b>−3.4</b><small>points on a 0 to 10 scale</small></div>
-    <div class="dl-kpi"><span>Flagged early</span><b>19</b><small>patients whose scores worsened, seen sooner</small></div>
-  </div>
-  <div class="st-rep-grid">
-    <div><h3 class="dl-h3">Pain score through the pathway</h3>
-      <svg class="st-line" viewBox="0 0 520 200" role="img" aria-label="Average pain falling from 6.8 before treatment to 3.4 at discharge and 3.1 at six months">
-        ${[[6.8,'Before'],[4.9,'Week 6'],[3.4,'Discharge'],[3.1,'6 months']].map(([v,t],i,a)=>{const x=40+i*146,y=180-(v as number)*22;const nx=i<a.length-1?40+(i+1)*146:0,ny=i<a.length-1?180-((a[i+1][0] as number))*22:0;
-          return `${i<a.length-1?`<line x1="${x}" y1="${y}" x2="${nx}" y2="${ny}" class="t-line"/>`:''}<circle cx="${x}" cy="${y}" r="6" class="t-dot"/><text x="${x}" y="${y-14}" class="t-v">${v}</text><text x="${x}" y="198" class="t-x">${t}</text>`;}).join('')}
-      </svg></div>
-    <div><h3 class="dl-h3">Ready to send</h3>
-      <ul class="ticks"><li>PHIN-ready patient-reported measures export</li><li>Insurer summary: outcomes by condition and clinician</li><li>Board pack: capture, outcomes and flags, month by month</li><li>Your data, owned by you, exportable at any time</li></ul></div>
+<section class="soft st-board-sec"><div class="wrap">
+  <div class="dl-head" data-step="board"><div><span class="eyebrow">Waiting-room screen</span><h2 class="h2">Patients hear from each other.</h2><p class="dl-sub">Shown on a screen where people wait. Compliments appear only with the person’s permission.</p></div></div>
+  <div class="st-board">
+    <div class="st-bq"><h3>What patients are saying</h3><ul data-st-board>
+      <li><q>The nurse explained every step and settled my nerves.</q><span>★★★★★ · today</span></li>
+      <li><q>Kind, quick and clear about what happens next.</q><span>★★★★★ · yesterday</span></li>
+    </ul></div>
+    <div class="st-bq ysd"><h3>You said, we did</h3><ul>
+      <li><b>You said</b> waiting without an update was stressful.<br><b>We did</b> reception now gives a wait-time update every 15 minutes.</li>
+      <li><b>You said</b> the entrance was hard to find.<br><b>We did</b> new signs from the car park and a map in every appointment letter.</li>
+    </ul></div>
   </div>
 </div></section>
-${demoCta('Report to PHIN or hold PROMs contracts?','Join the first cohort and help shape what comes next.','/contact?interest=Straight%20Talking','Join the first cohort')}
+${demoCta('Want to hear from your patients more often?','Join the first cohort and help shape what comes next.','/contact?interest=Straight%20Talking','Join the first cohort')}
 ${tourLayer()}`;
 }
 
@@ -211,12 +203,11 @@ export function initDemos(){
     {sel:'[data-step="verdict"]',text:'Then a plain-English verdict, with the conditions attached.'},
     {sel:'[data-step="coverage"]',text:'And every figure carries its coverage status. If we cannot resolve it, we say so rather than guess.'}
   ]:[
-    {sel:'[data-step="phone"]',text:'A patient is asked one simple question at a time, on their phone, before treatment starts.',click:'[data-st-q="0"] [data-v="7"]'},
-    {sel:'[data-step="dash"]',text:'Their answer lands on the provider dashboard the moment they submit.',wait:2400},
-    {sel:'[data-step="phone"]',text:'Short and specific: how much does it limit your day?',click:'[data-st-q="1"] [data-v="3"]'},
-    {sel:'[data-step="phone"]',text:'Six weeks later, the same patient checks in again.',click:'[data-st-q="2"] [data-v="3"]'},
-    {sel:'[data-step="dash"]',text:'The dashboard shows the change, the capture rate at every stage, and flags anyone getting worse.',wait:2800},
-    {sel:'[data-step="report"]',text:'Each quarter, it becomes an outcomes report: ready for PHIN, insurers and the board.'}
+    {sel:'[data-step="phone"]',text:'A patient scans a code in the waiting room and rates their care. No app, no account.',click:'[data-st-q="0"] [data-v="5"]'},
+    {sel:'[data-step="phone"]',text:'They choose what they want to say: a thank you, a concern or a thought.',click:'[data-st-q="1"] [data-k="compliment"]'},
+    {sel:'[data-step="phone"]',text:'A few words about that visit, and permission to share it with other patients.',click:'[data-st-q="2"] [data-say]'},
+    {sel:'[data-step="dash"]',text:'It reaches the service straight away. Compliments go to the team, concerns to someone who can act.',wait:3400},
+    {sel:'[data-step="board"]',text:'And kind words appear on the waiting-room screen, with “you said, we did”, so patients hear from each other.',wait:3600}
   ];
   wireTour(steps);
 }
@@ -241,23 +232,37 @@ function wireDatalense(root:HTMLElement){
 
 function wireStraight(root:HTMLElement){
   const qs=[...root.querySelectorAll<HTMLElement>('[data-st-q]')],feed=root.querySelector<HTMLElement>('[data-st-feed]');
-  const today=root.querySelector<HTMLElement>('[data-st-today]'),cap=root.querySelector<HTMLElement>('[data-st-cap]'),chg=root.querySelector<HTMLElement>('[data-st-chg]');
-  let before=0,step=0;const id=4800+Math.floor(Math.random()*90);
-  const go=(n:number)=>{qs.forEach((q,i)=>{q.hidden=i!==n;q.classList.toggle('in',i===n);});step=n;};
-  const push=(html:string)=>{const li=document.createElement('li');li.className='new';li.innerHTML=html;feed.prepend(li);while(feed.children.length>4)feed.lastElementChild.remove();
-    today.textContent=String(+today.textContent+1);bump(today);};
+  const today=root.querySelector<HTMLElement>('[data-st-today]'),pos=root.querySelector<HTMLElement>('[data-st-pos]'),open=root.querySelector<HTMLElement>('[data-st-open]');
+  const say=root.querySelector<HTMLElement>('[data-st-say]'),ask=root.querySelector<HTMLElement>('[data-st-ask]'),word=root.querySelector<HTMLElement>('[data-st-word]'),thanks=root.querySelector<HTMLElement>('[data-st-thanks]');
+  const board=document.querySelector<HTMLElement>('[data-st-board]');
+  const WORDS=['','We’re sorry to hear that','Not the visit we want for you','A mixed one, thank you for telling us','Glad it went well','Wonderful, thank you'];
+  const SAY:Record<string,[string,string[]]>={
+    compliment:['What stood out?',['The staff were kind and patient','I was seen quickly','Everything was explained clearly']],
+    concern:['What went wrong?',['I waited with no update','I did not feel listened to','It was hard to find my way']],
+    comment:['What is on your mind?',['Parking was tricky','More seating would help','The online booking was easy']]};
+  let stars=0,kind='compliment';
+  const go=(n:number)=>{qs.forEach((q,i)=>{q.hidden=i!==n;q.classList.toggle('in',i===n);});};
   const bump=(el:HTMLElement)=>{el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');};
   root.addEventListener('click',e=>{
-    const b=(e.target as HTMLElement).closest<HTMLButtonElement>('[data-v]');
-    if((e.target as HTMLElement).closest('[data-st-restart]')){go(0);return;}
-    if(!b)return;const v=+b.dataset.v;b.classList.add('on');
-    setTimeout(()=>{
-      if(step===0){before=v;push(`<b>Patient ${id}</b><span>Before treatment · pain ${v}</span><em>New</em>`);go(1);}
-      else if(step===1){push(`<b>Patient ${id}</b><span>Before treatment · limits day: ${b.textContent.toLowerCase()}</span><em>New</em>`);go(2);}
-      else if(step===2){const worse=v>before;push(`<b>Patient ${id}</b><span>Week 6 · pain ${v} (was ${before})</span><em class="${worse?'flag':'up'}">${worse?'Flag for clinician':'Improving'}</em>`);
-        cap.textContent='85%';bump(cap);chg.textContent=(-3.1+((v-before)+3.1)*.02).toFixed(1).replace('-','−');bump(chg);go(3);}
-      b.classList.remove('on');
-    },380);
+    const t=e.target as HTMLElement;
+    if(t.closest('[data-st-restart]')){go(0);return;}
+    const v=t.closest<HTMLButtonElement>('[data-v]'),k=t.closest<HTMLButtonElement>('[data-k]'),sy=t.closest<HTMLButtonElement>('[data-say]');
+    const b=v||k||sy;if(!b)return;b.classList.add('on');
+    setTimeout(()=>{b.classList.remove('on');
+      if(v){stars=+v.dataset.v;word.textContent=WORDS[stars];go(1);}
+      else if(k){kind=k.dataset.k;const[q,opts]=SAY[kind];ask.textContent=q;
+        say.innerHTML=opts.map(o=>`<button type="button" data-say="${o}">${o}</button>`).join('')+(kind==='compliment'?'<p class="st-share">✓ Happy for this to be shown to other patients</p>':'');go(2);}
+      else if(sy){const text=sy.dataset.say,concern=kind==='concern';
+        const li=document.createElement('li');li.className='new';
+        li.innerHTML=`<b>${'★'.repeat(stars)}</b><span>“${text}.”</span><em class="${concern?'flag':'up'}">${concern?'To the manager':kind==='compliment'?'To the team':'To the team'}</em>`;
+        feed.prepend(li);while(feed.children.length>4)feed.lastElementChild.remove();
+        today.textContent=String(+today.textContent+1);bump(today);
+        if(concern){open.textContent=String(+open.textContent+1);bump(open);thanks.textContent='Your concern has gone straight to the manager.';}
+        else{thanks.textContent=kind==='compliment'?'The team will see your thank you today.':'Thank you, the team will read this today.';}
+        if(kind==='compliment'&&board){const q=document.createElement('li');q.className='new';q.innerHTML=`<q>${text}.</q><span>${'★'.repeat(stars)} · just now</span>`;board.prepend(q);while(board.children.length>3)board.lastElementChild.remove();}
+        if(stars>=4&&!concern){pos.textContent='88%';bump(pos);}
+        go(3);}
+    },350);
   });
 }
 

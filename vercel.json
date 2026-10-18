@@ -3,6 +3,11 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/insights/the-capture-rate-problem",
+      "destination": "https://minshallgroup.com/insights/feedback-in-the-moment",
+      "permanent": true
+    },
+    {
       "source": "/consultancy",
       "destination": "https://minshallgroup.com/capabilities/strategy",
       "permanent": true

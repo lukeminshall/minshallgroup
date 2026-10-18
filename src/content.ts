@@ -93,7 +93,7 @@ export const RETURNS=[
 /* ---------------- INDUSTRIES ---------------- */
 export const INDUSTRIES=[
   {id:'health',t:'Health & care',gfx:'pathway',d:'Independent diagnostics, NHS private patient units, provider groups and clinics.',
-    challenges:['Self-pay demand that arrives but does not convert','Referral-to-report pathways leaking capacity','Site and investment decisions made on instinct','Patient-reported outcome obligations (PHIN, PROMs)'],
+    challenges:['Self-pay demand that arrives but does not convert','Referral-to-report pathways leaking capacity','Site and investment decisions made on instinct','Hearing from patients often enough to act on it'],
     caps:['strategy','digital','data-ai'],clients:['Prime Health','Medical Imaging Partnership','Housden Group','Technique Health']},
   {id:'sport',t:'Sport',gfx:'pitch',d:'Governing bodies, clubs, tournaments, events and the businesses that serve them.',
     challenges:['Commercial estate that is under-monetised','Ticketing that ends at the transaction','Sponsorship packages nobody is buying','Participation that does not grow the base'],
@@ -118,8 +118,8 @@ export const PRODUCTS=[
     line:'Healthcare commercial intelligence.',
     d:'Drivetime catchment scoring, competitor mapping and population health profiles for any UK site decision, before the capital is committed.'},
   {slug:'straight-talking',t:'Straight Talking',status:'First cohort · October 2026',gfx:'layers',
-    line:'Patient-reported outcomes, done properly.',
-    d:'One capture surface across the whole clinical journey, with PHIN and PROMs instruments layered on top, turning an obligation into evidence.'}
+    line:'Say it straight. We’re listening.',
+    d:'Patients scan a code where care happens and say how it felt, in under a minute. Services get a direct feedback loop, and patients hear from each other.'}
 ];
 
 /* ---------------- CASE STUDIES ----------------
@@ -332,7 +332,7 @@ export const INSIGHTS=[
     d:'Same people, same standards, a broader offer. Why we changed our name, and what it means for clients.',
     body:['Knexu is now Minshall Group. The people, the clients and the way we work are the same. What has changed is the size of the job we are asked to do, and the name now reflects it.',
       'Knexu started as a strategic growth agency for sport, health and wellbeing. Every engagement was scoped to a number: new revenue, recovered margin or unlocked capital. That has not changed, and it will not.',
-      'What changed is what it took to move those numbers. A self-referral strategy needed a booking journey to make it real. A site decision needed a catchment model, so we built one, and it became DataLense. A patient-reported outcomes obligation needed a better way to capture the patient’s voice, and that became Straight Talking. New services needed a position, a brand and a launch. Overseas companies asked us to take their products into the UK. Increasingly, the work spans strategy, digital, data and brand at once.',
+      'What changed is what it took to move those numbers. A self-referral strategy needed a booking journey to make it real. A site decision needed a catchment model, so we built one, and it became DataLense. The push to hear from patients more often needed a simpler way for them to speak up, and that became Straight Talking. New services needed a position, a brand and a launch. Overseas companies asked us to take their products into the UK. Increasingly, the work spans strategy, digital, data and brand at once.',
       'Under one name that was built for consultancy, that breadth was hard to see. Minshall Group puts it on the surface: four practices, strategy and consultancy, digital and product, data, AI and automation, and brand, marketing and growth, working as one team, alongside the products we own and run.',
       'There was also a practical reason to act now. We are exploring the sale of Knexusport, our athlete medical operations platform. Knexu and Knexusport share a name, and a sale would leave two separate businesses with almost the same brand. Recognising that conflict, we decided to make the move.',
       'For existing clients nothing changes. Your contacts and engagements carry straight over, and you can now reach us at hello@minshallgroup.com. Our knexu.co.uk email addresses keep working as normal.',
@@ -368,13 +368,19 @@ export const INSIGHTS=[
       'Start there and the technology choice becomes obvious, and often modest. Triage that reads an inbound referral and routes it. A first draft that a person checks and signs off. A reconciliation that runs overnight instead of on a Friday afternoon.',
       'Governance comes first. Every automated step should be explainable, logged and reversible, with a person accountable for it. That is what makes the second and third use case easy to approve.',
       'And sometimes the honest answer is that a better form, a cleaner process or a simple rule does the job. We would rather tell you that than sell you a model.']},
-  {slug:'the-capture-rate-problem',tag:'Digital',cap:'digital',date:'2026-07-08',mins:4,
-    t:'The capture-rate problem nobody names',
-    d:'A validated outcome measure at a 12% response rate is weaker evidence than a well-designed journey capture at 60%.',
-    body:['Healthcare has spent years perfecting the instruments used to measure patient outcomes, and very little time on the surface patients use to answer them. The result is a familiar pattern: an excellent questionnaire, sent once, by email, at the end, to a small share of patients who reply.',
-      'From 2026 that matters more than ever. Patient-reported measures are part of what independent providers must publish, and participation itself is becoming a published metric. Low capture is no longer just a data-quality issue; it is visible.',
-      'The fix is a design problem before it is a clinical one. Capture across the journey rather than at the end. Ask little and often. Make it effortless on a phone. Then layer the mandated instruments onto the same spine, so experience and outcome sit on one record.',
-      'That is the thinking behind Straight Talking. The principle applies anywhere evidence is collected from people: optimise the surface first, then the instrument.']}
+  {slug:'feedback-in-the-moment',tag:'Digital',cap:'digital',date:'2026-07-08',mins:4,
+    t:'Feedback in the moment beats the survey nobody finishes',
+    d:'Health and social care services are asked to hear from patients more often. The answer is a simpler way to speak up, at the point of care.',
+    body:['Most patient feedback arrives late. A survey lands by email days or weeks after the visit, a small share of people reply, and by then the detail that mattered has faded. It satisfies a requirement and tells the service very little.',
+      '## Ask in the moment',
+      'The best time to hear how care felt is straight after it. A code on a stand, a card or a poster lets someone say how it went before they leave the building or the carer leaves their home. It takes less than a minute.',
+      '## Keep it small',
+      'One rating and a few words about that visit and the people involved. Not a questionnaire, and not wider than the experience itself. Small asks get answered.',
+      '## Close the loop',
+      'Feedback is only useful if it reaches the right person. Compliments should reach the team who earned them; concerns should go straight to someone who can act. Then tell people what changed: you said, we did.',
+      '## Let patients hear each other',
+      'Sharing what other patients have said, with their permission, builds trust and encourages the next person to speak up. Patient voices belong where patients are, not only in a report.',
+      'That is the thinking behind Straight Talking, our patient feedback platform for NHS, independent and social care providers.']}
 ];
 
 /* ---------------- CLIENTS (marquee) ---------------- */
@@ -403,7 +409,7 @@ export const LANDINGS=[
       {t:'Pathway and capacity redesign',d:'Referral-to-report and patient pathway mapping that finds where work waits and recovers clinical and administrative time.'},
       {t:'Site selection and catchment analysis',d:'Drivetime catchments, competitor mapping and population health profiles for any UK site decision, powered by DataLense.'},
       {t:'Business cases and investment',d:'Cases for boards, investment committees and funders, modelled and evidenced line by line.'},
-      {t:'Patient-reported outcomes',d:'PHIN and PROMs capture designed for response rate first, with Straight Talking as the platform.'},
+      {t:'Patient feedback',d:'In-the-moment feedback from patients and people in care, routed straight to the right team, with Straight Talking as the platform.'},
       {t:'UK market entry for health tech',d:'Market sizing, priority locations, clinic and hospital channels, pricing and measured pilots, delivered with XV Capital Advisory.'}],
     cases:['prime-health','mip','housden','neurotech-uk'],
     products:true,

@@ -14,6 +14,7 @@ const build=():Item[]=>uniq([
   {t:'Website packages and prices',s:'Refresh, Rebuild and Grow',h:'/digitalsme#packages',k:'Tool'},
   {t:'Start a conversation',s:'Tell us the number you want to move',h:'/contact',k:'Contact'},
   {t:'DataLense sample report',s:'See a catchment report',h:'/products/datalense/sample',k:'Demo'},
+  {t:'Straight Talking live demo',s:'Give feedback as a patient, watch it land',h:'/products/straight-talking/demo',k:'Demo'},
   {t:'Client login',s:'Your project, approvals and performance',h:'/portal',k:'Tool'},
   ...CAPS.map(c=>({t:c.t,s:c.line,h:'/capabilities/'+c.slug,k:'Practice'})),
   ...LANDINGS.map(L=>({t:L.eyebrow,s:L.desc,h:'/'+L.slug,k:'Service'})),

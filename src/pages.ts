@@ -7,7 +7,7 @@ import {subscribeBox,split,splitLetters,eyebrow,shead,phead,btn,cards,returnsRow
 import {dot,tile} from './brand';
 import {gRidge,gDial,gNetwork} from './graphics';
 import {researchPage,RESEARCH_SLUG} from './research';
-import {datalenseSample} from './demos';
+import {datalenseSample,straightTalkingDemo} from './demos';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 export const P:Record<string,()=>string>={};
@@ -283,26 +283,26 @@ ${phead({crumb:'<a href="/products">Products</a><span>/</span>DataLense',title:'
 ${ctaBand('Considering a site?','Send us the postcode. We will run the catchment and talk you through what it says.')}`;
 
 P['/products/straight-talking']=()=>`
-${phead({crumb:'<a href="/products">Products</a><span>/</span>Straight Talking',title:'A compliance cost, turned into evidence.',lede:'Straight Talking is the patient-reported spine for a whole clinical journey: one capture surface from first contact to outcome, with the mandated instruments layered on top.',gfx:'layers',
-  actions:`${btn('Join the first cohort','/contact')}`,meta:'<span class="status">First cohort · October 2026</span>'})}
+${phead({crumb:'<a href="/products">Products</a><span>/</span>Straight Talking',title:'Say it straight. We’re listening.',lede:'Straight Talking gives patients and people in care a simple way to say how their care felt, in the moment, and gives health and social care services a direct line back.',gfx:'layers',
+  actions:`${btn('Try the live demo','/products/straight-talking/demo')}${btn('Join the first cohort','/contact?interest=Straight%20Talking',true)}`,meta:'<span class="status">First cohort · October 2026</span>'})}
 <section><div class="wrap split-2">
-  <div class="reveal">${eyebrow('The problem')}<h2 class="h2">Feedback collected once, at the end, from the few who reply.</h2></div>
-  <div class="prose reveal" style="--i:1"><p>Most providers collect patient feedback at one point, usually by email, from a small share of patients. It satisfies a reporting requirement and tells the organisation almost nothing it can act on, or negotiate with.</p><p>Straight Talking treats the patient’s voice as a continuous record across the journey. Capture rate comes first; validated instruments sit on the same spine; experience and outcome live on one record.</p></div>
+  <div class="reveal">${eyebrow('The problem')}<h2 class="h2">Feedback that arrives weeks later, from the few who reply.</h2></div>
+  <div class="prose reveal" style="--i:1"><p>Health and social care services are under growing pressure to hear from the people they care for, and to act on it. Most feedback still arrives late, through a survey few people finish, and says little about the moment that mattered.</p><p>Straight Talking is about that moment: a quick, honest word on how care felt, with that service and the people in it. Nothing wider than that, and nothing harder.</p></div>
 </div></section>
 <section class="soft"><div class="wrap">
-  ${shead({eyebrow:'Why now',h:'Why it matters now.'})}
+  ${shead({eyebrow:'How it works',h:'Under a minute, from scan to listened to.'})}
   ${cards([
-    {n:'PHIN',t:'Publication duties',d:'Patient-reported measures are part of what independent providers must publish.'},
-    {n:'PROMs',t:'Participation is public',d:'Capture rate itself becomes a published metric.'},
-    {n:'NHS',t:'Contractual PROMs',d:'The same expectation applies to NHS-funded activity in independent settings.'},
-    {n:'Value',t:'Insurer negotiation',d:'Value-based arguments need outcome evidence that belongs to the provider.'}
+    {n:'01',t:'Scan',d:'A QR code on a stand, card or poster where care happens: the waiting room, the ward, the care home or a carer’s visit.'},
+    {n:'02',t:'Say it',d:'A rating and a few words about that visit, in the person’s own language. No account and no app to download.'},
+    {n:'03',t:'Straight to the right person',d:'Compliments reach the team who earned them. Concerns go straight to someone who can act.'},
+    {n:'04',t:'Patients hear each other',d:'With permission, kind words and “you said, we did” appear on a screen where patients wait, so the next person knows it is worth speaking up.'}
   ],2)}
 </div></section>
 <section><div class="wrap split-2 flip">
   <div class="gpanel reveal">${gDial()}</div>
-  <div class="prose reveal" style="--i:1">${eyebrow('Status')}<h2 class="h2">Built, demonstrable, and onboarding.</h2><p>The platform is a working product with a connected loop: submissions from the patient app appear live in the provider dashboard. We are running structured demonstrations with provider groups and onboarding the first cohort now.</p></div>
+  <div class="prose reveal" style="--i:1">${eyebrow('Who it is for')}<h2 class="h2">NHS, independent and social care.</h2><p>Clinics, practices, hospitals, care homes and home care services that want a direct feedback loop with the people they look after, without another long survey.</p><p>Feedback is anonymous by default. No patient-identifiable information is held against what people say.</p></div>
 </div></section>
-${ctaBand('Report to PHIN or hold PROMs contracts?','Join the first cohort and help shape what comes next.')}`;
+${ctaBand('Want to hear from your patients more often?','Join the first cohort and help shape what comes next.',`${btn('Try the live demo','/products/straight-talking/demo')}${btn('Join the first cohort','/contact?interest=Straight%20Talking',true)}`)}`;
 
 /* ================= WORK ================= */
 P['/work']=()=>`
@@ -387,6 +387,7 @@ ${phead({crumb:`<a href="/insights">Insights</a><span>/</span>${a.tag}`,title:a.
 INSIGHTS.forEach(a=>{P['/insights/'+a.slug]=()=>article(a);});
 P['/insights/'+RESEARCH_SLUG]=researchPage;
 P['/products/datalense/sample']=datalenseSample;
+P['/products/straight-talking/demo']=straightTalkingDemo;
 /* ================= CASE STUDIES ================= */
 function casePage(c,i){
   const ind=indById(c.ind),next=CASES[(i+1)%CASES.length],prev=CASES[(i-1+CASES.length)%CASES.length];
