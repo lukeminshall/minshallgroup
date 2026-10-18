@@ -276,6 +276,7 @@ ${phead({crumb:'<a href="/products">Products</a><span>/</span>DataLense',title:'
     {n:'04',t:'General Trends',d:'Demand and activity trends over time, so you can see where the market is heading.'}
   ],2)}
 </div></section>
+<section class="pvid-sec"><div class="wrap"><figure class="pvid reveal"><video src="/videos/datalense-sample-tour.mp4" poster="/videos/datalense-sample-tour.jpg" controls preload="none" playsinline muted width="1280" height="720"></video><figcaption>A 40-second tour of a sample DataLense catchment report. <a class="tlink" href="/products/datalense/sample">Explore it yourself</a></figcaption></figure></div></section>
 <section><div class="wrap split-2 flip">
   <div class="gpanel reveal">${gRidge()}</div>
   <div class="prose reveal" style="--i:1">${eyebrow('Our principle')}<h2 class="h2">We would rather say nothing than say something wrong.</h2><p><a class="tlink" href="/healthcare-site-selection">Healthcare site selection</a></p><p>Every figure carries a coverage status. If a catchment cannot be resolved, the derived numbers come back empty with the reason attached, while postcode-level data still resolves. A partial answer that knows it is partial is safer than a confident wrong one.</p></div>
@@ -298,6 +299,7 @@ ${phead({crumb:'<a href="/products">Products</a><span>/</span>Straight Talking',
     {n:'04',t:'Patients hear each other',d:'With permission, kind words and “you said, we did” appear on a screen where patients wait, so the next person knows it is worth speaking up.'}
   ],2)}
 </div></section>
+<section class="pvid-sec"><div class="wrap"><figure class="pvid reveal"><video src="/videos/straight-talking-demo-tour.mp4" poster="/videos/straight-talking-demo-tour.jpg" controls preload="none" playsinline muted width="1280" height="720"></video><figcaption>A 45-second tour: a patient gives feedback, the service sees it, and other patients hear it. <a class="tlink" href="/products/straight-talking/demo">Try the demo</a></figcaption></figure></div></section>
 <section><div class="wrap split-2 flip">
   <div class="gpanel reveal">${gDial()}</div>
   <div class="prose reveal" style="--i:1">${eyebrow('Who it is for')}<h2 class="h2">NHS, independent and social care.</h2><p>Clinics, practices, hospitals, care homes and home care services that want a direct feedback loop with the people they look after, without another long survey.</p><p>Feedback is anonymous by default. No patient-identifiable information is held against what people say.</p></div>
