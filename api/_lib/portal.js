@@ -38,11 +38,11 @@ export async function projectFor(who, clientId) {
   return data;
 }
 
-export async function sendEmail({ to, subject, text, replyTo }) {
+export async function sendEmail({ to, subject, text, html, replyTo, from }) {
   const key = process.env.RESEND_API_KEY; if (!key || !to) return false;
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: process.env.CONTACT_FROM || 'Minshall Group <website@minshallgroup.com>', to, subject, text, ...(replyTo ? { reply_to: replyTo } : {}) })
+    body: JSON.stringify({ from: from || process.env.CONTACT_FROM || 'Minshall Group <website@minshallgroup.com>', to, subject, text, ...(html ? { html } : {}), ...(replyTo ? { reply_to: replyTo } : {}) })
   }).catch(() => null);
   if (!r || !r.ok) console.error('Portal email failed', r && r.status, r && await r.text());
   return !!(r && r.ok);

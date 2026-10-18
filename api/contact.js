@@ -1,3 +1,4 @@
+import { brandEmail, FROM } from './_lib/email.js';
 /* Vercel Serverless Function — contact form → email via Resend.
    Set in Vercel → Project → Settings → Environment Variables:
      RESEND_API_KEY  (required)  — from resend.com
@@ -64,22 +65,24 @@ export default async function handler(req, res) {
      to send arbitrary content to other people. */
   const autoReply = async () => {
     const first = name.split(/\s+/)[0].replace(/[^\p{L}' -]/gu, '').slice(0, 30);
-    const isQuote = /^website refresh/i.test(interest);
-    const lines = isQuote ? [
-      `Hello${first ? ' ' + first : ''},`, '',
-      'Thank you for your website quote request. It is with us, and we will confirm the price and your dates within one working day.', '',
-      'You do not need to book a call. The next step is to create your client account, where you can answer your onboarding questions, upload your logo and photos, and follow progress:',
-      'https://minshallgroup.com/portal', '',
-      'You can read our offer terms here: https://minshallgroup.com/digitalsme/terms'
-    ] : [
-      `Hello${first ? ' ' + first : ''},`, '',
-      'Thank you for getting in touch with Minshall Group. Your message is with us and someone senior will reply within two working days.', '',
-      'If it is about a website for a small business, you can also check your current site and build a fixed-price quote at https://minshallgroup.com/digitalsme'
-    ];
-    lines.push('', 'Minshall Group', 'hello@minshallgroup.com · minshallgroup.com', '', 'You are receiving this because this address was entered on our contact form. If that was not you, you can ignore this email.');
+    const isQuote = /^website (refresh|quote)/i.test(interest);
+    const mail = brandEmail(isQuote ? {
+      preheader: 'We confirm your price and dates within one working day.', eyebrow: 'Quote received', heading: 'Thank you. Your quote is with us.', greeting: `Hello${first ? ' ' + first : ''},`,
+      paras: ['We will confirm your price and your dates within one working day. You do not need to book a call.'],
+      list: ['Create your client account', 'Answer your onboarding questions in your own time', 'Upload your logo and photos, and follow every stage'],
+      button: { label: 'Create your account', url: 'https://minshallgroup.com/portal' },
+      after: ['Our offer terms are at minshallgroup.com/digitalsme/terms.'],
+      reason: 'You are receiving this because this address was entered on our website. If that was not you, you can ignore this email.'
+    } : {
+      preheader: 'Someone senior will reply within two working days.', eyebrow: 'Message received', heading: 'Thank you for getting in touch.', greeting: `Hello${first ? ' ' + first : ''},`,
+      paras: ['Your message is with us, and someone senior will reply within two working days. We will tell you honestly whether we are the right people.'],
+      button: { label: 'See our recent work', url: 'https://minshallgroup.com/work' },
+      after: ['Need a website for a small business? You can check your current site and price a new one in minutes at minshallgroup.com/digitalsme.'],
+      reason: 'You are receiving this because this address was entered on our contact form. If that was not you, you can ignore this email.'
+    });
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from, to: email, subject: isQuote ? 'Your website quote request: Minshall Group' : 'Thank you for getting in touch: Minshall Group', text: lines.join('\n'), reply_to: to })
+      body: JSON.stringify({ from: FROM, to: email, subject: isQuote ? 'Your website quote: Minshall Group' : 'Thank you for getting in touch: Minshall Group', text: mail.text, html: mail.html, reply_to: to })
     }).catch(() => null);
     if (!r || !r.ok) console.error('Auto-reply failed', r && r.status);
   };

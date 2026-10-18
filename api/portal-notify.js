@@ -4,6 +4,7 @@
    writes the email, so nothing in the email comes from the request body.
    Client actions email the team (hello@); team actions email the client. */
 import { configured, caller, projectFor, db, sendEmail, TEAM, SITE, body, fail } from './_lib/portal.js';
+import { brandEmail, FROM } from './_lib/email.js';
 import { createClerkClient } from '@clerk/backend';
 
 const STAGE = { onboarding: 'Onboarding', design: 'Design', build: 'Build', review: 'Review', live: 'Live' };
@@ -31,8 +32,14 @@ export default async function handler(req, res) {
         const qLine = q ? `Quote built on the website: ${cl(q.package, 20)}, ${cl(q.pages, 5)} pages, £${total.toLocaleString('en-GB')} build${q.organisation ? `, for ${cl(q.organisation)}` : ''}${q.website ? ` (current site ${cl(q.website)})` : ''}.` : 'No website quote on their device.';
         await sendEmail({ to: TEAM(), subject: `[Portal] New account${total ? ` with a £${total.toLocaleString('en-GB')} quote` : ''}: ${name || email}`, replyTo: email || undefined,
           text: [`${name || 'Someone'} <${email}> has created a client portal account.`, qLine, '', 'They have not started their project yet. If they have not within a day, a short personal note usually helps: reply to this email to reach them.', '', `Open the portal: ${SITE}/portal#admin`].join('\n') });
-        if (email) await sendEmail({ to: email, subject: 'Welcome to your Minshall Group portal',
-          text: [`Hello${u.firstName ? ' ' + u.firstName : ''},`, '', 'Thank you for creating your account. Your next step is to start your project: it takes two minutes, and if you built a quote on our website it is already filled in.', '', `Start your project: ${SITE}/portal`, '', 'From then on, everything happens in the portal: your onboarding questions, design approval, changes and invoices. We email you whenever something needs you.', '', 'Minshall Group', 'hello@minshallgroup.com'].join('\n') });
+        if (email) await sendEmail({ to: email, from: FROM, replyTo: TEAM(), subject: 'Welcome to Minshall Group', ...brandEmail({
+          preheader: 'Your account is ready. Your onboarding takes about 15 minutes, in your own time.',
+          eyebrow: 'Welcome', heading: 'Your account is ready.', greeting: `Hello${u.firstName ? ' ' + u.firstName : ''},`,
+          paras: ['Thank you for choosing Minshall Group. Everything about your website now happens in one place, your client portal, so there is no kick-off call to book.'],
+          list: ['Start your project. If you priced it on our website, your choices are already filled in.', 'Answer your onboarding questions in your own time. Your answers save as you go.', 'Approve your design, raise changes and see invoices, all in the portal.'],
+          button: { label: 'Open your portal', url: `${SITE}/portal` },
+          after: ['We confirm your quote and dates within one working day. No payment is taken until we do.', 'Questions at any point? Just reply to this email.'],
+          reason: 'You are receiving this because you created an account at minshallgroup.com.' }) });
       }
       return res.status(200).json({ ok: true, new: !!(added && added.length) });
     }
@@ -43,12 +50,18 @@ export default async function handler(req, res) {
     const req_ = requestId ? (await db().from('requests').select('*').eq('id', requestId).eq('client_id', p.id).maybeSingle()).data : null;
 
     const toTeam = (subject, lines) => sendEmail({ to: TEAM(), subject: `[Portal] ${subject} · ${p.business_name}`, text: [...lines, '', `Open the portal: ${link}#admin`].join('\n'), replyTo: p.owner_email });
-    const toClient = (subject, lines) => sendEmail({ to: p.owner_email, subject, text: [`Hello${p.owner_name ? ' ' + p.owner_name.split(' ')[0] : ''},`, '', ...lines, '', `Log in to your portal: ${link}`, '', 'Minshall Group', 'hello@minshallgroup.com'].join('\n'), replyTo: TEAM() });
+    /* client emails: branded layout, from hello@, with one clear button into the portal */
+    const toClient = (subject, o) => sendEmail({ to: p.owner_email, from: FROM, replyTo: TEAM(), subject, ...brandEmail({
+      greeting: `Hello${p.owner_name ? ' ' + p.owner_name.split(' ')[0] : ''},`, button: { label: o.cta || 'Open your portal', url: o.url || link },
+      after: ['You can reply to this email, or message us from your portal.'], reason: `You are receiving this because you have a project with us: ${p.business_name}.`, ...o }) });
 
     switch (event) {
       case 'project_started':
         await toTeam('New project started', [`${p.owner_name || ''} <${p.owner_email || ''}> started a project.`, `Business: ${p.business_name}`, `Website: ${p.website || '—'}`, `Package: ${p.package || '—'}, ${p.pages || '?'} pages, quote ${p.quote_total ? gbp(p.quote_total) : '—'}`, `Hosting: ${p.hosting}`, `Domain: ${p.domain_mode === 'need' ? 'please secure ' + (p.domain || '') : p.domain || '—'}`]);
-        await toClient('Your project has started', ['Thank you for starting your website project with us.', 'Next step: complete your onboarding questions in the portal. It replaces a kick-off call and takes about 15 minutes. Your progress saves as you go.']);
+        await toClient(`Your project has started: ${p.business_name}`, { preheader: 'Next: your onboarding questions, about 15 minutes.', eyebrow: 'Project started', heading: 'Your website project has started.',
+          paras: ['Thank you for starting your project with us. We will confirm your quote and dates within one working day.', 'Your next step is the onboarding questions. They replace a kick-off call, take about 15 minutes and save as you go, so you can stop and come back.'],
+          list: ['Your business, customers and what you want the site to do', 'The look you like, with examples you can pick from', 'Your logo and photos, with permission to use them'],
+          cta: 'Start your onboarding', url: `${link}#onboarding` });
         break;
       case 'brief_submitted':
         await toTeam('Onboarding brief submitted', ['The onboarding questionnaire has been submitted and is ready to review.']); break;
@@ -66,27 +79,29 @@ export default async function handler(req, res) {
       /* team → client */
       case 'stage_changed':
         if (!who.isAdmin) break;
-        await toClient(`Your project is now at: ${STAGE[p.stage] || p.stage}`, [
-          p.stage === 'design' ? 'Your design is ready to review. Open the preview from your portal and press "Approve design" when you are happy, or raise a change request.' :
-          p.stage === 'build' ? 'Thank you for approving the design. We are now building the rest of your site.' :
-          p.stage === 'review' ? 'Your site is built and ready for a final check. Have a look and raise any last changes in the portal.' :
-          p.stage === 'live' ? `Your new website is live${p.live_url ? ' at ' + p.live_url : ''}. Your Performance tab will now track its Webmins Score each month.` :
-          'Your project stage has been updated.']); break;
+        await toClient(p.stage === 'design' ? 'Your design is ready to review' : p.stage === 'live' ? 'Your new website is live' : `Your project is now at: ${STAGE[p.stage] || p.stage}`, {
+          eyebrow: STAGE[p.stage] || p.stage,
+          heading: p.stage === 'design' ? 'Your design is ready.' : p.stage === 'build' ? 'We are building your site.' : p.stage === 'review' ? 'Your site is ready for a final check.' : p.stage === 'live' ? 'Your website is live.' : 'Your project has moved on.',
+          paras: [p.stage === 'design' ? 'Open the preview from your portal. When you are happy, press Approve design, or raise a change and we will update it.' :
+            p.stage === 'build' ? 'Thank you for approving the design. We are now building the rest of your site, and we will let you know when it is ready to check.' :
+            p.stage === 'review' ? 'Have a look through every page. Raise any last changes in your portal and we will make them before launch.' :
+            p.stage === 'live' ? `Your new website is live${p.live_url ? ' at ' + p.live_url : ''}. From now on, your Performance tab tracks its Webmins Score every month.` : 'Your project stage has been updated in your portal.'],
+          cta: p.stage === 'design' ? 'Review your design' : p.stage === 'live' && p.live_url ? 'Visit your website' : 'Open your portal', url: p.stage === 'live' && p.live_url ? p.live_url : link }); break;
       case 'request_quoted':
         if (!who.isAdmin || !req_) break;
-        await toClient(`Quote ready: ${req_.title}`, [`We have priced your request "${req_.title}" at ${gbp(req_.quote_gbp)}.`, 'You can approve or decline it in your portal.']); break;
+        await toClient(`Quote ready: ${req_.title}`, { eyebrow: 'Quote ready', heading: `${gbp(req_.quote_gbp)} for “${req_.title}”`, paras: ['We have priced your request. You can approve it or decline it in your portal, and nothing starts until you approve.'], cta: 'See the quote', url: `${link}#requests` }); break;
       case 'request_updated':
         if (!who.isAdmin || !req_) break;
-        await toClient(`Update on: ${req_.title}`, [`Your request "${req_.title}" is now: ${req_.status.replace('_', ' ')}.`]); break;
+        await toClient(`Update on: ${req_.title}`, { eyebrow: 'Update', heading: `“${req_.title}” is now ${req_.status.replace('_', ' ')}.`, paras: ['You can see the details and any messages in your portal.'], cta: 'See the update', url: `${link}#requests` }); break;
       case 'team_message':
         if (!who.isAdmin || !req_) break;
-        await toClient(`New message about: ${req_.title}`, ['We have replied:', '', await lastMsg(true), '', 'You can reply in your portal.']); break;
+        await toClient(`New message about: ${req_.title}`, { eyebrow: 'New message', heading: `We have replied about “${req_.title}”.`, quote: await lastMsg(true), cta: 'Reply in your portal', url: `${link}#requests` }); break;
       case 'team_message_new':
         if (!who.isAdmin || !req_ || req_.kind !== 'message') break;
-        await toClient(req_.title, [req_.body || '', '', 'You can reply in your portal, under Requests.']); break;
+        await toClient(req_.title, { eyebrow: 'Message from the team', heading: req_.title, quote: req_.body || '', cta: 'Reply in your portal', url: `${link}#requests` }); break;
       case 'invoice_issued':
         if (!who.isAdmin) break;
-        await toClient('New invoice', ['A new invoice has been added to your portal, under Billing.']); break;
+        await toClient('New invoice from Minshall Group', { eyebrow: 'Billing', heading: 'A new invoice is ready.', paras: ['You will find it in your portal under Billing, with what it covers and how to pay.'], cta: 'View your invoice', url: `${link}#billing` }); break;
       default:
         return res.status(400).json({ error: 'Unknown event' });
     }

@@ -1859,3 +1859,10 @@ body.pp-hot .phead{min-height:0;padding-top:112px;padding-bottom:30px}body.pp-ho
 .st-webq{scroll-margin-top:96px;padding-top:12px}.st-webq[hidden],.st-prev[hidden]{display:none}
 .st-webq-head{max-width:40em;margin:0 0 28px;padding-top:32px;border-top:1px solid var(--line)}.st-webq-head .h2{margin:8px 0 10px}.st-webq-head p{margin:0;color:var(--muted)}
 .pp-auto{opacity:.5;pointer-events:none;transition:opacity .3s}
+/* headlines: a soft fade-up instead of rising out of clipped strips, so lines never cut into each other while loading */
+.split .w{overflow:visible;padding-bottom:0;margin-bottom:0}
+.js .split .w>span{opacity:0;transform:translateY(.22em);animation:wfade .9s var(--ease-out) forwards;animation-delay:calc(var(--i)*55ms + 60ms)}
+@keyframes wfade{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.js .split .w>span{opacity:1;transform:none;animation:none}}
+/* hero headline: also sized by screen height, so short laptop screens keep clear space above the intro */
+@media (min-width:701px){.hero2-h{font-size:clamp(52px,min(10.4vw,15vh),172px);margin:4.5vh 0 max(5vh,36px)}}

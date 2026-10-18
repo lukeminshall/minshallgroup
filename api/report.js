@@ -6,6 +6,7 @@
    Also emails the team a lead notification, and adds the person to the
    newsletter only if they ticked the separate opt-in. */
 import { runAudit } from './audit.js';
+import { brandEmail, FROM } from './_lib/email.js';
 
 const SECTORS = { cafe: 'café, bar or restaurant', retail: 'shop or online retail', trades: 'trades and construction', clinic: 'health, clinic or wellbeing', professional: 'professional services', hospitality: 'hotel, venue or holiday let', fitness: 'gym, fitness or sport', charity: 'charity or community', other: 'business' };
 const GRADES = ['Excellent', 'Good', 'Needs work', 'Falling behind'];
@@ -32,21 +33,19 @@ export default async function handler(req, res) {
   const from = process.env.CONTACT_FROM || 'Minshall Group <website@minshallgroup.com>';
   const team = process.env.CONTACT_TO || 'hello@minshallgroup.com';
 
-  const text = [
-    'Hello,', '',
-    `Here is your Webmins Score report for ${site}, checked on ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}.`, '',
-    `Webmins Score: ${total}/100${grade ? ` (${grade})` : ''}, measured against what customers expect from a ${SECTORS[sector]} website.`, '',
-    'Breakdown:', ...PILLARS.map(([k, t]) => `  ${t}: ${a.pillars?.[k] ?? '–'}`), '',
-    'What we would fix first:', ...(a.suggestions?.length ? a.suggestions.slice(0, 6).map((s, i) => `  ${i + 1}. ${s}`) : ['  Your site covers the basics well. The quickest gains are in content and design.']), '',
-    `See the full interactive report again: ${link}`, '',
-    'Want it fixed? Our website packages start at £495 for a fixed price, paid in three stages, with no calls needed:',
-    'https://minshallgroup.com/digitalsme#packages', '',
-    'Minshall Group', 'hello@minshallgroup.com · minshallgroup.com', '',
-    'You are receiving this because you asked for your report on our website. We will not email you again unless you opted in to our newsletter.'
-  ].join('\n');
+  const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const mail = brandEmail({
+    preheader: `${site} scored ${total}/100. Here is what to fix first.`, eyebrow: 'Your website check', heading: `${site} scored ${total} out of 100.`,
+    greeting: 'Hello,', paras: [`Here is your Webmins Score report, checked on ${date} and measured against what customers expect from a ${SECTORS[sector]} website.`],
+    score: { total, grade, rows: PILLARS.map(([k, t]) => [t, a.pillars?.[k] ?? '–']) },
+    listTitle: 'What we would fix first', list: a.suggestions?.length ? a.suggestions.slice(0, 6) : ['Your site covers the basics well. The quickest gains are in content and design.'],
+    button: { label: 'See your full report', url: link },
+    after: ['Want it fixed? Our website packages start at £495, fixed, paid in three stages, with no calls needed: minshallgroup.com/digitalsme'],
+    reason: 'You are receiving this because you asked for your report on our website. We will not email you again unless you opted in to our newsletter.'
+  });
 
   const send = body => fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).catch(() => null);
-  const sent = await send({ from, to: email, reply_to: team, subject: `Your Webmins Score: ${total}/100 for ${site}`, text });
+  const sent = await send({ from: FROM, to: email, reply_to: team, subject: `Your Webmins Score: ${total}/100 for ${site}`, text: mail.text, html: mail.html });
   if (!sent || !sent.ok) { console.error('Report email failed', sent && sent.status, sent && await sent.text()); return res.status(502).json({ error: 'We could not send the email just now. Please try again.' }); }
 
   const optin = d.optin === true;
