@@ -7,7 +7,7 @@
    ===================================================================== */
 
 /* The public address. The contact form also delivers here (api/contact.js). */
-export const CONTACT={email:'hello@minshallgroup.com'};
+export const CONTACT={email:'hello@minshallgroup.com',linkedin:'https://www.linkedin.com/company/minshallgroup'};
 
 /* ---------------- CAPABILITIES (the four practices) ---------------- */
 export const CAPS=[

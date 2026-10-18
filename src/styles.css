@@ -1555,3 +1555,4 @@ html.touring .cookie{display:none}
 .pvid{margin:0}
 .pvid video{display:block;width:100%;height:auto;aspect-ratio:16/9;border-radius:var(--r);background:var(--navy);box-shadow:0 40px 80px -40px rgba(10,26,63,.45)}
 .pvid figcaption{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:14px;color:var(--muted);font-size:15px}
+.foot-li{display:inline-flex;align-items:center;gap:10px;color:#fff;font-weight:700}.foot-li svg{width:20px;height:20px;fill:currentColor}.foot-li:hover{color:var(--pink)}

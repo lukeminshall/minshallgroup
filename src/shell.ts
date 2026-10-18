@@ -110,6 +110,7 @@ export function footerMarkup(){
         <a class="lockup rev" href="/">${tile()}<span class="wm"><b>minshall</b><i>GROUP</i></span></a>
         <p>Strategy, digital, data and brand, under one roof and measured by the return.</p>
         <p><a class="ulink" href="mailto:${CONTACT.email}">${CONTACT.email}</a></p>
+        <p><a class="foot-li" href="${CONTACT.linkedin}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.2c0-1.24-.02-2.84-1.73-2.84-1.73 0-2 1.35-2 2.75V21h-4z"/></svg><span>Follow us on LinkedIn</span></a></p>
       </div>
       <div><h2 class="fh">Capabilities</h2><ul>${CAPS.map(c=>`<li><a href="/capabilities/${c.slug}">${c.t}</a></li>`).join('')}</ul></div>
       <div><h2 class="fh">Industries</h2><ul>${INDUSTRIES.map(x=>`<li><a href="/industries#${x.id}">${x.t}</a></li>`).join('')}</ul>
