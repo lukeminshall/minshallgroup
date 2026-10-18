@@ -25,7 +25,9 @@ function show(){
 function hide(){if(!box)return;box.classList.remove('on');setTimeout(()=>{if(box)box.hidden=true;},350);}
 export function initConsent(){
   const v=read();
-  if(v)tell(v);else setTimeout(show,1500);
+  /* a self-playing demo tour (?tour=1) is being watched or recorded: do not cover it */
+  const touring=new URLSearchParams(location.search).get('tour')==='1';
+  if(v)tell(v);else if(!touring)setTimeout(show,1500);
   /* the Clarity tag loads late, so repeat the stored choice once it has */
   addEventListener('load',()=>setTimeout(()=>{const s=read();if(s)tell(s);},2500));
   document.addEventListener('click',e=>{if((e.target as HTMLElement).closest('[data-cookie-settings]')){e.preventDefault();show();}});

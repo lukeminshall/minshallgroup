@@ -1549,3 +1549,4 @@ html.touring .mcta{display:none}
 .foot-sub .sub-consent a{color:#fff;text-decoration:underline}
 body[data-route="/contact"] .foot-form{display:none}body[data-route="/contact"] .foot-forms{grid-template-columns:1fr;max-width:560px}
 @media (max-width:899px){.foot-forms,.fq-row{grid-template-columns:1fr}}
+html.touring .cookie{display:none}
