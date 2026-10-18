@@ -1564,3 +1564,7 @@ html.touring .cookie{display:none}
 /* paragraphs show at once and only slide into place, so they count as painted straight away */
 .js p.rise{opacity:1;animation-name:riseT}
 @keyframes riseT{from{transform:translateY(14px)}to{transform:none}}
+/* reserve the hero headline's final height, so it cannot push the page while fonts load */
+.hero2-h{min-height:calc(3 * .92em)}
+@media (max-width:429px){.hero2-h{min-height:calc(4 * .92em)}}
+@media (max-width:339px){.hero2-h{min-height:calc(5 * .92em)}}
