@@ -36,14 +36,16 @@ Code: `src/portal/` (loaded only on /portal), `api/portal-notify.js`, `api/porta
 
 ### One-time setup
 
-1. **Supabase**: create a project (region: London). In *SQL Editor*, paste and run `supabase/migrations/001_client_portal.sql`. From *Project Settings → API* copy the Project URL, the `anon` key and the `service_role` key.
+1. **Supabase**: create a project (region: London). In *SQL Editor*, paste and run `supabase/migrations/001_client_portal.sql`, then `supabase/migrations/002_notifications.sql`. From *Project Settings → API* copy the Project URL, the `anon` key and the `service_role` key.
 2. **Clerk**: create an application (email and Google sign-in). Copy the publishable key and secret key. In Clerk, *Integrations → Supabase → Activate* and copy the Clerk domain it shows. In Supabase, *Authentication → Sign In / Providers → Third-party auth → Add provider → Clerk* and paste that domain. For the production Clerk instance, Clerk asks for DNS records on minshallgroup.com: add them in Vercel DNS.
 3. **Vercel → Settings → Environment Variables** (Production):
    `VITE_CLERK_PUBLISHABLE_KEY`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` (public, built into the page),
    `CLERK_SECRET_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `CRON_SECRET` (any long random string). Then redeploy.
 4. **Make yourself admin**: sign up at /portal, copy your user id (`user_…`) from the Clerk dashboard, and in Supabase SQL run `insert into public.admins (user_id, note) values ('user_…', 'Luke');`.
 
-Until the keys are set, /portal shows a friendly "being set up" message.
+Until the keys are set, /portal shows a preview of what clients get.
+
+**Notifications.** Every client action emails the team (hello@): a new account (once, with a welcome email to the person), a project started, the brief submitted, a request or message, a design approval and a quote response. Every team action emails the client: stage changes, quotes, status updates, replies, new messages and invoices. Messages include their text. In the portal, unread updates show as a count on the Requests tab (clients) and the Admin tab (team), with “New” or “Unread” markers on each thread; opening a thread marks it read. From Admin you can message a client directly, and see accounts that have not started a project yet.
 
 ## Internal prospecting tool
 

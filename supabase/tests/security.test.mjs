@@ -16,6 +16,7 @@ alter table storage.objects enable row level security;
 create function storage.foldername(name text) returns text[] language sql immutable as $$ select (string_to_array(name,'/'))[1:array_length(string_to_array(name,'/'),1)-1] $$;
 `);
 await db.exec(readFileSync(new URL('../migrations/001_client_portal.sql', import.meta.url), 'utf8'));
+await db.exec(readFileSync(new URL('../migrations/002_notifications.sql', import.meta.url), 'utf8'));
 await db.exec(`grant usage on schema public, storage, auth to authenticated; grant all on all tables in schema public, storage to authenticated; grant execute on all functions in schema public, auth, storage to authenticated;`);
 const as = async (sub, fn) => { await db.exec(`reset role`); await db.exec(`set request.jwt.claims = '${JSON.stringify({sub})}'`); await db.exec(`set role authenticated`); try { return await fn(); } finally { await db.exec(`reset role`); } };
 let fails = 0;
@@ -70,5 +71,28 @@ threw = false; try { await as('user_b', () => q(`insert into storage.objects (bu
 ok('B cannot upload into A folder', threw);
 ok('B cannot see A files', (await as('user_b', () => q(`select * from storage.objects`))).rows.length === 0);
 ok('admin sees A files', (await as('user_admin', () => q(`select * from storage.objects`))).rows.length === 1);
+
+// --- 002: messages, unread tracking, signups ---
+const cm = (await as('user_a', () => q(`insert into public.requests (client_id, kind, title) values ($1,'message','Hi team') returning kind`, [A.id]))).rows[0];
+ok('client cannot start a team message (becomes a question)', cm.kind === 'question');
+const tm = (await as('user_admin', () => q(`insert into public.requests (client_id, kind, title, body) values ($1,'message','Your design','Ready soon') returning *`, [A.id]))).rows[0];
+ok('team message starts unread for the client', tm.kind === 'message' && tm.last_team_at !== null && tm.client_seen_at === null);
+ok('client can read the team message', (await as('user_a', () => q(`select id from public.requests where id=$1`, [tm.id]))).rows.length === 1);
+ok('other clients cannot read it', (await as('user_b', () => q(`select id from public.requests where id=$1`, [tm.id]))).rows.length === 0);
+await as('user_a', () => q(`update public.requests set client_seen_at = now(), last_team_at = null, team_seen_at = now() where id=$1`, [tm.id]));
+const seen = (await q(`select * from public.requests where id=$1`, [tm.id])).rows[0];
+ok('client marks seen without faking team fields', seen.client_seen_at !== null && seen.last_team_at !== null && seen.team_seen_at !== null && String(seen.team_seen_at) === String(tm.team_seen_at));
+ok('marking seen is not client activity', seen.last_client_at === null);
+await as('user_a', () => q(`insert into public.request_messages (request_id, body) values ($1,'Thanks')`, [tm.id]));
+const after = (await q(`select * from public.requests where id=$1`, [tm.id])).rows[0];
+ok('client reply shows as unread for the team', after.last_client_at !== null && after.last_client_at > after.team_seen_at);
+await as('user_admin', () => q(`update public.requests set team_seen_at = now(), last_client_at = null where id=$1`, [tm.id]));
+const after2 = (await q(`select * from public.requests where id=$1`, [tm.id])).rows[0];
+ok('team marks seen without erasing client activity', after2.last_client_at !== null && after2.team_seen_at >= after2.last_client_at);
+await db.exec(`insert into public.signups (user_id, email) values ('user_c','c@example.com')`);
+ok('clients cannot read signups', (await as('user_a', () => q(`select * from public.signups`))).rows.length === 0);
+ok('admin can read signups', (await as('user_admin', () => q(`select * from public.signups`))).rows.length === 1);
+threw = false; try { await as('user_a', () => q(`insert into public.signups (user_id) values ('user_x')`)); } catch { threw = true; }
+ok('clients cannot write signups', threw);
 
 if (fails) { console.error(`${fails} failed`); process.exit(1); } else console.log('All security tests passed');

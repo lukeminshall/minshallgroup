@@ -4,6 +4,7 @@
    writes the email, so nothing in the email comes from the request body.
    Client actions email the team (hello@); team actions email the client. */
 import { configured, caller, projectFor, db, sendEmail, TEAM, SITE, body, fail } from './_lib/portal.js';
+import { createClerkClient } from '@clerk/backend';
 
 const STAGE = { onboarding: 'Onboarding', design: 'Design', build: 'Build', review: 'Review', live: 'Live' };
 const gbp = n => '£' + Number(n || 0).toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
@@ -14,7 +15,25 @@ export default async function handler(req, res) {
   try {
     const who = await caller(req);
     const { event, clientId, requestId } = body(req);
+
+    /* a new account: email the team once, and welcome the person. The name and
+       email come from Clerk, never from the request. */
+    if (event === 'signed_up') {
+      const u = await createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY }).users.getUser(who.userId);
+      const email = u.primaryEmailAddress?.emailAddress || u.emailAddresses?.[0]?.emailAddress || '';
+      const name = [u.firstName, u.lastName].filter(Boolean).join(' ');
+      const { data: added } = await db().from('signups').upsert({ user_id: who.userId, email, name }, { onConflict: 'user_id', ignoreDuplicates: true }).select('user_id');
+      if (added && added.length) {
+        await sendEmail({ to: TEAM(), subject: `[Portal] New account: ${name || email}`, replyTo: email || undefined,
+          text: [`${name || 'Someone'} <${email}> has created a client portal account.`, 'They have not started a project yet. If they do not, a short personal note usually helps.', '', `Open the portal: ${SITE}/portal#admin`].join('\n') });
+        if (email) await sendEmail({ to: email, subject: 'Welcome to your Minshall Group portal',
+          text: [`Hello${u.firstName ? ' ' + u.firstName : ''},`, '', 'Thank you for creating your account. Your next step is to start your project: it takes two minutes, and if you built a quote on our website it is already filled in.', '', `Start your project: ${SITE}/portal`, '', 'From then on, everything happens in the portal: your onboarding questions, design approval, changes and invoices. We email you whenever something needs you.', '', 'Minshall Group', 'hello@minshallgroup.com'].join('\n') });
+      }
+      return res.status(200).json({ ok: true, new: !!(added && added.length) });
+    }
+
     const p = await projectFor(who, clientId);
+    const lastMsg = async fromAdmin => requestId ? (await db().from('request_messages').select('body').eq('request_id', requestId).eq('from_admin', fromAdmin).order('created_at', { ascending: false }).limit(1).maybeSingle()).data?.body || '' : '';
     const link = `${SITE}/portal`;
     const req_ = requestId ? (await db().from('requests').select('*').eq('id', requestId).eq('client_id', p.id).maybeSingle()).data : null;
 
@@ -38,7 +57,7 @@ export default async function handler(req, res) {
         await toTeam(`Quote ${req_.status}: ${req_.title}`, [`The client has ${req_.status} the quote of ${gbp(req_.quote_gbp)} for "${req_.title}".`]); break;
       case 'client_message':
         if (!req_) break;
-        await toTeam(`New message on: ${req_.title}`, ['The client added a message to this request.']); break;
+        await toTeam(`New message on: ${req_.title}`, ['The client wrote:', '', await lastMsg(false)]); break;
       /* team → client */
       case 'stage_changed':
         if (!who.isAdmin) break;
@@ -56,7 +75,10 @@ export default async function handler(req, res) {
         await toClient(`Update on: ${req_.title}`, [`Your request "${req_.title}" is now: ${req_.status.replace('_', ' ')}.`]); break;
       case 'team_message':
         if (!who.isAdmin || !req_) break;
-        await toClient(`New message about: ${req_.title}`, ['We have replied to your request. Read it in your portal.']); break;
+        await toClient(`New message about: ${req_.title}`, ['We have replied:', '', await lastMsg(true), '', 'You can reply in your portal.']); break;
+      case 'team_message_new':
+        if (!who.isAdmin || !req_ || req_.kind !== 'message') break;
+        await toClient(req_.title, [req_.body || '', '', 'You can reply in your portal, under Requests.']); break;
       case 'invoice_issued':
         if (!who.isAdmin) break;
         await toClient('New invoice', ['A new invoice has been added to your portal, under Billing.']); break;

@@ -4,7 +4,7 @@
    Tabs live in the URL hash: #overview, #onboarding, #requests, #billing,
    #performance, #admin.
    ===================================================================== */
-import {ready,boot,clerk,sb,S,esc,gbp,check,notify,api,toast} from './core';
+import {ready,boot,clerk,sb,S,esc,gbp,check,notify,api,toast,unreadForClient,unreadForTeam} from './core';
 import {STAGES} from './brief';
 import {SME} from '../content';
 import {viewOnboarding,viewRequests,viewBilling,viewPerformance} from './views';
@@ -44,11 +44,18 @@ async function render(){
     S.projects=check(projects)||[];S.isAdmin=(check(admins)||[]).length>0;
   }catch(e){root.innerHTML=`<div class="pp-card"><h2 class="h2">We could not load your project.</h2><p>${esc(e.message)}</p></div>`;return;}
   const mine=S.projects.filter(p=>p.owner_id===clerk.user.id);
+  /* first visit with no project: tell the team about the new account (the server sends it once) */
+  if(!mine.length&&!S.isAdmin){try{if(!sessionStorage.getItem('mg-signup-'+clerk.user.id)){sessionStorage.setItem('mg-signup-'+clerk.user.id,'1');api('/api/portal-notify',{event:'signed_up'}).catch(()=>{});}}catch{}}
   const saved=(()=>{try{return localStorage.getItem('mg-portal-current');}catch{return null;}})();
   S.current=S.projects.find(p=>p.id===saved)||mine[0]||(S.isAdmin?S.projects[0]:null)||null;
   let tab=location.hash.slice(1)||'overview';
   if(tab==='admin'&&!S.isAdmin)tab='overview';
   if(!S.current&&tab!=='admin'){shell('start');return startProject();}
+  /* unread updates: for the client on their project, for the team across every project */
+  try{
+    if(S.current){const rq=check(await sb.from('requests').select('id,client_id,last_team_at,last_client_at,client_seen_at,team_seen_at').eq('client_id',S.current.id))||[];S.unread=rq.filter(unreadForClient).length;}
+    if(S.isAdmin){const all=check(await sb.from('requests').select('id,last_client_at,team_seen_at'))||[];S.teamUnread=all.filter(unreadForTeam).length;}
+  }catch{S.unread=0;S.teamUnread=0;}
   shell(tab);
   const el=root.querySelector('[data-view]') as HTMLElement;
   try{
@@ -68,7 +75,8 @@ function shell(tab){
       <div><span class="eyebrow">Client portal</span><h2 class="h2">${S.current?esc(S.current.business_name):'Welcome'+(name?', '+esc(name):'')}</h2></div>
       <div class="pp-user">${S.projects.length>1?`<label><span class="sr">Project</span><select data-switch>${S.projects.map(p=>`<option value="${p.id}"${p.id===S.current?.id?' selected':''}>${esc(p.business_name)}${S.isAdmin&&p.owner_id!==clerk.user.id?' ('+esc(p.owner_email||'client')+')':''}</option>`).join('')}</select></label>`:''}<div data-userbtn></div></div>
     </div>
-    ${tab==='start'?'':`<nav class="pp-tabs" aria-label="Portal">${tabs.map(([id,t])=>`<a href="#${id}" class="${id===tab?'on':''}"${id===tab?' aria-current="page"':''}>${t}</a>`).join('')}</nav>`}
+    ${tab==='start'?'':`<nav class="pp-tabs" aria-label="Portal">${tabs.map(([id,t])=>{const n=id==='requests'&&!(S.isAdmin&&S.current?.owner_id!==clerk.user.id)?S.unread:id==='admin'?S.teamUnread:0;
+      return `<a href="#${id}" class="${id===tab?'on':''}"${id===tab?' aria-current="page"':''}>${t}${n?` <span class="pp-count" aria-label="${n} new">${n}</span>`:''}</a>`;}).join('')}</nav>`}
     <div data-view></div>`;
   clerk.mountUserButton(root.querySelector('[data-userbtn]'));
   root.querySelector('[data-switch]')?.addEventListener('change',e=>{try{localStorage.setItem('mg-portal-current',(e.target as HTMLSelectElement).value);}catch{};render();});
@@ -91,6 +99,7 @@ async function overview(el:HTMLElement){
   if(p.stage==='review')next.push(`<div class="pp-next"><b>Your site is ready for a final check</b><span>Click through every page, then raise any last changes.</span><div class="actions">${p.preview_url?`<a class="btn sm" href="${esc(p.preview_url)}" target="_blank" rel="noopener"><span>Open site</span></a>`:''}<a class="btn sm ghost" href="#requests"><span>Raise a change</span></a></div></div>`);
   if(p.stage==='live')next.push(`<a class="pp-next" href="#performance"><b>Your site is live</b><span>${p.live_url?esc(p.live_url)+' · ':''}See how it is performing.</span></a>`);
   if(due.length)next.push(`<a class="pp-next" href="#billing"><b>${due.length} invoice${due.length>1?'s':''} to pay</b><span>${due.map(i=>esc(i.label)+' '+gbp(i.amount_gbp)).join(' · ')}</span></a>`);
+  if(S.unread)next.unshift(`<a class="pp-next" href="#requests"><b>${S.unread} new update${S.unread>1?'s':''} from us</b><span>Messages and replies are in Requests.</span></a>`);
   if(quoted)next.push(`<a class="pp-next" href="#requests"><b>${quoted} quote${quoted>1?'s':''} waiting for you</b><span>Approve or decline in Requests.</span></a>`);
   el.innerHTML=`
     <ol class="pp-stages">${STAGES.map((s,i)=>`<li class="${i<idx?'done':i===idx?'now':''}"><span>${i<idx?'✓':i+1}</span><b>${s.t}</b><small>${s.d}</small></li>`).join('')}</ol>

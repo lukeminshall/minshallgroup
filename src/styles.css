@@ -1568,3 +1568,7 @@ html.touring .cookie{display:none}
 .hero2-h{min-height:calc(3 * .92em)}
 @media (max-width:429px){.hero2-h{min-height:calc(4 * .92em)}}
 @media (max-width:339px){.hero2-h{min-height:calc(5 * .92em)}}
+/* portal: unread markers */
+.pp-count{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;margin-left:6px;border-radius:999px;background:var(--pink);color:var(--navy);font-size:11.5px;font-weight:800;vertical-align:middle}
+.pp-new{display:inline-block;padding:2px 8px;margin:0 6px;border-radius:999px;background:var(--pink);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:.04em;vertical-align:middle}
+.pp-badge.s-message{background:var(--navy);color:#fff}

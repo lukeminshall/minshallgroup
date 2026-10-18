@@ -4,21 +4,25 @@
    quotes, invoices (raised in your accounting software, tracked here) and
    website re-checks. Every change a client should know about emails them.
    ===================================================================== */
-import {sb,S,esc,gbp,date,check,notify,api,toast,upload,fileUrl} from './core';
+import {sb,S,esc,gbp,date,check,notify,api,toast,upload,fileUrl,unreadForTeam,markSeen} from './core';
 import {BRIEF,STAGES} from './brief';
 import {openRequest} from './views';
 
 export async function viewAdmin(el:HTMLElement,rerender:()=>void){
   const all=S.projects;
-  const [briefs,reqs,inv]=await Promise.all([sb.from('briefs').select('client_id,submitted_at'),sb.from('requests').select('client_id,status'),sb.from('invoices').select('client_id,status,amount_gbp')]);
+  const [briefs,reqs,inv,signups]=await Promise.all([sb.from('briefs').select('client_id,submitted_at'),sb.from('requests').select('client_id,status,last_client_at,team_seen_at'),sb.from('invoices').select('client_id,status,amount_gbp'),sb.from('signups').select('*').order('created_at',{ascending:false})]);
+  const unread=c=>(reqs.data||[]).filter(r=>r.client_id===c&&unreadForTeam(r)).length;
+  const owners=new Set(all.map(p=>p.owner_id));const waiting=(signups.data||[]).filter(u=>!owners.has(u.user_id));
   const sub=new Set((briefs.data||[]).filter(b=>b.submitted_at).map(b=>b.client_id));
   const open=c=>(reqs.data||[]).filter(r=>r.client_id===c&&['new','approved','in_progress'].includes(r.status)).length;
   const owed=c=>(inv.data||[]).filter(i=>i.client_id===c&&(i.status==='due'||i.status==='overdue')).reduce((s,i)=>s+Number(i.amount_gbp),0);
   el.innerHTML=`<div class="pp-card"><h3 class="pp-h">All projects (${all.length})</h3>
-    <table class="pp-table"><thead><tr><th>Business</th><th>Client</th><th>Stage</th><th>Brief</th><th>Open requests</th><th>Owed</th><th></th></tr></thead><tbody>
+    <table class="pp-table"><thead><tr><th>Business</th><th>Client</th><th>Stage</th><th>Brief</th><th>Unread</th><th>Open requests</th><th>Owed</th><th></th></tr></thead><tbody>
     ${all.map(p=>`<tr class="${p.id===S.current?.id?'sel':''}"><td><b>${esc(p.business_name)}</b><small>${esc(p.package||'')} ${p.quote_total?'· '+gbp(p.quote_total):''}</small></td><td>${esc(p.owner_name||'')}<small>${esc(p.owner_email||'')}</small></td>
-      <td><span class="pp-badge st-${p.stage}">${p.stage}</span></td><td>${sub.has(p.id)?'Submitted':'—'}</td><td>${open(p.id)||'—'}</td><td>${owed(p.id)?gbp(owed(p.id)):'—'}</td>
+      <td><span class="pp-badge st-${p.stage}">${p.stage}</span></td><td>${sub.has(p.id)?'Submitted':'—'}</td><td>${unread(p.id)?`<span class="pp-new">${unread(p.id)} unread</span>`:'—'}</td><td>${open(p.id)||'—'}</td><td>${owed(p.id)?gbp(owed(p.id)):'—'}</td>
       <td><button class="btn sm ghost" data-pick="${p.id}"><span>Manage</span></button></td></tr>`).join('')}</tbody></table></div>
+    ${waiting.length?`<div class="pp-card"><h3 class="pp-h">New accounts without a project (${waiting.length})</h3><p class="pp-muted pp-small">They signed up but have not started a project yet. A short personal email often helps.</p>
+      <table class="pp-table"><thead><tr><th>Name</th><th>Email</th><th>Signed up</th></tr></thead><tbody>${waiting.map(u=>`<tr><td>${esc(u.name||'—')}</td><td>${esc(u.email||'—')}</td><td>${date(u.created_at)}</td></tr>`).join('')}</tbody></table></div>`:''}
     <div data-manage></div>`;
   const show=()=>manage(el.querySelector('[data-manage]'),rerender).catch(e=>{(el.querySelector('[data-manage]') as HTMLElement).innerHTML=`<div class="pp-card"><p>${esc(e.message||'Could not load this project')}</p></div>`;});
   el.querySelectorAll<HTMLElement>('[data-pick]').forEach(b=>b.addEventListener('click',()=>{S.current=all.find(p=>p.id===b.dataset.pick);try{localStorage.setItem('mg-portal-current',S.current.id);}catch{};show();}));
@@ -47,8 +51,14 @@ async function manage(box:HTMLElement,rerender){
       ${BRIEF.map(s=>`<h4 class="pp-h4">${esc(s.t)}</h4><dl class="pp-dl">${s.fields.filter(f=>f.type!=='files').map(f=>`<dt>${esc(f.label)}</dt><dd>${esc(Array.isArray(A[f.id])?A[f.id].join(', '):A[f.id]||'—')}</dd>`).join('')}</dl>`).join('')}
       <h4 class="pp-h4">Files</h4><ul class="pp-files">${(files.data||[]).map(f=>`<li><button type="button" class="ulink" data-file="${esc(f.path)}">${esc(f.name)}</button> <small>${f.kind} · ${Math.round((f.size||0)/1024)} KB</small></li>`).join('')||'<li class="pp-muted">None</li>'}</ul></div>
 
+    <form class="pp-card" data-msg><h3 class="pp-h">Message ${esc(p.owner_name||p.business_name)}</h3>
+      <p class="pp-muted pp-small">Starts a conversation in their portal and emails them the message. They can reply in the portal.</p>
+      <div class="cfield"><label for="msg-t">Subject</label><input id="msg-t" name="title" required maxlength="120" placeholder="Your homepage design is nearly ready"></div>
+      <div class="cfield"><label for="msg-b">Message</label><textarea id="msg-b" name="body" rows="4" required></textarea></div>
+      <button class="btn sm" type="submit"><span>Send message</span></button></form>
+
     <div class="pp-card"><h3 class="pp-h">Requests</h3>
-      ${(reqs.data||[]).length?`<ul class="pp-reqs">${reqs.data.map(r=>`<li><details data-req="${r.id}"><summary><span class="pp-badge s-${r.status||'new'}">${(r.status||'new').replace('_',' ')}</span><b>${esc(r.title)}</b><small>${r.kind} · ${date(r.created_at)}${r.quote_gbp!=null?' · '+gbp(r.quote_gbp):''}</small></summary>
+      ${(reqs.data||[]).length?`<ul class="pp-reqs">${reqs.data.map(r=>`<li><details data-req="${r.id}"><summary><span class="pp-badge s-${r.kind==='message'?'message':r.status||'new'}">${r.kind==='message'?'message':(r.status||'new').replace('_',' ')}</span>${unreadForTeam(r)?'<span class="pp-new">Unread</span>':''}<b>${esc(r.title)}</b><small>${r.kind} · ${date(r.created_at)}${r.quote_gbp!=null?' · '+gbp(r.quote_gbp):''}</small></summary>
         <form class="pp-inline" data-rq="${r.id}"><label>Quote £<input name="quote" type="number" min="0" value="${r.quote_gbp??''}"></label><button class="btn sm ghost" name="act" value="quote"><span>Send quote</span></button>
           <select name="status">${['new','in_progress','done','declined'].map(s=>`<option${s===r.status?' selected':''}>${s}</option>`).join('')}</select><button class="btn sm ghost" name="act" value="status"><span>Update status</span></button></form>
         <div class="pp-req-body" data-body></div></details></li>`).join('')}</ul>`:'<p class="pp-muted">No requests.</p>'}</div>
@@ -87,7 +97,16 @@ async function manage(box:HTMLElement,rerender){
       toast('Updated and client emailed');refresh();
     }catch(err){toast(err.message,true);}
   }));
-  box.querySelectorAll<HTMLDetailsElement>('[data-req]').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)openRequest(d,(reqs.data||[]).find(r=>r.id===d.dataset.req),refresh,true);}));
+  box.querySelectorAll<HTMLDetailsElement>('[data-req]').forEach(d=>d.addEventListener('toggle',()=>{if(!d.open)return;const r=(reqs.data||[]).find(x=>x.id===d.dataset.req);
+    if(unreadForTeam(r)){markSeen(r,true);d.querySelector('.pp-new')?.remove();S.teamUnread=Math.max(0,S.teamUnread-1);}
+    openRequest(d,r,refresh,true);}));
+  box.querySelector('[data-msg]').addEventListener('submit',async e=>{
+    e.preventDefault();const f=e.target as HTMLFormElement;if(!f.checkValidity()){(f.querySelector(':invalid') as HTMLElement)?.focus();return;}
+    const fd=new FormData(f),btn=f.querySelector('button');btn.disabled=true;
+    try{const r=check(await sb.from('requests').insert({client_id:p.id,kind:'message',title:String(fd.get('title')).trim(),body:String(fd.get('body')).trim()}).select().single());
+      notify('team_message_new',{requestId:r.id});toast('Message sent and emailed to the client');refresh();}
+    catch(err){toast(err.message,true);btn.disabled=false;}
+  });
   box.querySelectorAll<HTMLSelectElement>('[data-inv]').forEach(s=>s.addEventListener('change',async()=>{
     try{const was=(inv.data||[]).find(i=>i.id===s.dataset.inv)?.status;check(await sb.from('invoices').update({status:s.value}).eq('id',s.dataset.inv));if(was==='draft'&&s.value==='due')notify('invoice_issued');toast('Invoice updated');}catch(err){toast(err.message,true);}
   }));

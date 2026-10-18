@@ -1,7 +1,7 @@
 /* =====================================================================
    PORTAL VIEWS — onboarding questionnaire, requests, billing, performance.
    ===================================================================== */
-import {sb,S,esc,gbp,date,check,notify,api,toast,upload,fileUrl} from './core';
+import {unreadForClient,markSeen,sb,S,esc,gbp,date,check,notify,api,toast,upload,fileUrl} from './core';
 import {BRIEF} from './brief';
 import {SME,SCORE} from '../content';
 import {score} from '../webmins';
@@ -79,13 +79,13 @@ export async function viewOnboarding(el:HTMLElement){
 }
 
 /* ---------- requests: changes, questions, approvals ---------- */
-const RS={new:'Received',quoted:'Quote ready',approved:'Approved',in_progress:'In progress',done:'Done',declined:'Declined'};
+const RS={message:'Message from us',new:'Received',quoted:'Quote ready',approved:'Approved',in_progress:'In progress',done:'Done',declined:'Declined'};
 export async function viewRequests(el:HTMLElement){
   const p=S.current;
   const reqs=check(await sb.from('requests').select('*').eq('client_id',p.id).order('created_at',{ascending:false}))||[];
   el.innerHTML=`<div class="pp-grid">
     <div class="pp-col"><h3 class="pp-h">Your requests</h3>
-      ${reqs.length?`<ul class="pp-reqs">${reqs.map(r=>`<li><details data-req="${r.id}"><summary><span class="pp-badge s-${r.status||'new'}">${RS[r.status]||RS.new}</span><b>${esc(r.title)}</b><small>${r.kind} · ${date(r.created_at)}${r.quote_gbp!=null?' · '+gbp(r.quote_gbp):''}</small></summary><div class="pp-req-body" data-body></div></details></li>`).join('')}</ul>`:'<p class="pp-muted">No requests yet.</p>'}
+      ${reqs.length?`<ul class="pp-reqs">${reqs.map(r=>`<li><details data-req="${r.id}"><summary><span class="pp-badge s-${r.kind==='message'?'message':r.status||'new'}">${r.kind==='message'?RS.message:RS[r.status]||RS.new}</span>${unreadForClient(r)?'<span class="pp-new">New</span>':''}<b>${esc(r.title)}</b><small>${r.kind} · ${date(r.created_at)}${r.quote_gbp!=null?' · '+gbp(r.quote_gbp):''}</small></summary><div class="pp-req-body" data-body></div></details></li>`).join('')}</ul>`:'<p class="pp-muted">No requests yet.</p>'}
     </div>
     <form class="pp-col pp-card" novalidate>
       <h3 class="pp-h">New request</h3>
@@ -105,7 +105,9 @@ export async function viewRequests(el:HTMLElement){
       notify('request_created',{requestId:r.id});toast('Request sent');viewRequests(el);}
     catch(err){toast(err.message,true);btn.disabled=false;}
   });
-  el.querySelectorAll<HTMLDetailsElement>('[data-req]').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)openRequest(d,reqs.find(r=>r.id===d.dataset.req),()=>viewRequests(el));}));
+  el.querySelectorAll<HTMLDetailsElement>('[data-req]').forEach(d=>d.addEventListener('toggle',()=>{if(!d.open)return;const r=reqs.find(x=>x.id===d.dataset.req);
+    if(unreadForClient(r)){markSeen(r,false);d.querySelector('.pp-new')?.remove();S.unread=Math.max(0,S.unread-1);const c=document.querySelector('.pp-tabs a[href="#requests"] .pp-count');if(c){if(S.unread)c.textContent=String(S.unread);else c.remove();}}
+    openRequest(d,r,()=>viewRequests(el));}));
 }
 export async function openRequest(d:HTMLElement,r,refresh,admin=false){
   const box=d.querySelector('[data-body]') as HTMLElement;box.innerHTML='<p class="pp-muted">Loading…</p>';

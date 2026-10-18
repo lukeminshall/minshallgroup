@@ -14,7 +14,14 @@ export const ready=()=>!!(CFG.clerk&&CFG.url&&CFG.anon);
 
 export let clerk:any=null;
 export let sb:SupabaseClient=null as any;
-export const S:{user:any,isAdmin:boolean,projects:any[],current:any,brief:any}={user:null,isAdmin:false,projects:[],current:null,brief:null};
+export const S:{user:any,isAdmin:boolean,projects:any[],current:any,brief:any,unread:number,teamUnread:number}={user:null,isAdmin:false,projects:[],current:null,brief:null,unread:0,teamUnread:0};
+/* unread: the other side acted after this side last looked */
+export const unreadForClient=r=>!!r.last_team_at&&(!r.client_seen_at||new Date(r.last_team_at)>new Date(r.client_seen_at));
+export const unreadForTeam=r=>!!r.last_client_at&&(!r.team_seen_at||new Date(r.last_client_at)>new Date(r.team_seen_at));
+export async function markSeen(r,admin:boolean){
+  const col=admin?'team_seen_at':'client_seen_at';const now=new Date().toISOString();
+  try{await sb.from('requests').update({[col]:now}).eq('id',r.id);r[col]=now;}catch{}
+}
 
 function loadUi(domain){
   if((window as any).__internal_ClerkUICtor)return Promise.resolve();
