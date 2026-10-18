@@ -5,6 +5,8 @@
    runs once (cursor). Content is visible by default: every effect fails
    toward showing content, and prefers-reduced-motion turns movement off.
    ===================================================================== */
+import FULL_N from '@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2?url';
+import FULL_I from '@fontsource-variable/fraunces/files/fraunces-latin-full-italic.woff2?url';
 export const RM=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 const FINE=window.matchMedia('(pointer:fine)').matches;
 let ac:AbortController|null=null;
@@ -120,7 +122,13 @@ function varFont(sig){
       c.style.fontVariationSettings=`"opsz" 144, "wght" ${w}, "SOFT" ${soft}, "WONK" ${k>.5?1:0}`;}};
   const req=()=>{if(!raf)raf=requestAnimationFrame(frame);};
   const host=h.closest('section');
-  host.addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;live=true;req();},sig);
+  /* the soft and wonky axes live in the larger "full" font files: fetch them only
+     once a mouse actually moves over the hero, so phones never download them */
+  let loading=false;
+  const loadFull=()=>{if(loading)return;loading=true;
+    Promise.all([new FontFace('Fraunces Full',`url(${FULL_N})`,{weight:'100 900'}),new FontFace('Fraunces Full',`url(${FULL_I})`,{weight:'100 900',style:'italic'})].map(f=>f.load().then(x=>{document.fonts.add(x);})))
+      .then(()=>{h.style.fontFamily="'Fraunces Full','Fraunces Variable','Fraunces Display Fallback',Georgia,serif";}).catch(()=>{});};
+  host.addEventListener('pointermove',e=>{loadFull();mx=e.clientX;my=e.clientY;live=true;req();},sig);
   host.addEventListener('pointerleave',()=>{live=false;req();},sig);
 }
 

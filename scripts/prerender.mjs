@@ -29,7 +29,7 @@ let shell = readFileSync(join(DIST, 'index.html'), 'utf8');
 /* preload the headline and body fonts so text paints in the right face */
 import {readdirSync} from 'node:fs';
 const assets = readdirSync(join(DIST, 'assets'));
-const pre = [/^fraunces-latin-full-normal.*\.woff2$/, /^manrope-latin-wght-normal.*\.woff2$/]
+const pre = [/^fraunces-latin-opsz-normal.*\.woff2$/, /^manrope-latin-wght-normal.*\.woff2$/]
   .map(re => assets.find(f => re.test(f))).filter(Boolean)
   .map(f => `<link rel="preload" href="/assets/${f}" as="font" type="font/woff2" crossorigin>`).join('\n');
 shell = shell.replace('</head>', pre + '\n</head>');
