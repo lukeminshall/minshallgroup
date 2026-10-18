@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   if (!configured()) return res.status(503).json({ error: 'Portal not configured' });
   try {
     const who = await caller(req);
-    const { event, clientId, requestId } = body(req);
+    const { event, clientId, requestId, quote } = body(req);
 
     /* a new account: email the team once, and welcome the person. The name and
        email come from Clerk, never from the request. */
@@ -24,8 +24,13 @@ export default async function handler(req, res) {
       const name = [u.firstName, u.lastName].filter(Boolean).join(' ');
       const { data: added } = await db().from('signups').upsert({ user_id: who.userId, email, name }, { onConflict: 'user_id', ignoreDuplicates: true }).select('user_id');
       if (added && added.length) {
-        await sendEmail({ to: TEAM(), subject: `[Portal] New account: ${name || email}`, replyTo: email || undefined,
-          text: [`${name || 'Someone'} <${email}> has created a client portal account.`, 'They have not started a project yet. If they do not, a short personal note usually helps.', '', `Open the portal: ${SITE}/portal#admin`].join('\n') });
+        /* the quote they built on the website, if any: plain values only, clipped */
+        const cl = (v, n = 120) => String(v == null ? '' : v).replace(/[\r\n]+/g, ' ').slice(0, n);
+        const q = quote && typeof quote === 'object' ? quote : null;
+        const total = q && Number.isFinite(+q.total) ? Math.round(+q.total) : 0;
+        const qLine = q ? `Quote built on the website: ${cl(q.package, 20)}, ${cl(q.pages, 5)} pages, £${total.toLocaleString('en-GB')} build${q.organisation ? `, for ${cl(q.organisation)}` : ''}${q.website ? ` (current site ${cl(q.website)})` : ''}.` : 'No website quote on their device.';
+        await sendEmail({ to: TEAM(), subject: `[Portal] New account${total ? ` with a £${total.toLocaleString('en-GB')} quote` : ''}: ${name || email}`, replyTo: email || undefined,
+          text: [`${name || 'Someone'} <${email}> has created a client portal account.`, qLine, '', 'They have not started their project yet. If they have not within a day, a short personal note usually helps: reply to this email to reach them.', '', `Open the portal: ${SITE}/portal#admin`].join('\n') });
         if (email) await sendEmail({ to: email, subject: 'Welcome to your Minshall Group portal',
           text: [`Hello${u.firstName ? ' ' + u.firstName : ''},`, '', 'Thank you for creating your account. Your next step is to start your project: it takes two minutes, and if you built a quote on our website it is already filled in.', '', `Start your project: ${SITE}/portal`, '', 'From then on, everything happens in the portal: your onboarding questions, design approval, changes and invoices. We email you whenever something needs you.', '', 'Minshall Group', 'hello@minshallgroup.com'].join('\n') });
       }

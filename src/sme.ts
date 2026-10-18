@@ -199,34 +199,58 @@ function wireQuote(form:HTMLFormElement){
     const r=form.querySelector<HTMLInputElement>(`input[name=package][value="${b.dataset.pick}"]`);if(r){r.checked=true;calc();}
   });
 
-  form.addEventListener('submit',async e=>{
-    e.preventDefault();
-    const status=form.querySelector('.cform-status'),btn=form.querySelector<HTMLButtonElement>('button[type=submit]');
-    const set=(m,c='')=>{status.textContent=m;status.className='cform-status'+(c?' '+c:'');};
-    if(!form.checkValidity()){const bad=form.querySelector<HTMLElement>(':invalid');bad?.focus();set('Please add your name, email, business name, and tick that you have read the terms.','err');return;}
-    const q=calc(),fd=new FormData(form);
+  const saveQuote=(q,fd:FormData)=>{try{localStorage.setItem('mg-quote',JSON.stringify({package:q.pk.id,pages:q.n,addons:fd.getAll('addon'),total:q.total,organisation:fd.get('organisation'),website:fd.get('website'),notes:fd.get('notes')||'',dmode:q.dmode,domain:q.domain?.name||fd.get('domain')||'',hosting:q.hosting,score:lastCheck?.mscore?.total||null,at:Date.now()}));}catch{}};
+  const quoteText=(q,fd:FormData)=>{
     const ms=lastCheck?.mscore?`\nWebmins Score: ${lastCheck.mscore.total}/100 (${lastCheck.mscore.grade}), sector ${lastCheck.mscore.industry}, sector fit ${lastCheck.mscore.fit}. Pillars: ${Object.entries(lastCheck.mscore.pillars).map(([k,v])=>`${k} ${v}`).join(', ')}.`:'';
     const check=lastCheck?ms+`\nSite check (${lastCheck.url}): `+(lastCheck.scores?`speed ${lastCheck.scores.performance}, SEO ${lastCheck.scores.seo}, accessibility ${lastCheck.scores.accessibility}`:'no Google scores')+`; recommended ${lastCheck.recommended}.`:'';
-    const message=['WEBSITE REFRESH QUOTE REQUEST',
+    return ['WEBSITE QUOTE (emailed to the customer at their request, not yet started)',
       ...q.lines.map(l=>`- ${l[0]}: ${gbp(l[1])}`),
       `Pages: ${q.n}`,`Build total: ${gbp(q.total)} (ex VAT)`,
-      q.dmode==='need'?`Domain: please secure ${q.domain?`${q.domain.name} (${q.domain.gbp?gbp(q.domain.gbp)+' first year, on first invoice':'price on request'}; priced via ${q.domain.src==='table'?'our price table':q.domain.src||'n/a'})`:'(no domain picked yet)'}`:`Domain: has own domain ${fd.get('domain')||'(not given)'}`,
+      q.dmode==='need'?`Domain: please secure ${q.domain?`${q.domain.name} (${q.domain.gbp?gbp(q.domain.gbp)+' first year, on first invoice':'price on request'})`:'(no domain picked yet)'}`:`Domain: has own domain ${fd.get('domain')||'(not given)'}`,
       q.hosting==='us'?`Hosting: we host and point their domain, ${gbp(SME.hosting)} a year`:`Hosting: client will self-host; code handover within ${SME.handoverDays} days of delivery`,
       `Payments: ${SME.stages.map((s,i)=>`${s.t} ${gbp(q.parts[i])}`).join(' / ')}`,
-      `Current website: ${fd.get('website')||'not given'}`,check,
-      `Notes: ${fd.get('notes')||'none'}`,'Terms accepted: yes'].filter(Boolean).join('\n');
-    btn.disabled=true;set('Sending…');
+      `Business: ${fd.get('organisation')||'not given'}`,`Current website: ${fd.get('website')||'not given'}`,check,
+      `Notes: ${fd.get('notes')||'none'}`].filter(Boolean).join('\n');
+  };
+  const status=form.querySelector('.cform-status') as HTMLElement;
+  const set=(m,c='')=>{status.textContent=m;status.className='cform-status'+(c?' '+c:'');};
+
+  /* main path: save the quote and go straight to account creation */
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const biz=form.querySelector<HTMLInputElement>('#qb-biz'),agree=form.querySelector<HTMLInputElement>('input[name=agree]');
+    if(!biz.value.trim()){biz.focus();biz.scrollIntoView({behavior:'smooth',block:'center'});set('Please add your business name.','err');return;}
+    if(!agree.checked){agree.focus();set('Please tick that you have read the offer terms.','err');return;}
+    const q=calc(),fd=new FormData(form);saveQuote(q,fd);
+    set('Taking you to create your account…','ok');
+    location.href='/portal?from=quote';
+  });
+
+  /* side path: not ready, email the quote to them (and to us, as a lead) */
+  form.querySelector('[data-qb-email]')?.addEventListener('click',async ev=>{
+    const btn=ev.currentTarget as HTMLButtonElement;const fd=new FormData(form);
+    const name=String(fd.get('name')||'').trim(),email=String(fd.get('email')||'').trim();
+    if(!name||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){set('Please add your name and a valid email to get the quote.','err');form.querySelector<HTMLInputElement>(name?'#qb-email':'#qb-name')?.focus();return;}
+    const q=calc();saveQuote(q,fd);btn.disabled=true;set('Sending…');
     try{
       const r=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-        name:fd.get('name'),email:fd.get('email'),organisation:fd.get('organisation'),
-        interest:`Website refresh – ${q.pk.name}`,timeline:'',message,'bot-field':fd.get('bot-field')||''})});
+        name,email,organisation:fd.get('organisation')||'',interest:`Website quote – ${q.pk.name} ${gbp(q.total)}`,timeline:'',message:quoteText(q,fd),'bot-field':fd.get('bot-field')||''})});
       if(!r.ok)throw new Error();
-      try{localStorage.setItem('mg-quote',JSON.stringify({package:q.pk.id,pages:q.n,addons:fd.getAll('addon'),total:q.total,organisation:fd.get('organisation'),website:fd.get('website'),dmode:q.dmode,domain:q.domain?.name||fd.get('domain')||'',hosting:q.hosting}));}catch{}
-      set(`Thank you. Your quote for ${gbp(q.total)} is with us, and we will confirm it within one working day.`,'ok');
-      status.insertAdjacentHTML('afterend',`<div class="qb-next"><b>Want to get going now?</b><p>Create your client account and your quote is carried over. You can answer your onboarding questions tonight, at your own pace. Nothing is charged until we confirm.</p><a class="btn" href="/portal"><span>Create my account and start</span></a></div>`);
+      set(`Done. We have your ${gbp(q.total)} quote and will email it to ${email} today. It is also saved on this device, so you can pick it up from here any time.`,'ok');
     }catch{set('Something went wrong sending that. Please try again in a moment.','err');}
     finally{btn.disabled=false;}
   });
+
+  /* coming back to the page: restore a saved quote */
+  try{const sv=JSON.parse(localStorage.getItem('mg-quote')||'null');if(sv?.package){
+    const r=form.querySelector<HTMLInputElement>(`input[name=package][value="${sv.package}"]`);if(r)r.checked=true;
+    if(sv.pages){pages.value=String(sv.pages);num.value=String(sv.pages);}
+    (sv.addons||[]).forEach(id=>{const c=form.querySelector<HTMLInputElement>(`input[name=addon][value="${id}"]`);if(c&&!c.disabled)c.checked=true;});
+    const h=form.querySelector<HTMLInputElement>(`input[name=hosting][value="${sv.hosting}"]`);if(h)h.checked=true;
+    if(sv.organisation)form.querySelector<HTMLInputElement>('#qb-biz').value=sv.organisation;
+    if(sv.website)form.querySelector<HTMLInputElement>('#qb-site').value=sv.website;
+    calc();
+  }}catch{}
 }
 
 /* live example previews: scale each 1280px-wide iframe to fit its card */

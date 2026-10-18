@@ -370,6 +370,11 @@ ${phead({eyebrow:'Insights',title:'Where markets are moving.',lede:'Short, opini
 </div></section>
 <section class="soft"><div class="wrap">${subscribeBox('insights')}</div></section>`;
 
+/* the website journey: one path, shown where people are on it */
+export function journey(at:number){
+  const S=[['Check your site','Optional, 20 seconds'],['Price it','Two minutes'],['Create your account','About 30 seconds'],['Onboarding','In your own time']];
+  return `<ol class="journey" aria-label="Your website journey">${S.map(([t,d],i)=>`<li class="${i&&i+1<at?'done':i+1===at?'now':''}"${i+1===at?' aria-current="step"':''}><span>${i&&i+1<at?'✓':i+1}</span><b>${t}</b><small>${d}</small></li>`).join('')}</ol>`;
+}
 /* horizontal bar chart for data-led articles; handles negative values */
 function barChart(c){
   const max=Math.max(...c.bars.map(b=>Math.abs(b.v)))||1;const pct=/%/.test(c.unit);const signed=/change/i.test(c.unit);
@@ -707,7 +712,8 @@ P['/digitalsme']=()=>`
 </div></section>
 
 <section id="quote"><div class="wrap">
-  ${shead({eyebrow:'Build your quote',h:'Your price, in two minutes.',p:'Tell us what you need and the price updates as you go. Send it to us and we will confirm within one working day.'})}
+  ${shead({eyebrow:'Build your quote',h:'Your price, in two minutes.',p:'Choose what you need and the price updates as you go. When it looks right, create your account and start your onboarding straight away. Your choices come with you.'})}
+  ${journey(2)}
   <form class="qb" id="sme-form" novalidate>
     <p class="hp" hidden aria-hidden="true"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
     <div class="qb-main">
@@ -739,11 +745,7 @@ P['/digitalsme']=()=>`
           <label class="qb-pkg"><input type="radio" name="hosting" value="self"><span><b>I will host it myself</b><em>No hosting fee</em><small>We place the code on Vercel; you have ${SME.handoverDays} days to move it to your own platform</small></span></label>
         </div>
       </fieldset>
-      <fieldset class="qb-step"><legend><span>5</span>About you</legend>
-        <div class="row2">
-          <div class="cfield"><label for="qb-name">Your name</label><input id="qb-name" name="name" required autocomplete="name"></div>
-          <div class="cfield"><label for="qb-email">Email</label><input id="qb-email" name="email" type="email" required autocomplete="email"></div>
-        </div>
+      <fieldset class="qb-step"><legend><span>5</span>Your business</legend>
         <div class="row2">
           <div class="cfield"><label for="qb-biz">Business name</label><input id="qb-biz" name="organisation" required autocomplete="organization"></div>
           <div class="cfield"><label for="qb-site">Current website <span class="opt">optional</span></label><input id="qb-site" name="website" inputmode="url" placeholder="yourbusiness.co.uk"></div>
@@ -758,9 +760,15 @@ P['/digitalsme']=()=>`
       <ul class="qb-lines qb-extra" data-extra></ul>
       <ol class="qb-stages" data-stages></ol>
       <label class="qb-agree"><input type="checkbox" name="agree" required> <span>I have read the <a class="ulink" href="/digitalsme/terms" target="_blank" rel="noopener">offer terms</a>.</span></label>
-      <button class="btn" type="submit"><span>Request this quote</span></button>
+      <button class="btn qb-go" type="submit"><span>Continue: create your account</span></button>
+      <p class="qb-small qb-what">Next, create your account (about 30 seconds) and your onboarding opens straight away. Your choices come with you.</p>
       <p class="cform-status" role="status" aria-live="polite"></p>
-      <p class="qb-small">No payment now. We confirm your quote and dates, then invoice the first payment. Prices exclude VAT, if applicable. Domain prices are confirmed on your quote.</p>
+      <details class="qb-later"><summary>Not ready yet? Email me this quote</summary>
+        <div class="cfield"><label for="qb-name">Your name</label><input id="qb-name" name="name" autocomplete="name"></div>
+        <div class="cfield"><label for="qb-email">Email</label><input id="qb-email" name="email" type="email" autocomplete="email"></div>
+        <button class="btn ghost sm" type="button" data-qb-email><span>Email me this quote</span></button>
+      </details>
+      <p class="qb-small">No payment now. We confirm your quote and dates within one working day, then invoice the first payment. Prices exclude VAT, if applicable.</p>
     </aside>
   </form>
 </div></section>
@@ -769,7 +777,7 @@ P['/digitalsme']=()=>`
   ${shead({eyebrow:'How it works',h:'Simple, fixed and clear.'})}
   <ol class="steps-row">${[
     ['Check','Run the free check and see what to fix first.'],
-    ['Quote','Build your quote here. We confirm it within one working day.'],
+    ['Price it and start','Build your price here, create your account and start your onboarding the same evening. We confirm your quote within one working day.'],
     ['Onboard and build','Answer the onboarding questions online in your client portal, then we design and build. You approve the design there too.'],
     ['Deliver',`We place your finished site on Vercel. Take the code to your own platform within ${SME.handoverDays} days, or let us host it and point your domain for ${gbp(SME.hosting)} a year.`]
   ].map((s,i)=>`<li class="reveal" style="--i:${i}"><span class="sn">0${i+1}</span><b>${s[0]}</b><p>${s[1]}</p></li>`).join('')}</ol>
