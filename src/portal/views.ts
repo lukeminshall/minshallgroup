@@ -3,6 +3,7 @@
    ===================================================================== */
 import {unreadForClient,markSeen,sb,S,esc,gbp,date,check,notify,api,toast,upload,fileUrl} from './core';
 import {BRIEF,STYLES} from './brief';
+import {checkProgress} from '../progress';
 import {SME,SCORE} from '../content';
 import {score} from '../webmins';
 
@@ -187,7 +188,7 @@ export async function viewPerformance(el:HTMLElement){
   const pts=rows.map(r=>({r,s:score(r.data,r.data.industry)}));
   const last=pts[pts.length-1],first=pts[0];
   const ring=(v,label)=>{const c=2*Math.PI*42,cls=v>=85?'good':v>=70?'okay':v>=50?'mid':'poor';return `<div class="pp-ring ${cls}"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" class="sc-bg"/><circle cx="50" cy="50" r="42" class="sc-fg" style="stroke-dasharray:${c};stroke-dashoffset:${c*(1-v/100)}"/></svg><b>${v}</b><span>${label}</span></div>`;};
-  if(!last){el.innerHTML=`<div class="pp-card"><h3 class="pp-h">No checks yet</h3><p class="pp-muted">${p.website||p.live_url?'Run your first Webmins check to set your starting point.':'Add your website address to your project and we will check it.'}</p>${p.website||p.live_url?'<button class="btn" data-run><span>Check my site now</span></button>':''}</div>`;}
+  if(!last){el.innerHTML=`<div class="pp-card"><h3 class="pp-h">No checks yet</h3><p class="pp-muted">${p.website||p.live_url?'Run your first Webmins check to set your starting point.':'Add your website address to your project and we will check it.'}</p>${p.website||p.live_url?'<button class="btn" data-run><span>Run my first check</span></button>':''}</div>`;}
   else{
     const g=last.r.data.scores;const delta=pts.length>1?last.s.total-first.s.total:0;
     el.innerHTML=`<div class="pp-perf">
@@ -199,8 +200,11 @@ export async function viewPerformance(el:HTMLElement){
       <div class="pp-card"><h3 class="pp-h">What to improve next</h3><ol class="fixes">${(last.r.data.suggestions||[]).slice(0,5).map(s=>`<li>${esc(s)}</li>`).join('')||'<li>Nothing urgent. Keep content fresh and reviews coming in.</li>'}</ol><a class="tlink" href="#requests">Ask us to fix something</a></div>
     </div>`;
   }
-  el.querySelector('[data-run]')?.addEventListener('click',async e=>{
-    const b=e.currentTarget as HTMLButtonElement;b.disabled=true;b.querySelector('span').textContent='Checking… (about 30 seconds)';
-    try{await api('/api/portal-rescore',{clientId:p.id});toast('Check complete');viewPerformance(el);}catch(err){toast(err.message,true);b.disabled=false;b.querySelector('span').textContent='Re-check now';}
+  el.querySelector('[data-run]')?.addEventListener('click',async()=>{
+    const box=document.createElement('div');box.className='pp-card pp-checking';el.prepend(box);
+    el.querySelectorAll<HTMLButtonElement>('[data-run]').forEach(b=>b.disabled=true);box.scrollIntoView({behavior:'smooth',block:'center'});
+    const prog=checkProgress(box,{estimate:30000,site:(p.live_url||p.website||'').replace(/^https?:\/\//,'')});
+    try{await api('/api/portal-rescore',{clientId:p.id});await prog.done();toast('Check complete');viewPerformance(el);}
+    catch(err){prog.stop();box.remove();toast(err.message,true);el.querySelectorAll<HTMLButtonElement>('[data-run]').forEach(b=>b.disabled=false);}
   });
 }

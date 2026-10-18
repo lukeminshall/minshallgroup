@@ -39,6 +39,7 @@ async function render(){
     return;
   }
   S.user=clerk.user;
+  document.querySelectorAll('.head-login').forEach(a=>{a.textContent='Your portal';});
   try{
     const [projects,admins]=await Promise.all([sb.from('clients').select('*').order('created_at',{ascending:true}),sb.from('admins').select('user_id').eq('user_id',clerk.user.id)]);
     S.projects=check(projects)||[];S.isAdmin=(check(admins)||[]).length>0;
@@ -128,30 +129,61 @@ async function overview(el:HTMLElement){
 function startProject(){
   const el=root.querySelector('[data-view]') as HTMLElement;
   const q=(()=>{try{return JSON.parse(localStorage.getItem('mg-quote')||'{}');}catch{return {};}})();
-  el.innerHTML=`<form class="pp-card pp-start" novalidate>
-    <h3 class="pp-h">Start your project</h3>
-    <p class="pp-muted">${q.package?'We have filled this in from your quote. Check it and press Start.':'Tell us the basics. You can change the details with us later.'}</p>
-    <div class="row2"><div class="cfield"><label>Business name</label><input name="business_name" required value="${esc(q.organisation||'')}"></div>
-      <div class="cfield"><label>Current website <span class="opt">optional</span></label><input name="website" placeholder="yourbusiness.co.uk" value="${esc(q.website||'')}"></div></div>
-    <div class="row2"><div class="cfield"><label>Package</label><select name="package">${SME.packages.map(k=>`<option value="${k.id}"${(q.package||'rebuild')===k.id?' selected':''}>${k.name}, from ${gbp(k.price)}</option>`).join('')}</select></div>
-      <div class="cfield"><label>Number of pages</label><input name="pages" type="number" min="1" max="250" value="${esc(q.pages||8)}"></div></div>
-    <fieldset class="cfield"><legend>Add-ons</legend><div class="chips-in">${SME.addons.map(a=>`<label class="chk"><input type="checkbox" name="addons" value="${a.id}"${(q.addons||[]).includes(a.id)?' checked':''}><span>${a.t}</span></label>`).join('')}</div></fieldset>
-    <div class="row2"><div class="cfield"><label>Domain</label><select name="domain_mode"><option value="have"${q.dmode!=='need'?' selected':''}>I already have a domain</option><option value="need"${q.dmode==='need'?' selected':''}>Please secure one for me</option></select></div>
-      <div class="cfield"><label>Domain name</label><input name="domain" placeholder="yourbusiness.co.uk" value="${esc(q.domain||'')}"></div></div>
-    <div class="cfield"><label>Hosting</label><select name="hosting"><option value="us"${q.hosting!=='self'?' selected':''}>Host it for me (${gbp(SME.hosting)} a year)</option><option value="self"${q.hosting==='self'?' selected':''}>I will host it myself</option></select></div>
-    <button class="btn" type="submit"><span>Start my project</span></button>
-    <p class="pp-muted pp-small">No payment is taken here. We confirm your quote and send the first invoice.</p>
-  </form>`;
+  const pkSel=q.package||'rebuild';
+  el.innerHTML=`<div class="pp-start-grid">
+  <form class="pp-start" novalidate>
+    <p class="pp-muted">${q.package?'We have filled this in from your quote. Check it and press Start.':'Tell us the basics. Nothing is final: we confirm everything with you before any invoice.'}</p>
+    <fieldset class="pp-group"><legend><span>1</span>Your business</legend>
+      <div class="row2"><div class="cfield"><label for="ps-name">Business name</label><input id="ps-name" name="business_name" required value="${esc(q.organisation||'')}" placeholder="Larder &amp; Loaf"></div>
+        <div class="cfield"><label for="ps-web">Current website <span class="opt">optional</span></label><input id="ps-web" name="website" placeholder="yourbusiness.co.uk" value="${esc(q.website||'')}"></div></div></fieldset>
+    <fieldset class="pp-group"><legend><span>2</span>Your package <small>choose one</small></legend>
+      <div class="pp-pkgs">${SME.packages.map(k=>`<label class="pp-pkg"><input type="radio" name="package" value="${k.id}"${pkSel===k.id?' checked':''}><span><b>${k.name}</b><em>from ${gbp(k.price)}</em><small>Up to ${k.pages} pages</small></span></label>`).join('')}</div>
+      <div class="cfield pp-pages"><label for="ps-pages">How many pages do you think you need?</label><input id="ps-pages" name="pages" type="number" min="1" max="250" value="${esc(q.pages||8)}"><small class="pp-hint">Extra pages beyond your package are ${gbp(SME.extraPage)} each.</small></div></fieldset>
+    <fieldset class="pp-group"><legend><span>3</span>Add-ons <small>tick any you want</small></legend>
+      <div class="pp-addons">${SME.addons.map(a=>`<label class="pp-addon"><input type="checkbox" name="addons" value="${a.id}"${(q.addons||[]).includes(a.id)?' checked':''}><span><i aria-hidden="true"></i><b>${a.t}</b><small>${a.d}</small><em data-addon-price="${a.id}"></em></span></label>`).join('')}</div></fieldset>
+    <fieldset class="pp-group"><legend><span>4</span>Domain and hosting</legend>
+      <div class="pp-pkgs two">
+        <label class="pp-pkg"><input type="radio" name="domain_mode" value="have"${q.dmode!=='need'?' checked':''}><span><b>I already have a domain</b><small>We point it at your new site</small></span></label>
+        <label class="pp-pkg"><input type="radio" name="domain_mode" value="need"${q.dmode==='need'?' checked':''}><span><b>Please secure one for me</b><small>Priced at cost on your first invoice</small></span></label></div>
+      <div class="cfield"><label for="ps-dom">Domain name</label><input id="ps-dom" name="domain" placeholder="yourbusiness.co.uk" value="${esc(q.domain||'')}"></div>
+      <div class="pp-pkgs two">
+        <label class="pp-pkg"><input type="radio" name="hosting" value="us"${q.hosting!=='self'?' checked':''}><span><b>Host it for me</b><em>${gbp(SME.hosting)} a year</em><small>We look after it and keep it fast</small></span></label>
+        <label class="pp-pkg"><input type="radio" name="hosting" value="self"${q.hosting==='self'?' checked':''}><span><b>I will host it myself</b><small>Code handed over within ${SME.handoverDays} days</small></span></label></div></fieldset>
+  </form>
+  <aside class="pp-est" aria-live="polite">
+    <span class="eyebrow">Your estimate</span>
+    <dl data-est></dl>
+    <p class="pp-est-total"><span>Build price</span><b data-est-total>£0</b></p>
+    <p class="pp-muted pp-small" data-est-stages></p>
+    <button class="btn" type="button" data-start><span>Start my project</span></button>
+    <p class="pp-muted pp-small">No payment is taken here. We confirm your quote first, then send the first invoice.</p>
+  </aside></div>`;
   const f=el.querySelector('form') as HTMLFormElement;
-  f.addEventListener('submit',async e=>{
-    e.preventDefault();if(!f.checkValidity()){(f.querySelector(':invalid') as HTMLElement)?.focus();return;}
-    const fd=new FormData(f),btn=f.querySelector('button');btn.disabled=true;
-    const pk=SME.packages.find(k=>k.id===fd.get('package'));
+  const calc=()=>{
+    const fd=new FormData(f);const pk=SME.packages.find(k=>k.id===fd.get('package'))||SME.packages[1];
+    const pages=Math.max(1,+fd.get('pages')||1),extra=Math.max(0,pages-pk.pages)*SME.extraPage;
+    const chosen=[...f.querySelectorAll<HTMLInputElement>('input[name="addons"]:checked')].map(i=>i.value);let add=0;const rows:string[]=[];
+    SME.addons.forEach(a=>{const inc=a.in.includes(pk.id);const tag=f.querySelector(`[data-addon-price="${a.id}"]`);if(tag)tag.textContent=inc?'Included':a.price?'+'+gbp(a.price):'Free';
+      /* included in this package: shown ticked and locked */
+      const box=f.querySelector<HTMLInputElement>(`input[name="addons"][value="${a.id}"]`);
+      if(box){if(inc){if(!box.disabled)box.dataset.was=box.checked?'1':'';box.checked=true;box.disabled=true;}else if(box.disabled){box.disabled=false;box.checked=box.dataset.was==='1';}}
+      if(chosen.includes(a.id)){if(!inc&&a.price){add+=a.price;rows.push(`<div><dt>${esc(a.t)}</dt><dd>${gbp(a.price)}</dd></div>`);}else rows.push(`<div><dt>${esc(a.t)}</dt><dd>Included</dd></div>`);}});
+    const total=pk.price+extra+add;
+    (el.querySelector('[data-est]') as HTMLElement).innerHTML=`<div><dt>${pk.name} package</dt><dd>${gbp(pk.price)}</dd></div>${extra?`<div><dt>${pages-pk.pages} extra page${pages-pk.pages>1?'s':''}</dt><dd>${gbp(extra)}</dd></div>`:''}${rows.join('')}${fd.get('hosting')==='us'?`<div class="pp-est-yr"><dt>Hosting, yearly</dt><dd>${gbp(SME.hosting)}</dd></div>`:''}`;
+    (el.querySelector('[data-est-total]') as HTMLElement).textContent=gbp(total);
+    (el.querySelector('[data-est-stages]') as HTMLElement).textContent=`Paid in three stages of about ${gbp(Math.round(total/3))}: to start, at design approval and on completion.`;
+    return {pk,total};
+  };
+  f.addEventListener('input',calc);f.addEventListener('change',calc);calc();
+  el.querySelector('[data-start]').addEventListener('click',async()=>{
+    if(!f.checkValidity()){const bad=f.querySelector(':invalid') as HTMLElement;bad?.focus();bad?.scrollIntoView({behavior:'smooth',block:'center'});toast('Please add your business name',true);return;}
+    const btn=el.querySelector<HTMLButtonElement>('[data-start]');btn.disabled=true;
+    const fd=new FormData(f);const {total}=calc();
     try{
       const row=check(await sb.from('clients').insert({
         business_name:String(fd.get('business_name')).trim(),website:String(fd.get('website')||'').trim()||null,package:fd.get('package'),pages:+fd.get('pages')||null,
         addons:fd.getAll('addons'),domain_mode:fd.get('domain_mode'),domain:String(fd.get('domain')||'').trim()||null,hosting:fd.get('hosting'),
-        quote_total:q.total||pk?.price||null,owner_email:clerk.user.primaryEmailAddress?.emailAddress||null,owner_name:clerk.user.fullName||null
+        quote_total:q.total||total,owner_email:clerk.user.primaryEmailAddress?.emailAddress||null,owner_name:clerk.user.fullName||null
       }).select().single());
       check(await sb.from('briefs').insert({client_id:row.id,answers:{}}));
       S.current=row;try{localStorage.setItem('mg-portal-current',row.id);localStorage.removeItem('mg-quote');}catch{}

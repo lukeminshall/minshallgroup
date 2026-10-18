@@ -3,6 +3,7 @@
    /digitalsme. Runs after each page render; does nothing elsewhere.
    The check posts to /api/audit; the quote is sent through /api/contact.
    ===================================================================== */
+import {checkProgress} from './progress';
 import {SME,SCORE} from './content';
 import {score} from './webmins';
 
@@ -27,7 +28,6 @@ function wireCompare(){
 }
 
 /* ---------- instant check ---------- */
-const LOADING=['Fetching your site…','Running Google’s mobile speed test…','Checking search basics…','Looking for enquiry forms and contact details…','Scoring accessibility…','Nearly there…'];
 /* Google's own bands: 90–100 good, 50–89 needs work, 0–49 poor */
 const band=v=>v===null?['na','Not available']:v>=90?['good','Good']:v>=50?['mid','Needs work']:['poor','Poor'];
 function ring(label,v,target='Good is 90+'){
@@ -53,16 +53,16 @@ function wireCheck(){
     const btn=f.querySelector('button');btn.disabled=true;
     sec.hidden=false;q('[data-loading]').hidden=false;q('[data-out]').hidden=true;q('[data-err]').hidden=true;
     sec.scrollIntoView({behavior:'smooth',block:'start'});
-    let i=0;const msg=q('[data-loading-msg]');msg.textContent=LOADING[0];
-    const iv=setInterval(()=>{i=Math.min(i+1,LOADING.length-1);msg.textContent=LOADING[i];},3500);
+    const prog=checkProgress(q('[data-loading]'),{estimate:28000,site:url.replace(/^https?:\/\//,'').replace(/\/$/,'')});let ok=false;
     try{
       const r=await fetch('/api/audit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})});
       const j=await r.json().catch(()=>({error:'Something went wrong. Please try again.'}));
       if(!r.ok||j.error&&!j.checks)throw new Error(j.error||'We could not check that site.');
+      await prog.done();ok=true;
       lastCheck=j;render(j,q);
       const site=document.getElementById('qb-site') as HTMLInputElement;if(site&&!site.value)site.value=j.url;
     }catch(err){q('[data-err]').textContent=err.message||'We could not check that site.';q('[data-err]').hidden=false;}
-    finally{clearInterval(iv);q('[data-loading]').hidden=true;btn.disabled=false;}
+    finally{if(!ok)prog.stop();q('[data-loading]').hidden=true;btn.disabled=false;}
   });
 }
 /* ---------- Webmins Score ---------- */
