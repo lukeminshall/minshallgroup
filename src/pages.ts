@@ -394,11 +394,12 @@ ${phead({crumb:`<a href="/insights">Insights</a><span>/</span>${a.tag}`,title:a.
   <div class="article-main">
   ${a.stats?`<div class="astats reveal">${a.stats.map(x=>`<div><b>${x.n}</b><span>${x.l}</span></div>`).join('')}</div>`:''}
   <div class="prose lg reveal">${a.body.map(p=>{const m=p.match(/^\[\[chart:(\d+)\]\]$/);if(m)return a.charts?.[+m[1]]?barChart(a.charts[+m[1]]):'';return p.startsWith('## ')?`<h2>${p.slice(3)}</h2>`:p.startsWith('What this means:')?`<p class="wtm"><b>What this means:</b>${p.slice(16)}</p>`:`<p>${p}</p>`;}).join('')}</div>
+  ${a.cta?`<div class="acta reveal"><div><b>${a.cta.t}</b><p>${a.cta.p}</p></div><a class="btn" href="${a.cta.h}"><span>${a.cta.t}</span></a></div>`:''}
   ${a.sources?`<div class="asources reveal">${eyebrow('Sources')}<ol>${a.sources.map(x=>`<li><a href="${x.u}" target="_blank" rel="noopener">${x.t}</a></li>`).join('')}</ol><p>Figures are taken from the sources above as published. Where we have calculated a share or a change ourselves, the chart or text says so.</p></div>`:''}
   </div>
   <aside class="article-side reveal" style="--i:1">
     ${eyebrow('Related practice')}<a class="mega-link" href="/capabilities/${cap.slug}"><span class="mn">${cap.n}</span><b>${cap.t}</b><span>${cap.line}</span></a>
-    <a class="btn sm mag" href="/start?type=${({'data-ai':'data','brand-growth':'brand'} as any)[a.cap]||a.cap}"><span>Talk to us about this</span></a>
+    ${a.cta?`<a class="btn sm mag" href="${a.cta.h}"><span>${a.cta.t}</span></a>`:`<a class="btn sm mag" href="/start?type=${({'data-ai':'data','brand-growth':'brand'} as any)[a.cap]||a.cap}"><span>Talk to us about this</span></a>`}
   </aside>
 </div></section>
 <section class="soft"><div class="wrap">

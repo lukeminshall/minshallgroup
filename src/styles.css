@@ -1854,3 +1854,4 @@ html.touring .cookie{display:none}
 body.pp-hot .phead{min-height:0;padding-top:112px;padding-bottom:30px}body.pp-hot .phead .lede,body.pp-hot .phead .display{display:none}
 .pp-signin-q .h2{margin-bottom:14px}
 @media (max-width:700px){body.pp-hot .phead{padding-top:96px;padding-bottom:22px}}
+.acta{display:flex;align-items:center;justify-content:space-between;gap:16px 28px;flex-wrap:wrap;margin:40px 0 0;padding:26px 28px;border-radius:18px;background:var(--navy);color:#fff}.acta b{font-family:var(--fd);font-weight:400;font-size:24px}.acta p{margin:6px 0 0;color:rgba(255,255,255,.75);font-size:15px}
