@@ -1866,3 +1866,5 @@ body.pp-hot .phead{min-height:0;padding-top:112px;padding-bottom:30px}body.pp-ho
 @media (prefers-reduced-motion:reduce){.js .split .w>span{opacity:1;transform:none;animation:none}}
 /* hero headline: also sized by screen height, so short laptop screens keep clear space above the intro */
 @media (min-width:701px){.hero2-h{font-size:clamp(52px,min(10.4vw,15vh),172px);margin:4.5vh 0 max(5vh,36px)}}
+/* drifting graphics (the wellbeing wave) stay inside their own box */
+.gfx.gfx-clip{overflow:hidden}

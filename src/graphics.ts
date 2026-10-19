@@ -236,7 +236,7 @@ export function gLayers(){
 export function gWave(){
   const g=uid('wv'),W=640,base=250;
   const wave=(amp,off,ybase)=>{let d=`M0 ${ybase}`;for(let x=0;x<=W;x+=16){const yy=ybase+Math.sin((x/44)+off)*amp;d+=` L${x} ${yy.toFixed(1)}`;}return d;};
-  return `<svg class="gfx" viewBox="60 90 360 220" aria-label="Flowing waves representing wellbeing pathways">
+  return `<svg class="gfx gfx-clip" viewBox="60 90 360 220" aria-label="Flowing waves representing wellbeing pathways">
     <defs><linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--pink)" stop-opacity=".18"/><stop offset="1" stop-color="var(--pink)" stop-opacity="0"/></linearGradient></defs>
     <g class="waveg" style="--ww:-276px;--wt:9s"><path class="s-soft" fill="none" d="${wave(20,0,base-46)}"/></g>
     <g class="waveg" style="--ww:-276px;--wt:7s"><path fill="url(#${g})" stroke="none" d="${wave(26,1.6,base)} L${W} 320 L0 320 Z"/><path class="p" fill="none" d="${wave(26,1.6,base)}"/></g></svg>`;
