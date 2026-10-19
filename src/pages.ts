@@ -616,10 +616,10 @@ LANDINGS.forEach(L=>{P['/'+L.slug]=()=>landing(L);});
 
 /* ================= PRIVACY ================= */
 P['/privacy']=()=>`
-${phead({eyebrow:'Privacy',title:'Privacy notice',lede:`How ${LEGAL.trading} uses the information you give us through this website. Last updated 17 October 2026.`})}
+${phead({eyebrow:'Privacy',title:'Privacy notice',lede:`How ${LEGAL.trading} uses the information you give us through this website. Last updated 19 October 2026.`})}
 <section><div class="wrap"><div class="prose legal">
   <h2>Who we are</h2>
-  <p>${LEGAL.trading} is a trading name of ${LEGAL.company}, a company registered in ${LEGAL.reg} (company number ${LEGAL.number}), registered office ${LEGAL.office}. ${LEGAL.company} is the controller of the personal data described here.</p>
+  <p>${LEGAL.trading} is ${LEGAL.company}, a company registered in ${LEGAL.reg} (company number ${LEGAL.number}), registered office ${LEGAL.office}. ${LEGAL.company} is the controller of the personal data described here.</p>
   <h2>What we collect</h2>
   <p>When you use our contact form we collect the details you choose to give us: your name, email address, organisation, the topics you tick, when you need things to change, and your message.</p>
   <h2 id="cookies">Analytics and cookies</h2>
@@ -820,7 +820,7 @@ P['/digitalsme/terms']=()=>`
 ${phead({crumb:'<a href="/digitalsme">Website refresh</a><span>/</span>Terms',eyebrow:'',title:'Website refresh offer terms',lede:`The terms that apply when you accept a quote under our website refresh offer. Version 1, 17 October 2026.`})}
 <section><div class="wrap"><div class="prose legal">
   <h2>1. Who we are and who this is for</h2>
-  <p>These terms are between you and ${LEGAL.company}, trading as ${LEGAL.trading} (company number ${LEGAL.number}, registered office ${LEGAL.office}). The offer is for businesses and organisations only, not for consumers.</p>
+  <p>These terms are between you and ${LEGAL.company} (company number ${LEGAL.number}, registered office ${LEGAL.office}). The offer is for businesses and organisations only, not for consumers.</p>
   <h2>2. Your quote and what is included</h2>
   <p>Your quote sets out the package, the number of pages, any add-ons, the price, whether we host the site, any domain fee and the expected dates. Only what is listed in your accepted quote is included. Anything else is extra work, which we will price and agree with you in writing before we do it.</p>
   <p>Package prices are starting prices for the stated number of pages. Additional pages are charged at ${gbp(SME.extraPage)} each. All prices exclude VAT, if applicable.</p>

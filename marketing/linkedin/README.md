@@ -32,9 +32,9 @@ Strategy, digital, data and brand. One team, measured by the return.
 
 **Company size:** choose the band that fits your current team
 
-**Headquarters:** Leeds, West Yorkshire, United Kingdom. Use the address you are happy to show publicly; the registered office is 148 The Rose Bowl, Portland Crescent, Leeds LS1 3HB.
+**Headquarters:** Leeds, West Yorkshire, United Kingdom. Use the address you are happy to show publicly; the registered office is 66 Paul Street, London EC2A 4NA.
 
-**Founded:** the year Knexu Limited was incorporated (check Companies House, company number 14536312)
+**Founded:** 2026 (Minshall Group Limited, company number 17529393)
 
 **Custom button:** Visit website → https://minshallgroup.com/contact
 
@@ -53,7 +53,7 @@ We also build and run our own products. DataLense is healthcare commercial intel
 
 For small and medium-sized businesses, we offer fixed-price websites from £495, with a free website check, the Webmins Score.
 
-Minshall Group was formerly Knexu. Minshall Group is a trading name of Knexu Limited, registered in England and Wales, company number 14536312.
+Minshall Group was formerly Knexu. Minshall Group Limited is registered in England and Wales, company number 17529393.
 
 ## Your personal profile
 

@@ -11,7 +11,7 @@ export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;'
 const nl = s => esc(s).replace(/\n/g, '<br>');
 
 export const FROM = 'Minshall Group <hello@minshallgroup.com>';
-export const FOOTER_TEXT = ['Minshall Group', 'hello@minshallgroup.com · minshallgroup.com', 'Minshall Group is a trading name of Knexu Limited, company 14536312. 148 The Rose Bowl, Portland Crescent, Leeds LS1 3HB.'];
+export const FOOTER_TEXT = ['Minshall Group', 'hello@minshallgroup.com · minshallgroup.com', 'Minshall Group Limited, registered in England and Wales, company 17529393. Registered office: 66 Paul Street, London EC2A 4NA.'];
 
 export function brandEmail({ preheader = '', eyebrow = '', heading = '', greeting = '', paras = [], score = null, list = [], listTitle = '', quote = '', button = null, after = [], reason = '' }) {
   const p = t => `<p style="margin:0 0 16px;font-family:${SANS};font-size:16px;line-height:1.6;color:${C.ink}">${t}</p>`;
@@ -49,7 +49,7 @@ export function brandEmail({ preheader = '', eyebrow = '', heading = '', greetin
     <tr><td style="background:#ffffff;border-radius:0 0 18px 18px;padding:0 32px 28px">
       <div style="border-top:1px solid ${C.line};padding-top:18px;font-family:${SANS};font-size:12px;line-height:1.6;color:${C.muted}">
         <a href="mailto:hello@minshallgroup.com" style="color:${C.navy};font-weight:700;text-decoration:none">hello@minshallgroup.com</a> &nbsp;·&nbsp; <a href="${SITE}" style="color:${C.navy};font-weight:700;text-decoration:none">minshallgroup.com</a><br>
-        Minshall Group is a trading name of Knexu Limited, registered in England and Wales, company 14536312. 148 The Rose Bowl, Portland Crescent, Leeds LS1 3HB.
+        Minshall Group Limited, registered in England and Wales, company 17529393. Registered office: 66 Paul Street, London EC2A 4NA.
         ${reason ? `<br><br>${esc(reason)}` : ''}
       </div>
     </td></tr>

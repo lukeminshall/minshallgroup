@@ -472,7 +472,7 @@ export const INSIGHTS:any[]=[
 export const CLIENTS=['Prime Health','Medical Imaging Partnership','Housden Group','Leeds Beckett University','Northumbria University','Eventmaster','The Sponsor Collective','Technique Health','Propel Teams'];
 
 /* ---------------- LEGAL ---------------- */
-export const LEGAL={trading:'Minshall Group',company:'Knexu Limited',number:'14536312',office:'148 The Rose Bowl, Portland Crescent, Leeds LS1 3HB',reg:'England & Wales'};
+export const LEGAL={trading:'Minshall Group',company:'Minshall Group Limited',number:'17529393',office:'66 Paul Street, London EC2A 4NA',reg:'England & Wales'};
 
 /* ---------------- SEARCH LANDING PAGES ----------------
    Focused pages for the searches we most want to be found for. Each gets
