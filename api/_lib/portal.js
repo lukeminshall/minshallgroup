@@ -3,7 +3,7 @@
    service-role Supabase client for server-side reads/writes, and sends
    notification emails through Resend.
    Env: CLERK_SECRET_KEY, SUPABASE_URL (or VITE_SUPABASE_URL),
-        SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, CONTACT_TO, CONTACT_FROM. */
+        SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, CONTACT_TO (team notifications, default luke@), CONTACT_FROM. */
 import { verifyToken } from '@clerk/backend';
 import { createClient } from '@supabase/supabase-js';
 
@@ -48,7 +48,9 @@ export async function sendEmail({ to, subject, text, html, replyTo, from }) {
   return !!(r && r.ok);
 }
 
-export const TEAM = () => process.env.CONTACT_TO || 'hello@minshallgroup.com';
+/* behind-the-scenes notifications go to Luke; what clients see and reply to stays hello@ */
+export const TEAM = () => process.env.CONTACT_TO || 'luke@minshallgroup.com';
+export const PUBLIC_REPLY = 'hello@minshallgroup.com';
 
 export function body(req) {
   let b = req.body; if (typeof b === 'string') { try { b = JSON.parse(b); } catch { b = {}; } }

@@ -2,7 +2,7 @@ import { brandEmail, FROM } from './_lib/email.js';
 /* Vercel Serverless Function — contact form → email via Resend.
    Set in Vercel → Project → Settings → Environment Variables:
      RESEND_API_KEY  (required)  — from resend.com
-     CONTACT_TO      (optional, default hello@minshallgroup.com)
+     CONTACT_TO      (optional, default luke@minshallgroup.com: team notifications)
      CONTACT_FROM    (optional, default 'Minshall Group Website <onboarding@resend.dev>')
        For production, use a Resend-verified sender on your domain, e.g.
        'Minshall Group Website <website@minshallgroup.com>'. Until a domain is verified,
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
   /* Primary: from our verified Resend domain to hello@. Fallback: if Resend
      refuses that sender (e.g. domain not yet verified), use Resend's test
      sender, which can only deliver to the Resend account owner. */
-  const to = process.env.CONTACT_TO || 'hello@minshallgroup.com';
+  const to = process.env.CONTACT_TO || 'luke@minshallgroup.com';
   const from = process.env.CONTACT_FROM || 'Minshall Group Website <website@minshallgroup.com>';
   const fallbackTo = process.env.CONTACT_FALLBACK_TO || 'luke.minshall@knexu.co.uk';
   const fallbackFrom = 'Minshall Group Website <onboarding@resend.dev>';
@@ -82,7 +82,7 @@ export default async function handler(req, res) {
     });
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from: FROM, to: email, subject: isQuote ? 'Your website quote: Minshall Group' : 'Thank you for getting in touch: Minshall Group', text: mail.text, html: mail.html, reply_to: to })
+      body: JSON.stringify({ from: FROM, to: email, subject: isQuote ? 'Your website quote: Minshall Group' : 'Thank you for getting in touch: Minshall Group', text: mail.text, html: mail.html, reply_to: 'hello@minshallgroup.com' })
     }).catch(() => null);
     if (!r || !r.ok) console.error('Auto-reply failed', r && r.status);
   };

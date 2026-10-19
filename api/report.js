@@ -31,7 +31,7 @@ export default async function handler(req, res) {
   const site = a.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
   const link = `https://minshallgroup.com/digitalsme?url=${encodeURIComponent(site)}`;
   const from = process.env.CONTACT_FROM || 'Minshall Group <website@minshallgroup.com>';
-  const team = process.env.CONTACT_TO || 'hello@minshallgroup.com';
+  const team = process.env.CONTACT_TO || 'luke@minshallgroup.com';
 
   const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   const mail = brandEmail({
@@ -45,7 +45,7 @@ export default async function handler(req, res) {
   });
 
   const send = body => fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).catch(() => null);
-  const sent = await send({ from: FROM, to: email, reply_to: team, subject: `Your Webmins Score: ${total}/100 for ${site}`, text: mail.text, html: mail.html });
+  const sent = await send({ from: FROM, to: email, reply_to: 'hello@minshallgroup.com', subject: `Your Webmins Score: ${total}/100 for ${site}`, text: mail.text, html: mail.html });
   if (!sent || !sent.ok) { console.error('Report email failed', sent && sent.status, sent && await sent.text()); return res.status(502).json({ error: 'We could not send the email just now. Please try again.' }); }
 
   const optin = d.optin === true;

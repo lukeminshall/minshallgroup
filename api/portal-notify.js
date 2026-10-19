@@ -3,7 +3,7 @@
    The browser says *what happened*; the server reads the record itself and
    writes the email, so nothing in the email comes from the request body.
    Client actions email the team (hello@); team actions email the client. */
-import { configured, caller, projectFor, db, sendEmail, TEAM, SITE, body, fail } from './_lib/portal.js';
+import { configured, caller, projectFor, db, sendEmail, TEAM, PUBLIC_REPLY, SITE, body, fail } from './_lib/portal.js';
 import { brandEmail, FROM } from './_lib/email.js';
 import { createClerkClient } from '@clerk/backend';
 
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
         const qLine = q ? `Quote built on the website: ${cl(q.package, 20)}, ${cl(q.pages, 5)} pages, £${total.toLocaleString('en-GB')} build${q.organisation ? `, for ${cl(q.organisation)}` : ''}${q.website ? ` (current site ${cl(q.website)})` : ''}.` : 'No website quote on their device.';
         await sendEmail({ to: TEAM(), subject: `[Portal] New account${total ? ` with a £${total.toLocaleString('en-GB')} quote` : ''}: ${name || email}`, replyTo: email || undefined,
           text: [`${name || 'Someone'} <${email}> has created a client portal account.`, qLine, '', 'They have not started their project yet. If they have not within a day, a short personal note usually helps: reply to this email to reach them.', '', `Open the portal: ${SITE}/portal#admin`].join('\n') });
-        if (email) await sendEmail({ to: email, from: FROM, replyTo: TEAM(), subject: 'Welcome to Minshall Group', ...brandEmail({
+        if (email) await sendEmail({ to: email, from: FROM, replyTo: PUBLIC_REPLY, subject: 'Welcome to Minshall Group', ...brandEmail({
           preheader: 'Your account is ready. Your onboarding takes about 15 minutes, in your own time.',
           eyebrow: 'Welcome', heading: 'Your account is ready.', greeting: `Hello${u.firstName ? ' ' + u.firstName : ''},`,
           paras: ['Thank you for choosing Minshall Group. Everything about your website now happens in one place, your client portal, so there is no kick-off call to book.'],
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
 
     const toTeam = (subject, lines) => sendEmail({ to: TEAM(), subject: `[Portal] ${subject} · ${p.business_name}`, text: [...lines, '', `Open the portal: ${link}#admin`].join('\n'), replyTo: p.owner_email });
     /* client emails: branded layout, from hello@, with one clear button into the portal */
-    const toClient = (subject, o) => sendEmail({ to: p.owner_email, from: FROM, replyTo: TEAM(), subject, ...brandEmail({
+    const toClient = (subject, o) => sendEmail({ to: p.owner_email, from: FROM, replyTo: PUBLIC_REPLY, subject, ...brandEmail({
       greeting: `Hello${p.owner_name ? ' ' + p.owner_name.split(' ')[0] : ''},`, button: { label: o.cta || 'Open your portal', url: o.url || link },
       after: ['You can reply to this email, or message us from your portal.'], reason: `You are receiving this because you have a project with us: ${p.business_name}.`, ...o }) });
 

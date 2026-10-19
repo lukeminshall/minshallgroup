@@ -3,6 +3,6 @@
 -- minshallgroup.com/portal once first. One row back = done.
 insert into public.admins (user_id, note)
 select user_id, 'Luke' from public.signups
-where lower(email) = 'luke.minshall@knexu.co.uk'
+where lower(email) = 'luke@minshallgroup.com'
 on conflict do nothing
 returning user_id;

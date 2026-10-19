@@ -38,7 +38,7 @@ export default async function handler(req, res) {
       method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from: process.env.CONTACT_FROM || 'Minshall Group Website <website@minshallgroup.com>',
-        to: process.env.CONTACT_TO || 'hello@minshallgroup.com',
+        to: process.env.CONTACT_TO || 'luke@minshallgroup.com',
         subject: `Newsletter sign-up: ${email}`,
         text: `New newsletter opt-in on minshallgroup.com\n\nEmail: ${email}\nName: ${name || '—'}\nCompany: ${company || '—'}\nSigned up on: ${source || 'website'}\nConsent ticked: yes\nTime (UTC): ${when}\n\nKeep this email as the record of consent.\n`
       })
