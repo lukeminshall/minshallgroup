@@ -87,7 +87,7 @@ function subLinks(base, html) {
   return [...new Set(out)].sort((a, b) => (/contact/i.test(b) ? 1 : 0) - (/contact/i.test(a) ? 1 : 0)).slice(0, 2);
 }
 const norm = s => s.toLowerCase().replace(/&amp;|&/g, ' and ').replace(/<[^>]+>/g, ' ').replace(/[^a-z0-9]+/g, ' ');
-function match(co, html) {
+function match(co, html, domain = '') {
   const text = norm(html), digits = html.replace(/<[^>]+>/g, ' ');
   const num = co.company_number.replace(/^0+/, '');
   if (new RegExp(`\\b0*${num}\\b`).test(digits)) return 'confirmed: company number on site';
@@ -97,6 +97,9 @@ function match(co, html) {
   const nameHit = words.every(w => text.includes(` ${w} `) || text.includes(` ${w}`));
   const town = norm(co.post_town).trim(); const district = (co.postcode || '').split(' ')[0].toLowerCase();
   if (nameHit && ((town && text.includes(` ${town}`)) || (district && text.includes(` ${district}`)))) return 'likely: name and town on site';
+  /* the web address is the company's own distinctive name, and the site uses that name */
+  const label = domain.split('.')[0].replace(/-/g, '');
+  if (nameHit && label.length >= 10 && label === words.join('').replace(/[^a-z0-9]/g, '').slice(0, label.length) ) return 'likely: own name as web address';
   return '';
 }
 
@@ -108,7 +111,7 @@ async function enrich(co) {
     if (!home || PARKED.test(home.html.slice(0, 20000))) continue;
     const pages = [home]; for (const u of subLinks(home.url, home.html)) { const p = await get(u); if (p) pages.push(p); }
     const all = pages.map(p => p.html).join('\n');
-    const m = match(co, all);
+    const m = match(co, all, d);
     if (!m) continue;
     const site = host(home.url);
     let em = emails(all); const own = em.filter(e => site.endsWith(e.split('@')[1]) || e.split('@')[1].endsWith(site));

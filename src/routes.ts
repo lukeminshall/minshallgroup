@@ -8,8 +8,8 @@ import {CAPS,PRODUCTS,INSIGHTS,LANDINGS,CASES} from './content';
 
 export const SITE='https://minshallgroup.com';
 export const BRAND='Minshall Group';
-export const DEFAULT_TITLE='Minshall Group | Healthcare, Digital & Strategy Consultancy UK';
-export const DEFAULT_DESC='Minshall Group is a UK consultancy for strategy, healthcare, digital, data and brand. One senior team that finds the number, builds what moves it, and proves it moved.';
+export const DEFAULT_TITLE='Minshall Group | Commercial Strategy & Digital for Health and Sport';
+export const DEFAULT_DESC='Commercial strategy and digital for health and sport. We find where the growth is, build what it takes to get it, and stay until the number has moved.';
 
 const t=s=>`${s} | ${BRAND}`;
 

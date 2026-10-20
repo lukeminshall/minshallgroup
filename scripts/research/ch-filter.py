@@ -52,6 +52,8 @@ def cat(sics):
 
 src = sys.argv[1]
 out = open('research/raw/ch/companies.csv', 'w', newline='')
+allw = csv.writer(open('research/raw/ch/all-names.csv', 'w', newline=''))
+allw.writerow(['company', 'company_number', 'region', 'accounts'])
 w = csv.writer(out)
 w.writerow(['company','company_number','category','sic','region','post_town','postcode','address','incorporated','company_type','accounts'])
 cnt = collections.Counter(); seen = 0
@@ -65,6 +67,7 @@ with open(src, newline='', encoding='utf-8', errors='replace') as f:
         if 'DORMANT' in acc.upper(): continue
         reg = region(row[I['RegAddress.PostCode']])
         if not reg: continue
+        allw.writerow([row[I['CompanyName']], row[I['CompanyNumber']], reg, row[I['Accounts.AccountCategory']]])
         sics = [row[I[f'SICCode.SicText_{k}']] for k in range(1, 5) if row[I[f'SICCode.SicText_{k}']]]
         code, c = cat(sics)
         if not c: continue

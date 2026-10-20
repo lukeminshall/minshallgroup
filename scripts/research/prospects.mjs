@@ -13,7 +13,7 @@
    they name businesses and contacts). Only public pages are read. */
 import fs from 'node:fs';
 
-const RAW = 'research/raw';
+const RAW = process.env.REGION && process.env.REGION !== 'yorkshire' ? `research/raw/${process.env.REGION}` : 'research/raw';
 const LIMIT = Number(process.env.LIMIT || Infinity);
 const CONC = 10, TIMEOUT = 10000;
 const UA = 'Mozilla/5.0 (compatible; MinshallGroupResearch/1.0; +https://minshallgroup.com/insights/state-of-yorkshire-small-business-websites-2026)';

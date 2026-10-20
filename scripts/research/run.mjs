@@ -5,12 +5,13 @@ import fs from 'node:fs';
 import { build } from 'esbuild';
 import { pathToFileURL } from 'node:url';
 import { runAudit } from '../../api/audit.js';
+const RAW = process.env.REGION && process.env.REGION !== 'yorkshire' ? `research/raw/${process.env.REGION}` : 'research/raw';
 
-await build({ entryPoints: ['src/webmins.ts'], bundle: true, format: 'esm', platform: 'node', outfile: 'research/raw/webmins.mjs', logLevel: 'error' });
-const { score } = await import(pathToFileURL('research/raw/webmins.mjs').href);
+await build({ entryPoints: ['src/webmins.ts'], bundle: true, format: 'esm', platform: 'node', outfile: `${RAW}/webmins.mjs`, logLevel: 'error' });
+const { score } = await import(pathToFileURL(`${RAW}/webmins.mjs`).href);
 
-const { sample } = JSON.parse(fs.readFileSync('research/raw/sample.json', 'utf8'));
-const out = 'research/raw/results.jsonl';
+const { sample } = JSON.parse(fs.readFileSync(`${RAW}/sample.json`, 'utf8'));
+const out = `${RAW}/results.jsonl`;
 const done = new Set(fs.existsSync(out) ? fs.readFileSync(out, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l).domain) : []);
 const todo = sample.filter(s => !done.has(s.domain));
 console.log('to check', todo.length, 'already', done.size);
