@@ -9,14 +9,10 @@ import {phead,eyebrow} from './components';
 
 type T={id:string,t:string,d:string,scope:string[],goal:string};
 export const START_TYPES:T[]=[
-  {id:'strategy',t:'Strategy & consultancy',d:'Business cases, growth plans, market entry and site selection.',goal:'e.g. open two new clinics by next spring',
-    scope:['Business or investment case','Growth or commercial strategy','UK market entry','Healthcare site selection or catchment','Due diligence','Operating model or service redesign','Board or funder paper']},
-  {id:'data',t:'Data, AI & automation',d:'Dashboards, analytics, AI tools and automating manual work.',goal:'e.g. cut month-end reporting from five days to one',
-    scope:['Dashboards and reporting','Data audit and clean-up','Joining up data sources','AI assistant or tool','Automating a manual process','Forecasting or modelling','DataLense access']},
-  {id:'digital',t:'Digital & product',d:'Platforms, portals, apps and larger websites.',goal:'e.g. move 60% of bookings online this year',
-    scope:['New platform or portal','Customer or patient app','Website over 100 pages','Booking, quote or payment journeys','Integrations with existing systems','Rescue an existing build']},
-  {id:'brand',t:'Brand, marketing & growth',d:'Positioning, identity, campaigns and demand.',goal:'e.g. double qualified enquiries by the summer',
-    scope:['Positioning and messaging','Visual identity','Website content and copy','Campaign','Lead generation','Launch or rebrand']},
+  {id:'strategy',t:'Commercial strategy',d:'Growth plans, market entry, business cases, site selection, partnerships and go-to-market.',goal:'e.g. open two new clinics by next spring',
+    scope:['Growth or commercial strategy','UK market entry','Business or investment case','Site selection or catchment','Selling into the NHS','Partnerships, sponsorship or commercial rights','Go-to-market, brand or marketing','Bids and tenders']},
+  {id:'digital',t:'Digital, data & AI',d:'Platforms, portals, apps, larger websites, dashboards and practical AI.',goal:'e.g. move 60% of bookings online this year',
+    scope:['New platform or portal','Customer or patient app','Website over 100 pages','Booking, quote or payment journeys','Integrations with existing systems','Dashboards and reporting','AI assistant or automation','DataLense access']},
   {id:'website',t:'A small business website',d:'Fixed prices from £495, priced instantly online.',goal:'',scope:[]}
 ];
 const SECTORS=['Health and care','Sport and wellbeing','University or education','Public sector','Growth company','Other'];
@@ -28,7 +24,7 @@ const radios=(name:string,opts:string[])=>opts.map(o=>`<label class="chk"><input
 
 export function startPage(quote=''){
   return `
-${phead({eyebrow:'Start a project',title:'Build your brief. Get a fixed quote.',lede:'Strategy, data, a digital build or a brand. Tell us the outcome and the shape of the work, and within two working days we send back a short written proposal with a fixed price. No call needed to get started.'})}
+${phead({eyebrow:'Start a project',title:'Build your brief. Get a fixed quote.',lede:'Commercial strategy, or a digital, data or AI build. Tell us the outcome and the shape of the work, and within two working days we send back a short written proposal with a fixed price. No call needed to get started.'})}
 <section class="st-sec"><div class="wrap st-grid">
   <form id="start-form" class="st-form" novalidate>
     <p class="hp" hidden aria-hidden="true"><label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
@@ -131,7 +127,7 @@ export function initStart(){
   form.addEventListener('input',paint);
 
   /* ?type=strategy preselects a type, for links from capability pages */
-  const q=new URLSearchParams(location.search).get('type');
+  const q0=new URLSearchParams(location.search).get('type');const q=({data:'digital','data-ai':'digital',brand:'strategy','brand-growth':'strategy'} as any)[q0||'']||q0;
   const pre=q&&form.querySelector<HTMLInputElement>(`input[name="type"][value="${CSS.escape(q)}"]`);
   if(pre){pre.checked=true;setType();}
   paint();

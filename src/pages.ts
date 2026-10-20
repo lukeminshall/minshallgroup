@@ -21,10 +21,10 @@ P['/']=()=>`
     <canvas class="hero-field" data-field aria-hidden="true"></canvas>
     <div class="grain" aria-hidden="true"></div>
     <div class="wrap hero2-in">
-      <div class="fadebox"><div class="hero2-top rise" style="--i:0"><span>Strategy</span><span>Digital</span><span>Data &amp; AI</span><span>Brand</span></div></div>
-      <h1 class="hero2-h split" data-vf>${splitLetters('Strategy measured by the <em>return</em>, not the recommendation',1)}<span class="dot zoomdot" data-zoomdot aria-hidden="true"></span></h1>
+      <div class="fadebox"><div class="hero2-top rise" style="--i:0"><span>Commercial strategy</span><span>Digital</span><span>Health</span><span>Sport</span></div></div>
+      <h1 class="hero2-h split" data-vf>${splitLetters('Commercial strategy and digital, measured by the <em>return</em>',1)}<span class="dot zoomdot" data-zoomdot aria-hidden="true"></span></h1>
       <div class="hero2-foot">
-        <p class="hero2-lede rise" style="--i:7">We are a strategy, digital, data and brand group. Clients bring us a number that needs to move. We work out how, build what it takes, and stay until it has moved.</p>
+        <p class="hero2-lede rise" style="--i:7">We find where the growth is, then build what it takes to get it. Clients bring us a number that needs to move, and we stay until it has moved. Deepest in health and sport.</p>
         <div class="actions rise" style="--i:8">${btn('Start a conversation','/contact')}${btn('See the work','/work',true)}</div>
         <a class="hero2-web rise" style="--i:9" href="/digitalsme"><small>Small business websites</small><span>Fixed prices from £495, quoted online</span><i aria-hidden="true">→</i></a>
       </div>
@@ -36,7 +36,7 @@ P['/']=()=>`
 <section class="pinksec" id="intro">
   <div class="wrap">
     <span class="eyebrow">Why Minshall Group</span>
-    <p class="scrub" data-scrub>Most firms hand over a strategy and leave. Somebody else builds the platform, somebody else runs the data, somebody else does the brand, and nobody owns the result. We do all four, and we own the result.</p>
+    <p class="scrub" data-scrub>Most strategy firms hand over a deck and leave. Most digital agencies build without a commercial case. We do both, so one team owns the plan, the build and the result.</p>
     <div class="pink-foot">
       <span class="pink-we">We <span class="rot" id="rot"><b class="on">find the number</b><b>design the route</b><b>build the platform</b><b>tell the story</b><b>prove it moved</b></span></span>
       <a class="tlink" href="/about">Who we are</a>
@@ -48,7 +48,7 @@ P['/']=()=>`
 <section class="hcaps dark" data-hscroll id="capabilities">
   <div class="hcaps-pin">
     <div class="wrap hcaps-head">
-      <div>${eyebrow('Capabilities')}<h2 class="h2">Four practices, one team.</h2></div>
+      <div>${eyebrow('Capabilities')}<h2 class="h2">Two practices, one team.</h2></div>
       <div class="hcaps-count" aria-hidden="true"><b data-hcount>01</b><span>/ 0${CAPS.length}</span></div>
     </div>
     <div class="hcaps-track" data-htrack>
@@ -143,9 +143,10 @@ P['/']=()=>`
 </div></section>
 
 <section class="ind-sec soft"><div class="wrap">
-  ${shead({eyebrow:'Industries',h:'Where we know the ground.',p:'Six sectors we know well enough to be accountable for the outcome.',link:['All industries','/industries']})}
-  <div class="ind-grid">${INDUSTRIES.map((x,i)=>`
+  ${shead({eyebrow:'Sectors',h:'Where we go deepest.',p:'Health and sport, and the ground where they meet. We know the regulation, the buyers and the economics well enough to be accountable for the outcome.',link:['Our sectors','/industries']})}
+  <div class="ind-grid">${INDUSTRIES.filter((x:any)=>x.focus).map((x,i)=>`
     <a class="ind reveal" style="--i:${i%3}" href="/industries#${x.id}"><span class="ind-n">${String(i+1).padStart(2,'0')}</span><div class="ind-gfx">${gfx(x.gfx)}</div><h3>${x.t}</h3><p>${x.d}</p></a>`).join('')}</div>
+  <p class="ind-also reveal">We also work with universities, the public sector and growth companies. <a class="ulink" href="/industries">See how</a></p>
 </div></section>
 
 <section><div class="wrap">
@@ -156,7 +157,7 @@ P['/']=()=>`
 
 /* ================= CAPABILITIES ================= */
 P['/capabilities']=()=>`
-${phead({eyebrow:'Capabilities',title:'Four practices. One measure.',lede:'Strategy & consultancy, digital & product, data, AI & automation, and brand, marketing & growth. Each is strong on its own. The value is in how they work together.'})}
+${phead({eyebrow:'Capabilities',title:'Two practices. One measure.',lede:'Commercial strategy finds where the growth is. Digital builds what it takes to get it: products, platforms, data and practical AI. One team owns both, measured on the return.'})}
 <section><div class="wrap">
   <div class="caplist">${CAPS.map((c,i)=>`
     <a class="capitem reveal" data-cursor="Open" href="/capabilities/${c.slug}">
@@ -222,21 +223,25 @@ CAPS.forEach(c=>{P['/capabilities/'+c.slug]=()=>capPage(c);});
 
 /* ================= INDUSTRIES ================= */
 P['/industries']=()=>`
-${phead({eyebrow:'Industries',title:'Deep where it counts, broad where it helps.',lede:'We lead with capability, but we know these sectors well enough to be accountable for the outcome: the regulation, the buyers, the economics and the people.'})}
+${phead({eyebrow:'Sectors',title:'Health and sport, and where they meet.',lede:'We lead with capability, but we know these sectors well enough to be accountable for the outcome: the regulation, the buyers, the economics and the people.'})}
 <section><div class="wrap">
   <div class="tabs" data-tabs>
-    <div class="tab-list" role="tablist" aria-label="Industries">${INDUSTRIES.map((x,i)=>`<button role="tab" id="tab-${x.id}" aria-controls="${x.id}" aria-selected="${i===0}" class="${i===0?'on':''}" data-tab="${x.id}"><span>${String(i+1).padStart(2,'0')}</span>${x.t}</button>`).join('')}</div>
-    <div class="tab-panels">${INDUSTRIES.map((x,i)=>`
+    <div class="tab-list" role="tablist" aria-label="Sectors">${INDUSTRIES.filter((x:any)=>x.focus).map((x,i)=>`<button role="tab" id="tab-${x.id}" aria-controls="${x.id}" aria-selected="${i===0}" class="${i===0?'on':''}" data-tab="${x.id}"><span>${String(i+1).padStart(2,'0')}</span>${x.t}</button>`).join('')}</div>
+    <div class="tab-panels">${INDUSTRIES.filter((x:any)=>x.focus).map((x,i)=>`
       <article class="tab-panel${i===0?' on':''}" id="${x.id}" role="tabpanel" aria-labelledby="tab-${x.id}">
         <div class="tp-head"><div><h2 class="h2">${x.t}</h2><p class="lede-s">${x.d}</p></div><div class="tp-gfx">${gfx(x.gfx)}</div></div>
         <div class="tp-grid">
           <div><span class="eyebrow">Challenges we solve</span><ul class="ticks">${x.challenges.map(c=>`<li>${c}</li>`).join('')}</ul></div>
           <div><span class="eyebrow">Practices involved</span><div class="chips lg">${capTags(x.caps)}</div>
-            <span class="eyebrow" style="margin-top:28px">Clients include</span><p class="clients">${x.clients.join(' · ')}</p></div>
+            ${x.clients.length?`<span class="eyebrow" style="margin-top:28px">Clients include</span><p class="clients">${x.clients.join(' · ')}</p>`:''}</div>
         </div>
         <div class="tp-links"><a class="tlink" href="/work?ind=${x.id}">See ${x.t.toLowerCase()} work</a>${x.id==='health'?'<a class="tlink" href="/healthcare-consultancy">Healthcare consultancy</a>':''}</div>
       </article>`).join('')}</div>
   </div>
+</div></section>
+<section class="soft"><div class="wrap">
+  ${shead({eyebrow:'We also work with',h:'The approach carries.',p:'Health and sport are where we go deepest. The same commercial strategy and digital work also serves these sectors.'})}
+  <div class="also-grid">${INDUSTRIES.filter((x:any)=>!x.focus).map(x=>`<a class="also reveal" href="/work?ind=${x.id}"><h3>${x.t}</h3><p>${x.d}</p></a>`).join('')}</div>
 </div></section>
 ${ctaBand('Not on the list?','The capability carries. If your sector has a number that needs moving, we would like to hear about it.')}`;
 
@@ -449,14 +454,14 @@ function article(a){
   const d=new Date(a.date).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
   const cap=capBySlug(a.cap);const more=INSIGHTS.filter(x=>x.slug!==a.slug).slice(0,3);
   return `
-${phead({crumb:`<a href="/insights">Insights</a><span>/</span>${a.tag}`,title:a.t.replace(/\.$/,''),lede:a.d,meta:`<span class="eyebrow">${d} · ${a.mins} min read</span>`})}
-<script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@type":a.tag==='News'?'NewsArticle':'Article',headline:a.t,description:a.d,datePublished:a.date,dateModified:a.date,author:{"@type":"Organization",name:"Minshall Group",url:"https://minshallgroup.com"},publisher:{"@type":"Organization",name:"Minshall Group",logo:{"@type":"ImageObject",url:"https://minshallgroup.com/apple-touch-icon.png"}},mainEntityOfPage:`https://minshallgroup.com/insights/${a.slug}`,image:"https://minshallgroup.com/og.png"}).replace(/</g,'\\u003c')}</script>
+${phead({crumb:`<a href="/insights">Insights</a><span>/</span>${a.tag}`,title:a.t.replace(/\.$/,''),lede:a.d,meta:`<span class="eyebrow">${d} · ${a.mins} min read</span><p class="byline-art"><b>The view from Minshall Group</b><span>By Luke Minshall</span></p>`})}
+<script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@type":a.tag==='News'?'NewsArticle':'Article',headline:a.t,description:a.d,datePublished:a.date,dateModified:a.date,author:{"@type":"Person",name:"Luke Minshall",worksFor:{"@type":"Organization",name:"Minshall Group",url:"https://minshallgroup.com"}},publisher:{"@type":"Organization",name:"Minshall Group",logo:{"@type":"ImageObject",url:"https://minshallgroup.com/apple-touch-icon.png"}},mainEntityOfPage:`https://minshallgroup.com/insights/${a.slug}`,image:"https://minshallgroup.com/og.png"}).replace(/</g,'\\u003c')}</script>
 <section><div class="wrap article">
   <div class="article-main">
   ${a.stats?`<div class="astats reveal">${a.stats.map(x=>`<div><b>${x.n}</b><span>${x.l}</span></div>`).join('')}</div>`:''}
   <div class="prose lg reveal">${a.body.map(p=>{const m=p.match(/^\[\[chart:(\d+)\]\]$/);if(m)return a.charts?.[+m[1]]?barChart(a.charts[+m[1]]):'';return p.startsWith('## ')?`<h2>${p.slice(3)}</h2>`:p.startsWith('What this means:')?`<p class="wtm"><b>What this means:</b>${p.slice(16)}</p>`:`<p>${p}</p>`;}).join('')}</div>
   ${a.cta?`<div class="acta reveal"><div><b>${a.cta.t}</b><p>${a.cta.p}</p></div><a class="btn" href="${a.cta.h}"><span>${a.cta.t}</span></a></div>`:''}
-  ${a.sources?`<div class="asources reveal">${eyebrow('Sources')}<ol>${a.sources.map(x=>`<li><a href="${x.u}" target="_blank" rel="noopener">${x.t}</a></li>`).join('')}</ol><p>Figures are taken from the sources above as published. Where we have calculated a share or a change ourselves, the chart or text says so.</p></div>`:''}
+  ${a.sources?`<div class="asources reveal">${eyebrow('Sources')}<ol>${a.sources.map(x=>`<li><a href="${x.u}" target="_blank" rel="noopener">${x.t}</a></li>`).join('')}</ol><p><b>How we made this.</b> We gather official and industry data, analyse it ourselves and write up what we think it means. AI tools help us find sources and draft; every figure is checked by us against the sources listed above. Where we have calculated a share or a change ourselves, the chart or text says so.</p></div>`:''}
   </div>
   <aside class="article-side reveal" style="--i:1">
     ${eyebrow('Related practice')}<a class="mega-link" href="/capabilities/${cap.slug}"><span class="mn">${cap.n}</span><b>${cap.t}</b><span>${cap.line}</span></a>
@@ -520,7 +525,7 @@ ${phead({eyebrow:'About',title:'One team, from the first question to the last nu
   <div class="prose reveal" style="--i:1">
     <p>We started as Knexu, a strategic growth agency for sport, health and wellbeing. The work was always measured on the return: new revenue, recovered margin, unlocked capital.</p>
     <p>Over time the work kept asking for more than advice. A self-referral strategy needed a booking front end. A site decision needed a catchment model. A new service needed a brand and a launch. So we built those too, and some of them became products in their own right.</p>
-    <p>Minshall Group is the name for what we became: one group with four practices and its own products, still measured on the same thing. Same people, same standards, broader reach.</p>
+    <p>Minshall Group is the name for what we became: one group with two practices, commercial strategy and digital, and its own products, still measured on the same thing. Same people, same standards, broader reach.</p>
     <a class="tlink" href="/insights/knexu-is-now-minshall-group">Read the announcement</a>
   </div>
 </div></section>

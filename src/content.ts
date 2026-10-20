@@ -9,11 +9,11 @@
 /* The public address. The contact form also delivers here (api/contact.js). */
 export const CONTACT={email:'hello@minshallgroup.com',linkedin:'https://www.linkedin.com/company/minshallgroup'};
 
-/* ---------------- CAPABILITIES (the four practices) ---------------- */
+/* ---------------- CAPABILITIES (the two practices: commercial strategy, then digital) ---------------- */
 export const CAPS=[
-  {slug:'strategy',n:'01',t:'Strategy & Consultancy',short:'Strategy',gfx:'catchment',
-    line:'Find the number, and the route to it.',
-    d:'Growth strategy, market entry, business cases and service redesign, each scoped to a financial outcome before we start.',
+  {slug:'strategy',n:'01',t:'Commercial Strategy',short:'Commercial strategy',gfx:'catchment',
+    line:'Find where the growth is, and the route to it.',
+    d:'Growth and commercial strategy, UK market entry, business cases, site selection, partnerships and go-to-market, each scoped to a financial outcome before we start.',
     lede:'We are hired to move a number and to be able to show how. What you get is a decision, a plan with named owners, and the evidence that it worked.',
     body:['Most organisations do not lack ideas. They lack a clear view of where the value actually sits, a plan that survives contact with operations, and somebody accountable for the result. That is the gap we work in.',
       'Every engagement starts by naming the outcome it is for: grow revenue, recover margin or unlock capital. Then we diagnose what is really true, design the route, and stay with it into delivery. When the plan needs a platform, a data product or a brand to be real, the rest of the group builds it.'],
@@ -23,7 +23,10 @@ export const CAPS=[
       {t:'Business cases & investment',d:'Cases built to satisfy an investment committee or funder: modelled, evidenced and defensible line by line.'},
       {t:'Service & pathway redesign',d:'Mapping how work really flows, finding where it waits, and reconfiguring around the constraint to recover capacity.'},
       {t:'Bids & tenders',d:'Bids written to be scored against the scheme, with evidence behind every claim and a delivery model that holds up.'},
-      {t:'Partnerships & commercialisation',d:'Turning facilities, expertise and research into packaged, sellable offerings and the partnerships that buy them.'}],
+      {t:'Partnerships & commercialisation',d:'Turning facilities, expertise and research into packaged, sellable offerings and the partnerships that buy them.'},
+      {t:'Site selection & catchment',d:'Drivetime catchments, population profiles, competitor mapping and site scoring for location and investment decisions.'},
+      {t:'Go-to-market & brand',d:'Positioning, messaging and identity, and the launch plan that puts them in front of the people who buy.'},
+      {t:'Sponsorship & commercial rights',d:'Commercial frameworks that turn audiences, venues and assets into sponsorship and partner income.'}],
     feature:{eyebrow:'Bringing businesses to the UK',h:'UK market entry, with XV Capital Advisory.',
       body:['XV Capital Advisory works with sportstech and healthtech companies looking to grow internationally. When those companies choose the UK, we run the entry on the ground: where to launch, who buys, at what price, through which partners, and how to prove it is working.',
         'The work is phased, and each phase ends with something the company can act on: a validated market and location model, a named target list, a business case its finance team will accept, a founding-partner programme, and a pilot with agreed measures. The company can stop, adjust or carry on at each step, so capital goes in one stage at a time.'],
@@ -33,9 +36,9 @@ export const CAPS=[
     returns:[{n:'Revenue',t:'New lines, better conversion',d:'Revenue from demand you have not been capturing and markets you have not entered.'},
       {n:'Margin',t:'Capacity returned',d:'Leakage removed from the pathways and processes that consume time without returning it.'},
       {n:'Capital',t:'Decisions de-risked',d:'Investment released by a case that stands up, and protected from the wrong site or the wrong bet.'}]},
-  {slug:'digital',n:'02',t:'Digital & Product',short:'Digital',gfx:'layers',
-    line:'Build the thing the strategy needs.',
-    d:'Product discovery, UX and UI, web platforms, apps, portals and integrations, built in usable slices and owned by you.',
+  {slug:'digital',n:'02',t:'Digital',short:'Digital',gfx:'layers',
+    line:'Build what the strategy needs.',
+    d:'Digital strategy, products, platforms, portals, data and practical AI, built in usable slices and owned by you.',
     lede:'A small, senior product team that designs and ships real software: patient and customer front ends, portals, platforms and the integrations that tie them together.',
     body:['If a recommendation depends on a spreadsheet and the one person who knows how it works, it is fragile. We build the missing piece properly: designed around the people who will use it, connected to the systems you already run, and shipped into production with real authentication and an audit trail.',
       'We work in slices. Each one is usable and earning on its own, so the programme returns value long before it is complete. Two of our own products, DataLense and Straight Talking, started exactly this way.'],
@@ -45,42 +48,13 @@ export const CAPS=[
       {t:'Web platforms',d:'Fast, accessible, search-friendly websites and web apps that are easy for your own team to keep current.'},
       {t:'Apps & portals',d:'Booking, referral, patient, member and partner portals, built against the systems you already depend on.'},
       {t:'Integration & APIs',d:'Clinical, CRM, finance and booking systems connected so data stops being retyped and starts being trusted.'},
-      {t:'Build, run & hand over',d:'We host and run it with a runbook, or hand it to your team with the keys, the schema and the documentation.'}],
+      {t:'Build, run & hand over',d:'We host and run it with a runbook, or hand it to your team with the keys, the schema and the documentation.'},
+      {t:'Data & dashboards',d:'Pipelines, reference data and reporting that make every number traceable, and show where work sits and what it costs.'},
+      {t:'AI & automation',d:'Practical AI and workflow automation where it reliably saves time or improves a decision, with governance built in.'},
+      {t:'Small business websites',d:'Fixed-price websites from £495, priced and started online, for independent businesses.'}],
     returns:[{n:'Revenue',t:'Demand converted online',d:'Self-serve journeys that turn interest into bookings and bookings into revenue without a phone call.'},
       {n:'Margin',t:'Manual work removed',d:'Double entry, chasing and reconciliation designed out of the operation.'},
       {n:'Capital',t:'An asset you own',d:'Software, data and IP that sit on your balance sheet.'}]},
-  {slug:'data-ai',n:'03',t:'Data, AI & Automation',short:'Data & AI',gfx:'radar',
-    line:'Turn data into decisions, and decisions into routine.',
-    d:'Commercial intelligence, analytics, geospatial insight, practical AI and workflow automation that a busy team can actually run.',
-    lede:'We help organisations see their market and their operation clearly, then use automation and AI where it reliably saves time or improves a decision, and nowhere else.',
-    body:['Most of the data needed to make a better decision already exists. It is scattered across registers, systems and spreadsheets, and nobody has time to join it up. We build the pipelines, the reference sets and the dashboards a board can read in ten minutes.',
-      'On AI we are deliberately practical. We start with the work itself: where is time being lost, where is a judgement being made badly, and what would a safe, auditable assistant change? If the honest answer is "nothing", we say so.'],
-    services:[
-      {t:'Commercial intelligence',d:'Market sizing, competitor mapping and demand modelling, joined into one view of where to play and how to win.'},
-      {t:'Dashboards & reporting',d:'Operational and board reporting that shows where work sits, how long it has waited and what it is costing.'},
-      {t:'Geospatial & catchment analysis',d:'Drivetime catchments, population profiles and site scoring for location and investment decisions.'},
-      {t:'AI adoption',d:'Use-case discovery, safe pilots and copilots grounded in your own data, with governance built in from day one.'},
-      {t:'Workflow automation',d:'Repetitive admin, triage and reconciliation automated end to end, with a human in the loop where it matters.'},
-      {t:'Data foundations',d:'Pipelines, reference data and governance that make every number traceable to its source and coverage.'}],
-    returns:[{n:'Revenue',t:'Sharper targeting',d:'Effort pointed at the markets, sites and customers most likely to pay back.'},
-      {n:'Margin',t:'Hours given back',d:'Routine work automated so skilled people spend time on skilled work.'},
-      {n:'Capital',t:'Better bets',d:'Investment decisions made on evidence that says what it does not know.'}]},
-  {slug:'brand-growth',n:'04',t:'Brand, Marketing & Growth',short:'Brand & Growth',gfx:'funnel',
-    line:'Make the market notice, and convert when it does.',
-    d:'Brand strategy and identity, content, campaigns, search, CRM and sponsorship, all measured against the same commercial number.',
-    lede:'Brand and marketing that are accountable to the commercial plan: a clear story, told consistently, to the right people, with every channel measured on what it returns.',
-    body:['Great strategy fails quietly when nobody hears about it. We give organisations a sharper position, an identity that earns trust, and the content and campaigns that put it in front of the people who buy.',
-      'Because the same team owns the strategy and the platforms, marketing is wired into the operation from day one. A campaign lands on a booking journey that converts, and the dashboard shows what it returned.'],
-    services:[
-      {t:'Brand strategy & identity',d:'Positioning, naming, messaging and visual identity that make a complex offer simple to understand and choose.'},
-      {t:'Content & storytelling',d:'Case studies, thought leadership, video and web content that demonstrates what you know.'},
-      {t:'Campaigns & launches',d:'Integrated launches for new services, sites and products, planned backwards from the commercial target.'},
-      {t:'Search & performance',d:'SEO, paid search and social, managed to cost per acquisition.'},
-      {t:'CRM & lifecycle',d:'Referrer, patient, member and customer journeys that nurture demand and bring people back.'},
-      {t:'Sponsorship & partnerships',d:'Commercial frameworks that turn audiences and assets into sponsorship and partner income.'}],
-    returns:[{n:'Revenue',t:'More of the right demand',d:'Qualified enquiries and bookings, attributed to the activity that created them.'},
-      {n:'Margin',t:'Lower cost to acquire',d:'Spend moved from what is noisy to what actually converts.'},
-      {n:'Capital',t:'Brand equity',d:'A reputation that raises prices, wins tenders and attracts partners.'}]}
 ];
 
 /* ---------------- THE THREE RETURNS ---------------- */
@@ -92,22 +66,22 @@ export const RETURNS=[
 
 /* ---------------- INDUSTRIES ---------------- */
 export const INDUSTRIES=[
-  {id:'health',t:'Health & care',gfx:'pathway',d:'Independent diagnostics, NHS private patient units, provider groups and clinics.',
+  {id:'health',focus:true,t:'Health',gfx:'pathway',d:'Consultancy for NHS and private providers, and for health businesses working with and selling into the NHS.',
     challenges:['Self-pay demand that arrives but does not convert','Referral-to-report pathways leaking capacity','Site and investment decisions made on instinct','Hearing from patients often enough to act on it'],
     caps:['strategy','digital','data-ai'],clients:['Prime Health','Medical Imaging Partnership','Housden Group','Technique Health']},
-  {id:'sport',t:'Sport',gfx:'pitch',d:'Governing bodies, clubs, tournaments, events and the businesses that serve them.',
+  {id:'sport',focus:true,t:'Sport',gfx:'pitch',d:'Governing bodies, clubs, events and sports businesses looking for new revenue.',
     challenges:['Commercial estate that is under-monetised','Ticketing that ends at the transaction','Sponsorship packages nobody is buying','Participation that does not grow the base'],
     caps:['strategy','brand-growth','digital'],clients:['Eventmaster','The Sponsor Collective','Propel Teams']},
-  {id:'wellbeing',t:'Wellbeing & third sector',gfx:'wave',d:'Community wellness, charities and social enterprises delivering prevention and support.',
-    challenges:['Income that depends on the next grant round','Impact that is real but hard to evidence','Prevention work disconnected from downstream care','Small teams with no data capacity'],
-    caps:['strategy','data-ai','brand-growth'],clients:['Leeds Beckett University','Prime Health']},
-  {id:'education',t:'Universities & research',gfx:'scatter',d:'Universities, incubators and research centres with assets that could earn.',
+  {id:'performance',focus:true,t:'Where health and sport meet',gfx:'ecg',d:'Sports medicine, performance and athlete health: the ground few firms can credibly cover from both sides.',
+    challenges:['Clinical services that sport does not know how to buy','Performance data that never reaches a decision','Medical operations run on spreadsheets','New revenue from expertise the organisation already has'],
+    caps:['strategy','digital'],clients:[]},
+  {id:'education',focus:false,t:'Universities & research',gfx:'scatter',d:'Universities, incubators and research centres with assets that could earn.',
     challenges:['Research strength with no route to market','Facilities and services that are not commercialised','Delivery plans that need to unlock funding','Industry partners that are hard to find'],
     caps:['strategy','brand-growth','digital'],clients:['Leeds Beckett University','Northumbria University']},
-  {id:'public',t:'Public sector',gfx:'bracket',d:'NHS trusts, local authorities and public bodies working inside a framework.',
+  {id:'public',focus:false,t:'Public sector',gfx:'bracket',d:'NHS trusts, local authorities and public bodies working inside a framework.',
     challenges:['Tenders that should be won but are not','Obligations outrunning resources','Private patient income under-developed','Reporting that consumes the time it measures'],
     caps:['strategy','data-ai','digital'],clients:['Housden Group','Medical Imaging Partnership']},
-  {id:'growth',t:'Growth & private companies',gfx:'network',d:'Independent providers, operators, scale-ups and start-ups finding their next stage.',
+  {id:'growth',focus:false,t:'Growth & private companies',gfx:'network',d:'Independent providers, operators, scale-ups and start-ups finding their next stage.',
     challenges:['A client base too narrow to grow from','A route to market that has not been built','Operations that will not scale with demand','A brand that undersells the business'],
     caps:['strategy','brand-growth','digital','data-ai'],clients:['Eventmaster','Technique Health','Propel Teams']}
 ];
@@ -418,7 +392,7 @@ export const INSIGHTS:any[]=[
     body:['Knexu is now Minshall Group. The people, the clients and the way we work are the same. What has changed is the size of the job we are asked to do, and the name now reflects it.',
       'Knexu started as a strategic growth agency for sport, health and wellbeing. Every engagement was scoped to a number: new revenue, recovered margin or unlocked capital. That has not changed, and it will not.',
       'What changed is what it took to move those numbers. A self-referral strategy needed a booking journey to make it real. A site decision needed a catchment model, so we built one, and it became DataLense. The push to hear from patients more often needed a simpler way for them to speak up, and that became Straight Talking. New services needed a position, a brand and a launch. Overseas companies asked us to take their products into the UK. Increasingly, the work spans strategy, digital, data and brand at once.',
-      'Under one name that was built for consultancy, that breadth was hard to see. Minshall Group puts it on the surface: four practices, strategy and consultancy, digital and product, data, AI and automation, and brand, marketing and growth, working as one team, alongside the products we own and run.',
+      'Under one name that was built for consultancy, that breadth was hard to see. Minshall Group puts it on the surface: two practices, strategy and consultancy, digital and product, data, AI and automation, and brand, marketing and growth, working as one team, alongside the products we own and run.',
       'There was also a practical reason to act now. We are exploring the sale of Knexusport, our athlete medical operations platform. Knexu and Knexusport share a name, and a sale would leave two separate businesses with almost the same brand. Recognising that conflict, we decided to make the move.',
       'For existing clients nothing changes. Your contacts and engagements carry straight over, and you can now reach us at hello@minshallgroup.com. Our knexu.co.uk email addresses keep working as normal.',
       'If you have a number that needs to move, we would like to hear about it.']},
@@ -527,7 +501,7 @@ export const LANDINGS=[
       {q:'What does a digital consultancy do?',a:'A digital consultancy helps an organisation decide what technology to build or buy, then designs and delivers it: websites, platforms, apps, data and automation. We do both the advice and the build, so the two stay joined up.'},
       {q:'Do you build as well as advise?',a:'Yes. We design, build and run software and data products, including our own platforms DataLense and Straight Talking. Work ships in slices, each usable on its own.'},
       {q:'Who owns what you build?',a:'You do. The code, data model, exports and documentation belong to the client. Where we host, we hand over a runbook; where you host, we build to your environment.'},
-      {q:'Do you only work in healthcare?',a:'No. Healthcare is a strength, but we also work in sport, wellbeing, universities, the public sector and growth companies. The approach carries across sectors.'},
+      {q:'Do you only work in healthcare?',a:'No. Health and sport are where we go deepest, and we also work with universities, public bodies and growth companies. The approach carries across sectors.'},
       {q:'How do you approach AI?',a:'We start with the task: where time is lost or judgements are inconsistent. Then we pilot on your own data with clear governance. Sometimes the honest answer is a better form or process, and we will say so.'}]},
   {slug:'uk-market-entry',gfx:'catchment',
     seoTitle:'UK Market Entry for Health Tech, Medtech & Sports Tech | Minshall Group',
@@ -680,3 +654,11 @@ export const SCORE={
     {id:'other',t:'Other business',ess:[['form','Enquiry form'],['tel','Tap-to-call phone number'],['reviews','Reviews shown'],['social','Social links'],['blog','News or updates'],['address','Address or location'],['ld','Structured data for search']]}
   ]
 };
+
+/* old practice slugs now live inside the two practices */
+const CAP_ALIAS:Record<string,string>={'data-ai':'digital','brand-growth':'strategy'};
+const fixCaps=(a:string[])=>[...new Set(a.map(x=>CAP_ALIAS[x]||x))];
+CASES.forEach((c:any)=>{c.caps=fixCaps(c.caps);});
+FINDER.forEach((f:any)=>{f.caps=fixCaps(f.caps);});
+INDUSTRIES.forEach((i:any)=>{i.caps=fixCaps(i.caps);});
+INSIGHTS.forEach((a:any)=>{if(CAP_ALIAS[a.cap])a.cap=CAP_ALIAS[a.cap];});

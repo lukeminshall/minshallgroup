@@ -3,6 +3,16 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/capabilities/brand-growth",
+      "destination": "https://minshallgroup.com/capabilities/strategy",
+      "permanent": true
+    },
+    {
+      "source": "/capabilities/data-ai",
+      "destination": "https://minshallgroup.com/capabilities/digital",
+      "permanent": true
+    },
+    {
       "source": "/insights/yorkshire-website-research-published",
       "destination": "https://minshallgroup.com/insights/state-of-yorkshire-small-business-websites-2026",
       "permanent": true

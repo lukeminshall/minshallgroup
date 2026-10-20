@@ -7,9 +7,10 @@ import {CAPS,PRODUCTS,INSIGHTS,INDUSTRIES,LANDINGS,LEGAL,CONTACT} from './conten
 import {tile,dot} from './brand';
 
 export const NAV=[
-  {label:'Capabilities',href:'/capabilities',mega:'caps'},
+  {label:'What we do',href:'/capabilities',mega:'caps'},
+  {label:'Health',href:'/industries#health'},
+  {label:'Sport',href:'/industries#sport'},
   {label:'Websites',href:'/digitalsme',mega:'web'},
-  {label:'Products',href:'/products',mega:'products'},
   {label:'Work',href:'/work'},
   {label:'Insights',href:'/insights'},
   {label:'About',href:'/about'}
@@ -19,11 +20,12 @@ function megaCaps(){
   const latest=INSIGHTS[0];
   return `<div class="mega" role="region" aria-label="Capabilities"><div class="wrap mega-in">
     <div class="mega-grid c4">${CAPS.map(c=>`
-      <a class="mega-link" href="/capabilities/${c.slug}"><span class="mn">${c.n}</span><b>${c.t}</b><span>${c.line}</span></a>`).join('')}
+      <a class="mega-link" href="/capabilities/${c.slug}"><span class="mn">${c.n}</span><b>${c.t}</b><span>${c.line}</span></a>`).join('')}${PRODUCTS.map(p=>`
+      <a class="mega-link" href="/products/${p.slug}"><span class="mn">Product · ${p.status}</span><b>${p.t}</b><span>${p.line}</span></a>`).join('')}
     </div>
     <div class="mega-side">
-      <span class="eyebrow">By sector</span>
-      <ul class="mega-ind">${INDUSTRIES.map(x=>`<li><a href="/industries#${x.id}">${x.t}</a></li>`).join('')}</ul>
+      <span class="eyebrow">Where we go deepest</span>
+      <ul class="mega-ind">${INDUSTRIES.filter((x:any)=>x.focus).map(x=>`<li><a href="/industries#${x.id}">${x.t}</a></li>`).join('')}</ul>
       <a class="mega-feature" href="/insights/${latest.slug}"><b>${latest.t}</b><em>Latest thinking · ${latest.mins} min</em></a>
       <div class="mega-links"><a class="tlink" href="/capabilities">All capabilities</a><a class="tlink" href="/approach">How we work</a></div>
     </div></div></div>`;
@@ -66,7 +68,7 @@ export function navMarkup(){
     :`<div class="navitem" data-i="${i}"><a class="navbtn" href="${g.href}">${g.label}</a></div>`).join('')
     +`<button class="navbtn head-srch" type="button" data-srch><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span class="sr">Search</span><kbd aria-hidden="true">⌘K</kbd></button><a class="navbtn head-login" href="/portal">Client login</a><div class="cta-pick"><button class="btn sm head-cta" type="button" aria-expanded="false" aria-controls="cta-menu" data-cta-pick><span>Start a project</span></button>
       <div class="cta-menu" id="cta-menu" role="menu" hidden>
-        <a role="menuitem" href="/start"><span class="cta-k">Strategy · Data · Digital · Brand</span><b>Build your brief</b><small>Tell us the outcome and the shape of the work. A fixed-price proposal within two working days.</small></a>
+        <a role="menuitem" href="/start"><span class="cta-k">Commercial strategy · Digital</span><b>Build your brief</b><small>Tell us the outcome and the shape of the work. A fixed-price proposal within two working days.</small></a>
         <a role="menuitem" href="/digitalsme#quote"><span class="cta-k">Small business websites</span><b>Price a website online</b><small>Three fixed packages from £495, quoted in two minutes.</small></a>
         <a class="cta-login" role="menuitem" href="/portal">Already working with us? <b>Client login →</b></a>
       </div></div>`;

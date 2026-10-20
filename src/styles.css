@@ -1868,3 +1868,18 @@ body.pp-hot .phead{min-height:0;padding-top:112px;padding-bottom:30px}body.pp-ho
 @media (min-width:701px){.hero2-h{font-size:clamp(52px,min(10.4vw,15vh),172px);margin:4.5vh 0 max(5vh,36px)}}
 /* drifting graphics (the wellbeing wave) stay inside their own box */
 .gfx.gfx-clip{overflow:hidden}
+/* article byline */
+.byline-art{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin:12px 0 0;font-size:14.5px;color:rgba(255,255,255,.75)}
+.byline-art b{color:#fff;font-weight:800}
+/* sectors: the ones we also work with */
+.ind-also{margin:22px 0 0;color:var(--muted);font-size:15.5px}
+.also-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.also{display:flex;flex-direction:column;gap:8px;padding:22px;border-radius:16px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);text-decoration:none;color:inherit;transition:box-shadow .2s}
+.also:hover{box-shadow:inset 0 0 0 1.5px var(--navy)}
+.also h3{margin:0;font-family:var(--fd);font-weight:400;font-size:21px;color:var(--navy)}
+.also p{margin:0;font-size:14.5px;color:var(--muted)}
+@media (max-width:760px){.also-grid{grid-template-columns:1fr}}
+/* longer positioning headline: wider measure, a little smaller, three lines on desktop */
+@media (min-width:701px){.hero2-h{max-width:10.2em;font-size:clamp(48px,min(8.4vw,12.5vh),148px);margin-bottom:max(5vh,40px)}}
+.hero2-h{min-height:0}
+@media (max-width:480px){.hero2-top{display:none}}

@@ -15,8 +15,8 @@ const t=s=>`${s} | ${BRAND}`;
 
 export const ROUTES:Record<string,{title:string,description:string,noindex?:boolean}>={
   '/':{title:DEFAULT_TITLE,description:DEFAULT_DESC},
-  '/capabilities':{title:t('Capabilities — strategy, digital, data & AI, brand'),description:'Four practices, one team and one measure. Strategy & consultancy, digital & product, data, AI & automation, and brand, marketing & growth.'},
-  '/industries':{title:t('Industries — Healthcare, Sport, Wellbeing, Universities & Public Sector'),description:'Deep experience in health and care, sport, wellbeing, universities, the public sector and growth companies, with capability that carries further.'},
+  '/capabilities':{title:t('Capabilities — commercial strategy and digital'),description:'Two practices, one team and one measure: commercial strategy that finds where the growth is, and digital that builds what it takes, including data and practical AI.'},
+  '/industries':{title:t('Sectors — Health and Sport'),description:'Commercial strategy and digital for NHS and private providers, health businesses selling into the NHS, and sport. We also work with universities and growth companies.'},
   '/products':{title:t('Products — DataLense and Straight Talking'),description:'Products we own and operate, each born from client work: DataLense for healthcare commercial intelligence and Straight Talking for in-the-moment patient feedback.'},
   '/work':{title:t('Work — the challenge, what we did, and the return'),description:'Selected engagements across strategy, digital, data and brand, filterable by capability and industry.'},
   '/approach':{title:t('Approach — diagnose, design, build, grow'),description:'How we work: four stages, four engagement models and six principles we hold to, all organised around a single measurable outcome.'},
@@ -46,7 +46,7 @@ ROUTES['/portal']={title:t('Client portal'),description:'Log in to your Minshall
    and descriptions under 160. Drop the brand suffix before cutting words. */
 /* hand-written titles where the automatic one would be cut short */
 const SEO_TITLES:Record<string,string>={
-  '/industries':'Industries: health, sport, wellbeing, universities, public sector',
+  '/industries':'Sectors: health and sport, and where they meet',
   '/insights/cookie-consent-and-analytics-for-small-businesses':t('Cookie consent and analytics: a small business guide'),
   '/insights/state-of-adult-social-care-2026':t('The state of adult social care in England, 2026'),
   '/insights/nhs-elective-backlog-and-the-independent-sector-2026':t('The NHS elective backlog and the independent sector, 2026'),
