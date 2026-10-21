@@ -48,6 +48,9 @@ ROUTES['/portal']={title:t('Client portal'),description:'Log in to your Minshall
 const SEO_TITLES:Record<string,string>={
   '/industries':'Sectors: health and sport, and where they meet',
   '/insights/cookie-consent-and-analytics-for-small-businesses':t('Cookie consent and analytics: a small business guide'),
+  '/insights/where-sport-meets-health-2026':t('Where sport meets health: activity and MSK, 2026'),
+  '/insights/business-of-uk-sport-2026':t('The business of UK sport, 2026'),
+  '/insights/selling-into-the-nhs-2026':t('Selling into the NHS in 2026'),
   '/insights/state-of-adult-social-care-2026':t('The state of adult social care in England, 2026'),
   '/insights/nhs-elective-backlog-and-the-independent-sector-2026':t('The NHS elective backlog and the independent sector, 2026'),
   '/insights/private-patients-pmi-and-self-pay-2026':t('Private patients, PMI and self-pay in 2026'),

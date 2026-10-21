@@ -191,6 +191,192 @@ export const PRINCIPLES=[
    Short, opinionated pieces. Add one by appending to this array: it gets
    its own page at /insights/<slug>, a card on /insights and the sitemap. */
 export const INSIGHTS:any[]=[
+{slug:'selling-into-the-nhs-2026',tag:'Research',cap:'strategy',date:'2026-10-21',mins:6,
+ t:'Selling into the NHS in 2026: the real routes to market',
+ d:'The NHS still spends tens of billions a year outside its own organisations, but the buyers, the rules and the assurance bar have all changed. Here is what the evidence says about where to start.',
+ stats:[
+  {n:'£24.1bn',l:'DHSC purchase of healthcare from non-NHS bodies, 2024-25 (National Audit Office)'},
+  {n:'Up to £10bn',l:'NHS technology and digital transformation investment by 2028-29, almost 50% up on 2025-26 (HM Treasury, Spending Review 2025)'},
+  {n:'50%',l:'Cut to integrated care board headcounts approved in November 2025 (DHSC)'},
+  {n:'3 years',l:'Evidence generation period attached to NICE early value assessment recommendations, e.g. HTG766, January 2026 (NICE)'}
+ ],
+ charts:[
+  {t:'Where DHSC spending goes: largest cost lines, 2024-25',unit:'£bn',src:'NAO overview of DHSC 2024-25',bars:[
+   {l:'Staff costs',v:98.5},
+   {l:'Clinical supplies and services',v:27.5},
+   {l:'Healthcare from non-NHS bodies',v:24.1}
+  ]}
+ ],
+ body:[
+  'Selling into the NHS has never been simple, and 2026 is a year of rebuilding. The national bodies are being reorganised, the procurement rules are new, and the assurance bar for digital products has just been reset. The money has not gone away. What has changed is who holds it, and the rules they must follow to spend it.',
+  '## The money is real, and it sits in a few large lines',
+  'In 2024-25 the Department of Health and Social Care spent £219.2 billion, or £204.7 billion after income, according to the National Audit Office. Three lines dominate: staff costs at £98.5 billion, clinical supplies and services at £27.5 billion, and the purchase of healthcare from non-NHS bodies at £24.1 billion.',
+  '[[chart:0]]',
+  'Looking forward, the Spending Review 2025 committed up to £10 billion to NHS technology and digital transformation by 2028-29, which the Treasury describes as an almost 50% increase from 2025-26. The NHS in England also receives 3.0% real terms growth in day-to-day spending over the period.',
+  'What this means: there are substantial, recurring budgets that outside suppliers can win. But the technology money is tied to national priorities, such as the NHS App and a single patient record. A product that helps deliver those priorities is easier to fund than one that sits beside them.',
+  '## The buyers are changing',
+  'In November 2025 the government confirmed it would bring NHS England back into the Department of Health and Social Care within two years. It approved a 50% cut to integrated care board headcounts, with around 18,000 administrative posts abolished and a saving of £1 billion a year expected by the end of the Parliament. The Health Bill, summarised by DHSC in May 2026, would abolish NHS England in law and create a single patient record, which the government intends to make available to clinicians in some specialties from as early as mid-2027.',
+  'Some national routes have already narrowed. NHS England now states that it cannot help initiate new call-off contracts from the Health Systems Support Framework, although existing call-offs remain in force.',
+  'What this means: relationships built only with national teams are less durable than they were. Buying decisions increasingly sit with trusts and integrated care boards, and those boards have fewer people to evaluate new suppliers. Your proposition has to be quick to understand and quick to assure. Do not build a sales plan around a framework that is no longer open for new business.',
+  '## Two rulebooks, depending on what you sell',
+  'The Procurement Act 2023 governs most public purchasing of goods and non-clinical services. Its main provisions came into force on 24 February 2025, after the start date was moved from 28 October 2024. Notices now run through a central digital platform, an enhanced Find a Tender service with a Supplier Information Service, accessed through a single registration.',
+  'Healthcare services follow a different regime. The Provider Selection Regime has applied since 1 January 2024 to NHS England, integrated care boards, NHS trusts, foundation trusts and local authorities when they arrange health care services. It allows three direct award processes, a most suitable provider process and a competitive process. One direct award route applies where the existing provider is performing well and the contract is not changing considerably.',
+  'What this means: a software or device company is mostly dealing with the Procurement Act. A company delivering clinical services is dealing with the Provider Selection Regime, where a well-performing incumbent can be re-awarded without competition. New entrants in services need to know when contracts expire and must make the case for change well before decisions are taken.',
+  'For physical products, NHS Supply Chain remains central. Its 2026-27 business plan commits to £1 billion of efficiency savings for the NHS by 2030 and aims for 75% of its frameworks to carry measurable sustainability benefits. Suppliers should expect value and carbon questions to sit alongside price.',
+  '## Assurance is the entry ticket',
+  'For digital products, the Digital Technology Assessment Criteria, known as DTAC, set the baseline. DTAC covers five areas: clinical safety, data protection, technical security, interoperability, and usability and accessibility. NHS England revised it with around 25% fewer questions, and the previous form should not be used from 6 April 2026. DTAC is used alongside the Data Security and Protection Toolkit.',
+  'Clinical safety rests on two standards. DCB0129 applies to manufacturers of health IT systems and DCB0160 to the organisations deploying them. Both require a named Clinical Safety Officer, with a clinical risk management plan, hazard log and safety case report.',
+  'What this means: arrive with the assurance pack already complete. A buyer with a thinner team will move faster on a product that has its DTAC submission, safety case and named Clinical Safety Officer in place than on one that promises to sort them out later.',
+  '## Evidence sets the pace of adoption',
+  'The NICE Evidence Standards Framework, last updated in 2022, sets out the evidence NHS evaluators expect for digital health technologies. It is not mandated, but it is designed for use in commissioning and purchasing decisions. NICE early value assessments go further. In January 2026, for example, NICE said eight digital technologies for hip or knee osteoarthritis can be used during a three-year evidence generation period and paid for from core NHS funding, provided they have DTAC approval. Companies must fund the evidence generation themselves, and NICE advises commissioners to reflect the review point when negotiating contract length and licence costs.',
+  'What this means: an early value assessment can open the door to wider use, but it is a three-year commitment with real cost attached, and early contracts may be short. Plan the evidence programme, and the cash to run it, before you apply.',
+  '## What to do first',
+  'First, decide which rulebook applies to you. Products and software follow the Procurement Act, while clinical services follow the Provider Selection Regime, and each needs a different sales plan.',
+  'Second, complete your assurance before you sell. That means the current DTAC form, DCB0129 documentation, a Data Security and Protection Toolkit submission and a named Clinical Safety Officer.',
+  'Third, map your evidence against the NICE Evidence Standards Framework and be honest about the gaps. If an early value assessment is relevant, budget for three years of evidence generation.',
+  'Fourth, register on the central digital platform and track the notices that matter to you. Then focus on a specific trust or integrated care board problem that links to a funded national priority, rather than a broad national pitch.',
+  'Minshall Group helps health businesses, including overseas health tech firms, plan UK market entry and build a practical route to selling into the NHS.'
+ ],
+ sources:[
+  {t:'National Audit Office, Department of Health and Social Care 2024-25 overview',u:'https://www.nao.org.uk/overviews/department-of-health-and-social-care-2024-25/'},
+  {t:'HM Treasury, Spending Review 2025, June 2025',u:'https://www.gov.uk/government/publications/spending-review-2025-document/spending-review-2025-html'},
+  {t:'DHSC, Billions to be redirected back into patient care with NHS reform, November 2025',u:'https://www.gov.uk/government/news/billions-to-be-redirected-back-into-patient-care-with-nhs-reform'},
+  {t:'DHSC, Health Bill: summary fact sheet, 19 May 2026',u:'https://www.gov.uk/government/publications/health-bill-summary-fact-sheet/health-bill-summary-fact-sheet'},
+  {t:'NHS England, Health Systems Support Framework',u:'https://www.england.nhs.uk/hssf/'},
+  {t:'legislation.gov.uk, The Procurement Act 2023 (Commencement No. 3 and Transitional and Saving Provisions) (Amendment) Regulations 2024, SI 2024/959',u:'https://www.legislation.gov.uk/uksi/2024/959/made'},
+  {t:'Cabinet Office, Procurement Act 2023: guidance documents, updated February 2026',u:'https://www.gov.uk/government/collections/procurement-act-2023-guidance-documents'},
+  {t:'NHS England, NHS Provider Selection Regime',u:'https://www.england.nhs.uk/commissioning/how-commissioning-is-changing/nhs-provider-selection-regime/'},
+  {t:'NHS Supply Chain, Business Plan 2026-2027',u:'https://www.supplychain.nhs.uk/about-us/business-plan/'},
+  {t:'NHS England Digital, Digital Technology Assessment Criteria (DTAC) guidance for buyers and suppliers',u:'https://digital.nhs.uk/services/digital-technology-assessment-criteria-dtac'},
+  {t:'NHS England, Digital clinical safety assurance, version 1.2, March 2025',u:'https://www.england.nhs.uk/long-read/digital-clinical-safety-assurance/'},
+  {t:'NICE, Evidence standards framework for digital health technologies (ECD7), updated August 2022',u:'https://www.nice.org.uk/corporate/ecd7/chapter/introduction'},
+  {t:'NICE, HTG766 Digital technologies for managing mild to moderate symptoms of hip or knee osteoarthritis: early value assessment, January 2026',u:'https://www.nice.org.uk/guidance/HTG766/chapter/1-recommendations'}
+ ]},
+{slug:'business-of-uk-sport-2026',tag:'Research',cap:'strategy',date:'2026-10-21',mins:5,
+ t:'The business of UK sport, 2026: where the money is moving',
+ d:'Record revenues, record audiences and record activity levels hide a sharper story. Value is shifting towards fans, partners, women’s sport and flexible participation, and it is concentrating as it moves.',
+ stats:[
+  {n:'£6.8bn',l:'Premier League clubs’ revenue in 2024/25, up 8% (Deloitte Annual Review of Football Finance 2026)'},
+  {n:'+39%',l:'Growth in Women’s Super League clubs’ revenue to £90m in 2024/25 (Deloitte Annual Review of Football Finance 2026)'},
+  {n:'397m',l:'Hours of women’s sport watched on UK television in 2025, a record (Women’s Sport Trust, BARB data)'},
+  {n:'64.6%',l:'Adults in England meeting activity guidelines, November 2024 to November 2025 (Sport England Active Lives)'}
+ ],
+ charts:[
+  {t:'Football revenue growth by stream, 2024/25',unit:'% change on 2023/24',src:'Deloitte Annual Review of Football Finance 2026, 2024/25 season',bars:[
+   {l:'Premier League matchday',v:15},
+   {l:'Premier League commercial',v:13},
+   {l:'Premier League broadcast',v:2},
+   {l:'WSL total revenue',v:39},
+   {l:'WSL matchday',v:16},
+   {l:'WSL broadcast',v:11},
+   {l:'Championship total revenue',v:-2}
+  ]},
+  {t:'Who is active in England',unit:'% meeting Chief Medical Officers’ guidelines',src:'Sport England Active Lives: adults Nov 2024-25; children academic year 2024-25',bars:[
+   {l:'All adults',v:64.6},
+   {l:'Men',v:67.3},
+   {l:'Women',v:62.2},
+   {l:'Most affluent adults',v:73.2},
+   {l:'Least affluent adults',v:53.8},
+   {l:'Children and young people',v:49.1}
+  ]}
+ ],
+ body:[
+  'The headline numbers for UK sport look strong. Premier League clubs earned a record £6.8bn in 2024/25, adults in England are more active than at any point in the last decade, and women’s sport drew its biggest television audience on record in 2025.',
+  'Look underneath, though, and the money is moving in specific directions. It is shifting from broadcast towards fans and partners, towards women’s sport, and towards the forms of activity people organise for themselves. It is also concentrating.',
+  '## Football’s growth is now fan-led',
+  'Deloitte’s Annual Review of Football Finance, published in July 2026, puts Premier League club revenue at £6.8bn in 2024/25, up 8%. The mix of that growth matters more than the total. Matchday revenue rose 15% to more than £1bn for the first time. Commercial revenue rose 13% to £2.4bn, the largest gain of any stream. Broadcast revenue, still the biggest single line at £3.4bn, grew by just 2%.',
+  '[[chart:0]]',
+  'The growth is not evenly shared. The big six account for 73% of Premier League commercial revenue. In the Championship, revenue fell 2% to £942m and pre-tax losses rose 12% to £355m. Even at the top, record income did not mean profit: Premier League clubs made a combined pre-tax loss of £948m, with wages at a record £4.4bn, or 65% of revenue.',
+  'What this means: the next pound of growth in football is coming from people who attend, buy and partner, not from central media deals. Clubs and leagues outside the top tier cannot rely on broadcast to close the gap. They need to know their supporters properly, price and package matchday well, and sell partnerships on evidence of audience rather than league position.',
+  '## Women’s sport is growing faster, from a smaller base',
+  'Women’s Super League clubs generated £90m in 2024/25, up 39% from £65m, according to Deloitte. Commercial revenue was the largest stream at £41m, up £15m. Matchday income grew 16% to £14m and broadcast 11% to £11m. Two cautions sit alongside the growth. The top four clubs took 71% of revenue, up from 66%, and group income from parent organisations still made up 27% (£23.9m) of the total.',
+  'Audiences are growing too. The Women’s Sport Trust’s end-of-year report, published in February 2026 using BARB data, records 397 million hours of women’s sport viewed on UK television in 2025, a record, with 48.0 million people reached, up from 45.2 million in 2024. The same report shows that two tournaments, the UEFA Women’s EURO and the Women’s Rugby World Cup, accounted for just over 60% of those viewing hours.',
+  'The commercial signal is clear. The Trust found 28.9 million UK adults are aware of at least one women’s sport sponsorship, and 30% of consumers think more favourably of brands that support women’s sport through sponsorship, compared with 20% for men’s sport.',
+  'What this means: women’s sport gives partners strong brand effects relative to its current awareness, and that is a real selling point. The task for governing bodies and clubs is converting tournament peaks into year-round domestic audiences, and building revenue that does not depend on a parent club or a single major event. That means owned data, season-long content and partnership packages built around the domestic calendar.',
+  '## Participation is rising, but unevenly',
+  'Sport England’s Active Lives Adult Survey for November 2024 to November 2025, released in April 2026, shows 64.6% of adults in England, around 30.9 million people, meeting the guideline of 150 minutes of activity a week. That is 859,000 more than the previous year. Running and fitness grew strongly, while activity fell among 16 to 34 year olds, a new trend.',
+  'The gaps are widening. 73.2% of the most affluent adults are active, compared with 53.8% of the least affluent. Among children, the Active Lives Children and Young People Survey for the 2024-25 academic year, published in December 2025, found 49.1% meet the guideline of 60 minutes a day, the highest since the survey began, while 28.4% do less than an average of 30 minutes a day.',
+  '[[chart:1]]',
+  'What this means: demand for activity is healthy, but it is drifting towards flexible, self-organised formats and towards better-off households. Governing bodies whose model rests on affiliated club membership need products that meet people where they already are: casual formats, easy online booking, pay-as-you-play and digital membership. The fall among 16 to 34 year olds is a warning for anyone whose future fans and members sit in that age group.',
+  '## Sport’s economic weight is steady, not growing',
+  'The DCMS Economic Estimates for 2024, published as provisional figures in February 2026, put the sport sector’s gross value added at £20.6bn, 0.8% of UK GVA, down 0.3% on 2023. On the broader Sport Satellite Account definition, DCMS estimates that the wider sport sector directly contributed £63.2bn to the UK economy in 2024, with 1.3 million filled jobs.',
+  'What this means: sport is a large and stable part of the economy, but in aggregate it is not expanding. Growth is a share game. The organisations that win will take audience, attention and partnership spend from others, and that requires sharper propositions and better evidence of value.',
+  '## What to do next',
+  'First, build the direct relationship. Matchday and commercial income are growing fastest in football, and both rely on knowing who your audience is. A single view of supporters and participants, built on consented data, is the foundation for ticketing, membership, retail and sponsorship.',
+  'Second, sell partnerships on audience outcomes. Partners want reach, affinity and engagement they can measure. Women’s sport already has evidence of stronger brand effects. Every rights holder should be able to show who it reaches and what changes for a partner as a result.',
+  'Third, design for how people now take part. Rising activity is being driven by flexible formats and is concentrating among the better-off. Governing bodies and clubs that offer simple, digital, low-commitment ways in will grow participation and open new revenue at the same time.',
+  'Minshall Group works with governing bodies, clubs, events and sports businesses on commercial strategy and digital products that turn shifts like these into revenue.'
+ ],
+ sources:[
+  {t:'Deloitte, Annual Review of Football Finance 2026: Premier League clubs, 8 July 2026',u:'https://www.deloitte.com/uk/en/services/consulting/research/annual-review-of-football-finance-premier-league-clubs.html'},
+  {t:'Deloitte, Annual Review of Football Finance 2026: Women’s Super League, 8 July 2026',u:'https://www.deloitte.com/uk/en/services/consulting/research/annual-review-of-football-finance-womens-super-league.html'},
+  {t:'Deloitte, Annual Review of Football Finance 2026: Football League clubs, 8 July 2026',u:'https://www.deloitte.com/uk/en/services/consulting/research/annual-review-of-football-finance-football-league-clubs.html'},
+  {t:'Women’s Sport Trust, More Than a Moment: end-of-year visibility report 2025, February 2026',u:'https://www.womenssporttrust.com/wp-content/uploads/2026/02/WST-EndofYearReport-Feb26-FINAL.pdf'},
+  {t:'Sport England, Active Lives Adult Survey November 2024-25 report, 23 April 2026',u:'https://www.sportengland.org/activelivesapril26'},
+  {t:'Sport England, Active Lives Children and Young People Survey academic year 2024-25 report, 4 December 2025',u:'https://www.activenorfolk.org/app/uploads/2025/12/Active-Lives-Children-and-Young-People-Survey-academic-year-2024-25-report_.pdf'},
+  {t:'DCMS, DCMS Sectors Economic Estimates: Gross Value Added 2024 (provisional), 5 February 2026',u:'https://www.gov.uk/government/statistics/dcms-economic-estimates-gva-2024-provisional/dcms-sectors-economic-estimates-gross-value-added-2024-provisional'},
+  {t:'DCMS, Sport Satellite Account: employment and GVA estimates, 5 February 2026',u:'https://www.gov.uk/government/collections/sport-satellite-account-employment-and-gva-estimates'}
+ ]},
+{slug:'where-sport-meets-health-2026',tag:'Research',cap:'strategy',date:'2026-10-21',mins:6,
+ t:'Where sport meets health: activity, inactivity and the opportunity in between (2026)',
+ d:'England is more active than at any point in a decade, but the gains are going to people who were already likely to move. Meanwhile almost half a million adults wait for community MSK care. The opportunity lies in the ground between sport and the NHS.',
+ stats:[
+  {n:'64.6%',l:'Adults in England meeting the CMO activity guideline, Nov 2024 to Nov 2025 (Sport England Active Lives)'},
+  {n:'28.4%',l:'Children in Years 1 to 11 doing less than 30 minutes of activity a day, 2024-25 academic year (Sport England Active Lives CYP)'},
+  {n:'456,532',l:'Adults on community musculoskeletal waiting lists in England, August 2026 (NHS England CHS waiting lists)'},
+  {n:'£8bn',l:'Modelled direct net healthcare savings from sport and physical activity in England, 2023/24 (Sport England social value model)'}
+ ],
+ charts:[
+  {t:'The activity gap by affluence',unit:'% meeting CMO guidelines',src:'Sport England Active Lives: adults Nov 2024-25; children 2024-25 academic year',bars:[
+   {l:'Adults, most affluent (NS-SEC 1-2)',v:73.2},
+   {l:'Adults, least affluent (NS-SEC 6-8)',v:53.8},
+   {l:'Children, most affluent families',v:58},
+   {l:'Children, mid-affluence families',v:49},
+   {l:'Children, least affluent families',v:45}
+  ]},
+  {t:'Largest adult community health waiting lists, England',unit:'patients waiting (thousands)',src:'NHS England, Community Health Services waiting lists, August 2026',bars:[
+   {l:'Musculoskeletal service',v:456.5},
+   {l:'Podiatry and podiatric surgery',v:113.1},
+   {l:'Physiotherapy',v:49.3},
+   {l:'Integrated rehabilitation',v:46.6},
+   {l:'Continence and colostomy',v:44.3},
+   {l:'Dietetics',v:35.8}
+  ]}
+ ],
+ body:[
+  'Sport and health are usually planned, funded and measured separately. The latest data suggests the most valuable ground sits between them: people who are not active enough, people whose bodies are already telling them so, and services that cannot yet keep up with demand.',
+  '## More active, but not more equal',
+  'Sport England’s Active Lives Adult Survey for November 2024 to November 2025, published in April 2026, found that 64.6% of adults in England met the Chief Medical Officers’ guideline of 150 minutes of moderate activity a week. That is around 30.9 million people and the highest level in a decade. Yet 24.7% of adults remain inactive, doing less than 30 minutes a week, only 0.3 percentage points lower than the year before.',
+  'The averages hide a widening split. Of the most affluent adults (NS-SEC 1-2), 73.2% are active, compared with 53.8% of the least affluent (NS-SEC 6-8), and Sport England reports that the gap between the most and least deprived areas has grown over time. Adults with a disability or long-term health condition are active at 49.1%, and those aged 75 and over at 44.3%. The survey also flags a new fall in activity among 16 to 34 year olds.',
+  'Children follow the same pattern. The Active Lives Children and Young People Survey for the 2024-25 academic year found that 49.1% of pupils in Years 1 to 11 met the guideline of 60 minutes a day, the highest since the survey began. But 28.4%, around 2.1 million, did less than 30 minutes a day. 58% of children from the most affluent families were active, against 45% from the least affluent.',
+  '[[chart:0]]',
+  'What this means: participation growth is being captured mainly by people who were already likely to move. The people who remain are older, less affluent and more likely to live with a health condition, and they are the least likely to respond to a conventional sport offer. Reaching them is a question of product design and partnership, not just promotion.',
+  '## The value is large, and modelled',
+  'Sport England’s social value model, produced with Sheffield Hallam University and partners and published in November 2025, estimates that community sport and physical activity generated £122.9 billion of social value in England in 2023/24. Within that it estimates around £8 billion of direct net savings to the healthcare system through prevented illness, nearly £6 billion in productivity gains from fewer sick days, and around 900,000 cases of back pain prevented each year. It also estimates that nearly £20 billion more social value would be generated if the least active groups matched the most active.',
+  'These are modelled figures, built from Active Lives data and published evidence on the health effects of activity, not observed cash savings. The government’s 10 Year Health Plan, published in July 2025, uses a different estimate of £10.5 billion a year in NHS savings from physical activity, and states that inactivity remains stubbornly high for adults and children.',
+  'What this means: the economic case for activity is no longer the obstacle. The obstacle is that the savings are spread across budgets and years. Providers that can show measurable outcomes for a defined population, in terms a commissioner or employer recognises, will win more than those quoting national totals.',
+  '## Musculoskeletal demand is where the pressure shows',
+  'Musculoskeletal health is where inactivity and health services meet most visibly. Government guidance, last updated in 2022, estimated that 30.1% of people in England lived with an MSK condition in 2017, and that 45% of people with a long-term MSK condition were inactive, compared with 20% of those without one.',
+  'NHS England’s community health services data for August 2026, published in October, shows 456,532 adults waiting for community MSK services. That is almost half of the 940,725 adults waiting for any community service, and more than the next five largest adult services combined. Around 78,000 had waited more than 18 weeks. The MSK list stood at 425,796 in April 2026, a rise of about 7% in four months, although NHS England notes that the figures are unvalidated management information and that changes in provider submissions affect month-to-month comparisons.',
+  '[[chart:1]]',
+  'The cost reaches the workplace. The ONS estimates that 148.8 million working days were lost to sickness or injury in the UK in 2025. Musculoskeletal problems accounted for 14.6% of sickness absence occurrences, behind only minor illnesses and a broad other category.',
+  'What this means: demand for MSK assessment, rehabilitation and reconditioning is outrunning NHS community capacity, and employers carry a direct cost. Sports medicine, physiotherapy and performance businesses already hold the skills this demand needs. The gap is usually in access, pathway design and evidence of outcomes, not in clinical capability. We found no authoritative national dataset on the growth of private physiotherapy and MSK provision, so we have not estimated its size here.',
+  '## Policy is moving into the space between',
+  'The 10 Year Health Plan commits to letting patients self-refer to MSK services, alongside talking therapies, podiatry and audiology, through a My Specialist tool in the NHS App. It describes the planned My Care service as a digital social prescriber, linking patients to voluntary, social enterprise and local government services. On activity, it sets out a place-based approach across government, with £250 million of investment into 100 places through Sport England and at least £400 million for local community sport facilities. It cites evidence that where investment in activity is designed with local people, inactivity rates are 2.5 percentage points lower than otherwise in the most deprived places.',
+  'What this means: self-referral and digital routing will change how people arrive at MSK and activity services. Providers that are visible, bookable and able to report outcomes inside those routes will gain. Sports organisations with facilities and community trust in deprived areas have a stronger case for health-linked funding than at any point in recent years, provided they can show who they reach.',
+  '## Where the opportunity sits',
+  'Three practical conclusions follow. First, design for the inactive rather than the already active: older adults, people with long-term conditions and lower-income communities are where the remaining gains and the health value sit. Second, build pathways that carry people from MSK rehabilitation into sustained activity, so that treatment and prevention form one journey rather than two separate services. Third, measure in health and work terms, such as waits avoided, function regained and absence reduced, because that is the language of the budgets that benefit.',
+  'The organisations best placed are those that can work across both worlds: clinically credible enough for the NHS and employers, and engaging enough to keep people moving. Minshall Group works with organisations across health and sport on strategy and digital delivery at exactly this meeting point.'
+ ],
+ sources:[
+  {t:'Sport England, Active Lives Adult Survey November 2024-25 Report, April 2026 (headline summary by Herts Sport and Physical Activity Partnership)',u:'https://sportinherts.org.uk/newsfuse/uploads/documents/2026-May/2663-Actives-Lives-Adult-Headlines-24-25.pdf'},
+  {t:'Sport England, Active Lives Children and Young People Survey academic year 2024-25 report, December 2025',u:'https://www.activenorfolk.org/app/uploads/2025/12/Active-Lives-Children-and-Young-People-Survey-academic-year-2024-25-report_.pdf'},
+  {t:'Sheffield Hallam University, Social value of sport and physical activity 2023/24 (for Sport England), November 2025',u:'https://www.shu.ac.uk/news/all-articles/latest-news/social-value-of-sport-2025'},
+  {t:'DHSC, Fit for the future: 10 Year Health Plan for England, July 2025',u:'https://www.gov.uk/government/publications/10-year-health-plan-for-england-fit-for-the-future/fit-for-the-future-10-year-health-plan-for-england-accessible-version'},
+  {t:'NHS England, Community health services waiting lists 2026-27, August 2026 data, published October 2026',u:'https://www.england.nhs.uk/statistics/statistical-work-areas/community-health-services-waiting-lists/'},
+  {t:'ONS, Sickness absence in the UK labour market: 2025, May 2026',u:'https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/labourproductivity/articles/sicknessabsenceinthelabourmarket/2025'},
+  {t:'OHID, Musculoskeletal health: applying All Our Health, updated March 2022',u:'https://www.gov.uk/government/publications/musculoskeletal-health-applying-all-our-health/musculoskeletal-health-applying-all-our-health'}
+ ]},
 {slug:'state-of-uk-digital-health-2026',tag:'Research',cap:'data-ai',date:'2026-10-18',mins:6,
  t:'The state of UK digital health, 2026',
  d:'Patients are using the NHS App more than ever, but the infrastructure behind it is moving more slowly. We look at the latest official data on what has changed, what has stalled, and what it means for providers and health tech firms.',
