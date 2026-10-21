@@ -2,7 +2,7 @@
    PAGES — the route map P. Each entry returns the page markup string.
    Data comes from content.ts; markup helpers from components.ts.
    ===================================================================== */
-import {CAPS,RETURNS,INDUSTRIES,PRODUCTS,CASES,FINDER,STEPS,MODELS,PRINCIPLES,INSIGHTS,CLIENTS,LANDINGS,LEGAL,SME,SCORE,CONTACT} from './content';
+import {CAPS,RETURNS,INDUSTRIES,PRODUCTS,CASES,FINDER,STEPS,MODELS,PRINCIPLES,INSIGHTS,CLIENTS,TEAM,LANDINGS,LEGAL,SME,SCORE,CONTACT} from './content';
 import {startPage} from './start';
 import {subscribeBox,split,splitLetters,eyebrow,shead,phead,btn,cards,returnsRow,capTags,caseCard,marquee,insightCard,ctaBand,gfx,capBySlug,indById} from './components';
 import {dot,tile} from './brand';
@@ -45,6 +45,13 @@ P['/']=()=>`
   <div class="bigmarq" data-velomarq aria-hidden="true"><div class="bigmarq-track">${[0,1].map(()=>`<div class="bigmarq-row">${CAPS.map(c=>`<span>${c.t}</span><i></i>`).join('')}</div>`).join('')}</div></div>
 </section>
 
+<section class="clients-sec">
+<div class="cwall" role="region" aria-label="Clients">
+  <div class="wrap"><span class="eyebrow">Our clients include</span><p class="sr">${CLIENTS.join(', ')}</p></div>
+  ${[0,1].map(r=>{const list=r?[...CLIENTS].reverse():CLIENTS;return `<div class="cw-row${r?' rev':''}" aria-hidden="true"><div class="cw-track">${[0,1].map(()=>list.map((c,i)=>`<span class="${(i+r)%2?'it':''}">${c}</span><i></i>`).join('')).join('')}</div></div>`;}).join('')}
+</div>
+</section>
+
 <section class="deliver" id="capabilities"><div class="wrap">
   ${shead({eyebrow:'What we do',h:'Commercial strategy finds the growth. Digital builds what it takes.',p:'One team, two practices, and six things clients hire us to deliver.',link:['How we work','/approach']})}
   ${[['strategy','Commercial strategy',[
@@ -63,29 +70,11 @@ P['/']=()=>`
   </div>`).join('')}
 </div></section>
 
-<section class="ret-sec"><div class="wrap">
-  ${shead({eyebrow:'The return',h:'Three ways we are measured.',p:'We agree which one an engagement is for before it starts, and report against it at the end.'})}
-  ${returnsRow(RETURNS)}
-</div></section>
-
-<section class="finder-sec soft" id="finder"><div class="wrap">
-  ${shead({eyebrow:'Where do you start?',h:'What are you trying to do?',p:'Pick the closest. We will show you which practices it needs and some work that looks like yours.'})}
-  <div class="finder" data-finder>
-    <div class="finder-q" role="tablist" aria-label="Choose a challenge">
-      ${FINDER.map((f,i)=>`<button class="pill-btn${i===0?' on':''}" role="tab" aria-selected="${i===0}" data-f="${i}">${f.q}</button>`).join('')}
-    </div>
-    <div class="finder-panels">
-      ${FINDER.map((f,i)=>{const c=CASES.find(x=>x.id===f.case);return `
-      <div class="finder-a${i===0?' on':''}" role="tabpanel" data-fa="${i}"${i===0?'':' hidden'}>
-        <div class="finder-main">
-          <span class="eyebrow">How we would approach it</span>
-          <p class="finder-lead">${f.a}</p>
-          <div class="finder-caps">${f.caps.map((s,k)=>{const cp=capBySlug(s);return `<a class="fcap" style="--k:${k}" href="/capabilities/${cp.slug}"><span>${cp.n}</span><b>${cp.t}</b></a>`;}).join('')}</div>
-        </div>
-        ${c?`<a class="finder-case" href="/work/${c.id}" data-cursor="Read"><span class="eyebrow">Related work · ${c.client}</span><b>${c.head}</b><span>${c.ret}</span><em>See the case →</em></a>`:''}
-      </div>`;}).join('')}
-    </div>
-  </div>
+<section class="ind-sec soft"><div class="wrap">
+  ${shead({eyebrow:'Sectors',h:'Where we go deepest.',p:'Health and sport, and the ground where they meet. We know the regulation, the buyers and the economics well enough to be accountable for the outcome.',link:['Our sectors','/industries']})}
+  <div class="ind-grid">${INDUSTRIES.filter((x:any)=>x.focus).map((x,i)=>`
+    <a class="ind reveal" style="--i:${i%3}" href="/industries#${x.id}"><span class="ind-n">${String(i+1).padStart(2,'0')}</span><div class="ind-gfx">${gfx(x.gfx)}</div><h3>${x.t}</h3><p>${x.d}</p></a>`).join('')}</div>
+  <p class="ind-also reveal">We also work with universities, the public sector and growth companies. <a class="ulink" href="/industries">See how</a></p>
 </div></section>
 
 <section class="worklist-sec"><div class="wrap">
@@ -101,21 +90,8 @@ P['/']=()=>`
     </a></li>`).join('')}
   </ol>
 </div>
-<div class="cwall" role="region" aria-label="Clients">
-  <div class="wrap"><span class="eyebrow">Our clients include</span><p class="sr">${CLIENTS.join(', ')}</p></div>
-  ${[0,1].map(r=>{const list=r?[...CLIENTS].reverse():CLIENTS;return `<div class="cw-row${r?' rev':''}" aria-hidden="true"><div class="cw-track">${[0,1].map(()=>list.map((c,i)=>`<span class="${(i+r)%2?'it':''}">${c}</span><i></i>`).join('')).join('')}</div></div>`;}).join('')}
-</div>
 <div class="hover-preview" data-preview-box aria-hidden="true">${CASES.slice(0,6).map((c,i)=>`<div class="hpv" data-pv="${i}"><div class="hpv-gfx">${gfx(c.gfx)}</div><p>${c.ret}</p></div>`).join('')}</div>
 </section>
-
-<section class="sme-band"><div class="wrap sme-band-in">
-  <div class="reveal"><span class="eyebrow">Small business?</span><h2 class="h1">Your website, refreshed from £495.</h2><p class="lede">Get a free instant check: your Webmins Score, plain-English fixes and a fixed price in two minutes.</p></div>
-  <form class="sme-check reveal" style="--i:1" action="/digitalsme" method="get" data-sme-jump>
-    <label class="sr" for="band-url">Your website address</label>
-    <input id="band-url" name="url" type="text" inputmode="url" placeholder="yourbusiness.co.uk" required>
-    <button class="btn" type="submit"><span>Check my site</span></button>
-  </form>
-</div></section>
 
 <section class="prod-sec dark"><div class="wrap">
   ${shead({eyebrow:'Products',h:'We built these because clients kept asking.',p:'Products we own and run. Each started as a problem we saw in client after client.',link:['All products','/products']})}
@@ -128,23 +104,16 @@ P['/']=()=>`
     </a>`).join('')}</div>
 </div></section>
 
-<section class="steps-mini"><div class="wrap">
-  ${shead({eyebrow:'Approach',h:'Diagnose. Design. Build. Grow.',p:'Four stages, run as one programme by one team.',link:['How we work','/approach']})}
-  <ol class="steps-row">${STEPS.map((s,i)=>`<li class="reveal" style="--i:${i}"><span class="sn">${s.n}</span><b>${s.t}</b><span class="when">${s.when}</span><p>${s.d}</p></li>`).join('')}</ol>
-</div></section>
-
-<section class="ind-sec soft"><div class="wrap">
-  ${shead({eyebrow:'Sectors',h:'Where we go deepest.',p:'Health and sport, and the ground where they meet. We know the regulation, the buyers and the economics well enough to be accountable for the outcome.',link:['Our sectors','/industries']})}
-  <div class="ind-grid">${INDUSTRIES.filter((x:any)=>x.focus).map((x,i)=>`
-    <a class="ind reveal" style="--i:${i%3}" href="/industries#${x.id}"><span class="ind-n">${String(i+1).padStart(2,'0')}</span><div class="ind-gfx">${gfx(x.gfx)}</div><h3>${x.t}</h3><p>${x.d}</p></a>`).join('')}</div>
-  <p class="ind-also reveal">We also work with universities, the public sector and growth companies. <a class="ulink" href="/industries">See how</a></p>
-</div></section>
+${TEAM.length?`<section class="team-sec"><div class="wrap">
+  ${shead({eyebrow:'Who you’ll work with',h:'Senior people, from first call to launch.',p:'The people who shape the strategy stay to build it and measure it.'})}
+  <div class="team-grid">${TEAM.map((m:any,i:number)=>`<article class="tm reveal" style="--i:${i}">${m.photo?`<img src="${m.photo}" alt="${m.name}" loading="lazy" width="480" height="560">`:''}<h3>${m.name}</h3><p class="tm-role">${m.role}</p><p>${m.bio}</p>${m.linkedin?`<a class="tlink" href="${m.linkedin}" target="_blank" rel="noopener">LinkedIn</a>`:''}</article>`).join('')}</div>
+</div></section>`:''}
 
 <section><div class="wrap">
   ${shead({eyebrow:'Insights',h:'Things we have been thinking about.',link:['All insights','/insights']})}
   <div class="icards">${INSIGHTS.slice(0,3).map(insightCard).join('')}</div>
 </div></section>
-<section class="soft"><div class="wrap">${subscribeBox('home')}</div></section>`;
+${ctaBand('Have a number that needs to move?','Build your brief online in a few minutes, and we will send a short written proposal with a fixed price within two working days.',`${btn('Start a project','/start')}${btn('Talk to us','/contact',true)}`)}`;
 
 /* ================= CAPABILITIES ================= */
 P['/capabilities']=()=>`

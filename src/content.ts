@@ -662,3 +662,8 @@ CASES.forEach((c:any)=>{c.caps=fixCaps(c.caps);});
 FINDER.forEach((f:any)=>{f.caps=fixCaps(f.caps);});
 INDUSTRIES.forEach((i:any)=>{i.caps=fixCaps(i.caps);});
 INSIGHTS.forEach((a:any)=>{if(CAP_ALIAS[a.cap])a.cap=CAP_ALIAS[a.cap];});
+
+/* ---------------- TEAM (home page "Who you'll work with") ----------------
+   The section appears only when this list has at least one person.
+   {name, role, bio, photo?: '/team/luke.webp', linkedin?: 'https://…'} */
+export const TEAM:any[]=[];
