@@ -56,7 +56,7 @@ function wireCheck(){
     sec.scrollIntoView({behavior:'smooth',block:'start'});
     const prog=checkProgress(q('[data-loading]'),{estimate:28000,site:url.replace(/^https?:\/\//,'').replace(/\/$/,'')});let ok=false;
     try{
-      const r=await fetch('/api/audit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})});
+      const r=await fetch('/api/audit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,from:pre&&url.replace(/^https?:\/\//,'').replace(/\/$/,'')===pre.replace(/^https?:\/\//,'').replace(/\/$/,'')?'link':'typed'})});
       const j=await r.json().catch(()=>({error:'Something went wrong. Please try again.'}));
       if(!r.ok||j.error&&!j.checks)throw new Error(j.error||'We could not check that site.');
       await prog.done();ok=true;

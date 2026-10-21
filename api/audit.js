@@ -239,6 +239,8 @@ function recommend(checks, psi, signals) {
 
 /* Shared by /api/audit (public page) and /api/prospect (internal tool).
    Returns { status, body }. Set psi:false to skip Google for speed. */
+import { db } from './_lib/portal.js';
+
 export async function runAudit(rawUrl, { psi: usePsi = true } = {}) {
   let raw = String(rawUrl || '').trim();
   if (!raw || raw.length > 500) return { status: 400, body: { error: 'Enter your website address.' } };
@@ -270,6 +272,13 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).json({ error: 'Method not allowed' }); }
   let body = req.body; if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
   const r = await runAudit(body?.url);
+  /* record which site was checked (address and time only, nothing personal), so outreach clicks can be matched to the businesses we emailed */
+  if (r.status === 200 && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const site = String(r.body?.url || body?.url || '').replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0].toLowerCase().slice(0, 200);
+      if (site) await db().from('site_checks').insert({ site, from_link: body?.from === 'link' });
+    } catch (e) { console.error('site_checks insert failed', e?.message); }
+  }
   res.setHeader('Cache-Control', 'no-store');
   return res.status(r.status).json(r.body);
 }

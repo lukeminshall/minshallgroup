@@ -11,6 +11,8 @@ import {openRequest,briefSummary,fmtAnswer} from './views';
 export async function viewAdmin(el:HTMLElement,rerender:()=>void){
   const all=S.projects;
   const [briefs,reqs,inv,signups]=await Promise.all([sb.from('briefs').select('client_id,submitted_at'),sb.from('requests').select('client_id,status,last_client_at,team_seen_at'),sb.from('invoices').select('client_id,status,amount_gbp'),sb.from('signups').select('*').order('created_at',{ascending:false})]);
+  /* businesses that clicked through from an outreach email and ran the check on their own site (the table may not exist yet) */
+  const clicks=await sb.from('site_checks').select('site,from_link,created_at').eq('from_link',true).order('created_at',{ascending:false}).limit(60).then(r=>r.data||[],()=>[]);
   const unread=c=>(reqs.data||[]).filter(r=>r.client_id===c&&unreadForTeam(r)).length;
   const owners=new Set(all.map(p=>p.owner_id));const waiting=(signups.data||[]).filter(u=>!owners.has(u.user_id));
   const sub=new Set((briefs.data||[]).filter(b=>b.submitted_at).map(b=>b.client_id));
@@ -23,6 +25,8 @@ export async function viewAdmin(el:HTMLElement,rerender:()=>void){
       <td><button class="btn sm ghost" data-pick="${p.id}"><span>Manage</span></button></td></tr>`).join('')}</tbody></table></div>
     ${waiting.length?`<div class="pp-card"><h3 class="pp-h">New accounts without a project (${waiting.length})</h3><p class="pp-muted pp-small">They signed up but have not started a project yet. A short personal email often helps.</p>
       <table class="pp-table"><thead><tr><th>Name</th><th>Email</th><th>Signed up</th></tr></thead><tbody>${waiting.map(u=>`<tr><td>${esc(u.name||'—')}</td><td>${esc(u.email||'—')}</td><td>${date(u.created_at)}</td></tr>`).join('')}</tbody></table></div>`:''}
+    ${clicks.length?`<div class="pp-card"><h3 class="pp-h">Email clicks (${clicks.length})</h3><p class="pp-muted pp-small">Businesses that clicked the link in our outreach email and ran the check on their own site. Your warmest follow-ups.</p>
+      <table class="pp-table"><thead><tr><th>Website</th><th>Checked</th></tr></thead><tbody>${clicks.map(c=>`<tr><td><a class="ulink" href="https://${esc(c.site)}" target="_blank" rel="noopener">${esc(c.site)}</a></td><td>${date(c.created_at)}</td></tr>`).join('')}</tbody></table></div>`:''}
     <div data-manage></div>`;
   const show=()=>manage(el.querySelector('[data-manage]'),rerender).catch(e=>{(el.querySelector('[data-manage]') as HTMLElement).innerHTML=`<div class="pp-card"><p>${esc(e.message||'Could not load this project')}</p></div>`;});
   el.querySelectorAll<HTMLElement>('[data-pick]').forEach(b=>b.addEventListener('click',()=>{S.current=all.find(p=>p.id===b.dataset.pick);try{localStorage.setItem('mg-portal-current',S.current.id);}catch{};show();}));
