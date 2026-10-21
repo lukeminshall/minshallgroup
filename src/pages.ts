@@ -45,32 +45,23 @@ P['/']=()=>`
   <div class="bigmarq" data-velomarq aria-hidden="true"><div class="bigmarq-track">${[0,1].map(()=>`<div class="bigmarq-row">${CAPS.map(c=>`<span>${c.t}</span><i></i>`).join('')}</div>`).join('')}</div></div>
 </section>
 
-<section class="hcaps dark" data-hscroll id="capabilities">
-  <div class="hcaps-pin">
-    <div class="wrap hcaps-head">
-      <div>${eyebrow('Capabilities')}<h2 class="h2">Two practices, one team.</h2></div>
-      <div class="hcaps-count" aria-hidden="true"><b data-hcount>01</b><span>/ 0${CAPS.length}</span></div>
-    </div>
-    <div class="hcaps-track" data-htrack>
-      ${CAPS.map(c=>`
-      <article class="hpanel">
-        <span class="hp-n" aria-hidden="true">${c.n}</span>
-        <div class="hp-copy">
-          <h3 class="hp-t">${c.t}</h3>
-          <p class="hp-line">${c.line}</p>
-          <p class="hp-d">${c.d}</p>
-          <ul class="hp-list">${c.services.map(x=>`<li>${x.t}</li>`).join('')}</ul>
-          <a class="tlink" href="/capabilities/${c.slug}" data-cursor="Open">Explore ${c.short}</a>
-        </div>
-        <div class="hp-gfx">${gfx(c.gfx)}</div>
-      </article>`).join('')}
-      <article class="hpanel hp-end">
-        <p class="h2">Most programmes use two or three practices together.</p>
-        <a class="btn mag" href="/capabilities"><span>All capabilities</span></a>
-      </article>
-    </div>
-  </div>
-</section>
+<section class="deliver" id="capabilities"><div class="wrap">
+  ${shead({eyebrow:'What we do',h:'Commercial strategy finds the growth. Digital builds what it takes.',p:'One team, two practices, and six things clients hire us to deliver.',link:['How we work','/approach']})}
+  ${[['strategy','Commercial strategy',[
+      ['Find the growth','Where the next pound of revenue comes from, sized and ranked by speed and certainty.','A ranked growth plan with owners and numbers.'],
+      ['Enter a market','UK market entry for overseas companies, and selling into the NHS for health businesses.','Target buyers, pricing, a route in and a measured pilot.'],
+      ['Make the case','Business and investment cases, and the site and catchment evidence behind them.','A case a board or funder will sign, and the right location.']]],
+    ['digital','Digital',[
+      ['Build the platform','Products, portals, apps and larger websites, designed with the people who use them.','Working software in usable slices, owned by you.'],
+      ['Put data and AI to work','Dashboards, DataLense, workflow automation and practical AI, governed from day one.','Decisions on evidence, and hours given back.'],
+      ['Win online','Customer journeys, search and conversion, and fixed-price websites for small businesses.','More of the right enquiries, measured.']]]
+  ].map(([slug,label,items])=>`
+  <div class="dl-row">
+    <a class="dl-label" href="/capabilities/${slug}"><span class="eyebrow">${label}</span><span class="dl-more">Explore →</span></a>
+    <div class="dl-grid">${(items as any[]).map(([t,d,g],i)=>`
+      <article class="dl-card reveal" style="--i:${i}"><h3>${t}</h3><p>${d}</p><p class="dl-get"><b>You get</b>${g}</p></article>`).join('')}</div>
+  </div>`).join('')}
+</div></section>
 
 <section class="ret-sec"><div class="wrap">
   ${shead({eyebrow:'The return',h:'Three ways we are measured.',p:'We agree which one an engagement is for before it starts, and report against it at the end.'})}
