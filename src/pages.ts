@@ -64,8 +64,8 @@ P['/']=()=>`
       ['Win online','Customer journeys, search and conversion, and fixed-price websites for small businesses.','More of the right enquiries, measured.']]]
   ].map(([slug,label,items])=>`
   <div class="dl-row">
-    <a class="dl-label" href="/capabilities/${slug}"><span class="eyebrow">${label}</span><span class="dl-more">Explore →</span></a>
-    <div class="dl-grid">${(items as any[]).map(([t,d,g],i)=>`
+    <a class="dl-label" href="/capabilities/${slug}"><span class="dl-name">${label}</span><span class="dl-more">Explore →</span></a>
+    <div class="dl-cards">${(items as any[]).map(([t,d,g],i)=>`
       <article class="dl-card reveal" style="--i:${i}"><h3>${t}</h3><p>${d}</p><p class="dl-get"><b>You get</b>${g}</p></article>`).join('')}</div>
   </div>`).join('')}
 </div></section>

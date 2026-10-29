@@ -27,12 +27,25 @@ function loadUi(domain){
   if((window as any).__internal_ClerkUICtor)return Promise.resolve();
   return new Promise<void>((ok,bad)=>{const s=document.createElement('script');s.src=`https://${domain}/npm/@clerk/ui@1/dist/ui.browser.js`;s.async=true;s.crossOrigin='anonymous';s.onload=()=>ok();s.onerror=()=>bad(new Error('Could not load sign-in'));document.head.appendChild(s);});
 }
+// Clerk sign-in in Minshall Group colours: navy text, pink pill buttons, Fraunces headings, our mark
+const LOGO={logoImageUrl:'/clerk-logo.png',logoLinkUrl:'/',logoPlacement:'inside'};
+const APPEARANCE:any={
+  layout:LOGO,options:LOGO,
+  variables:{colorPrimary:'#0A1A3F',colorText:'#0A1A3F',colorDanger:'#D6164B',colorBackground:'#FFFFFF',colorInputBackground:'#F3F4F8',
+    fontFamily:'Manrope Variable, Manrope, system-ui, sans-serif',borderRadius:'12px'},
+  elements:{
+    headerTitle:{fontFamily:"'Fraunces Variable', Fraunces, Georgia, serif",fontWeight:400,fontSize:'26px',letterSpacing:'-.01em'},
+    formButtonPrimary:{background:'#FF2E63',color:'#0A1A3F',borderRadius:'999px',fontWeight:800,boxShadow:'none','&:hover':{background:'#D6164B',color:'#fff'}},
+    footerActionLink:{color:'#D6164B',fontWeight:700},
+    logoImage:{height:'44px'}
+  }
+};
 export async function boot(){
   if(clerk)return clerk;
   const domain=atob(CFG.clerk.split('_')[2]).slice(0,-1);
   await loadUi(domain);
   clerk=new Clerk(CFG.clerk);
-  await clerk.load({ui:{ClerkUI:(window as any).__internal_ClerkUICtor},appearance:{variables:{colorPrimary:'#0A1A3F',fontFamily:'Manrope Variable, Manrope, system-ui, sans-serif',borderRadius:'10px'}}});
+  await clerk.load({ui:{ClerkUI:(window as any).__internal_ClerkUICtor},appearance:APPEARANCE});
   sb=createClient(CFG.url,CFG.anon,{accessToken:async()=>(await clerk.session?.getToken())??null});
   return clerk;
 }
