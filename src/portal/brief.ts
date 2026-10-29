@@ -75,3 +75,64 @@ export const STAGES=[
   {id:'review',t:'Review',d:'You check everything and raise any final changes.'},
   {id:'live',t:'Live',d:'Your site goes live and we track its performance each month.'}
 ];
+
+/* ---------- commercial strategy and digital projects ---------- */
+const ORG:Section={id:'org',t:'Your organisation',intro:'The context we need before we start. Plain words are best.',fields:[
+  {id:'what',label:'What does your organisation do, and for whom?',type:'textarea',required:true,placeholder:'We run four physiotherapy clinics in Leeds, mostly self-pay and insured patients.'},
+  {id:'stage',label:'Where are you now?',type:'choice',options:['Early stage, pre-revenue','Growing, under £1m revenue','Established, £1m to £10m','Larger, over £10m','Public sector or charity']},
+  {id:'who',label:'Who is the main contact, and who else should be involved?',type:'textarea',placeholder:'Me as sponsor, plus our operations lead and finance director.'}
+]};
+const PRACTICAL:Section={id:'practical',t:'Practicalities',intro:'How you like to work, and anything we should read first.',fields:[
+  {id:'deadline',label:'Is there a date this needs to land by?',type:'text',placeholder:'Board meeting on 15 January'},
+  {id:'budget',label:'Budget range, if set',type:'choice',options:['Under £10k','£10k to £25k','£25k to £50k','£50k to £100k','Over £100k','Not set yet']},
+  {id:'docs',label:'Upload anything useful',type:'files',inspire:true,hint:'Plans, board papers, data extracts, previous reports. Only what you are happy for us to read; please do not upload patient-identifiable data.'},
+  {id:'anything',label:'Anything else we should know?',type:'textarea'}
+]};
+export const STRATEGY_BRIEF:Section[]=[ORG,
+  {id:'outcome',t:'The outcome',intro:'Every project we run is measured by a number. Tell us yours.',fields:[
+    {id:'goal',label:'What do you want to change, and why now?',type:'textarea',required:true,placeholder:'Grow self-pay revenue at our clinics by 30% within two years.'},
+    {id:'metric',label:'Which number would show this has worked?',type:'text',required:true,placeholder:'Monthly self-pay revenue, currently about £80k'},
+    {id:'focus',label:'What do you need from us?',type:'multi',options:['Market and opportunity sizing','Site selection and catchment','Go-to-market plan','Selling into the NHS','Business case or investment case','Pricing and proposition','Sponsorship and commercial rights','Board-ready recommendations']},
+    {id:'decision',label:'What decision will this support, and who makes it?',type:'textarea',placeholder:'Whether to open a fifth clinic; the board decides in March.'}
+  ]},
+  {id:'context',t:'Context and constraints',intro:'What we should know about the market, the competition and the limits we are working within.',fields:[
+    {id:'market',label:'Who are your customers or commissioners, and who are your competitors?',type:'textarea',required:true},
+    {id:'tried',label:'What have you already tried or ruled out?',type:'textarea'},
+    {id:'constraints',label:'Constraints we should respect',type:'textarea',placeholder:'Capital limited to £500k; must stay within West Yorkshire.'},
+    {id:'data',label:'What data do you have that we can use?',type:'multi',options:['Sales or revenue data','Customer or patient numbers (anonymised)','Marketing and web analytics','Market research','Financial accounts and forecasts','Not much yet']}
+  ]},PRACTICAL];
+export const DIGITAL_BRIEF:Section[]=[ORG,
+  {id:'problem',t:'The problem and the people',intro:'Good digital work starts with the people who will use it and the number it should move.',fields:[
+    {id:'goal',label:'What problem are we solving, and why now?',type:'textarea',required:true,placeholder:'Patients cannot book or rebook online, so our reception team spends half the day on the phone.'},
+    {id:'metric',label:'Which number would show this has worked?',type:'text',required:true,placeholder:'Share of bookings made online, currently 10%'},
+    {id:'users',label:'Who will use it?',type:'textarea',required:true,placeholder:'Patients booking appointments; clinicians checking their diary; reception staff.'},
+    {id:'focus',label:'What do you need from us?',type:'multi',options:['Discovery and user research','Product or service design','Web platform or portal','App','Integrations with existing systems','Data and dashboards','AI and automation','Ongoing support']}
+  ]},
+  {id:'systems',t:'Systems and data',intro:'What already exists, so we connect to it rather than replace it.',fields:[
+    {id:'current',label:'Which systems do you use today?',type:'textarea',required:true,placeholder:'Cliniko for bookings, Xero for accounts, a WordPress website.'},
+    {id:'dataTypes',label:'Will it handle any of these?',type:'multi',options:['Personal data','Health data','Payments','None of these']},
+    {id:'assurance',label:'Any standards or assurance it must meet?',type:'multi',options:['DTAC','DSPT','DCB0129 / DCB0160','Cyber Essentials','Accessibility (WCAG 2.2)','Not sure']},
+    {id:'tech',label:'Who looks after your technology now?',type:'choice',options:['An in-house team','An outside supplier','A person who helps part-time','Nobody really']}
+  ]},PRACTICAL];
+export const STRATEGY_STAGES=[
+  {id:'onboarding',t:'Kick-off',d:'You answer the brief and share what you have.'},
+  {id:'discovery',t:'Discovery',d:'We interview, gather data and agree the questions that matter.'},
+  {id:'analysis',t:'Analysis',d:'We size the opportunity and test the options.'},
+  {id:'recommendations',t:'Recommendations',d:'We present what to do, the case for it and the plan.'},
+  {id:'complete',t:'Complete',d:'Final report delivered. We track the numbers with you.'}
+];
+export const DIGITAL_STAGES=[
+  {id:'onboarding',t:'Kick-off',d:'You answer the brief and share what you have.'},
+  {id:'discovery',t:'Discovery',d:'We meet your users, map your systems and agree the first release.'},
+  {id:'design',t:'Design',d:'We design and test it with real users. You approve.'},
+  {id:'build',t:'Build',d:'We build in usable slices you can see as we go.'},
+  {id:'live',t:'Live',d:'It is in use, and we measure the number it was built to move.'}
+];
+export const SERVICES:Record<string,{t:string,short:string,d:string}>={
+  website:{t:'Small business website',short:'Website',d:'A new or refreshed website, fixed price.'},
+  strategy:{t:'Commercial strategy',short:'Commercial strategy',d:'Find the growth, enter a market, make the case.'},
+  digital:{t:'Digital, data and AI',short:'Digital',d:'Platforms, portals, data and AI that move a number.'}
+};
+export const svc=(p:any)=>p?.service||'website';
+export const briefFor=(p:any)=>svc(p)==='strategy'?STRATEGY_BRIEF:svc(p)==='digital'?DIGITAL_BRIEF:BRIEF;
+export const stagesFor=(p:any)=>svc(p)==='strategy'?STRATEGY_STAGES:svc(p)==='digital'?DIGITAL_STAGES:STAGES;

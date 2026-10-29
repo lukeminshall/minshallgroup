@@ -7,7 +7,19 @@ import { configured, caller, projectFor, db, sendEmail, TEAM, PUBLIC_REPLY, SITE
 import { brandEmail, FROM } from './_lib/email.js';
 import { createClerkClient } from '@clerk/backend';
 
-const STAGE = { onboarding: 'Onboarding', design: 'Design', build: 'Build', review: 'Review', live: 'Live' };
+const STAGE = { onboarding: 'Onboarding', design: 'Design', build: 'Build', review: 'Review', live: 'Live', discovery: 'Discovery', analysis: 'Analysis', recommendations: 'Recommendations', complete: 'Complete' };
+const SERVICE = { website: 'Website', strategy: 'Commercial strategy', digital: 'Digital, data and AI' };
+/* what each stage means for a strategy or digital project, for the client email */
+const CONSULT = {
+  onboarding: ['Your project is at kick-off.', 'Complete your brief in the portal if you have not yet, then we will agree the plan with you.'],
+  discovery: ['Discovery has started.', 'We are meeting your people and gathering the data. Your plan and milestones are in your portal.'],
+  analysis: ['We are into the analysis.', 'We are sizing the opportunity and testing the options. We will share findings as they firm up.'],
+  recommendations: ['Your recommendations are ready.', 'Read them in Documents in your portal, then raise any questions in Requests.'],
+  design: ['Designs are ready to review.', 'Open the preview from your portal and tell us what you think in Requests.'],
+  build: ['We are building.', 'We build in usable slices. You will see progress in your portal as we go.'],
+  live: ['It is live.', 'From now on your portal shows the results we agreed to measure.'],
+  complete: ['Your project is complete.', 'Your final documents are in the portal, and we will keep tracking the numbers with you.']
+};
 const gbp = n => '£' + Number(n || 0).toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
 export default async function handler(req, res) {
@@ -33,12 +45,12 @@ export default async function handler(req, res) {
         await sendEmail({ to: TEAM(), subject: `[Portal] New account${total ? ` with a £${total.toLocaleString('en-GB')} quote` : ''}: ${name || email}`, replyTo: email || undefined,
           text: [`${name || 'Someone'} <${email}> has created a client portal account.`, qLine, '', 'They have not started their project yet. If they have not within a day, a short personal note usually helps: reply to this email to reach them.', '', `Open the portal: ${SITE}/portal#admin`].join('\n') });
         if (email) await sendEmail({ to: email, from: FROM, replyTo: PUBLIC_REPLY, subject: 'Welcome to Minshall Group', ...brandEmail({
-          preheader: 'Your account is ready. Your onboarding takes about 15 minutes, in your own time.',
+          preheader: 'Your account is ready. Your brief takes 10 to 15 minutes, in your own time.',
           eyebrow: 'Welcome', heading: 'Your account is ready.', greeting: `Hello${u.firstName ? ' ' + u.firstName : ''},`,
-          paras: ['Thank you for choosing Minshall Group. Everything about your website now happens in one place, your client portal, so there is no kick-off call to book.'],
-          list: ['Start your project. If you priced it on our website, your choices are already filled in.', 'Answer your onboarding questions in your own time. Your answers save as you go.', 'Approve your design, raise changes and see invoices, all in the portal.'],
+          paras: ['Thank you for choosing Minshall Group. Everything about your project now happens in one place, your client portal.'],
+          list: ['Start your project: commercial strategy, digital, or a website. If you priced a website online, your choices are already filled in.', 'Answer your brief in your own time. Your answers save as you go.', 'Follow the plan, the results and your documents, raise requests and see invoices, all in the portal.'],
           button: { label: 'Open your portal', url: `${SITE}/portal` },
-          after: ['We confirm your quote and dates within one working day. No payment is taken until we do.', 'Questions at any point? Just reply to this email.'],
+          after: ['We confirm the scope, the fee and the dates with you before any work starts. No payment is taken until we do.', 'Questions at any point? Just reply to this email.'],
           reason: 'You are receiving this because you created an account at minshallgroup.com.' }) });
       }
       return res.status(200).json({ ok: true, new: !!(added && added.length) });
@@ -57,6 +69,13 @@ export default async function handler(req, res) {
 
     switch (event) {
       case 'project_started':
+        if ((p.service || 'website') !== 'website') {
+          await toTeam(`New ${SERVICE[p.service]} project`, [`${p.owner_name || ''} <${p.owner_email || ''}> started a project.`, `Organisation: ${p.business_name}`, `Service: ${SERVICE[p.service]}`, `Aim: ${p.summary || '—'}`, `Website: ${p.website || '—'}`, '', 'Their brief follows. Reply within two working days to agree the plan and the fee.']);
+          await toClient(`Your project has started: ${p.business_name}`, { preheader: 'Next: your brief, about 10 minutes.', eyebrow: SERVICE[p.service], heading: 'Your project has started.',
+            paras: ['Thank you for starting your project with us. Your next step is the brief: it takes about 10 minutes and saves as you go, so our first meeting is about decisions, not background.', 'Once we have it, we will be in touch within two working days to agree the plan, the fee and the numbers we will measure.'],
+            cta: 'Complete your brief', url: `${link}#onboarding` });
+          break;
+        }
         await toTeam('New project started', [`${p.owner_name || ''} <${p.owner_email || ''}> started a project.`, `Business: ${p.business_name}`, `Website: ${p.website || '—'}`, `Package: ${p.package || '—'}, ${p.pages || '?'} pages, quote ${p.quote_total ? gbp(p.quote_total) : '—'}`, `Hosting: ${p.hosting}`, `Domain: ${p.domain_mode === 'need' ? 'please secure ' + (p.domain || '') : p.domain || '—'}`]);
         await toClient(`Your project has started: ${p.business_name}`, { preheader: 'Next: your onboarding questions, about 15 minutes.', eyebrow: 'Project started', heading: 'Your website project has started.',
           paras: ['Thank you for starting your project with us. We will confirm your quote and dates within one working day.', 'Your next step is the onboarding questions. They replace a kick-off call, take about 15 minutes and save as you go, so you can stop and come back.'],
@@ -79,6 +98,12 @@ export default async function handler(req, res) {
       /* team → client */
       case 'stage_changed':
         if (!who.isAdmin) break;
+        if ((p.service || 'website') !== 'website') {
+          const [h, para] = CONSULT[p.stage] || ['Your project has moved on.', 'Your project stage has been updated in your portal.'];
+          await toClient(`${p.business_name}: ${STAGE[p.stage] || p.stage}`, { eyebrow: STAGE[p.stage] || p.stage, heading: h, paras: [para],
+            cta: p.stage === 'recommendations' ? 'Read your recommendations' : 'Open your portal', url: p.stage === 'recommendations' ? `${link}#documents` : link });
+          break;
+        }
         await toClient(p.stage === 'design' ? 'Your design is ready to review' : p.stage === 'live' ? 'Your new website is live' : `Your project is now at: ${STAGE[p.stage] || p.stage}`, {
           eyebrow: STAGE[p.stage] || p.stage,
           heading: p.stage === 'design' ? 'Your design is ready.' : p.stage === 'build' ? 'We are building your site.' : p.stage === 'review' ? 'Your site is ready for a final check.' : p.stage === 'live' ? 'Your website is live.' : 'Your project has moved on.',
@@ -102,6 +127,14 @@ export default async function handler(req, res) {
       case 'invoice_issued':
         if (!who.isAdmin) break;
         await toClient('New invoice from Minshall Group', { eyebrow: 'Billing', heading: 'A new invoice is ready.', paras: ['You will find it in your portal under Billing, with what it covers and how to pay.'], cta: 'View your invoice', url: `${link}#billing` }); break;
+      case 'deliverable_added': {
+        if (!who.isAdmin) break;
+        const { fileId } = body(req);
+        const f = fileId ? (await db().from('files').select('name').eq('id', fileId).eq('client_id', p.id).eq('kind', 'deliverable').maybeSingle()).data : null;
+        if (!f) break;
+        const title = String(f.name || '').split(': ')[0];
+        await toClient(`New document: ${title}`, { eyebrow: 'New document', heading: `“${title}” is ready.`, paras: ['You will find it in your portal under Documents. Raise any questions in Requests.'], cta: 'Open the document', url: `${link}#documents` }); break;
+      }
       default:
         return res.status(400).json({ error: 'Unknown event' });
     }

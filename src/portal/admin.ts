@@ -1,11 +1,12 @@
 /* =====================================================================
    PORTAL ADMIN — for Minshall Group staff (rows in public.admins).
-   All projects; per project: stage and links, brief, files, requests and
+   All projects; per project: service, stage and links, the plan and the
+   results we measure, documents we deliver, brief, files, requests and
    quotes, invoices (raised in your accounting software, tracked here) and
    website re-checks. Every change a client should know about emails them.
    ===================================================================== */
 import {sb,S,esc,gbp,date,check,notify,api,toast,upload,fileUrl,unreadForTeam,markSeen} from './core';
-import {BRIEF,STAGES} from './brief';
+import {briefFor,stagesFor,svc,SERVICES} from './brief';
 import {openRequest,briefSummary,fmtAnswer} from './views';
 
 export async function viewAdmin(el:HTMLElement,rerender:()=>void){
@@ -19,8 +20,8 @@ export async function viewAdmin(el:HTMLElement,rerender:()=>void){
   const open=c=>(reqs.data||[]).filter(r=>r.client_id===c&&['new','approved','in_progress'].includes(r.status)).length;
   const owed=c=>(inv.data||[]).filter(i=>i.client_id===c&&(i.status==='due'||i.status==='overdue')).reduce((s,i)=>s+Number(i.amount_gbp),0);
   el.innerHTML=`<div class="pp-card"><h3 class="pp-h">All projects (${all.length})</h3>
-    <table class="pp-table"><thead><tr><th>Business</th><th>Client</th><th>Stage</th><th>Brief</th><th>Unread</th><th>Open requests</th><th>Owed</th><th></th></tr></thead><tbody>
-    ${all.map(p=>`<tr class="${p.id===S.current?.id?'sel':''}"><td><b>${esc(p.business_name)}</b><small>${esc(p.package||'')} ${p.quote_total?'· '+gbp(p.quote_total):''}</small></td><td>${esc(p.owner_name||'')}<small>${esc(p.owner_email||'')}</small></td>
+    <table class="pp-table"><thead><tr><th>Business</th><th>Service</th><th>Client</th><th>Stage</th><th>Brief</th><th>Unread</th><th>Open requests</th><th>Owed</th><th></th></tr></thead><tbody>
+    ${all.map(p=>`<tr class="${p.id===S.current?.id?'sel':''}"><td><b>${esc(p.business_name)}</b><small>${esc(p.package||'')} ${p.quote_total?'· '+gbp(p.quote_total):''}</small></td><td>${esc(SERVICES[svc(p)].short)}</td><td>${esc(p.owner_name||'')}<small>${esc(p.owner_email||'')}</small></td>
       <td><span class="pp-badge st-${p.stage}">${p.stage}</span></td><td>${sub.has(p.id)?'Submitted':'—'}</td><td>${unread(p.id)?`<span class="pp-new">${unread(p.id)} unread</span>`:'—'}</td><td>${open(p.id)||'—'}</td><td>${owed(p.id)?gbp(owed(p.id)):'—'}</td>
       <td><button class="btn sm ghost" data-pick="${p.id}"><span>Manage</span></button></td></tr>`).join('')}</tbody></table></div>
     ${waiting.length?`<div class="pp-card"><h3 class="pp-h">New accounts without a project (${waiting.length})</h3><p class="pp-muted pp-small">They signed up but have not started a project yet. A short personal email often helps.</p>
@@ -33,23 +34,39 @@ export async function viewAdmin(el:HTMLElement,rerender:()=>void){
   if(S.current)await show();
 }
 
+/* plan and results are edited as simple lines: easy to type, easy to read */
+const planText=(a:any[])=>(a||[]).map(m=>[m.due||'',m.t||'',m.done?'done':''].join(' | ').replace(/ \| $/,'')).join('\n');
+const parsePlan=(t:string)=>t.split('\n').map(l=>l.split('|').map(x=>x.trim())).filter(c=>c.join('')).map(([due,t,done])=>({due:/^\d{4}-\d{2}-\d{2}$/.test(due)?due:null,t:t||due,done:/^(done|yes|y|x|✓)$/i.test(done||'')}));
+const kpiText=(a:any[])=>(a||[]).map(k=>[k.label,k.baseline,k.current,k.target].map(x=>x??'').join(' | ')).join('\n');
+const parseKpis=(t:string)=>t.split('\n').map(l=>l.split('|').map(x=>x.trim())).filter(c=>c[0]).map(([label,baseline,current,target])=>({label,baseline:baseline||'',current:current||'',target:target||''}));
+
 async function manage(box:HTMLElement,rerender){
   const p=S.current;
   const [brief,files,reqs,inv,scores]=await Promise.all([
     sb.from('briefs').select('*').eq('client_id',p.id).maybeSingle(),sb.from('files').select('*').eq('client_id',p.id).order('created_at'),
     sb.from('requests').select('*').eq('client_id',p.id).order('created_at',{ascending:false}),sb.from('invoices').select('*').eq('client_id',p.id).order('created_at'),
     sb.from('scores').select('id,checked_at,label').eq('client_id',p.id).order('checked_at',{ascending:false}).limit(5)]);
-  const A=brief.data?.answers||{};
+  const A=brief.data?.answers||{};const STAGES=stagesFor(p);const BRIEF=briefFor(p);const web=svc(p)==='website';
   box.innerHTML=`<div class="pp-admin">
-    <form class="pp-card" data-proj><h3 class="pp-h">${esc(p.business_name)}: stage and links</h3>
-      <div class="row2"><div class="cfield"><label>Stage</label><select name="stage">${STAGES.map(s=>`<option value="${s.id}"${s.id===p.stage?' selected':''}>${s.t}</option>`).join('')}</select></div>
-        <div class="cfield"><label>Build price (£)</label><input name="quote_total" type="number" value="${p.quote_total??''}"></div></div>
-      <div class="row2"><div class="cfield"><label>Preview link (for design approval)</label><input name="preview_url" value="${esc(p.preview_url||'')}" placeholder="https://…vercel.app"></div>
-        <div class="cfield"><label>Live site</label><input name="live_url" value="${esc(p.live_url||'')}" placeholder="https://theirdomain.co.uk"></div></div>
+    <form class="pp-card" data-proj><h3 class="pp-h">${esc(p.business_name)}: project, stage and links</h3>
+      <div class="row2"><div class="cfield"><label>Service</label><select name="service">${Object.entries(SERVICES).map(([id,v])=>`<option value="${id}"${id===svc(p)?' selected':''}>${esc(v.t)}</option>`).join('')}</select></div>
+        <div class="cfield"><label>Stage</label><select name="stage">${STAGES.map(s=>`<option value="${s.id}"${s.id===p.stage?' selected':''}>${s.t}</option>`).join('')}</select></div></div>
+      <div class="row2"><div class="cfield"><label>${web?'Build price':'Project fee'} (£)</label><input name="quote_total" type="number" value="${p.quote_total??''}"></div>
+        <div class="cfield"><label>The aim (client sees this)</label><input name="summary" value="${esc(p.summary||'')}"></div></div>
+      <div class="row2"><div class="cfield"><label>Preview link (designs to review)</label><input name="preview_url" value="${esc(p.preview_url||'')}" placeholder="https://…vercel.app"></div>
+        <div class="cfield"><label>Live link</label><input name="live_url" value="${esc(p.live_url||'')}" placeholder="https://theirdomain.co.uk"></div></div>
       <div class="row2"><div class="cfield"><label>Clarity dashboard link</label><input name="clarity_url" value="${esc(p.clarity_url||'')}"></div>
         <div class="cfield"><label>Internal note (client cannot see)</label><input name="admin_note" value="${esc(p.admin_note||'')}"></div></div>
+      <div class="cfield"><label>Plan and milestones</label><small class="pp-hint">One per line: date | milestone | done. For example: 2026-11-20 | Discovery interviews complete | done</small><textarea name="plan" rows="5" placeholder="2026-11-20 | Discovery interviews complete&#10;2026-12-05 | Options workshop">${esc(planText(p.plan))}</textarea></div>
+      <div class="cfield"><label>Results we are measuring</label><small class="pp-hint">One per line: measure | start | now | target. For example: Online bookings | 10% | 18% | 40%</small><textarea name="kpis" rows="4" placeholder="Self-pay revenue a month | £80k | £86k | £104k">${esc(kpiText(p.kpis))}</textarea></div>
       <label class="pp-check"><input type="checkbox" name="tell" checked> Email the client if the stage changes</label>
       <button class="btn sm" type="submit"><span>Save</span></button></form>
+
+    <form class="pp-card" data-deliver><h3 class="pp-h">Deliver a document</h3>
+      <p class="pp-muted pp-small">Reports, decks, models or designs. The client sees it in Documents and gets an email.</p>
+      <div class="cfield"><label for="dl-t">Title</label><input id="dl-t" name="title" required placeholder="Market sizing report, v1"></div>
+      <label class="pp-drop"><input type="file" name="file" required><span>Choose the file</span></label>
+      <button class="btn sm" type="submit"><span>Deliver</span></button></form>
 
     <div class="pp-card"><h3 class="pp-h">Brief ${brief.data?.submitted_at?`<small>submitted ${date(brief.data.submitted_at)}</small>`:'<small>not submitted yet</small>'}</h3>
       ${A.direction?briefSummary(A):''}
@@ -82,15 +99,16 @@ async function manage(box:HTMLElement,rerender){
         <label class="pp-check"><input type="checkbox" name="issue" checked> Issue now (client sees it and gets an email)</label>
         <button class="btn sm" type="submit"><span>Add invoice</span></button></form></div>
 
-    <div class="pp-card"><h3 class="pp-h">Website checks</h3>
+    ${web||p.live_url?`<div class="pp-card"><h3 class="pp-h">Website checks</h3>
       <ul class="pp-files">${(scores.data||[]).map(s=>`<li>${date(s.checked_at)} · ${esc(s.label||'')}</li>`).join('')||'<li class="pp-muted">None yet</li>'}</ul>
-      <div class="pp-inline"><input data-label placeholder="Label, e.g. Launch" value="${p.stage==='live'?'Launch':'Before'}"><button class="btn sm" data-rescore><span>Check site now</span></button></div></div>
+      <div class="pp-inline"><input data-label placeholder="Label, e.g. Launch" value="${p.stage==='live'?'Launch':'Before'}"><button class="btn sm" data-rescore><span>Check site now</span></button></div></div>`:''}
   </div>`;
 
   const refresh=()=>manage(box,rerender);
   box.querySelector('[data-proj]').addEventListener('submit',async e=>{
     e.preventDefault();const fd=new FormData(e.target as HTMLFormElement);const before=p.stage;
-    const upd={stage:fd.get('stage'),quote_total:fd.get('quote_total')?+fd.get('quote_total'):null,preview_url:String(fd.get('preview_url')||'').trim()||null,live_url:String(fd.get('live_url')||'').trim()||null,clarity_url:String(fd.get('clarity_url')||'').trim()||null,admin_note:String(fd.get('admin_note')||'').trim()||null};
+    const service=String(fd.get('service'));const stages=stagesFor({service});const stage=stages.some(x=>x.id===fd.get('stage'))?fd.get('stage'):stages[0].id;
+    const upd={service,stage,summary:String(fd.get('summary')||'').trim()||null,plan:parsePlan(String(fd.get('plan')||'')),kpis:parseKpis(String(fd.get('kpis')||'')),quote_total:fd.get('quote_total')?+fd.get('quote_total'):null,preview_url:String(fd.get('preview_url')||'').trim()||null,live_url:String(fd.get('live_url')||'').trim()||null,clarity_url:String(fd.get('clarity_url')||'').trim()||null,admin_note:String(fd.get('admin_note')||'').trim()||null};
     try{S.current=check(await sb.from('clients').update(upd).eq('id',p.id).select().single());if(fd.get('tell')&&before!==upd.stage)notify('stage_changed');toast('Saved');rerender();}catch(err){toast(err.message,true);}
   });
   box.querySelectorAll<HTMLElement>('[data-file]').forEach(b=>b.addEventListener('click',async()=>{const u=await fileUrl(b.dataset.file);if(u)window.open(u,'_blank','noopener');}));
@@ -129,7 +147,15 @@ async function manage(box:HTMLElement,rerender){
       if(issue)notify('invoice_issued');toast('Invoice added');refresh();
     }catch(err){toast(err.message,true);}
   });
-  box.querySelector('[data-rescore]').addEventListener('click',async e=>{
+  box.querySelector('[data-deliver]').addEventListener('submit',async e=>{
+    e.preventDefault();const f=e.target as HTMLFormElement;const fd=new FormData(f);const fl=fd.get('file') as File;
+    if(!String(fd.get('title')||'').trim()||!fl?.size)return toast('Add a title and choose a file',true);
+    if(fl.size>25*1024*1024)return toast('Files must be under 25 MB',true);
+    const btn=f.querySelector('button');btn.disabled=true;
+    try{const row=await upload(fl,'deliverable',String(fd.get('title')).trim());notify('deliverable_added',{fileId:row.id});toast('Delivered and the client emailed');refresh();}
+    catch(err){toast(err.message,true);btn.disabled=false;}
+  });
+  box.querySelector('[data-rescore]')?.addEventListener('click',async e=>{
     const b=e.currentTarget as HTMLButtonElement;b.disabled=true;
     try{await api('/api/portal-rescore',{clientId:p.id,label:(box.querySelector('[data-label]') as HTMLInputElement).value});toast('Checked');refresh();}catch(err){toast(err.message,true);b.disabled=false;}
   });

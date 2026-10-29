@@ -2,7 +2,7 @@
    PORTAL VIEWS — onboarding questionnaire, requests, billing, performance.
    ===================================================================== */
 import {unreadForClient,markSeen,sb,S,esc,gbp,date,check,notify,api,toast,upload,fileUrl} from './core';
-import {BRIEF,STYLES,IMAGE_DECLARATION} from './brief';
+import {STYLES,IMAGE_DECLARATION,briefFor,svc} from './brief';
 import {checkProgress} from '../progress';
 import {SME,SCORE} from '../content';
 import {score} from '../webmins';
@@ -29,7 +29,7 @@ export function briefSummary(A){
 
 /* ---------- onboarding questionnaire ---------- */
 export async function viewOnboarding(el:HTMLElement){
-  const p=S.current;
+  const p=S.current;const BRIEF=briefFor(p);
   const [b,f]=await Promise.all([sb.from('briefs').select('*').eq('client_id',p.id).maybeSingle(),sb.from('files').select('*').eq('client_id',p.id).eq('kind','brief').order('created_at')]);
   let brief=b.data||{client_id:p.id,answers:{},submitted_at:null};
   if(!b.data)check(await sb.from('briefs').insert({client_id:p.id,answers:{}}));
@@ -63,10 +63,10 @@ export async function viewOnboarding(el:HTMLElement){
   }
   function paint(){
     const s=BRIEF[step];
-    el.innerHTML=`${brief.submitted_at&&A.direction?briefSummary(A):''}<div class="pp-brief">
+    el.innerHTML=`${brief.submitted_at&&A.direction&&svc(p)==='website'?briefSummary(A):''}<div class="pp-brief">
       <ol class="pp-steps">${BRIEF.map((x,i)=>`<li><button type="button" data-step="${i}" class="${i===step?'on':''} ${done(x)?'ok':''}"><span>${done(x)?'✓':i+1}</span>${esc(x.t)}</button></li>`).join('')}</ol>
       <form class="pp-card" novalidate>
-        ${brief.submitted_at?`<p class="pp-banner">Submitted ${date(brief.submitted_at)}. ${locked?'Your project has moved on, so answers are locked; raise a request for any changes.':'You can still make changes until design starts.'}</p>`:''}
+        ${brief.submitted_at?`<p class="pp-banner">Submitted ${date(brief.submitted_at)}. ${locked?'Your project has moved on, so answers are locked; raise a request for any changes.':'You can still make changes until the next stage starts.'}</p>`:''}
         <h3 class="pp-h">${step+1}. ${esc(s.t)}</h3><p class="pp-muted">${esc(s.intro)}</p>
         ${s.fields.map(field).join('')}
         <div class="pp-nav">${step>0?'<button type="button" class="btn ghost sm" data-prev><span>Back</span></button>':'<span></span>'}
@@ -134,12 +134,12 @@ export async function viewRequests(el:HTMLElement){
     </div>
     <form class="pp-col pp-card" novalidate>
       <h3 class="pp-h">New request</h3>
-      <fieldset class="cfield"><legend>What is it?</legend><div class="chips-in"><label class="chk"><input type="radio" name="kind" value="change" checked><span>A change to the site</span></label><label class="chk"><input type="radio" name="kind" value="question"><span>A question</span></label></div></fieldset>
-      <div class="cfield"><label for="rq-t">Short title</label><input id="rq-t" name="title" required maxlength="120" placeholder="Update opening hours on the contact page"></div>
-      <div class="cfield"><label for="rq-b">Details</label><textarea id="rq-b" name="body" rows="5" placeholder="What should change, on which page, and any wording to use."></textarea></div>
+      <fieldset class="cfield"><legend>What is it?</legend><div class="chips-in"><label class="chk"><input type="radio" name="kind" value="change" checked><span>${svc(p)==='website'?'A change to the site':'A change or new piece of work'}</span></label><label class="chk"><input type="radio" name="kind" value="question"><span>A question</span></label></div></fieldset>
+      <div class="cfield"><label for="rq-t">Short title</label><input id="rq-t" name="title" required maxlength="120" placeholder="${svc(p)==='website'?'Update opening hours on the contact page':'Add a competitor to the market analysis'}"></div>
+      <div class="cfield"><label for="rq-b">Details</label><textarea id="rq-b" name="body" rows="5" placeholder="${svc(p)==='website'?'What should change, on which page, and any wording to use.':'What you need, why, and by when.'}"></textarea></div>
       <label class="pp-drop"><input type="file" name="files" multiple><span>Attach screenshots or files (optional)</span></label>
       <button class="btn" type="submit"><span>Send request</span></button>
-      <p class="pp-muted pp-small">Small changes during the build are included. After launch we quote each change first, and you approve it here before we start.</p>
+      <p class="pp-muted pp-small">${svc(p)==='website'?'Small changes during the build are included. After launch we quote each change first, and you approve it here before we start.':'Anything inside the agreed scope is included. If something is new work, we quote it first and you approve it here before we start.'}</p>
     </form></div>`;
   const f=el.querySelector('form') as HTMLFormElement;
   f.addEventListener('submit',async e=>{
@@ -179,16 +179,19 @@ export async function viewBilling(el:HTMLElement){
   const inv=check(await sb.from('invoices').select('*').eq('client_id',p.id).neq('status','draft').order('issued_on',{ascending:true}))||[];
   const paid=inv.filter(i=>i.status==='paid').reduce((s,i)=>s+Number(i.amount_gbp),0);
   const owed=inv.filter(i=>i.status==='due'||i.status==='overdue').reduce((s,i)=>s+Number(i.amount_gbp),0);
-  el.innerHTML=`<div class="pp-sum"><div><small>Paid</small><b>${gbp(paid)}</b></div><div><small>To pay</small><b>${gbp(owed)}</b></div><div><small>Build price</small><b>${p.quote_total?gbp(p.quote_total):'—'}</b></div></div>
+  el.innerHTML=`<div class="pp-sum"><div><small>Paid</small><b>${gbp(paid)}</b></div><div><small>To pay</small><b>${gbp(owed)}</b></div><div><small>${svc(p)==='website'?'Build price':'Project fee'}</small><b>${p.quote_total?gbp(p.quote_total):'—'}</b></div></div>
     ${inv.length?`<table class="pp-table"><thead><tr><th>Invoice</th><th>Issued</th><th>Due</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>${inv.map(i=>`<tr>
       <td><b>${esc(i.label)}</b>${i.number?`<small>${esc(i.number)}</small>`:''}</td><td>${date(i.issued_on)}</td><td>${date(i.due_on)}</td><td>${gbp(i.amount_gbp)}</td>
       <td><span class="pp-badge i-${i.status}">${IS[i.status]}</span></td>
-      <td class="pp-act">${i.view_url&&i.status!=='paid'?`<a class="btn sm" href="${esc(i.view_url)}" target="_blank" rel="noopener"><span>View and pay</span></a>`:i.view_url?`<a class="ulink" href="${esc(i.view_url)}" target="_blank" rel="noopener">View</a>`:''}${i.pdf_path?` <button class="ulink" data-pdf="${esc(i.pdf_path)}">PDF</button>`:''}</td></tr>`).join('')}</tbody></table>`:'<div class="pp-card"><p class="pp-muted">No invoices yet. Your first invoice (one third of the build price) appears here once we confirm your quote.</p></div>'}
-    <div class="pp-card pp-terms"><h3 class="pp-h">How billing works</h3><ul class="ticks">
+      <td class="pp-act">${i.view_url&&i.status!=='paid'?`<a class="btn sm" href="${esc(i.view_url)}" target="_blank" rel="noopener"><span>View and pay</span></a>`:i.view_url?`<a class="ulink" href="${esc(i.view_url)}" target="_blank" rel="noopener">View</a>`:''}${i.pdf_path?` <button class="ulink" data-pdf="${esc(i.pdf_path)}">PDF</button>`:''}</td></tr>`).join('')}</tbody></table>`:`<div class="pp-card"><p class="pp-muted">${svc(p)==='website'?'No invoices yet. Your first invoice (one third of the build price) appears here once we confirm your quote.':'No invoices yet. They appear here as they are issued, in line with your proposal.'}</p></div>`}
+    ${svc(p)==='website'?`<div class="pp-card pp-terms"><h3 class="pp-h">How billing works</h3><ul class="ticks">
       ${SME.stages.map((s,i)=>`<li><b>${['One third','One third','One third'][i]} ${s.t.toLowerCase()}:</b> ${esc(s.d)}</li>`).join('')}
       <li><b>Hosting:</b> ${p.hosting==='us'?`${gbp(SME.hosting)} a year, invoiced separately.`:`you host the site yourself; the code is handed over within ${SME.handoverDays} days of delivery.`}</li>
       ${p.domain_mode==='need'?'<li><b>Domain:</b> the first year is added to your first invoice; renewals are billed at cost.</li>':''}
-      <li>Invoices are due within seven days. <a class="ulink" href="/digitalsme/terms" target="_blank" rel="noopener">Full terms</a></li></ul></div>`;
+      <li>Invoices are due within seven days. <a class="ulink" href="/digitalsme/terms" target="_blank" rel="noopener">Full terms</a></li></ul></div>`:`<div class="pp-card pp-terms"><h3 class="pp-h">How billing works</h3><ul class="ticks">
+      <li>Invoices follow the payment schedule in your proposal.</li>
+      <li>Any new work outside the agreed scope is quoted first, and you approve it in Requests before we start.</li>
+      <li>Invoices are due within 14 days unless your proposal says otherwise. Questions about an invoice? Raise them in Requests.</li></ul></div>`}`;
   el.querySelectorAll<HTMLElement>('[data-pdf]').forEach(b=>b.addEventListener('click',async()=>{const u=await fileUrl(b.dataset.pdf);if(u)window.open(u,'_blank','noopener');}));
 }
 
@@ -217,5 +220,26 @@ export async function viewPerformance(el:HTMLElement){
     const prog=checkProgress(box,{estimate:30000,site:(p.live_url||p.website||'').replace(/^https?:\/\//,'')});
     try{await api('/api/portal-rescore',{clientId:p.id});await prog.done();toast('Check complete');viewPerformance(el);}
     catch(err){prog.stop();box.remove();toast(err.message,true);el.querySelectorAll<HTMLButtonElement>('[data-run]').forEach(b=>b.disabled=false);}
+  });
+}
+
+/* ---------- documents: what we deliver, and what the client has shared ---------- */
+export async function viewDocuments(el:HTMLElement){
+  const p=S.current;
+  const files=check(await sb.from('files').select('*').eq('client_id',p.id).order('created_at',{ascending:false}))||[];
+  const ours=files.filter(f=>f.kind==='deliverable'),theirs=files.filter(f=>f.kind!=='deliverable'&&f.kind!=='invoice');
+  const row=f=>`<li><button type="button" class="ulink" data-file="${esc(f.path)}">${esc(f.kind==='deliverable'?String(f.name||'').split(': ')[0]:String(f.name||'').replace(/^[^:]+: /,''))}</button><small>${date(f.created_at)} · ${Math.max(1,Math.round((f.size||0)/1024))} KB</small></li>`;
+  el.innerHTML=`<div class="pp-grid">
+    <div class="pp-col pp-card"><h3 class="pp-h">From Minshall Group</h3><p class="pp-muted pp-small">Reports, presentations, models and designs we deliver. Each one is emailed to you when it is added.</p>
+      ${ours.length?`<ul class="pp-docs">${ours.map(row).join('')}</ul>`:'<p class="pp-muted">Nothing delivered yet. Your first document appears here once it is ready.</p>'}</div>
+    <div class="pp-col pp-card"><h3 class="pp-h">Shared by you</h3>
+      ${theirs.length?`<ul class="pp-docs">${theirs.map(row).join('')}</ul>`:'<p class="pp-muted">Nothing shared yet.</p>'}
+      <label class="pp-drop"><input type="file" multiple data-share><span>Share a file with us</span></label>
+      <p class="pp-muted pp-small">Up to 25 MB each. Please do not share passwords or patient-identifiable data here.</p></div>
+  </div>`;
+  el.querySelectorAll<HTMLElement>('[data-file]').forEach(b=>b.addEventListener('click',async()=>{const u=await fileUrl(b.dataset.file);if(u)window.open(u,'_blank','noopener');}));
+  el.querySelector<HTMLInputElement>('[data-share]').addEventListener('change',async e=>{
+    const list=[...(e.target as HTMLInputElement).files];if(!list.length)return;toast(`Uploading ${list.length} file${list.length>1?'s':''}…`);
+    try{for(const fl of list){if(fl.size>25*1024*1024){toast(`${fl.name} is over 25 MB`,true);continue;}await upload(fl,'other','Shared');}toast('Shared');viewDocuments(el);}catch(err){toast(err.message,true);}
   });
 }

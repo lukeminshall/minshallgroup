@@ -26,8 +26,12 @@ export async function caller(req) {
   try { payload = await verifyToken(token, { secretKey: process.env.CLERK_SECRET_KEY }); }
   catch { throw Object.assign(new Error('Session expired, please sign in again'), { status: 401 }); }
   const userId = payload.sub;
+  /* an admin is in public.admins, or signed up with a team address listed in public.admin_emails */
   const { data } = await db().from('admins').select('user_id').eq('user_id', userId).maybeSingle();
-  return { userId, isAdmin: !!data };
+  if (data) return { userId, isAdmin: true };
+  const { data: su } = await db().from('signups').select('email').eq('user_id', userId).maybeSingle();
+  const { data: te } = su?.email ? await db().from('admin_emails').select('email').eq('email', su.email.toLowerCase()).maybeSingle() : { data: null };
+  return { userId, isAdmin: !!te };
 }
 
 /* the project, if the caller may see it */
