@@ -74,8 +74,8 @@ export default async function handler(req, res) {
       after: ['Our offer terms are at minshallgroup.com/digitalsme/terms.'],
       reason: 'You are receiving this because this address was entered on our website. If that was not you, you can ignore this email.'
     } : {
-      preheader: 'Someone senior will reply within two working days.', eyebrow: 'Message received', heading: 'Thank you for getting in touch.', greeting: `Hello${first ? ' ' + first : ''},`,
-      paras: ['Your message is with us, and someone senior will reply within two working days. We will tell you honestly whether we are the right people.'],
+      preheader: 'Someone from our team will be in touch shortly.', eyebrow: 'Message received', heading: 'Thank you for getting in touch.', greeting: `Hello${first ? ' ' + first : ''},`,
+      paras: ['Your message is with us, and someone from our team will be in touch shortly. We will tell you honestly whether we are the right people.'],
       button: { label: 'See our recent work', url: 'https://minshallgroup.com/work' },
       after: ['Need a website for a small business? You can check your current site and price a new one in minutes at minshallgroup.com/digitalsme.'],
       reason: 'You are receiving this because this address was entered on our contact form. If that was not you, you can ignore this email.'

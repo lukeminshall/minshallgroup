@@ -543,7 +543,7 @@ ${phead({eyebrow:'Contact',title:'Tell us the number you want to move.',lede:'Th
   <aside class="contact-side reveal" style="--i:1">
     <div class="cs-block">${eyebrow('Email')}<a class="cs-big" href="mailto:${CONTACT.email}">${CONTACT.email}</a><p>New enquiries, partnerships and press. The form and this address both come straight to us.</p></div>
     <div class="cs-block">${eyebrow('Products')}<p>Asking about DataLense access or a Straight Talking cohort place? Tick it above and we will set up a demo.</p></div>
-    <div class="cs-block">${eyebrow('What happens next')}<ol class="next"><li>We reply within two working days.</li><li>A thirty-minute call, free, with someone senior.</li><li>If we are a fit, a short written proposal scoped to the number.</li></ol></div>
+    <div class="cs-block">${eyebrow('What happens next')}<ol class="next"><li>We reply within two working days.</li><li>A thirty-minute call, free, with someone from our team.</li><li>If we are a fit, a short written proposal scoped to the number.</li></ol></div>
   </aside>
 </div></section>`;
 
