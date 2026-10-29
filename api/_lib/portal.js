@@ -2,7 +2,7 @@
    routes). Verifies the Clerk session token sent by the browser, gives a
    service-role Supabase client for server-side reads/writes, and sends
    notification emails through Resend.
-   Env: CLERK_SECRET_KEY, SUPABASE_URL (or VITE_SUPABASE_URL),
+   Env: CLERK_SECRET_KEY, VITE_SUPABASE_URL (or SUPABASE_URL),
         SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, CONTACT_TO (team notifications, default luke@), CONTACT_FROM. */
 import { verifyToken } from '@clerk/backend';
 import { createClient } from '@supabase/supabase-js';
@@ -10,11 +10,11 @@ import { createClient } from '@supabase/supabase-js';
 export const SITE = 'https://minshallgroup.com';
 
 export function configured() {
-  return !!(process.env.CLERK_SECRET_KEY && (process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL) && process.env.SUPABASE_SERVICE_ROLE_KEY);
+  return !!(process.env.CLERK_SECRET_KEY && (process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL) && process.env.SUPABASE_SERVICE_ROLE_KEY);
 }
 
 export function db() {
-  return createClient(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
+  return createClient(process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
 }
 
 /* returns { userId, isAdmin } or throws */
