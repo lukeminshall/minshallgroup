@@ -663,7 +663,7 @@ export const LANDINGS=[
       {q:'Do you work with NHS organisations?',a:'Yes. Working as part of Housden Group, we support the growth of NHS trust private patient units, and we work with providers that deliver NHS-funded activity in independent settings.'},
       {q:'Do you give clinical or regulatory advice?',a:'No. Clinical and regulatory judgements stay with clinicians and the organisations responsible for them. We work on the commercial, operational, data and digital side, alongside your clinical leads.'},
       {q:'How do you price an engagement?',a:'Usually phase by phase, against agreed deliverables, so you can stop, adjust or continue at the end of each stage. Every engagement is scoped to an outcome before it starts.'},
-      {q:'Where are you based?',a:'Our registered office is in Leeds, and we work with clients across the UK, as well as overseas companies bringing products to the UK.'}]},
+      {q:'Where are you based?',a:'Our registered office is at 66 Paul Street, London, and we work with clients across the UK, as well as overseas companies bringing products to the UK.'}]},
   {slug:'digital-consultancy',gfx:'layers',
     seoTitle:'Digital Consultancy UK | Product, Platforms, Data & AI | Minshall Group',
     desc:'Digital consultancy that designs and builds: product discovery, web platforms, apps, portals, integrations, data and practical AI. A senior team, shipping in usable slices, and you own what we build.',
