@@ -112,7 +112,7 @@ body.menu-open .site-head{transform:none}
 .navitem.open .mega{opacity:1;visibility:visible;transform:none;transition:opacity .25s var(--ease),transform .35s var(--ease-out)}
 .mega-in{display:grid;grid-template-columns:1fr 300px;gap:48px;padding-top:36px;padding-bottom:40px}
 .mega-grid{display:grid;gap:8px}
-.mega-grid.c4{grid-template-columns:repeat(2,1fr)}
+.mega-grid.c4{grid-template-columns:repeat(2,1fr)}.mega-grid.c3{grid-template-columns:repeat(3,1fr)}
 .mega-grid.c2{grid-template-columns:repeat(2,1fr)}
 .mega-link{display:flex;flex-direction:column;gap:4px;padding:20px 22px;border-radius:var(--r-s);transition:background .25s}
 .mega-link:hover{background:var(--soft)}

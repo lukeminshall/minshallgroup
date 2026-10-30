@@ -8,8 +8,7 @@ import {tile,dot} from './brand';
 
 export const NAV=[
   {label:'What we do',href:'/capabilities',mega:'caps'},
-  {label:'Health',href:'/industries#health'},
-  {label:'Sport',href:'/industries#sport'},
+  {label:'Sectors',href:'/industries',mega:'sectors'},
   {label:'Websites',href:'/digitalsme',mega:'web'},
   {label:'Work',href:'/work'},
   {label:'Insights',href:'/insights'},
@@ -50,6 +49,18 @@ function megaWeb(){
       <a class="mega-sme" href="/portal"><b>Already a client?</b> Log in to your project →</a>
     </div></div></div>`;
 }
+function megaSectors(){
+  const focus=INDUSTRIES.filter((x:any)=>x.focus),also=INDUSTRIES.filter((x:any)=>!x.focus);
+  return `<div class="mega" role="region" aria-label="Sectors"><div class="wrap mega-in">
+    <div class="mega-grid c3">${focus.map((x,i)=>`
+      <a class="mega-link" href="/industries#${x.id}"><span class="mn">0${i+1} · Where we go deepest</span><b>${x.t}</b><span>${x.d}</span></a>`).join('')}
+    </div>
+    <div class="mega-side">
+      <span class="eyebrow">We also work with</span>
+      <ul class="mega-ind">${also.map(x=>`<li><a href="/industries#${x.id}">${x.t}</a></li>`).join('')}</ul>
+      <div class="mega-links"><a class="tlink" href="/industries">All sectors</a></div>
+    </div></div></div>`;
+}
 function megaProducts(){
   return `<div class="mega" role="region" aria-label="Products"><div class="wrap mega-in">
     <div class="mega-grid c2">${PRODUCTS.map(p=>`
@@ -64,7 +75,7 @@ function megaProducts(){
 
 export function navMarkup(){
   return NAV.map((g,i)=>g.mega
-    ?`<div class="navitem has-mega" data-i="${i}"><a class="navbtn" href="${g.href}" aria-expanded="false" aria-haspopup="true">${g.label}<svg class="chev" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></a>${g.mega==='caps'?megaCaps():g.mega==='web'?megaWeb():megaProducts()}</div>`
+    ?`<div class="navitem has-mega" data-i="${i}"><a class="navbtn" href="${g.href}" aria-expanded="false" aria-haspopup="true">${g.label}<svg class="chev" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></a>${g.mega==='caps'?megaCaps():g.mega==='web'?megaWeb():g.mega==='sectors'?megaSectors():megaProducts()}</div>`
     :`<div class="navitem" data-i="${i}"><a class="navbtn" href="${g.href}">${g.label}</a></div>`).join('')
     +`<button class="navbtn head-srch" type="button" data-srch><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span class="sr">Search</span><kbd aria-hidden="true">⌘K</kbd></button><a class="navbtn head-login" href="/portal">Client login</a><div class="cta-pick"><button class="btn sm head-cta" type="button" aria-expanded="false" aria-controls="cta-menu" data-cta-pick><span>Start a project</span></button>
       <div class="cta-menu" id="cta-menu" role="menu" hidden>
@@ -79,7 +90,8 @@ export function mobileNavMarkup(){
   const groups:[string,string,[string,string][]?][]=[
     ['Capabilities','/capabilities',CAPS.map(c=>[c.t,'/capabilities/'+c.slug] as [string,string])],
     ['Websites','/digitalsme',WEB_LINKS.map(l=>[l.t,l.h] as [string,string])],
-    ['Work','/work'],['Industries','/industries'],['Products','/products'],['Approach','/approach'],['Insights','/insights'],['About','/about']];
+    ['Sectors','/industries',INDUSTRIES.map(x=>[x.t,'/industries#'+x.id] as [string,string])],
+    ['Work','/work'],['Products','/products'],['Approach','/approach'],['Insights','/insights'],['About','/about']];
   return `<div class="mnav-in"><nav aria-label="Mobile"><ol class="mn-list">${groups.map(([t,h,subs],i)=>`
     <li class="mn-item" style="--i:${i}"><div class="mn-row"><a class="mn-a" href="${h}"><span class="mn-n">0${i+1}</span>${t}</a>${subs?`<button class="mn-tog" type="button" aria-expanded="false" aria-label="Show ${t} pages"><i></i></button>`:''}</div>
       ${subs?`<ul class="mn-sub" hidden>${subs.map(([st,sh])=>`<li><a href="${sh}">${st}</a></li>`).join('')}</ul>`:''}</li>`).join('')}</ol></nav>
