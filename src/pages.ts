@@ -74,7 +74,9 @@ P['/']=()=>`
   ${shead({eyebrow:'Sectors',h:'Where we go deepest.',p:'Health and sport, and the ground where they meet. We know the regulation, the buyers and the economics well enough to be accountable for the outcome.',link:['Our sectors','/industries']})}
   <div class="ind-grid">${INDUSTRIES.filter((x:any)=>x.focus).map((x,i)=>`
     <a class="ind reveal" style="--i:${i%3}" href="/industries#${x.id}"><span class="ind-n">${String(i+1).padStart(2,'0')}</span><div class="ind-gfx">${gfx(x.gfx)}</div><h3>${x.t}</h3><p>${x.d}</p></a>`).join('')}</div>
-  <p class="ind-also reveal">We also work with universities, the public sector and growth companies. <a class="ulink" href="/industries">See how</a></p>
+  <div class="ind-also reveal"><p class="ind-also-h">We also work with</p>
+    <div class="ind-also-grid">${INDUSTRIES.filter((x:any)=>!x.focus).map(x=>`
+      <a class="ind-also-c" href="/industries#${x.id}"><h3>${x.t}</h3><p>${x.d}</p><span class="dl-more">See how →</span></a>`).join('')}</div></div>
 </div></section>
 
 <section class="worklist-sec"><div class="wrap">
