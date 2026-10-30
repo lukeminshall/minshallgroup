@@ -1953,27 +1953,35 @@ body.pp-hot .phead{min-height:0;padding-top:112px;padding-bottom:30px}body.pp-ho
 .pf-map-wrap{position:relative}
 .pf-map-card{margin:0;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);overflow:hidden}
 .pf-map{width:100%;height:auto;display:block}
-.pf-downs{fill:rgba(118,201,150,.13)}
-.pf-ring{fill:none;stroke-width:1.25}
-.pf-ring.outer{stroke:rgba(255,255,255,.16)}
-.pf-ring.inner{stroke:rgba(255,46,99,.45)}
+.pf-land{fill:url(#pf-dots)}
+.pf-sea-fill{fill:rgba(3,10,30,.35)}
+.pf-coast{fill:none;stroke:rgba(255,255,255,.38);stroke-width:1.25;stroke-linejoin:round}
+.pf-sea{fill:rgba(255,255,255,.3);font-family:var(--fd);font-style:italic;font-size:13px;letter-spacing:.04em}
+.pf-downs{fill:url(#pf-park)}
+.pf-downs-l{fill:#8FDCAD;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;paint-order:stroke;stroke:#0E1F4B;stroke-width:5px;stroke-linejoin:round}
+.pf-road{fill:none;stroke:rgba(255,255,255,.5);stroke-width:2.5;stroke-dasharray:.1 6;stroke-linecap:round}
+.pf-ring{fill:none;stroke-width:2;stroke-dasharray:.1 7;stroke-linecap:round}
+.pf-ring.outer{stroke:rgba(255,255,255,.32)}
+.pf-ring.inner{stroke:rgba(255,46,99,.7)}
 .pf-rail{fill:none;stroke:var(--pink);stroke-width:2.5;stroke-linecap:round}
 .pf-stops circle{fill:var(--navy);stroke:var(--pink);stroke-width:2}
 .pf-train{fill:#fff;filter:drop-shadow(0 0 5px rgba(255,46,99,.9))}
 .pf-town circle{fill:rgba(255,255,255,.7)}
-.pf-town text{fill:rgba(255,255,255,.72);font-size:12px;font-weight:600;letter-spacing:.01em}
+.pf-town text{fill:rgba(255,255,255,.72);font-size:11.5px;paint-order:stroke;stroke:#0E1F4B;stroke-width:4px;stroke-linejoin:round;font-weight:600;letter-spacing:.01em}
 .pf-pill rect{display:none}
 .pf-pill text{fill:rgba(255,255,255,.62);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;paint-order:stroke;stroke:#0E1F4B;stroke-width:6px;stroke-linejoin:round}
 .pf-home{fill:var(--pink);stroke:#fff;stroke-width:2.5}
-.pf-pulse{fill:none;stroke:var(--pink);stroke-width:2;transform-origin:260px 215px;animation:pf-pulse 2.4s var(--ease-out) infinite}
+.pf-pulse{fill:none;stroke:var(--pink);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:pf-pulse 2.4s var(--ease-out) infinite}
 .pf-home-pill rect,.pf-home-pill path{fill:#fff}
 .pf-home-pill text{fill:var(--navy);font-family:var(--fd);font-size:16px;letter-spacing:-.01em}
 .pf-map-key{display:flex;flex-wrap:wrap;gap:8px 22px;padding:14px 20px;border-top:1px solid rgba(255,255,255,.1);font-size:12.5px;font-weight:600;color:rgba(255,255,255,.7)}
 .pf-map-key span{display:inline-flex;align-items:center;gap:8px}
 .pf-map-key i{display:inline-block;flex:none}
 .pf-map-key .k-rail{width:18px;height:3px;border-radius:2px;background:var(--pink)}
-.pf-map-key .k-ring{width:12px;height:12px;border-radius:50%;box-shadow:inset 0 0 0 1.25px rgba(255,255,255,.45)}
-.pf-map-key .k-downs{width:14px;height:10px;border-radius:3px;background:rgba(118,201,150,.35)}
+.pf-map-key .k-ring{width:12px;height:12px;border-radius:50%;border:2px dotted rgba(255,255,255,.55)}
+.pf-map-key .k-ring.local{border-color:rgba(255,46,99,.8)}
+.pf-map-key .k-road{width:18px;height:3px;background:radial-gradient(circle,rgba(255,255,255,.7) 1.2px,transparent 1.4px) 0 50%/6px 3px repeat-x}
+.pf-map-key .k-downs{width:16px;height:10px;background:radial-gradient(circle,#76C996 1.3px,transparent 1.5px) 0 0/5px 5px}
 @keyframes pf-pulse{from{transform:scale(1);opacity:1}to{transform:scale(4.5);opacity:0}}
 .pf-facts{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;margin:clamp(30px,4vw,54px) 0 0;background:rgba(255,255,255,.14);border-radius:var(--r);overflow:hidden}
 .pf-facts div{background:var(--navy-2);padding:18px 20px}
