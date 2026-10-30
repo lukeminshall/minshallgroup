@@ -24,12 +24,12 @@ const OBJECTIVES=[
 
 /* Dec to Nov; span is the number of months each campaign covers */
 const SEASONS=[
-  {span:1,t:'Christmas in Petersfield',m:'Dec',f:'Lights, late shopping, gift guides from independents, festive food and drink, Small Business Saturday.'},
-  {span:2,t:'Fresh Start Petersfield',m:'Jan to Feb',f:'New openings, winter walks and snowdrops, indoor days out at the Museum and cafes, local loyalty.'},
-  {span:2,t:'Spring into Petersfield',m:'Mar to Apr',f:'Music and arts events, Easter family days out, the market and seasonal produce.'},
-  {span:4,t:'Summer on the Heath',m:'May to Aug',f:'The Heath and pond, the Lido, the Physic Garden, South Downs walking and cycling, outdoor dining, summer events.'},
-  {span:2,t:'Heritage and Harvest',m:'Sep to Oct',f:'Heritage Open Days, the Taro Fair, food and drink, history walks with The Petersfield Society.'},
-  {span:1,t:'Shop Local, Shop Petersfield',m:'Nov',f:'The pre-Christmas independents campaign, the build-up to the lights switch-on, parking and travel information.'}
+  {span:1,t:'Christmas in Petersfield',s:'Christmas',m:'Dec',f:'Lights, late shopping, gift guides from independents, festive food and drink, Small Business Saturday.'},
+  {span:2,t:'Fresh Start Petersfield',s:'Fresh Start',m:'Jan to Feb',f:'New openings, winter walks and snowdrops, indoor days out at the Museum and cafes, local loyalty.'},
+  {span:2,t:'Spring into Petersfield',s:'Spring',m:'Mar to Apr',f:'Music and arts events, Easter family days out, the market and seasonal produce.'},
+  {span:4,t:'Summer on the Heath',s:'Summer on the Heath',m:'May to Aug',f:'The Heath and pond, the Lido, the Physic Garden, South Downs walking and cycling, outdoor dining, summer events.'},
+  {span:2,t:'Heritage and Harvest',s:'Heritage and Harvest',m:'Sep to Oct',f:'Heritage Open Days, the Taro Fair, food and drink, history walks with The Petersfield Society.'},
+  {span:1,t:'Shop Local, Shop Petersfield',s:'Shop Local',m:'Nov',f:'The pre-Christmas independents campaign, the build-up to the lights switch-on, parking and travel information.'}
 ];
 const MONTHS=['Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov'];
 
@@ -252,7 +252,7 @@ export function petersfieldPage(){
   <div class="shead"><div class="reveal"><span class="eyebrow">The year at a glance</span><h2 class="h2">Six seasonal campaigns, one connected story.</h2></div><div class="shead-r reveal" style="--i:1"><p>A draft framework for the 2027 Annual Marketing Plan, tested against data in December and agreed with the Council.</p></div></div>
   <div class="pf-year reveal" data-pf-year>
     <div class="pf-months" aria-hidden="true">${MONTHS.map(m=>`<span>${m}</span>`).join('')}</div>
-    <div class="pf-camps" role="tablist" aria-label="Seasonal campaigns">${SEASONS.map((s,i)=>{const b=`<button type="button" role="tab" aria-selected="${!i}" data-pf-s="${i}"${s.span===1?' class="n1"':''} style="grid-column:${mi+1} / span ${s.span}"><b>${s.t}</b><span>${s.m}</span></button>`;mi+=s.span;return b;}).join('')}</div>
+    <div class="pf-camps" role="tablist" aria-label="Seasonal campaigns">${SEASONS.map((s,i)=>{const b=`<button type="button" role="tab" aria-selected="${!i}" data-pf-s="${i}"${s.span===1?' class="n1"':''} style="grid-column:${mi+1} / span ${s.span}"><b>${s.s}</b><span>${s.m}</span></button>`;mi+=s.span;return b;}).join('')}</div>
     <div class="pf-camp-card" aria-live="polite">${SEASONS.map((s,i)=>`<div data-pf-sp="${i}"${i?' hidden':''}><div><span class="pf-k">${s.m}</span><h3>${s.t}</h3><p>${s.f}</p></div>
       <ul class="pf-every"><li>Hero content</li><li>A way for businesses to join in</li><li>A paid social burst where it adds value</li><li>A website landing page or feature</li></ul></div>`).join('')}</div>
   </div>
@@ -314,7 +314,7 @@ export function petersfieldPage(){
   </div>
 </div></section>
 
-<section class="pf-sec soft"><div class="wrap">
+<section class="pf-sec"><div class="wrap">
   <div class="shead"><div class="reveal"><span class="eyebrow">Working together</span><h2 class="h2">What we ask of the Council.</h2></div><div class="shead-r reveal" style="--i:1"><p>A programme like this works best as a partnership. In return, we commit to the deliverables, timescales and reporting in our response, and to raising any risk to delivery early.</p></div></div>
   <ul class="pf-asks">${ASKS.map(([t,d],i)=>`<li class="reveal" style="--i:${i%3}"><b>${t}</b><span>${d}</span></li>`).join('')}</ul>
 </div></section>
