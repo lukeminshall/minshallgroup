@@ -3,6 +3,7 @@
    Data comes from content.ts; markup helpers from components.ts.
    ===================================================================== */
 import {CAPS,RETURNS,INDUSTRIES,PRODUCTS,CASES,FINDER,STEPS,MODELS,PRINCIPLES,INSIGHTS,CLIENTS,TEAM,LANDINGS,LEGAL,SME,SCORE,CONTACT} from './content';
+import {petersfieldPage} from './petersfield';
 import {startPage} from './start';
 import {subscribeBox,split,splitLetters,eyebrow,shead,phead,btn,cards,returnsRow,capTags,caseCard,marquee,insightCard,ctaBand,gfx,capBySlug,indById} from './components';
 import {dot,tile} from './brand';
@@ -440,6 +441,7 @@ INSIGHTS.forEach(a=>{P['/insights/'+a.slug]=()=>article(a);});
 P['/insights/'+RESEARCH_SLUG]=researchPage;
 P['/products/datalense/sample']=datalenseSample;
 P['/products/straight-talking/demo']=straightTalkingDemo;
+P['/petersfield']=petersfieldPage;
 /* ================= CASE STUDIES ================= */
 function casePage(c,i){
   const ind=indById(c.ind),next=CASES[(i+1)%CASES.length],prev=CASES[(i-1+CASES.length)%CASES.length];

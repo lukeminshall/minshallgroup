@@ -40,6 +40,7 @@ INSIGHTS.forEach(i=>{ROUTES['/insights/'+i.slug]={title:t(i.t),description:i.d};
 
 /* internal tools: prerendered so deep links work, but hidden from search and the sitemap */
 ROUTES['/tools/prospect']={title:t('Prospect list'),description:'Internal tool.',noindex:true};
+ROUTES['/petersfield']={title:t('Petersfield: our digital marketing tender response'),description:'Minshall Group’s response to Petersfield Town Council’s Tourism and Economic Development Digital Marketing tender.',noindex:true};
 ROUTES['/portal']={title:t('Client portal'),description:'Log in to your Minshall Group project.',noindex:true};
 
 /* Search snippets: keep titles to what Google shows (about 60 characters)
