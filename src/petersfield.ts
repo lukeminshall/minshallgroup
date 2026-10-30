@@ -68,16 +68,6 @@ const MOBILISE=[
   ['February 2027',['Brand toolkit signed off','Business contributor network launched','Live dashboard shared','First quarterly meeting scheduled']]
 ];
 
-const PRICE=[
-  ['Social media management and organic content',5400,'£450 a month'],
-  ['Seasonal photography and video',2400,'Four shoots'],
-  ['Annual plan, evidence base and brand toolkit',1800,'Year one only'],
-  ['Website content updates and SEO',1800,'£150 a month'],
-  ['Paid social media budget',1500,'Passed through at cost'],
-  ['Partnership working and business engagement',1200,''],
-  ['Monthly reporting and quarterly meetings',900,'']
-];
-
 const ASKS=[
   ['A single point of contact','A named Council Officer, with a deputy for holiday cover.'],
   ['Portal approvals','A named approver for business requests, with an agreed turnaround. We suggest three working days, faster for time-sensitive events.'],
@@ -223,7 +213,6 @@ function dashboard(){
 }
 
 export function petersfieldPage(){
-  const total=PRICE.reduce((a,p)=>a+p[1],0);
   let mi=0;
   return `
 <header class="demo-hero dark pf-hero"><div class="grain" aria-hidden="true"></div><div class="wrap pf-hero-in">
@@ -237,7 +226,7 @@ export function petersfieldPage(){
 </div>
 <div class="wrap"><dl class="pf-facts rise" style="--i:8">
   <div><dt>Contract</dt><dd>1 Dec 2026 to 30 Nov 2027, extendable to 2029</dd></div>
-  <div><dt>Price</dt><dd>£15,000 + VAT a year</dd></div>
+  <div><dt>Approvals</dt><dd>Nothing published without the Council’s sign-off</dd></div>
   <div><dt>Contact</dt><dd>One named lead for the whole contract</dd></div>
   <div><dt>Reporting</dt><dd>Monthly report and a live dashboard</dd></div>
 </dl></div></header>
@@ -322,15 +311,6 @@ export function petersfieldPage(){
   <div class="pf-two pf-care">
     <div class="reveal"><h3 class="pf-h3">Accessible by default</h3><ul class="ticks"><li>Alt text on every image, captions on every video</li><li>Plain English and strong colour contrast in all templates</li><li>Camel case hashtags and light use of emoji</li><li>Website content to WCAG 2.2 AA principles</li><li>A new Accessible Petersfield guide, made with local groups</li></ul></div>
     <div class="reveal" style="--i:1"><h3 class="pf-h3">Data handled properly</h3><ul class="ticks"><li>UK GDPR and the Data Protection Act 2018</li><li>Written consent before using anyone’s photos or content</li><li>Portal and contact data used only for this contract</li><li>Reports use aggregated analytics, never personal data</li><li>Every account, image and piece of content stays the Council’s</li></ul></div>
-  </div>
-</div></section>
-
-<section class="pf-sec"><div class="wrap pf-price-w">
-  <div class="reveal"><span class="eyebrow">Price</span><h2 class="h2">£15,000 + VAT a year.</h2><p class="lede-s">Within the maximum contract value, the same in years two and three. From year two, the £1,800 for the plan and brand toolkit moves into extra paid media and content, as agreed in the annual plan. Paid media is passed through at cost and reported in full.</p></div>
-  <div class="pf-price reveal" style="--i:1">
-    <div class="pf-stack" aria-hidden="true">${PRICE.map(([,v],i)=>`<i style="--w:${(v as number)/total*100}%;--o:${1-i*.11}"></i>`).join('')}</div>
-    <table><caption class="sr">Year one price breakdown, excluding VAT</caption><tbody>${PRICE.map(([t,v,n],i)=>`<tr><td><i style="--o:${1-i*.11}"></i>${t}${n?`<small>${n}</small>`:''}</td><td>£${(v as number).toLocaleString('en-GB')}</td></tr>`).join('')}</tbody>
-    <tfoot><tr><td>Total, year one</td><td>£${total.toLocaleString('en-GB')}</td></tr></tfoot></table>
   </div>
 </div></section>
 

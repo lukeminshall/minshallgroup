@@ -2201,17 +2201,6 @@ body.pp-hot .phead{min-height:0;padding-top:112px;padding-bottom:30px}body.pp-ho
 .pf-inno p{margin:0;color:var(--ink-2);font-size:15px;line-height:1.55}
 .pf-care .ticks{margin-top:16px}
 
-.pf-price-w{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(30px,5vw,80px);align-items:start}
-.pf-price{background:var(--navy);color:#fff;border-radius:18px;padding:clamp(22px,3vw,34px)}
-.pf-stack{display:flex;height:14px;border-radius:7px;overflow:hidden;gap:2px;margin-bottom:20px}
-.pf-stack i{width:var(--w);background:rgba(255,46,99,var(--o))}
-.pf-price table{width:100%;border-collapse:collapse}
-.pf-price td{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:15px;vertical-align:top}
-.pf-price td:last-child{text-align:right;font-weight:700;white-space:nowrap;padding-left:14px}
-.pf-price td i{display:inline-block;width:10px;height:10px;border-radius:3px;background:rgba(255,46,99,var(--o));margin-right:10px}
-.pf-price td small{display:block;margin-left:20px;color:rgba(255,255,255,.6);font-size:12.5px}
-.pf-price tfoot td{border:0;padding-top:16px;font-family:var(--fd);font-size:26px;font-weight:400}
-.pf-price tfoot td:last-child{color:var(--pink)}
 
 .pf-asks{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .pf-asks li{padding:22px;border-radius:16px;background:#fff;display:flex;flex-direction:column;gap:6px}
@@ -2219,7 +2208,7 @@ body.pp-hot .phead{min-height:0;padding-top:112px;padding-bottom:30px}body.pp-ho
 .pf-asks span{font-size:14.5px;color:var(--ink-2);line-height:1.5}
 
 @media (max-width:1024px){
-  .pf-hero-in,.pf-why,.pf-price-w{grid-template-columns:1fr}
+  .pf-hero-in,.pf-why{grid-template-columns:1fr}
   .pf-map-wrap{max-width:560px}
   .pf-rp{grid-template-columns:1fr;gap:0}
   .pf-flow{height:60px;width:2px;margin:0 auto}
