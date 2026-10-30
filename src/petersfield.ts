@@ -166,7 +166,7 @@ function requestPortal(){
         <li data-state="wait" data-type="listing"><div><em>Listing change</em><b>New opening hours for winter</b><small>Heathside Books (example) · submitted 2 days ago</small></div><div class="pf-acts"><button type="button" data-pf-approve>Approve</button><button type="button" class="ghost" data-pf-change>Ask for changes</button></div></li>
         <li data-state="done"><div><em>Offer</em><b>10% off for walkers on Saturdays</b><small>Downs Coffee Co. (example) · approved, in Stories on Saturday</small></div><span class="pf-tag ok">Approved</span></li>
       </ul>
-      <p class="pf-audit" data-pf-audit>Every request is logged with who sent it, who approved it and where it was published.</p>
+      <p class="pf-audit" data-pf-audit role="status">Every request is logged with who sent it, who approved it and where it was published.</p>
     </div>
   </div>
 </div>`;
@@ -182,7 +182,7 @@ function councilPortal(){
     <nav class="pf-cp-nav" role="tablist" aria-label="Portal sections">${tabs.map((t,i)=>`<button type="button" role="tab" aria-selected="${!i}" data-pf-tab="${i}">${t}</button>`).join('')}</nav>
     <div class="pf-cp-body">
       <section class="pf-cp-p" data-pf-panel="0">
-        <p class="pf-k">Client portal · Digital marketing</p><h4>Visit Petersfield 2026/27</h4>
+        <p class="pf-k">Client portal · Digital marketing</p><h3 class="pf-cp-h">Visit Petersfield 2026/27</h3>
         <ol class="pf-stages">${stages.map((s,i)=>`<li class="${i<1?'done':i===1?'now':''}"><i></i><span>${s}</span></li>`).join('')}</ol>
         <div class="pf-tiles"><div><span>Stage</span><b>Plan</b></div><div><span>Next milestone</span><b>Plan to Council</b></div><div><span>Waiting for you</span><b>2</b></div><div><span>Next meeting</span><b>Quarterly · Feb</b></div></div>
         <div class="pf-needs"><b>What needs you</b><span>Approve the January content calendar</span><span>Introductions to event organisers</span></div>
@@ -234,10 +234,10 @@ function dashboard(){
   return `<div class="pf-dash" data-step="dash">
   <div class="pf-dash-top"><b>Visit Petersfield · live dashboard</b><span class="pf-live"><i></i>Updated daily</span></div>
   <div class="pf-dk">
-    <div><span>Reach outside the local area</span><b data-pf-count="61">0</b><small>% of total reach</small></div>
-    <div><span>Website sessions</span><b data-pf-count="8420">0</b><small>this month</small></div>
-    <div><span>Clicks to businesses</span><b data-pf-count="1260">0</b><small>to their own sites</small></div>
-    <div><span>Portal requests</span><b data-pf-count="23">0</b><small>received, 21 approved</small></div>
+    <div><span>Reach outside the local area</span><b data-pf-count="61" aria-hidden="true">0</b><span class="sr">61</span><small>% of total reach</small></div>
+    <div><span>Website sessions</span><b data-pf-count="8420" aria-hidden="true">0</b><span class="sr">8,420</span><small>this month</small></div>
+    <div><span>Clicks to businesses</span><b data-pf-count="1260" aria-hidden="true">0</b><span class="sr">1,260</span><small>to their own sites</small></div>
+    <div><span>Portal requests</span><b data-pf-count="23" aria-hidden="true">0</b><span class="sr">23</span><small>received, 21 approved</small></div>
   </div>
   <div class="pf-dg">
     <div class="pf-chart"><span class="pf-dh">Share of reach from day-trip catchments</span>
@@ -284,7 +284,7 @@ export function petersfieldPage(){
   <div class="shead"><div class="reveal"><span class="eyebrow">Contract objectives</span><h2 class="h2">Every objective has an activity and a measure.</h2></div><div class="shead-r reveal" style="--i:1"><p>Pick an objective to see how we deliver it and how the Council will know it is working.</p></div></div>
   <div class="pf-obj reveal" data-pf-obj>
     <div class="pf-obj-list" role="tablist" aria-label="Objectives">${OBJECTIVES.map((o,i)=>`<button type="button" role="tab" aria-selected="${!i}" data-pf-o="${i}"><span>0${i+1}</span>${o[0]}</button>`).join('')}</div>
-    <div class="pf-obj-card" aria-live="polite">${OBJECTIVES.map((o,i)=>`<div data-pf-op="${i}"${i?' hidden':''}><span class="pf-k">Objective 0${i+1}</span><h3>${o[0]}</h3><div class="pf-obj-2"><div><b>How we deliver it</b><p>${o[1]}</p></div><div><b>How we measure it</b><p>${o[2]}</p></div></div></div>`).join('')}</div>
+    <div class="pf-obj-card">${OBJECTIVES.map((o,i)=>`<div data-pf-op="${i}"${i?' hidden':''}><span class="pf-k">Objective 0${i+1}</span><h3>${o[0]}</h3><div class="pf-obj-2"><div><b>How we deliver it</b><p>${o[1]}</p></div><div><b>How we measure it</b><p>${o[2]}</p></div></div></div>`).join('')}</div>
   </div>
 </div></section>
 
@@ -293,7 +293,7 @@ export function petersfieldPage(){
   <div class="pf-year reveal" data-pf-year>
     <div class="pf-months" aria-hidden="true">${MONTHS.map(m=>`<span>${m}</span>`).join('')}</div>
     <div class="pf-camps" role="tablist" aria-label="Seasonal campaigns">${SEASONS.map((s,i)=>{const b=`<button type="button" role="tab" aria-selected="${!i}" data-pf-s="${i}"${s.span===1?' class="n1"':''} style="grid-column:${mi+1} / span ${s.span}"><b>${s.s}</b><span>${s.m}</span></button>`;mi+=s.span;return b;}).join('')}</div>
-    <div class="pf-camp-card" aria-live="polite">${SEASONS.map((s,i)=>`<div data-pf-sp="${i}"${i?' hidden':''}><div><span class="pf-k">${s.m}</span><h3>${s.t}</h3><p>${s.f}</p></div>
+    <div class="pf-camp-card">${SEASONS.map((s,i)=>`<div data-pf-sp="${i}"${i?' hidden':''}><div><span class="pf-k">${s.m}</span><h3>${s.t}</h3><p>${s.f}</p></div>
       <ul class="pf-every"><li>Hero content</li><li>A way for businesses to join in</li><li>A paid social burst where it adds value</li><li>A website landing page or feature</li></ul></div>`).join('')}</div>
   </div>
   <div class="pf-two">
@@ -364,16 +364,26 @@ export function petersfieldPage(){
 }
 
 /* ---------------- behaviour ---------------- */
+let TID=0;
 function tabs(root:HTMLElement,btnAttr:string,panelAttr:string){
   const bs=[...root.querySelectorAll<HTMLButtonElement>(`[${btnAttr}]`)],ps=[...root.querySelectorAll<HTMLElement>(`[${panelAttr}]`)];
   const key=(a:string)=>a.replace(/^data-/,'').replace(/-(\w)/g,(_,c)=>c.toUpperCase());
+  const pan=(b:HTMLButtonElement)=>ps.find(p=>p.dataset[key(panelAttr)]===b.dataset[key(btnAttr)]);
+  bs.forEach(b=>{const p=pan(b),id=`pft${++TID}`;b.id=id;b.tabIndex=b.getAttribute('aria-selected')==='true'?0:-1;
+    if(p){p.id=id+'p';b.setAttribute('aria-controls',p.id);p.setAttribute('role','tabpanel');p.setAttribute('aria-labelledby',id);p.tabIndex=0;}});
   bs.forEach(b=>b.addEventListener('click',()=>{
-    const v=b.dataset[key(btnAttr)];
-    bs.forEach(x=>x.setAttribute('aria-selected',String(x===b)));
-    ps.forEach(p=>{const on=p.dataset[key(panelAttr)]===v;p.hidden=!on;if(on){p.classList.remove('pf-in');void p.offsetWidth;p.classList.add('pf-in');}});
+    bs.forEach(x=>{x.setAttribute('aria-selected',String(x===b));x.tabIndex=x===b?0:-1;});
+    ps.forEach(p=>{const on=p===pan(b);p.hidden=!on;if(on){p.classList.remove('pf-in');void p.offsetWidth;p.classList.add('pf-in');}});
   }));
-  bs.forEach((b,i)=>b.addEventListener('keydown',e=>{if(e.key!=='ArrowDown'&&e.key!=='ArrowRight'&&e.key!=='ArrowUp'&&e.key!=='ArrowLeft')return;e.preventDefault();const n=bs[(i+(e.key==='ArrowDown'||e.key==='ArrowRight'?1:-1)+bs.length)%bs.length];n.focus();n.click();}));
+  bs.forEach((b,i)=>b.addEventListener('keydown',e=>{
+    const step:Record<string,number>={ArrowDown:1,ArrowRight:1,ArrowUp:-1,ArrowLeft:-1};
+    let j:number;if(e.key in step)j=(i+step[e.key]+bs.length)%bs.length;else if(e.key==='Home')j=0;else if(e.key==='End')j=bs.length-1;else return;
+    e.preventDefault();bs[j].focus();bs[j].click();}));
 }
+
+/* "Approve" alone is ambiguous to a screen reader, so name the item; and keep focus when a button is replaced */
+const nameActs=(li:HTMLElement)=>{const t=li.querySelector('b')?.textContent||'';li.querySelectorAll('button').forEach(b=>b.setAttribute('aria-label',`${b.textContent}: ${t}`));};
+const swapForTag=(el:Element,html:string)=>{const t=document.createElement('template');t.innerHTML=html;const tag=t.content.firstElementChild as HTMLElement;tag.tabIndex=-1;el.replaceWith(tag);tag.focus();};
 
 function wirePortal(root:HTMLElement){
   const form=root.querySelector<HTMLFormElement>('[data-pf-form]'),q=root.querySelector<HTMLElement>('[data-pf-queue]');
@@ -382,16 +392,17 @@ function wirePortal(root:HTMLElement){
   const count=()=>{wait.textContent=String(q.querySelectorAll('[data-state="wait"]').length);};
   const TYPE:Record<string,string>={event:'Event',offer:'Offer',news:'News',listing:'Listing change'};
   const WHERE:Record<string,string>={event:'What’s On and Facebook events',offer:'Instagram Stories and the offers page',news:'Facebook, Instagram and the blog',listing:'the business directory'};
+  q.querySelectorAll<HTMLElement>('li').forEach(nameActs);
   q.addEventListener('click',e=>{
     const b=(e.target as HTMLElement).closest('button');if(!b)return;
     const li=b.closest('li') as HTMLElement;const t=li.dataset.type||'event';
     if(b.hasAttribute('data-pf-approve')){
-      li.dataset.state='done';li.querySelector('.pf-acts').outerHTML='<span class="pf-tag ok">Approved</span>';
+      li.dataset.state='done';swapForTag(li.querySelector('.pf-acts'),'<span class="pf-tag ok">Approved</span>');
       const sm=li.querySelector('small');sm.textContent=sm.textContent.replace(/ · .*$/,'')+` · approved, scheduled for ${WHERE[t]||'What’s On'}`;
       done.textContent=String(+done.textContent+1);
       audit.innerHTML=`<b>Logged:</b> approved by the Council Officer just now, and scheduled for ${WHERE[t]||'What’s On'}.`;
     }else if(b.hasAttribute('data-pf-change')){
-      li.dataset.state='change';li.querySelector('.pf-acts').outerHTML='<span class="pf-tag">Changes asked</span>';
+      li.dataset.state='change';swapForTag(li.querySelector('.pf-acts'),'<span class="pf-tag">Changes asked</span>');
       audit.innerHTML='<b>Logged:</b> sent back to the business with the Council’s comments.';
     }
     count();
@@ -403,6 +414,7 @@ function wirePortal(root:HTMLElement){
     if(!d.get('ok')){audit.innerHTML='<b>Held:</b> the business needs to confirm photo permission before this can be sent.';return;}
     const li=document.createElement('li');li.dataset.state='wait';li.dataset.type=type;li.className='pf-new';
     li.innerHTML=`<div><em>${TYPE[type]}</em><b>${title}</b><small>${biz}${when?` · ${when}`:''} · just now</small></div><div class="pf-acts"><button type="button" data-pf-approve>Approve</button><button type="button" class="ghost" data-pf-change>Ask for changes</button></div>`;
+    nameActs(li);
     flow.classList.remove('go');void flow.offsetWidth;flow.classList.add('go');
     setTimeout(()=>{q.prepend(li);count();audit.innerHTML=`<b>Logged:</b> “${title}” from ${biz}, received just now. Waiting for Council approval.`;},650);
     const btn=form.querySelector<HTMLButtonElement>('button[type=submit] span');btn.textContent='Sent. Send another?';setTimeout(()=>{btn.textContent='Send for approval';},2600);
@@ -411,13 +423,15 @@ function wirePortal(root:HTMLElement){
 
 function wireCouncil(root:HTMLElement){
   tabs(root,'data-pf-tab','data-pf-panel');
+  root.querySelectorAll<HTMLElement>('.pf-apr li').forEach(nameActs);
   root.querySelectorAll<HTMLButtonElement>('[data-pf-ok]').forEach(b=>b.addEventListener('click',()=>{
-    const li=b.closest('li');li.classList.add('ok');li.querySelector('small').textContent='Approved just now';b.outerHTML='<span class="pf-tag ok">Approved</span>';
+    const li=b.closest('li');li.classList.add('ok');li.querySelector('small').textContent='Approved just now';swapForTag(b,'<span class="pf-tag ok">Approved</span>');
   }));
 }
 
 function wireCounts(root:HTMLElement){
   const els=[...root.querySelectorAll<HTMLElement>('[data-pf-count]')];
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){root.classList.add('pf-on');els.forEach(el=>{el.textContent=(+el.dataset.pfCount).toLocaleString('en-GB');});return;}
   const io=new IntersectionObserver(([e])=>{if(!e.isIntersecting)return;io.disconnect();root.classList.add('pf-on');const t0=performance.now();
     const f=(t:number)=>{const k=Math.min(1,(t-t0)/1400),ease=1-Math.pow(1-k,3);els.forEach(el=>{el.textContent=Math.round(+el.dataset.pfCount*ease).toLocaleString('en-GB');});if(k<1)requestAnimationFrame(f);};requestAnimationFrame(f);},{threshold:.3});
   io.observe(root);

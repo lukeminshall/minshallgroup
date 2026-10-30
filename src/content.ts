@@ -738,7 +738,32 @@ export const LANDINGS=[
       {q:'Where does the data come from?',a:'Public sources including provider registers, census tables, deprivation indices, waiting-time publications and workforce returns, joined around your catchment.'},
       {q:'Can I use DataLense myself?',a:'Yes. DataLense is available at datalense.org. We can also run the analysis for you and turn it into a recommendation.'},
       {q:'Do you only look at one site?',a:'No. We can compare shortlisted sites side by side, or rank a whole region to find where to look first.'},
-      {q:'Is this only for private providers?',a:'No. NHS organisations planning community or private services use the same evidence for different questions.'}]}
+      {q:'Is this only for private providers?',a:'No. NHS organisations planning community or private services use the same evidence for different questions.'}]},
+  {slug:'place-and-visitor-economy',gfx:'catchment',
+    seoTitle:'Place Marketing and Visitor Economy Consultancy | Minshall Group',
+    desc:'Destination marketing, visitor economy plans and digital for town and parish councils, local authorities and destination bodies: catchment evidence, seasonal campaigns, business request portals and reporting a committee can scrutinise.',
+    eyebrow:'Place and visitor economy',
+    title:'Drawing people to places, and showing it worked',
+    lede:'For town and parish councils, local authorities, business improvement districts and destination bodies. We work out who could visit and why, run the campaigns and channels that bring them, give local businesses a fair way in, and report the result in a form a committee can scrutinise.',
+    whoH:'Who it is for',
+    who:['Town and parish councils','District and county councils','Business improvement districts','Destination management and development organisations','Market towns and high streets','Events and attractions working with a council'],
+    whoBody:['We are not a traditional tourism agency. Our work has always been about drawing people to places: patients to a hospital or clinic, fans and participants to an event, businesses into a programme. A market town asks the same three questions. Who could come, what would make them come, and what makes the visit easy?',
+      'Public money needs a clear line from activity to outcome. Every campaign has a measure agreed up front, every post connects to an objective, and nothing is published without the council’s sign-off. Reporting is short, monthly and honest about what did not work.'],
+    services:[
+      {t:'Catchment and visitor evidence',d:'Drivetime and rail catchments, day-trip audiences and a baseline in month one, so the plan starts from who could realistically visit.'},
+      {t:'Destination marketing and campaigns',d:'A year of seasonal campaigns across social media, the destination website, email and paid media, with content made in the place.'},
+      {t:'Destination websites',d:'Fast, accessible What’s On, listings and visitor pages that the council and its partners can keep current.'},
+      {t:'Business request portals',d:'One fair route for local businesses to submit events, offers and news, with council approval and a full audit trail.'},
+      {t:'Reporting and dashboards',d:'A two-page monthly report and a live dashboard, built around the measures in the contract.'},
+      {t:'Plans and funding cases',d:'Visitor economy strategies, annual marketing plans and evidenced cases for funding bids and committee decisions.'}],
+    cases:['housden','eventmaster','leeds-beckett'],
+    products:false,
+    faq:[
+      {q:'Are you a tourism agency?',a:'Not a traditional one, and we say so plainly. Our experience is in drawing people to places and services: patients to hospitals and clinics, fans and participants to events, and businesses into programmes. The method carries straight across: know the catchment, give people a reason to travel, and make the visit easy.'},
+      {q:'How do council approvals work?',a:'Nothing is published without sign-off. The council has its own project portal with the plan, the approval queue, documents and reports, and every approval is logged with who gave it and when.'},
+      {q:'How can local businesses take part?',a:'Through a request portal where any local business can submit an event, an offer or a piece of news. Each request is logged, checked against the council’s criteria and approved before it goes out, so every business has the same route in.'},
+      {q:'How do you report results?',a:'A two-page report each month covering the headline numbers, what worked, what did not and next month’s plan, plus a live dashboard the council can open at any time. The measures are agreed at the start and tied to the contract objectives.'},
+      {q:'Do you meet public sector accessibility and data rules?',a:'Websites are built to WCAG 2.2 AA, every image has alt text and every video has captions. Personal data is handled under UK GDPR and the Data Protection Act 2018, and we get written consent before using anyone’s photos or content.'}]}
 ];
 
 /* ---------------- DIGITAL SME OFFER (/digitalsme) ----------------

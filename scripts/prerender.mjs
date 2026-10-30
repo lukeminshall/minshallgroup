@@ -67,6 +67,11 @@ function renderRoute(path) {
   doc = replaceAttr(doc, /(<meta property="og:description" content=")[\s\S]*?(">)/, desc);
   doc = replaceAttr(doc, /(<meta name="twitter:title" content=")[\s\S]*?(">)/, title);
   doc = replaceAttr(doc, /(<meta name="twitter:description" content=")[\s\S]*?(">)/, desc);
+  /* a page can bring its own share card; the rest use /og.png */
+  if (meta.image) {
+    doc = replaceAttr(doc, /(<meta property="og:image" content=")[\s\S]*?(">)/, SITE + meta.image);
+    doc = replaceAttr(doc, /(<meta name="twitter:image" content=")[\s\S]*?(">)/, SITE + meta.image);
+  }
   if (meta.noindex) doc = doc.replace('</head>', '<meta name="robots" content="noindex, nofollow">\n</head>');
   return doc;
 }

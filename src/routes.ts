@@ -13,7 +13,7 @@ export const DEFAULT_DESC='Commercial strategy and digital for health and sport.
 
 const t=s=>`${s} | ${BRAND}`;
 
-export const ROUTES:Record<string,{title:string,description:string,noindex?:boolean}>={
+export const ROUTES:Record<string,{title:string,description:string,noindex?:boolean,image?:string}>={
   '/':{title:DEFAULT_TITLE,description:DEFAULT_DESC},
   '/capabilities':{title:t('Capabilities — commercial strategy and digital'),description:'Two practices, one team and one measure: commercial strategy that finds where the growth is, and digital that builds what it takes, including data and practical AI.'},
   '/industries':{title:t('Sectors — Health and Sport'),description:'Commercial strategy and digital for NHS and private providers, health businesses selling into the NHS, and sport. We also work with universities and growth companies.'},
@@ -40,7 +40,7 @@ INSIGHTS.forEach(i=>{ROUTES['/insights/'+i.slug]={title:t(i.t),description:i.d};
 
 /* internal tools: prerendered so deep links work, but hidden from search and the sitemap */
 ROUTES['/tools/prospect']={title:t('Prospect list'),description:'Internal tool.',noindex:true};
-ROUTES['/petersfield']={title:t('Petersfield: our digital marketing tender response'),description:'Minshall Group’s response to Petersfield Town Council’s Tourism and Economic Development Digital Marketing tender.',noindex:true};
+ROUTES['/petersfield']={title:t('Petersfield: our digital marketing tender response'),description:'Minshall Group’s response to Petersfield Town Council’s Tourism and Economic Development Digital Marketing tender.',noindex:true,image:'/og-petersfield.png'};
 ROUTES['/portal']={title:t('Client portal'),description:'Log in to your Minshall Group project.',noindex:true};
 
 /* Search snippets: keep titles to what Google shows (about 60 characters)

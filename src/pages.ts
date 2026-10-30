@@ -205,6 +205,7 @@ ${phead({eyebrow:'Sectors',title:'Health and sport, and where they meet.',lede:'
 <section class="soft"><div class="wrap">
   ${shead({eyebrow:'We also work with',h:'The approach carries.',p:'Health and sport are where we go deepest. The same commercial strategy and digital work also serves these sectors.'})}
   <div class="also-grid">${INDUSTRIES.filter((x:any)=>!x.focus).map(x=>`<a class="also reveal" href="/work?ind=${x.id}"><h3>${x.t}</h3><p>${x.d}</p></a>`).join('')}</div>
+  <p class="also-more reveal">Working with a town, a high street or a destination? <a class="tlink" href="/place-and-visitor-economy">Place and visitor economy</a></p>
 </div></section>
 ${ctaBand('Not on the list?','The capability carries. If your sector has a number that needs moving, we would like to hear about it.')}`;
 

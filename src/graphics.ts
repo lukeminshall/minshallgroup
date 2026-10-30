@@ -118,7 +118,7 @@ function arcPath(cx,cy,r,a0,a1){const[x1,y1]=pol(cx,cy,r,a1),[x0,y0]=pol(cx,cy,r
 /* funnel — conversion of demand */
 export function gFunnel(){
   const g=uid('fn');
-  const t=[[86,394,72,'Demand'],[128,352,130,'Booked'],[172,308,188,'Attended'],[212,268,246,'Converted']];
+  const t:[number,number,number,string][]=[[86,394,72,'Demand'],[128,352,130,'Booked'],[172,308,188,'Attended'],[212,268,246,'Converted']];
   let poly='';t.forEach((row,i)=>{const[xl,xr,y,lbl]=row;const n=t[i+1];const y2=y+46;
     const xl2=n?n[0]:xl+30,xr2=n?n[1]:xr-30,last=i===t.length-1;
     poly+=`<path class="${last?'pk':'s'}" fill="${last?`url(#${g})`:'none'}" d="M${xl} ${y} L${xr} ${y} L${xr2} ${y2} L${xl2} ${y2} Z"/>`;

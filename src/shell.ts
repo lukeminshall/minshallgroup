@@ -58,7 +58,7 @@ function megaSectors(){
     <div class="mega-side">
       <span class="eyebrow">We also work with</span>
       <ul class="mega-ind">${also.map(x=>`<li><a href="/industries#${x.id}">${x.t}</a></li>`).join('')}</ul>
-      <div class="mega-links"><a class="tlink" href="/industries">All sectors</a></div>
+      <div class="mega-links"><a class="tlink" href="/place-and-visitor-economy">Place and visitor economy</a><a class="tlink" href="/industries">All sectors</a></div>
     </div></div></div>`;
 }
 function megaProducts(){
@@ -90,7 +90,7 @@ export function mobileNavMarkup(){
   const groups:[string,string,[string,string][]?][]=[
     ['Capabilities','/capabilities',CAPS.map(c=>[c.t,'/capabilities/'+c.slug] as [string,string])],
     ['Websites','/digitalsme',WEB_LINKS.map(l=>[l.t,l.h] as [string,string])],
-    ['Sectors','/industries',INDUSTRIES.map(x=>[x.t,'/industries#'+x.id] as [string,string])],
+    ['Sectors','/industries',[...INDUSTRIES.map(x=>[x.t,'/industries#'+x.id] as [string,string]),['Place and visitor economy','/place-and-visitor-economy']]],
     ['Work','/work'],['Products','/products'],['Approach','/approach'],['Insights','/insights'],['About','/about']];
   return `<div class="mnav-in"><nav aria-label="Mobile"><ol class="mn-list">${groups.map(([t,h,subs],i)=>`
     <li class="mn-item" style="--i:${i}"><div class="mn-row"><a class="mn-a" href="${h}"><span class="mn-n">0${i+1}</span>${t}</a>${subs?`<button class="mn-tog" type="button" aria-expanded="false" aria-label="Show ${t} pages"><i></i></button>`:''}</div>
