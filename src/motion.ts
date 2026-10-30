@@ -2,7 +2,7 @@
    MOTION + INTERACTION — everything that moves or responds.
    initPage() runs after every route render; all its listeners hang off
    an AbortController that is aborted on the next render. initGlobal()
-   runs once (cursor). Content is visible by default: every effect fails
+   runs once (nothing global at present). Content is visible by default: every effect fails
    toward showing content, and prefers-reduced-motion turns movement off.
    ===================================================================== */
 import FULL_N from '@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2?url';
@@ -21,7 +21,7 @@ export function initPage(){
   finder();filters();insightFilter();tabs(sig);stickySteps(sig);magnetic(sig);mobileCta(sig);
   dispatchEvent(new Event('mg:page'));
 }
-export function initGlobal(){cursor();}
+export function initGlobal(){}
 
 /* ---------- scroll reveal ---------- */
 function reveals(){
@@ -277,23 +277,3 @@ function mobileCta(sig){
   addEventListener('scroll',upd,{passive:true,...sig});upd();
 }
 
-/* ---------- the cursor is the brand full stop ----------
-   A pink square that trails the pointer, grows over links and shows a
-   label over anything with data-cursor. Fine pointers only. */
-function cursor(){
-  if(!FINE||RM)return;
-  const c=document.createElement('div');c.className='cursor';c.setAttribute('aria-hidden','true');c.innerHTML='<span></span><em></em>';
-  document.body.appendChild(c);document.documentElement.classList.add('has-cursor');
-  const lbl=c.querySelector('em');let x=-100,y=-100,tx=-100,ty=-100;
-  const sync=(t:HTMLElement)=>{if(!t)return;const lab=t.closest?.('[data-cursor]') as HTMLElement;
-    const link=t.closest?.('a,button,summary,label,select');const field=t.closest?.('input,textarea');
-    c.classList.toggle('label',!!lab);if(lab)lbl.textContent=lab.dataset.cursor;
-    c.classList.toggle('link',!lab&&!!link);c.classList.toggle('text',!!field);};
-  addEventListener('pointermove',e=>{tx=e.clientX;ty=e.clientY;c.classList.add('vis');sync(e.target as HTMLElement);},{passive:true});
-  /* content moves under a still pointer when scrolling or changing page */
-  const resync=()=>sync(document.elementFromPoint(tx,ty) as HTMLElement);
-  addEventListener('scroll',resync,{passive:true});addEventListener('mg:page',resync);
-  document.addEventListener('pointerleave',()=>c.classList.remove('vis'));
-  addEventListener('pointerdown',()=>c.classList.add('down'));addEventListener('pointerup',()=>c.classList.remove('down'));
-  const loop=()=>{x+=(tx-x)*.22;y+=(ty-y)*.22;c.style.transform=`translate3d(${x}px,${y}px,0)`;requestAnimationFrame(loop);};loop();
-}

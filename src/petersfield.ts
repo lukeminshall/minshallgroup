@@ -77,25 +77,39 @@ const ASKS=[
   ['Six weeks’ sight of events','The Council events calendar and planned announcements, so they can be built into campaigns.']
 ];
 
-/* catchment map: rough real geography, 3px per km, Petersfield at the centre */
+/* catchment map: rough real geography (about 3px per km), Petersfield at the centre */
 function catchmentMap(){
-  const towns:[string,number,number,string?][]=[['London',431,63,'e'],['Guildford',338,149,'e'],['Haslemere',308,200,'e'],['Alton',254,179,'w'],['Winchester',182,210,'w'],['Southampton',164,263,'w'],['Portsmouth',228,296,'w'],['Chichester',293,284,'e'],['Brighton',428,290,'e']];
-  return `<svg class="pf-map" viewBox="0 0 520 380" role="img" aria-label="Map: Petersfield at the centre of a day-trip catchment, on the London to Portsmouth railway and the A3, at the edge of the South Downs National Park">
-  <defs><radialGradient id="pf-glow"><stop offset="0" stop-color="#FF2E63" stop-opacity=".35"/><stop offset="1" stop-color="#FF2E63" stop-opacity="0"/></radialGradient></defs>
-  <path class="pf-downs" d="M120 250 C190 232 250 236 300 252 S420 262 500 248 L500 286 C430 300 360 296 300 290 S180 284 120 292Z"/>
-  <text class="pf-downs-l" x="372" y="276">South Downs National Park</text>
-  <circle class="pf-ring r3" cx="260" cy="230" r="190"/><circle class="pf-ring r2" cx="260" cy="230" r="110"/><circle class="pf-ring r1" cx="260" cy="230" r="36"/>
-  <text class="pf-ring-l" x="260" y="34" text-anchor="middle">Around an hour’s drive</text>
-  <text class="pf-ring-l" x="260" y="114" text-anchor="middle">Day-trip heartland</text>
-  <path class="pf-road" d="M228 296 C240 270 250 248 260 230 C276 206 300 190 338 149 C370 116 400 90 431 63"/>
-  <path id="pf-rail" class="pf-rail" d="M228 296 C244 266 252 246 260 230 C280 214 296 206 308 200 C322 182 330 166 338 149 C366 120 398 92 431 63"/>
-  <circle class="pf-train" r="5"><animateMotion dur="7s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#pf-rail"/></animateMotion></circle>
-  ${towns.map(([n,x,y,a])=>`<g class="pf-town"><circle cx="${x}" cy="${y}" r="4"/><text x="${a==='w'?x-9:x+9}" y="${y+4}" text-anchor="${a==='w'?'end':'start'}">${n}</text></g>`).join('')}
-  <circle cx="260" cy="230" r="60" fill="url(#pf-glow)"/>
-  <circle class="pf-pulse" cx="260" cy="230" r="9"/><circle class="pf-home" cx="260" cy="230" r="8"/>
-  <text class="pf-home-l" x="274" y="254">Petersfield</text>
-  <g class="pf-key"><line x1="22" y1="352" x2="46" y2="352" class="pf-rail"/><text x="52" y="356">London to Portsmouth line</text><line x1="210" y1="352" x2="234" y2="352" class="pf-road"/><text x="240" y="356">A3</text></g>
-</svg>`;
+  const C=[260,215];
+  /* [name, x, y, label anchor] — labels placed so none collide */
+  const towns:[string,number,number,'l'|'r'|'t'][]=[['London',431,63,'l'],['Guildford',338,149,'r'],['Winchester',182,210,'l'],['Southampton',164,263,'l'],['Portsmouth',228,296,'l'],['Chichester',293,284,'r'],['Brighton',428,290,'t']];
+  const lab=(n:string,x:number,y:number,a:string)=>a==='t'?`<text x="${x}" y="${y-12}" text-anchor="middle">${n}</text>`:`<text x="${a==='l'?x-10:x+10}" y="${y+4}" text-anchor="${a==='l'?'end':'start'}">${n}</text>`;
+  const rail='M228 296 C240 268 248 238 260 215 S292 204 308 196 S330 168 338 149 S400 92 431 63';
+  return `<figure class="pf-map-card">
+  <svg class="pf-map" viewBox="0 0 520 340" role="img" aria-label="Map: Petersfield at the centre of a day-trip catchment, on the London to Portsmouth railway, in the South Downs National Park">
+    <defs>
+      <pattern id="pf-dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="rgba(255,255,255,.07)"/></pattern>
+      <radialGradient id="pf-glow"><stop offset="0" stop-color="#FF2E63" stop-opacity=".28"/><stop offset="1" stop-color="#FF2E63" stop-opacity="0"/></radialGradient>
+      <clipPath id="pf-clip"><rect width="520" height="340" rx="0"/></clipPath>
+    </defs>
+    <g clip-path="url(#pf-clip)">
+      <rect width="520" height="340" fill="url(#pf-dots)"/>
+      <path class="pf-downs" d="M90 236 C170 222 230 226 290 238 S420 250 540 236 L540 268 C430 280 360 276 290 270 S160 262 90 270Z"/>
+      <circle class="pf-ring outer" cx="${C[0]}" cy="${C[1]}" r="172"/>
+      <circle class="pf-ring inner" cx="${C[0]}" cy="${C[1]}" r="70"/>
+      <circle cx="${C[0]}" cy="${C[1]}" r="90" fill="url(#pf-glow)"/>
+      <path id="pf-rail" class="pf-rail" d="${rail}"/>
+      <circle class="pf-train" r="4.5"><animateMotion dur="8s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#pf-rail"/></animateMotion></circle>
+      <g class="pf-stops">${[[228,296],[308,196],[338,149],[431,63]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="4.5"/>`).join('')}</g>
+      <g class="pf-town">${towns.filter(t=>!['London','Guildford','Portsmouth'].includes(t[0])).map(([,x,y])=>`<circle cx="${x}" cy="${y}" r="3.5"/>`).join('')}${towns.map(([n,x,y,a])=>lab(n,x,y,a)).join('')}</g>
+      <g class="pf-pill"><rect x="${C[0]-34}" y="${C[1]-74}" width="68" height="20" rx="10"/><text x="${C[0]}" y="${C[1]-60}" text-anchor="middle">Local</text></g>
+      <g class="pf-pill"><rect x="${C[0]-58}" y="${C[1]-176}" width="116" height="20" rx="10"/><text x="${C[0]}" y="${C[1]-162}" text-anchor="middle">Day-trip catchment</text></g>
+      <circle class="pf-pulse" cx="${C[0]}" cy="${C[1]}" r="8"/>
+      <circle class="pf-home" cx="${C[0]}" cy="${C[1]}" r="7.5"/>
+      <g class="pf-home-pill"><rect x="${C[0]-52}" y="${C[1]-46}" width="104" height="30" rx="15"/><path d="M${C[0]-6} ${C[1]-16.5}l6 6 6-6z"/><text x="${C[0]}" y="${C[1]-25}" text-anchor="middle">Petersfield</text></g>
+    </g>
+  </svg>
+  <figcaption class="pf-map-key"><span><i class="k-rail"></i>London to Portsmouth line</span><span><i class="k-ring"></i>Around an hour’s drive</span><span><i class="k-downs"></i>South Downs National Park</span></figcaption>
+</figure>`;
 }
 
 /* the business request portal: a trader submits, the Council approves */
