@@ -281,7 +281,7 @@ ${ctaBand('Want to hear from your patients more often?','Join the first cohort a
 
 P['/products/placeboard']=()=>`
 ${phead({crumb:'<a href="/products">Products</a><span>/</span>Placeboard',title:'Bring people in. Show it worked.',lede:'Placeboard gives a town’s council, its businesses and its marketing one shared board: a fair route in for events and offers, nothing published without sign-off, a seasonal plan, and a live dashboard measured on visitors.',gfx:'catchment',
-  actions:`${btn('Try the live demo','/products/placeboard/demo')}${btn('Become a founding place','/contact?interest=Placeboard',true)}`,meta:'<span class="status">Founding places · 2027</span>'})}
+  actions:`${btn('See it working in Ripon','/products/placeboard/demo')}${btn('Become a founding place','/contact?interest=Placeboard',true)}`,meta:'<span class="status">Founding places · 2027</span>'})}
 <section><div class="wrap split-2">
   <div class="reveal">${eyebrow('The problem')}<h2 class="h2">Towns have the reasons to visit. The marketing is in pieces.</h2></div>
   <div class="prose reveal" style="--i:1"><p>Most towns already have what visitors want: independent shops, food, green space, events and history. What they lack is one joined-up way to tell people about it. Businesses send news by email and some get heard more than others. Approvals live in long email chains. Reports count followers, because that is what is easy to count.</p><p>Placeboard puts it in one place. Every business gets the same route in, the council approves everything before it goes out, the year is planned around the seasons, and the results are measured on who came from outside the town and what they did next.</p></div>
@@ -308,7 +308,7 @@ ${phead({crumb:'<a href="/products">Products</a><span>/</span>Placeboard',title:
     {n:'04',t:'The council keeps everything',d:'Accounts, content, images and data stay the council’s, and can be exported at any time.'}
   ],2)}
 </div></section>
-${ctaBand('Want Placeboard for your town?','We are looking for a small number of founding places to shape it with us.',`${btn('Try the live demo','/products/placeboard/demo')}${btn('Become a founding place','/contact?interest=Placeboard',true)}`)}`;
+${ctaBand('Want Placeboard for your town?','We are looking for a small number of founding places to shape it with us.',`${btn('See it working in Ripon','/products/placeboard/demo')}${btn('Become a founding place','/contact?interest=Placeboard',true)}`)}`;
 
 /* ================= WORK ================= */
 P['/work']=()=>`

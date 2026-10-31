@@ -34,7 +34,7 @@ ROUTES['/digitalsme/terms']={title:t('Website refresh offer terms'),description:
 ROUTES['/privacy']={title:t('Privacy notice'),description:'How Minshall Group Limited uses the information you give us through this website.'};
 ROUTES['/products/datalense/sample']={title:t('DataLense sample catchment report'),description:'See what a DataLense healthcare catchment report looks like: drivetime map, market score, competitors, population health, workforce and coverage status. Illustrative data.'};
 ROUTES['/products/straight-talking/demo']={title:t('Straight Talking live demo'),description:'Give feedback as a patient and watch it reach the service, routed to the right person, and appear on the waiting-room screen. Made-up data.'};
-ROUTES['/products/placeboard/demo']={title:t('Placeboard live demo'),description:'Send a request as a local business, approve it as the council and open the results dashboard, for a made-up market town. Sample data.'};
+ROUTES['/products/placeboard/demo']={title:t('Placeboard live demo'),description:'A working Placeboard set in Ripon, with real drive times and the city’s real year of events. Send a request as a business, approve it as the council and open the dashboard. Example data, not affiliated with Ripon’s councils or BID.'};
 PRODUCTS.forEach(p=>{ROUTES['/products/'+p.slug]={title:t(p.t+' — '+p.line.replace(/\.$/,'')),description:p.d};});
 ROUTES['/products/placeboard'].image=ROUTES['/products/placeboard/demo'].image='/og-placeboard.png';
 CASES.forEach(c=>{ROUTES['/work/'+c.id]={title:t(`${c.head.replace(/\.$/,'')}: ${c.client}`),description:c.ch};});
