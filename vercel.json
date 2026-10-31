@@ -97,6 +97,39 @@
       "has": [
         {
           "type": "host",
+          "value": "theplaceboard.com"
+        }
+      ],
+      "destination": "https://minshallgroup.com/products/placeboard",
+      "permanent": false
+    },
+    {
+      "source": "/demo",
+      "has": [
+        {
+          "type": "host",
+          "value": "theplaceboard.com"
+        }
+      ],
+      "destination": "https://minshallgroup.com/products/placeboard/demo",
+      "permanent": false
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "theplaceboard.com"
+        }
+      ],
+      "destination": "https://minshallgroup.com/products/placeboard",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
           "value": "www.minshallgroup.com"
         }
       ],
