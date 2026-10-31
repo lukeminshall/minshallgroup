@@ -93,7 +93,10 @@ export const PRODUCTS=[
     d:'Drivetime catchment scoring, competitor mapping and population health profiles for any UK site decision, before the capital is committed.'},
   {slug:'straight-talking',t:'Straight Talking',status:'First cohort · October 2026',gfx:'layers',
     line:'Say it straight. We’re listening.',
-    d:'Patients scan a code where care happens and say how it felt, in under a minute. Services get a direct feedback loop, and patients hear from each other.'}
+    d:'Patients scan a code where care happens and say how it felt, in under a minute. Services get a direct feedback loop, and patients hear from each other.'},
+  {slug:'placeboard',t:'Placeboard',status:'Founding places · 2027',gfx:'catchment',
+    line:'Bring people in. Show it worked.',
+    d:'One board for a town’s council, its businesses and its marketing: a fair route in for events and offers, approvals with an audit trail, a seasonal plan and a live results dashboard.'}
 ];
 
 /* ---------------- CASE STUDIES ----------------
@@ -657,7 +660,7 @@ export const LANDINGS=[
       {t:'Patient feedback',d:'In-the-moment feedback from patients and people in care, routed straight to the right team, with Straight Talking as the platform.'},
       {t:'UK market entry for health tech',d:'Market sizing, priority locations, clinic and hospital channels, pricing and measured pilots, delivered with XV Capital Advisory.'}],
     cases:['prime-health','mip','housden','neurotech-uk'],
-    products:true,
+    products:['datalense','straight-talking'],
     faq:[
       {q:'What does a healthcare consultancy do?',a:'A healthcare consultancy helps providers and health companies make better commercial and operational decisions: where demand is, how patients move through a service, where capacity is lost, where to invest and how to grow. We also build the tools, journeys and data products those decisions need.'},
       {q:'Do you work with NHS organisations?',a:'Yes. Working as part of Housden Group, we support the growth of NHS trust private patient units, and we work with providers that deliver NHS-funded activity in independent settings.'},
@@ -682,7 +685,7 @@ export const LANDINGS=[
       {t:'Data, dashboards and integration',d:'Pipelines, reporting and system integration so data stops being retyped and starts being trusted.'},
       {t:'Practical AI and automation',d:'Use-case discovery, safe pilots and automation of routine work, with a person accountable for every step.'}],
     cases:['prime-health','mip','eventmaster'],
-    products:true,
+    products:['datalense','straight-talking'],
     faq:[
       {q:'What does a digital consultancy do?',a:'A digital consultancy helps an organisation decide what technology to build or buy, then designs and delivers it: websites, platforms, apps, data and automation. We do both the advice and the build, so the two stay joined up.'},
       {q:'Do you build as well as advise?',a:'Yes. We design, build and run software and data products, including our own platforms DataLense and Straight Talking. Work ships in slices, each usable on its own.'},
@@ -732,7 +735,7 @@ export const LANDINGS=[
       {t:'Workforce check',d:'Whether the clinical and support workforce exists to staff the site.'},
       {t:'Investment case',d:'A site case your board, lender or investor can test line by line.'}],
     cases:['neurotech-uk'],
-    products:true,
+    products:['datalense','straight-talking'],
     faq:[
       {q:'What is a drivetime catchment?',a:'The area from which people can reach a site within a set travel time by road. Unlike a simple radius, it reflects rivers, ring roads and real routes, which can change who a site actually serves.'},
       {q:'Where does the data come from?',a:'Public sources including provider registers, census tables, deprivation indices, waiting-time publications and workforce returns, joined around your catchment.'},
@@ -757,7 +760,7 @@ export const LANDINGS=[
       {t:'Reporting and dashboards',d:'A two-page monthly report and a live dashboard, built around the measures in the contract.'},
       {t:'Plans and funding cases',d:'Visitor economy strategies, annual marketing plans and evidenced cases for funding bids and committee decisions.'}],
     cases:['housden','eventmaster','leeds-beckett'],
-    products:false,
+    products:['placeboard'],
     faq:[
       {q:'Are you a tourism agency?',a:'Not a traditional one, and we say so plainly. Our experience is in drawing people to places and services: patients to hospitals and clinics, fans and participants to events, and businesses into programmes. The method carries straight across: know the catchment, give people a reason to travel, and make the visit easy.'},
       {q:'How do council approvals work?',a:'Nothing is published without sign-off. The council has its own project portal with the plan, the approval queue, documents and reports, and every approval is logged with who gave it and when.'},

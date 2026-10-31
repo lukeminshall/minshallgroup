@@ -10,6 +10,7 @@ import {dot,tile} from './brand';
 import {gRidge,gDial,gNetwork} from './graphics';
 import {researchPage,RESEARCH_SLUG} from './research';
 import {datalenseSample,straightTalkingDemo} from './demos';
+import {placeboardDemo} from './placeboard';
 import {STYLES} from './portal/brief';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -278,6 +279,37 @@ ${phead({crumb:'<a href="/products">Products</a><span>/</span>Straight Talking',
 </div></section>
 ${ctaBand('Want to hear from your patients more often?','Join the first cohort and help shape what comes next.',`${btn('Try the live demo','/products/straight-talking/demo')}${btn('Join the first cohort','/contact?interest=Straight%20Talking',true)}`)}`;
 
+P['/products/placeboard']=()=>`
+${phead({crumb:'<a href="/products">Products</a><span>/</span>Placeboard',title:'Bring people in. Show it worked.',lede:'Placeboard gives a town’s council, its businesses and its marketing one shared board: a fair route in for events and offers, nothing published without sign-off, a seasonal plan, and a live dashboard measured on visitors.',gfx:'catchment',
+  actions:`${btn('Try the live demo','/products/placeboard/demo')}${btn('Become a founding place','/contact?interest=Placeboard',true)}`,meta:'<span class="status">Founding places · 2027</span>'})}
+<section><div class="wrap split-2">
+  <div class="reveal">${eyebrow('The problem')}<h2 class="h2">Towns have the reasons to visit. The marketing is in pieces.</h2></div>
+  <div class="prose reveal" style="--i:1"><p>Most towns already have what visitors want: independent shops, food, green space, events and history. What they lack is one joined-up way to tell people about it. Businesses send news by email and some get heard more than others. Approvals live in long email chains. Reports count followers, because that is what is easy to count.</p><p>Placeboard puts it in one place. Every business gets the same route in, the council approves everything before it goes out, the year is planned around the seasons, and the results are measured on who came from outside the town and what they did next.</p></div>
+</div></section>
+<section class="soft"><div class="wrap">
+  ${shead({eyebrow:'How it works',h:'Four parts, one board.'})}
+  ${cards([
+    {n:'01',t:'A fair route in for businesses',d:'Shops, cafés, venues and partners send events, offers, news and listing changes through one simple form. No account needed.'},
+    {n:'02',t:'The council approves everything',d:'Every request goes to a named officer before it is published. Each approval is logged with who gave it, when, and where it went out.'},
+    {n:'03',t:'A year planned together',d:'Seasonal campaigns, a content calendar and the documents behind them, in the council’s own project portal.'},
+    {n:'04',t:'Results the committee can read',d:'A live dashboard and a two-page monthly report: reach outside the town, website visits, clicks through to businesses and how many took part.'}
+  ],2)}
+</div></section>
+<section><div class="wrap split-2 flip">
+  <div class="gpanel reveal">${gNetwork()}</div>
+  <div class="prose reveal" style="--i:1">${eyebrow('Who it is for')}<h2 class="h2">Councils and the partners around them.</h2><p>Town and parish councils, district councils, business improvement districts and destination partnerships: anyone responsible for bringing people into a place and showing that public money did it.</p><p>Use Placeboard on its own, or have Minshall Group run the campaigns, content and reporting on it for you. <a class="tlink" href="/place-and-visitor-economy">Place and visitor economy</a></p></div>
+</div></section>
+<section class="soft"><div class="wrap">
+  ${shead({eyebrow:'What we hold to',h:'Four rules for public money.'})}
+  ${cards([
+    {n:'01',t:'Nothing out without sign-off',d:'The council approves every post, campaign and listing before it goes public.'},
+    {n:'02',t:'Every business treated the same',d:'One route in, the same criteria for everyone, and a record of every decision.'},
+    {n:'03',t:'Measured on visitors, not likes',d:'The measures are agreed at the start and tied to who came and what they spent.'},
+    {n:'04',t:'The council keeps everything',d:'Accounts, content, images and data stay the council’s, and can be exported at any time.'}
+  ],2)}
+</div></section>
+${ctaBand('Want Placeboard for your town?','We are looking for a small number of founding places to shape it with us.',`${btn('Try the live demo','/products/placeboard/demo')}${btn('Become a founding place','/contact?interest=Placeboard',true)}`)}`;
+
 /* ================= WORK ================= */
 P['/work']=()=>`
 ${phead({eyebrow:'Work',title:'The challenge, what we did, and the return.',lede:'Selected engagements across the group. Filter by practice or industry. Return figures are confirmed with each client before publication.'})}
@@ -442,6 +474,7 @@ INSIGHTS.forEach(a=>{P['/insights/'+a.slug]=()=>article(a);});
 P['/insights/'+RESEARCH_SLUG]=researchPage;
 P['/products/datalense/sample']=datalenseSample;
 P['/products/straight-talking/demo']=straightTalkingDemo;
+P['/products/placeboard/demo']=placeboardDemo;
 P['/petersfield']=petersfieldPage;
 /* ================= CASE STUDIES ================= */
 function casePage(c,i){
@@ -547,7 +580,7 @@ ${phead({eyebrow:'Contact',title:'Tell us the number you want to move.',lede:'Th
   </form>
   <aside class="contact-side reveal" style="--i:1">
     <div class="cs-block">${eyebrow('Email')}<a class="cs-big" href="mailto:${CONTACT.email}">${CONTACT.email}</a><p>New enquiries, partnerships and press. The form and this address both come straight to us.</p></div>
-    <div class="cs-block">${eyebrow('Products')}<p>Asking about DataLense access or a Straight Talking cohort place? Tick it above and we will set up a demo.</p></div>
+    <div class="cs-block">${eyebrow('Products')}<p>Asking about DataLense access, a Straight Talking cohort place or Placeboard for your town? Tick it above and we will set up a demo.</p></div>
     <div class="cs-block">${eyebrow('What happens next')}<ol class="next"><li>We reply within two working days.</li><li>A thirty-minute call, free, with someone from our team.</li><li>If we are a fit, a short written proposal scoped to the number.</li></ol></div>
   </aside>
 </div></section>`;
@@ -555,6 +588,7 @@ ${phead({eyebrow:'Contact',title:'Tell us the number you want to move.',lede:'Th
 /* ================= SEARCH LANDING PAGES ================= */
 function landing(L){
   const cases=L.cases.map(id=>CASES.find(c=>c.id===id)).filter(Boolean);
+  const prods=L.products===true?PRODUCTS:Array.isArray(L.products)?PRODUCTS.filter(p=>L.products.includes(p.slug)):[];
   const faqLd={"@context":"https://schema.org","@type":"FAQPage","mainEntity":L.faq.map(f=>({"@type":"Question","name":f.q,"acceptedAnswer":{"@type":"Answer","text":f.a}}))};
   return `
 ${phead({kicker:L.eyebrow,title:L.title,lede:L.lede,gfx:L.gfx,actions:`${btn('Start a conversation','/contact')}${btn('See the work','/work',true)}`})}
@@ -571,9 +605,9 @@ ${cases.length?`<section><div class="wrap">
   <div class="cases">${cases.map(caseCard).join('')}</div>
 </div></section>`:''}
 ${L.slug==='digital-consultancy'?`<section class="sme-band slim"><div class="wrap sme-band-in"><div><span class="eyebrow">Small business?</span><h2 class="h2">Website refresh from £495, with a free instant check.</h2></div><a class="btn" href="/digitalsme"><span>Check my site</span></a></div></section>`:''}
-${L.products?`<section class="prod-sec dark"><div class="wrap">
-  ${shead({eyebrow:'Our products',h:'Platforms we built and run.'})}
-  <div class="prods">${PRODUCTS.map((p,i)=>`<a class="prod reveal" style="--i:${i}" href="/products/${p.slug}" data-cursor="Open"><div class="prod-top"><span class="status${p.status==='Live'?' live':''}">${p.status}</span>${tile('mini')}</div><div class="prod-gfx">${gfx(p.gfx)}</div><h3>${p.t}</h3><p><b>${p.line}</b> ${p.d}</p><span class="tlink">Explore ${p.t}</span></a>`).join('')}</div>
+${prods.length?`<section class="prod-sec dark"><div class="wrap">
+  ${shead({eyebrow:prods.length>1?'Our products':'Our product',h:prods.length>1?'Platforms we built and run.':'A platform we built and run.'})}
+  <div class="prods${prods.length===1?' one':''}">${prods.map((p,i)=>`<a class="prod reveal" style="--i:${i}" href="/products/${p.slug}" data-cursor="Open"><div class="prod-top"><span class="status${p.status==='Live'?' live':''}">${p.status}</span>${tile('mini')}</div><div class="prod-gfx">${gfx(p.gfx)}</div><h3>${p.t}</h3><p><b>${p.line}</b> ${p.d}</p><span class="tlink">Explore ${p.t}</span></a>`).join('')}</div>
 </div></section>`:''}
 <section class="soft"><div class="wrap split-2">
   <div class="reveal">${eyebrow('Questions')}<h2 class="h2">Frequently asked.</h2></div>

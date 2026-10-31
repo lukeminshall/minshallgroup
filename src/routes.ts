@@ -17,7 +17,7 @@ export const ROUTES:Record<string,{title:string,description:string,noindex?:bool
   '/':{title:DEFAULT_TITLE,description:DEFAULT_DESC},
   '/capabilities':{title:t('Capabilities — commercial strategy and digital'),description:'Two practices, one team and one measure: commercial strategy that finds where the growth is, and digital that builds what it takes, including data and practical AI.'},
   '/industries':{title:t('Sectors — Health and Sport'),description:'Commercial strategy and digital for NHS and private providers, health businesses selling into the NHS, and sport. We also work with universities and growth companies.'},
-  '/products':{title:t('Products — DataLense and Straight Talking'),description:'Products we own and operate, each born from client work: DataLense for healthcare commercial intelligence and Straight Talking for in-the-moment patient feedback.'},
+  '/products':{title:t('Products — DataLense, Straight Talking and Placeboard'),description:'Products we own and run, each born from client work: DataLense for healthcare site decisions, Straight Talking for patient feedback and Placeboard for towns.'},
   '/work':{title:t('Work — the challenge, what we did, and the return'),description:'Selected engagements across strategy, digital, data and brand, filterable by capability and industry.'},
   '/approach':{title:t('Approach — diagnose, design, build, grow'),description:'How we work: four stages, four engagement models and six principles we hold to, all organised around a single measurable outcome.'},
   '/insights':{title:t('Insights — where markets are moving'),description:'Short, opinionated pieces on strategy, data, AI, digital products and growth.'},
@@ -34,7 +34,9 @@ ROUTES['/digitalsme/terms']={title:t('Website refresh offer terms'),description:
 ROUTES['/privacy']={title:t('Privacy notice'),description:'How Minshall Group Limited uses the information you give us through this website.'};
 ROUTES['/products/datalense/sample']={title:t('DataLense sample catchment report'),description:'See what a DataLense healthcare catchment report looks like: drivetime map, market score, competitors, population health, workforce and coverage status. Illustrative data.'};
 ROUTES['/products/straight-talking/demo']={title:t('Straight Talking live demo'),description:'Give feedback as a patient and watch it reach the service, routed to the right person, and appear on the waiting-room screen. Made-up data.'};
+ROUTES['/products/placeboard/demo']={title:t('Placeboard live demo'),description:'Send a request as a local business, approve it as the council and open the results dashboard, for a made-up market town. Sample data.'};
 PRODUCTS.forEach(p=>{ROUTES['/products/'+p.slug]={title:t(p.t+' — '+p.line.replace(/\.$/,'')),description:p.d};});
+ROUTES['/products/placeboard'].image=ROUTES['/products/placeboard/demo'].image='/og-placeboard.png';
 CASES.forEach(c=>{ROUTES['/work/'+c.id]={title:t(`${c.head.replace(/\.$/,'')}: ${c.client}`),description:c.ch};});
 INSIGHTS.forEach(i=>{ROUTES['/insights/'+i.slug]={title:t(i.t),description:i.d};});
 

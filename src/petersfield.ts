@@ -2,12 +2,13 @@
    PETERSFIELD — landing page for our response to Petersfield Town
    Council's Tourism and Economic Development Digital Marketing tender.
    Hidden from search. The two portals and the dashboard are working
-   previews with made-up businesses and numbers, and the page says so.
+   previews (see place.ts) with made-up businesses and numbers, and the
+   page says so.
    ===================================================================== */
 import {dot} from './brand';
 import {split} from './components';
 
-const esc=(s:string)=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+import {type Place,type Season,requestPortal,councilPortal,dashboard,year,tabs} from './place';
 
 /* the town's reasons to visit, as the tender lists them */
 const ASSETS=['The Square and market','Independent shops','Food and drink','The Heath and pond','The Lido','Physic Garden','Petersfield Museum','South Downs National Park','Mainline station','The A3'];
@@ -23,7 +24,7 @@ const OBJECTIVES=[
 ];
 
 /* Dec to Nov; span is the number of months each campaign covers */
-const SEASONS=[
+const SEASONS:Season[]=[
   {span:1,t:'Christmas in Petersfield',s:'Christmas',m:'Dec',f:'Lights, late shopping, gift guides from independents, festive food and drink, Small Business Saturday.'},
   {span:2,t:'Fresh Start Petersfield',s:'Fresh Start',m:'Jan to Feb',f:'New openings, winter walks and snowdrops, indoor days out at the Museum and cafes, local loyalty.'},
   {span:2,t:'Spring into Petersfield',s:'Spring',m:'Mar to Apr',f:'Music and arts events, Easter family days out, the market and seasonal produce.'},
@@ -31,7 +32,6 @@ const SEASONS=[
   {span:2,t:'Heritage and Harvest',s:'Heritage and Harvest',m:'Sep to Oct',f:'Heritage Open Days, the Taro Fair, food and drink, history walks with The Petersfield Society.'},
   {span:1,t:'Shop Local, Shop Petersfield',s:'Shop Local',m:'Nov',f:'The pre-Christmas independents campaign, the build-up to the lights switch-on, parking and travel information.'}
 ];
-const MONTHS=['Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov'];
 
 const AUDIENCES=[
   ['Families','Within around an hour’s drive, looking for an easy, affordable day out.'],
@@ -138,122 +138,30 @@ function catchmentMap(){
 </figure>`;
 }
 
-/* the business request portal: a trader submits, the Council approves */
-function requestPortal(){
-  const types=[['event','An event'],['offer','An offer'],['news','News or an opening'],['listing','A listing change']];
-  return `<div class="pf-rp" data-pf-rp>
-  <div class="pf-win pf-biz" data-step="biz">
-    <div class="pf-bar"><i></i><i></i><i></i><span>visitpetersfield · share with us</span></div>
-    <form class="pf-form" data-pf-form novalidate>
-      <p class="pf-k">For local businesses and partners</p>
-      <h3>Share something with Visit Petersfield</h3>
-      <label class="pf-l">Your business<input name="biz" value="The Larder on the Square" autocomplete="off"></label>
-      <fieldset class="pf-types"><legend class="pf-l">What would you like to share?</legend>
-        ${types.map(([v,t],i)=>`<label><input type="radio" name="type" value="${v}"${i?'':' checked'}><span>${t}</span></label>`).join('')}</fieldset>
-      <label class="pf-l">Title<input name="title" value="Late-night Christmas shopping and mulled cider" autocomplete="off"></label>
-      <label class="pf-l">When<input name="when" value="Thursday 10 December, 5pm to 8pm" autocomplete="off"></label>
-      <label class="pf-check"><input type="checkbox" name="ok" checked><span>We have permission to use any photos we send.</span></label>
-      <button class="btn sm" type="submit"><span>Send for approval</span></button>
-    </form>
-  </div>
-  <div class="pf-flow" aria-hidden="true"><i></i><span>Logged and sent to the Council</span></div>
-  <div class="pf-win pf-council" data-step="council">
-    <div class="pf-bar"><i></i><i></i><i></i><span>Council approvals</span><b class="pf-live"><i></i>Live</b></div>
-    <div class="pf-cq">
-      <div class="pf-cq-k"><div><span>Awaiting approval</span><b data-pf-wait>2</b></div><div><span>Approved this month</span><b data-pf-done>14</b></div><div><span>Average turnaround</span><b>1.8 days</b></div></div>
-      <ul class="pf-queue" data-pf-queue>
-        <li data-state="wait" data-type="event"><div><em>Event</em><b>Heath parkrun volunteer morning</b><small>Petersfield Running Club (example) · submitted yesterday</small></div><div class="pf-acts"><button type="button" data-pf-approve>Approve</button><button type="button" class="ghost" data-pf-change>Ask for changes</button></div></li>
-        <li data-state="wait" data-type="listing"><div><em>Listing change</em><b>New opening hours for winter</b><small>Heathside Books (example) · submitted 2 days ago</small></div><div class="pf-acts"><button type="button" data-pf-approve>Approve</button><button type="button" class="ghost" data-pf-change>Ask for changes</button></div></li>
-        <li data-state="done"><div><em>Offer</em><b>10% off for walkers on Saturdays</b><small>Downs Coffee Co. (example) · approved, in Stories on Saturday</small></div><span class="pf-tag ok">Approved</span></li>
-      </ul>
-      <p class="pf-audit" data-pf-audit role="status">Every request is logged with who sent it, who approved it and where it was published.</p>
-    </div>
-  </div>
-</div>`;
-}
-
-/* the Council's own project portal */
-function councilPortal(){
-  const tabs=['Overview','Plan','Approvals','Documents','Reports'];
-  const stages=['Mobilise','Plan','Brand toolkit','Deliver','Review'];
-  return `<div class="pf-win pf-cp" data-pf-cp data-step="cp">
-  <div class="pf-bar"><i></i><i></i><i></i><span>minshallgroup.com/portal · Petersfield Town Council</span></div>
-  <div class="pf-cp-in">
-    <nav class="pf-cp-nav" role="tablist" aria-label="Portal sections">${tabs.map((t,i)=>`<button type="button" role="tab" aria-selected="${!i}" data-pf-tab="${i}">${t}</button>`).join('')}</nav>
-    <div class="pf-cp-body">
-      <section class="pf-cp-p" data-pf-panel="0">
-        <p class="pf-k">Client portal · Digital marketing</p><h3 class="pf-cp-h">Visit Petersfield 2026/27</h3>
-        <ol class="pf-stages">${stages.map((s,i)=>`<li class="${i<1?'done':i===1?'now':''}"><i></i><span>${s}</span></li>`).join('')}</ol>
-        <div class="pf-tiles"><div><span>Stage</span><b>Plan</b></div><div><span>Next milestone</span><b>Plan to Council</b></div><div><span>Waiting for you</span><b>2</b></div><div><span>Next meeting</span><b>Quarterly · Feb</b></div></div>
-        <div class="pf-needs"><b>What needs you</b><span>Approve the January content calendar</span><span>Introductions to event organisers</span></div>
-      </section>
-      <section class="pf-cp-p" data-pf-panel="1" hidden>
-        <p class="pf-k">Plan and milestones</p>
-        <ul class="pf-plan">
-          <li class="done"><i></i><b>Handover and account access</b><span>1 Dec</span></li>
-          <li class="done"><i></i><b>Christmas in Petersfield live</b><span>1 Dec</span></li>
-          <li class="now"><i></i><b>Website content audit</b><span>19 Dec</span></li>
-          <li><i></i><b>2027 Annual Marketing Plan to Council</b><span>Jan</span></li>
-          <li><i></i><b>Brand toolkit signed off</b><span>Feb</span></li>
-          <li><i></i><b>Live dashboard shared</b><span>Feb</span></li>
-        </ul>
-      </section>
-      <section class="pf-cp-p" data-pf-panel="2" hidden>
-        <p class="pf-k">Waiting for Council sign-off</p>
-        <ul class="pf-apr">
-          <li><div><b>January content calendar</b><small>Five working days · due 18 Dec</small></div><button type="button" data-pf-ok>Approve</button></li>
-          <li><div><b>Christmas window trail artwork</b><small>Five working days · due 22 Dec</small></div><button type="button" data-pf-ok>Approve</button></li>
-          <li class="ok"><div><b>Christmas in Petersfield campaign plan</b><small>Approved 26 Nov</small></div><span class="pf-tag ok">Approved</span></li>
-        </ul>
-      </section>
-      <section class="pf-cp-p" data-pf-panel="3" hidden>
-        <p class="pf-k">Documents</p>
-        <ul class="pf-docs">
-          <li><i>PDF</i><b>Website content audit and fix list</b><small>From Minshall Group · Dec</small></li>
-          <li><i>PDF</i><b>Baseline report</b><small>From Minshall Group · Dec</small></li>
-          <li><i>DOC</i><b>Christmas in Petersfield campaign plan</b><small>From Minshall Group · Nov</small></li>
-          <li><i>ZIP</i><b>Existing brand assets and photo library</b><small>Shared by the Council · Nov</small></li>
-        </ul>
-      </section>
-      <section class="pf-cp-p" data-pf-panel="4" hidden>
-        <p class="pf-k">Monthly reports</p>
-        <ul class="pf-docs">
-          <li><i>RPT</i><b>December report and dashboard link</b><small>Two pages, published in early January</small></li>
-          <li><i>RPT</i><b>Baseline: where we start</b><small>Published December</small></li>
-        </ul>
-        <p class="pf-note">Each report covers headline numbers, what worked, what did not, business participation, paid spend and next month’s plan.</p>
-      </section>
-    </div>
-  </div>
-</div>`;
-}
-
-/* the live dashboard the Council can open at any time */
-function dashboard(){
-  const bars=[38,44,41,52,57,63];const mon=['Dec','Jan','Feb','Mar','Apr','May'];
-  return `<div class="pf-dash" data-step="dash">
-  <div class="pf-dash-top"><b>Visit Petersfield · live dashboard</b><span class="pf-live"><i></i>Updated daily</span></div>
-  <div class="pf-dk">
-    <div><span>Reach outside the local area</span><b data-pf-count="61" aria-hidden="true">0</b><span class="sr">61</span><small>% of total reach</small></div>
-    <div><span>Website sessions</span><b data-pf-count="8420" aria-hidden="true">0</b><span class="sr">8,420</span><small>this month</small></div>
-    <div><span>Clicks to businesses</span><b data-pf-count="1260" aria-hidden="true">0</b><span class="sr">1,260</span><small>to their own sites</small></div>
-    <div><span>Portal requests</span><b data-pf-count="23" aria-hidden="true">0</b><span class="sr">23</span><small>received, 21 approved</small></div>
-  </div>
-  <div class="pf-dg">
-    <div class="pf-chart"><span class="pf-dh">Share of reach from day-trip catchments</span>
-      <div class="pf-bars">${bars.map((v,i)=>`<div><i style="--h:${v}%"></i><span>${mon[i]}</span><b>${v}%</b></div>`).join('')}</div></div>
-    <div class="pf-split"><span class="pf-dh">Audience this month</span>
-      <div class="pf-donut" style="--v:61"><b>61%</b><span>visitors</span></div>
-      <ul><li><i class="v"></i>Visitors from outside GU31/GU32</li><li><i></i>Local residents</li></ul></div>
-    <div class="pf-top"><span class="pf-dh">Top pages</span>
-      <ol><li>What’s On<b>2,140</b></li><li>Parking and getting here<b>1,380</b></li><li>A great day out in Petersfield<b>960</b></li><li>Petersfield by train<b>610</b></li></ol></div>
-  </div>
-  <p class="pf-flag">Illustrative: these numbers are made up to show the format. Real figures start with the December baseline.</p>
-</div>`;
-}
+/* the town's portals and dashboard, filled in with made-up businesses and numbers */
+const PF:Place={
+  host:'visitpetersfield',brand:'Visit Petersfield',client:'Petersfield Town Council',project:'Visit Petersfield 2026/27',
+  biz:['The Larder on the Square','Late-night Christmas shopping and mulled cider','Thursday 10 December, 5pm to 8pm'],
+  queue:[['event','Event','Heath parkrun volunteer morning','Petersfield Running Club (example) · submitted yesterday'],
+    ['listing','Listing change','New opening hours for winter','Heathside Books (example) · submitted 2 days ago']],
+  done:['Offer','10% off for walkers on Saturdays','Downs Coffee Co. (example) · approved, in Stories on Saturday'],
+  tiles:[['Stage','Plan'],['Next milestone','Plan to Council'],['Waiting for you','2'],['Next meeting','Quarterly · Feb']],
+  needs:['Approve the January content calendar','Introductions to event organisers'],
+  plan:[['done','Handover and account access','1 Dec'],['done','Christmas in Petersfield live','1 Dec'],['now','Website content audit','19 Dec'],
+    ['','2027 Annual Marketing Plan to Council','Jan'],['','Brand toolkit signed off','Feb'],['','Live dashboard shared','Feb']],
+  approvals:[['January content calendar','Five working days · due 18 Dec'],['Christmas window trail artwork','Five working days · due 22 Dec']],
+  approved:['Christmas in Petersfield campaign plan','Approved 26 Nov'],
+  docs:[['PDF','Website content audit and fix list','From Minshall Group · Dec'],['PDF','Baseline report','From Minshall Group · Dec'],
+    ['DOC','Christmas in Petersfield campaign plan','From Minshall Group · Nov'],['ZIP','Existing brand assets and photo library','Shared by the Council · Nov']],
+  reports:[['RPT','December report and dashboard link','Two pages, published in early January'],['RPT','Baseline: where we start','Published December']],
+  dash:{title:'Visit Petersfield · live dashboard',
+    kpis:[['Reach outside the local area',61,'% of total reach'],['Website sessions',8420,'this month'],['Clicks to businesses',1260,'to their own sites'],['Portal requests',23,'received, 21 approved']],
+    bars:[38,44,41,52,57,63],mon:['Dec','Jan','Feb','Mar','Apr','May'],visitors:61,outside:'Visitors from outside GU31/GU32',
+    top:[['What’s On','2,140'],['Parking and getting here','1,380'],['A great day out in Petersfield','960'],['Petersfield by train','610']],
+    flag:'Illustrative: these numbers are made up to show the format. Real figures start with the December baseline.'}
+};
 
 export function petersfieldPage(){
-  let mi=0;
   return `
 <header class="demo-hero dark pf-hero"><div class="grain" aria-hidden="true"></div><div class="wrap pf-hero-in">
   <div>
@@ -290,12 +198,7 @@ export function petersfieldPage(){
 
 <section class="pf-sec" id="year"><div class="wrap">
   <div class="shead"><div class="reveal"><span class="eyebrow">The year at a glance</span><h2 class="h2">Six seasonal campaigns, one connected story.</h2></div><div class="shead-r reveal" style="--i:1"><p>A draft framework for the 2027 Annual Marketing Plan, tested against data in December and agreed with the Council.</p></div></div>
-  <div class="pf-year reveal" data-pf-year>
-    <div class="pf-months" aria-hidden="true">${MONTHS.map(m=>`<span>${m}</span>`).join('')}</div>
-    <div class="pf-camps" role="tablist" aria-label="Seasonal campaigns">${SEASONS.map((s,i)=>{const b=`<button type="button" role="tab" aria-selected="${!i}" data-pf-s="${i}"${s.span===1?' class="n1"':''} style="grid-column:${mi+1} / span ${s.span}"><b>${s.s}</b><span>${s.m}</span></button>`;mi+=s.span;return b;}).join('')}</div>
-    <div class="pf-camp-card">${SEASONS.map((s,i)=>`<div data-pf-sp="${i}"${i?' hidden':''}><div><span class="pf-k">${s.m}</span><h3>${s.t}</h3><p>${s.f}</p></div>
-      <ul class="pf-every"><li>Hero content</li><li>A way for businesses to join in</li><li>A paid social burst where it adds value</li><li>A website landing page or feature</li></ul></div>`).join('')}</div>
-  </div>
+  ${year(SEASONS)}
   <div class="pf-two">
     <div class="reveal"><h3 class="pf-h3">Who we start with</h3><p class="pf-note">Our starting hypothesis, tested against data in month one.</p>
       <ul class="pf-cards">${AUDIENCES.map(([t,d])=>`<li><b>${t}</b><span>${d}</span></li>`).join('')}</ul></div>
@@ -306,19 +209,19 @@ export function petersfieldPage(){
 
 <section class="pf-sec dark pf-portal-sec" id="portal"><div class="grain" aria-hidden="true"></div><div class="wrap">
   <div class="shead"><div class="reveal"><span class="eyebrow">The business request portal</span><h2 class="h2">One fair route in for every business. The Council approves everything.</h2></div><div class="shead-r reveal" style="--i:1"><p>Businesses and partners send events, offers, news and listing changes in one place. Each request is logged and goes to the Council before anything is published. Try it: send the request, then approve it as the Council.</p></div></div>
-  ${requestPortal()}
+  ${requestPortal(PF)}
   <p class="pf-flag on-dark">Working preview with made-up businesses. Nothing you send here goes anywhere.</p>
 </div></section>
 
 <section class="pf-sec"><div class="wrap">
   <div class="shead"><div class="reveal"><span class="eyebrow">The Council’s project portal</span><h2 class="h2">The plan, the approvals and the reports, in one place.</h2></div><div class="shead-r reveal" style="--i:1"><p>Council Officers get their own login to our client portal: where the work is, what needs their sign-off, every document we deliver, and every monthly report.</p></div></div>
-  <div class="reveal">${councilPortal()}</div>
+  <div class="reveal">${councilPortal(PF)}</div>
   <p class="pf-flag">Preview of our live client portal, filled in with an illustrative Petersfield project.</p>
 </div></section>
 
 <section class="pf-sec soft"><div class="wrap">
   <div class="shead"><div class="reveal"><span class="eyebrow">Reporting</span><h2 class="h2">Two pages a month, and a dashboard you can open any day.</h2></div><div class="shead-r reveal" style="--i:1"><p>Headline numbers, what worked, what did not, business participation, paid spend and the plan for next month. Built on Meta Business Suite, Google Analytics 4, Search Console, UTM links and Looker Studio.</p></div></div>
-  <div class="reveal">${dashboard()}</div>
+  <div class="reveal">${dashboard(PF)}</div>
 </div></section>
 
 <section class="pf-sec"><div class="wrap">
@@ -364,79 +267,6 @@ export function petersfieldPage(){
 }
 
 /* ---------------- behaviour ---------------- */
-let TID=0;
-function tabs(root:HTMLElement,btnAttr:string,panelAttr:string){
-  const bs=[...root.querySelectorAll<HTMLButtonElement>(`[${btnAttr}]`)],ps=[...root.querySelectorAll<HTMLElement>(`[${panelAttr}]`)];
-  const key=(a:string)=>a.replace(/^data-/,'').replace(/-(\w)/g,(_,c)=>c.toUpperCase());
-  const pan=(b:HTMLButtonElement)=>ps.find(p=>p.dataset[key(panelAttr)]===b.dataset[key(btnAttr)]);
-  bs.forEach(b=>{const p=pan(b),id=`pft${++TID}`;b.id=id;b.tabIndex=b.getAttribute('aria-selected')==='true'?0:-1;
-    if(p){p.id=id+'p';b.setAttribute('aria-controls',p.id);p.setAttribute('role','tabpanel');p.setAttribute('aria-labelledby',id);p.tabIndex=0;}});
-  bs.forEach(b=>b.addEventListener('click',()=>{
-    bs.forEach(x=>{x.setAttribute('aria-selected',String(x===b));x.tabIndex=x===b?0:-1;});
-    ps.forEach(p=>{const on=p===pan(b);p.hidden=!on;if(on){p.classList.remove('pf-in');void p.offsetWidth;p.classList.add('pf-in');}});
-  }));
-  bs.forEach((b,i)=>b.addEventListener('keydown',e=>{
-    const step:Record<string,number>={ArrowDown:1,ArrowRight:1,ArrowUp:-1,ArrowLeft:-1};
-    let j:number;if(e.key in step)j=(i+step[e.key]+bs.length)%bs.length;else if(e.key==='Home')j=0;else if(e.key==='End')j=bs.length-1;else return;
-    e.preventDefault();bs[j].focus();bs[j].click();}));
-}
-
-/* "Approve" alone is ambiguous to a screen reader, so name the item; and keep focus when a button is replaced */
-const nameActs=(li:HTMLElement)=>{const t=li.querySelector('b')?.textContent||'';li.querySelectorAll('button').forEach(b=>b.setAttribute('aria-label',`${b.textContent}: ${t}`));};
-const swapForTag=(el:Element,html:string)=>{const t=document.createElement('template');t.innerHTML=html;const tag=t.content.firstElementChild as HTMLElement;tag.tabIndex=-1;el.replaceWith(tag);tag.focus();};
-
-function wirePortal(root:HTMLElement){
-  const form=root.querySelector<HTMLFormElement>('[data-pf-form]'),q=root.querySelector<HTMLElement>('[data-pf-queue]');
-  const wait=root.querySelector<HTMLElement>('[data-pf-wait]'),done=root.querySelector<HTMLElement>('[data-pf-done]'),audit=root.querySelector<HTMLElement>('[data-pf-audit]');
-  const flow=root.querySelector<HTMLElement>('.pf-flow');
-  const count=()=>{wait.textContent=String(q.querySelectorAll('[data-state="wait"]').length);};
-  const TYPE:Record<string,string>={event:'Event',offer:'Offer',news:'News',listing:'Listing change'};
-  const WHERE:Record<string,string>={event:'What’s On and Facebook events',offer:'Instagram Stories and the offers page',news:'Facebook, Instagram and the blog',listing:'the business directory'};
-  q.querySelectorAll<HTMLElement>('li').forEach(nameActs);
-  q.addEventListener('click',e=>{
-    const b=(e.target as HTMLElement).closest('button');if(!b)return;
-    const li=b.closest('li') as HTMLElement;const t=li.dataset.type||'event';
-    if(b.hasAttribute('data-pf-approve')){
-      li.dataset.state='done';swapForTag(li.querySelector('.pf-acts'),'<span class="pf-tag ok">Approved</span>');
-      const sm=li.querySelector('small');sm.textContent=sm.textContent.replace(/ · .*$/,'')+` · approved, scheduled for ${WHERE[t]||'What’s On'}`;
-      done.textContent=String(+done.textContent+1);
-      audit.innerHTML=`<b>Logged:</b> approved by the Council Officer just now, and scheduled for ${WHERE[t]||'What’s On'}.`;
-    }else if(b.hasAttribute('data-pf-change')){
-      li.dataset.state='change';swapForTag(li.querySelector('.pf-acts'),'<span class="pf-tag">Changes asked</span>');
-      audit.innerHTML='<b>Logged:</b> sent back to the business with the Council’s comments.';
-    }
-    count();
-  });
-  form.addEventListener('submit',e=>{
-    e.preventDefault();
-    const d=new FormData(form);const type=String(d.get('type')||'event');
-    const biz=esc(String(d.get('biz')||'').trim()||'Your business'),title=esc(String(d.get('title')||'').trim()||'Untitled request'),when=esc(String(d.get('when')||'').trim());
-    if(!d.get('ok')){audit.innerHTML='<b>Held:</b> the business needs to confirm photo permission before this can be sent.';return;}
-    const li=document.createElement('li');li.dataset.state='wait';li.dataset.type=type;li.className='pf-new';
-    li.innerHTML=`<div><em>${TYPE[type]}</em><b>${title}</b><small>${biz}${when?` · ${when}`:''} · just now</small></div><div class="pf-acts"><button type="button" data-pf-approve>Approve</button><button type="button" class="ghost" data-pf-change>Ask for changes</button></div>`;
-    nameActs(li);
-    flow.classList.remove('go');void flow.offsetWidth;flow.classList.add('go');
-    setTimeout(()=>{q.prepend(li);count();audit.innerHTML=`<b>Logged:</b> “${title}” from ${biz}, received just now. Waiting for Council approval.`;},650);
-    const btn=form.querySelector<HTMLButtonElement>('button[type=submit] span');btn.textContent='Sent. Send another?';setTimeout(()=>{btn.textContent='Send for approval';},2600);
-  });
-}
-
-function wireCouncil(root:HTMLElement){
-  tabs(root,'data-pf-tab','data-pf-panel');
-  root.querySelectorAll<HTMLElement>('.pf-apr li').forEach(nameActs);
-  root.querySelectorAll<HTMLButtonElement>('[data-pf-ok]').forEach(b=>b.addEventListener('click',()=>{
-    const li=b.closest('li');li.classList.add('ok');li.querySelector('small').textContent='Approved just now';swapForTag(b,'<span class="pf-tag ok">Approved</span>');
-  }));
-}
-
-function wireCounts(root:HTMLElement){
-  const els=[...root.querySelectorAll<HTMLElement>('[data-pf-count]')];
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches){root.classList.add('pf-on');els.forEach(el=>{el.textContent=(+el.dataset.pfCount).toLocaleString('en-GB');});return;}
-  const io=new IntersectionObserver(([e])=>{if(!e.isIntersecting)return;io.disconnect();root.classList.add('pf-on');const t0=performance.now();
-    const f=(t:number)=>{const k=Math.min(1,(t-t0)/1400),ease=1-Math.pow(1-k,3);els.forEach(el=>{el.textContent=Math.round(+el.dataset.pfCount*ease).toLocaleString('en-GB');});if(k<1)requestAnimationFrame(f);};requestAnimationFrame(f);},{threshold:.3});
-  io.observe(root);
-}
-
 /* let the team know the page was opened: once per visit, never for us (?me=1 marks this browser) */
 function pingView(){
   try{
@@ -451,8 +281,4 @@ export function initPetersfield(){
   const obj=document.querySelector<HTMLElement>('[data-pf-obj]');if(!obj)return;
   pingView();
   tabs(obj,'data-pf-o','data-pf-op');
-  const yr=document.querySelector<HTMLElement>('[data-pf-year]');if(yr)tabs(yr,'data-pf-s','data-pf-sp');
-  const rp=document.querySelector<HTMLElement>('[data-pf-rp]');if(rp)wirePortal(rp);
-  const cp=document.querySelector<HTMLElement>('[data-pf-cp]');if(cp)wireCouncil(cp);
-  const dash=document.querySelector<HTMLElement>('.pf-dash');if(dash)wireCounts(dash);
 }
