@@ -437,8 +437,19 @@ function wireCounts(root:HTMLElement){
   io.observe(root);
 }
 
+/* let the team know the page was opened: once per visit, never for us (?me=1 marks this browser) */
+function pingView(){
+  try{
+    if(/[?&]me=1\b/.test(location.search))localStorage.setItem('mg-me','1');
+    if(localStorage.getItem('mg-me')||sessionStorage.getItem('pf-seen')||location.hostname!=='minshallgroup.com')return;
+    sessionStorage.setItem('pf-seen','1');
+    navigator.sendBeacon('/api/page-view',new Blob([JSON.stringify({path:'/petersfield',ref:document.referrer})],{type:'application/json'}));
+  }catch{}
+}
+
 export function initPetersfield(){
   const obj=document.querySelector<HTMLElement>('[data-pf-obj]');if(!obj)return;
+  pingView();
   tabs(obj,'data-pf-o','data-pf-op');
   const yr=document.querySelector<HTMLElement>('[data-pf-year]');if(yr)tabs(yr,'data-pf-s','data-pf-sp');
   const rp=document.querySelector<HTMLElement>('[data-pf-rp]');if(rp)wirePortal(rp);
