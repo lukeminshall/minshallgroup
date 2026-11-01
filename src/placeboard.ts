@@ -117,7 +117,7 @@ function riponMap(){
 /* Two ways to take Placeboard: the live feed on the website a place already
    has, or a new visitor website with the feed built in. Founding place prices,
    excluding VAT; change them here and both pages follow. */
-export const PB_PRICES={embed:750,site:995};
+export const PB_PRICES={embed:995,month:100,site:1995};
 const gbp=(n:number)=>'£'+n.toLocaleString('en-GB');
 const SNIPPET='<div data-placeboard="ripon"></div>\n<script src="https://theplaceboard.com/embed.js" async></script>';
 const escH=(s:string)=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -128,6 +128,7 @@ export function pbOptions(){
       <span class="pkg-flag">Keep your website</span>
       <h3 class="pkg-name">Embed the feed</h3>
       <p class="pkg-price">${gbp(PB_PRICES.embed)}<span> a year</span></p>
+      <p class="pb-month">or ${gbp(PB_PRICES.month)} a month</p>
       <p class="pkg-for">For places that already have a website they are happy with.</p>
       <ul class="ticks"><li>The full board: one route in for businesses, council approvals, the seasonal plan and the dashboard</li><li>A live What’s On feed on your existing site, added with two lines of code</li><li>A direct feed: approve once and it appears on your site, with nothing to copy or upload</li><li>Matched to your colours, and it fits any page width</li><li>Set up, and your officers trained, within two weeks</li></ul>
       <a class="btn" href="/contact?interest=Placeboard%20embed"><span>Ask about the embed</span></a>
@@ -135,7 +136,7 @@ export function pbOptions(){
     <article class="pkg reveal" style="--i:1">
       <h3 class="pkg-name">A new visitor website</h3>
       <p class="pkg-price"><span>from</span> ${gbp(PB_PRICES.site)}<span> to build</span></p>
-      <p class="pkg-for">Then ${gbp(PB_PRICES.embed)} a year, hosting included. For places with no visitor website, or one that is past saving.</p>
+      <p class="pkg-for">Then ${gbp(PB_PRICES.embed)} a year or ${gbp(PB_PRICES.month)} a month, hosting included. For places with no visitor website, or one that is past saving.</p>
       <ul class="ticks"><li>Everything in the embed</li><li>A visitor website for the place, designed and built by us</li><li>What’s On, a business directory, getting here and seasonal campaign pages, all fed by the board</li><li>Built to the public sector accessibility standard (WCAG 2.2 AA)</li><li>On your own domain, and the content is yours to keep</li></ul>
       <a class="btn ghost" href="/contact?interest=Placeboard%20website"><span>Ask about a new website</span></a>
     </article>

@@ -2276,3 +2276,4 @@ body.pp-hot .phead{min-height:0;padding-top:112px;padding-bottom:30px}body.pp-ho
 .soft .pkg{background:#fff}
 .pb-see{margin-top:18px}
 @media (max-width:1024px){.pb-embed,.pb-opts{grid-template-columns:1fr}}
+.pb-month{margin:-4px 0 10px;font-weight:700;color:var(--muted)}
