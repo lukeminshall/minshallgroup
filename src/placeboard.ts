@@ -117,7 +117,7 @@ function riponMap(){
 /* Two ways to take Placeboard: the live feed on the website a place already
    has, or a new visitor website with the feed built in. Founding place prices,
    excluding VAT; change them here and both pages follow. */
-export const PB_PRICES={embed:1950,site:4950};
+export const PB_PRICES={embed:750,site:995};
 const gbp=(n:number)=>'£'+n.toLocaleString('en-GB');
 const SNIPPET='<div data-placeboard="ripon"></div>\n<script src="https://theplaceboard.com/embed.js" async></script>';
 const escH=(s:string)=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
