@@ -10,7 +10,7 @@ import {dot,tile} from './brand';
 import {gRidge,gDial,gNetwork} from './graphics';
 import {researchPage,RESEARCH_SLUG} from './research';
 import {datalenseSample,straightTalkingDemo} from './demos';
-import {placeboardDemo} from './placeboard';
+import {placeboardDemo,pbOptions} from './placeboard';
 import {STYLES} from './portal/brief';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -307,6 +307,11 @@ ${phead({crumb:'<a href="/products">Products</a><span>/</span>Placeboard',title:
     {n:'03',t:'Measured on visitors, not likes',d:'The measures are agreed at the start and tied to who came and what they spent.'},
     {n:'04',t:'The council keeps everything',d:'Accounts, content, images and data stay the council’s, and can be exported at any time.'}
   ],2)}
+</div></section>
+<section><div class="wrap">
+  ${shead({eyebrow:'Your website',h:'Keep your website, or let us build one.',p:'Most places do not need a new website. Placeboard adds a live What’s On to the one you have with two lines of code, and it is a direct feed: approve something on the board and it appears on your site straight away. If you have no visitor website, we build one with the feed built in.'})}
+  ${pbOptions()}
+  <p class="pb-see"><a class="tlink" href="/products/placeboard/demo#embed">See the feed working in the Ripon demo</a></p>
 </div></section>
 ${ctaBand('Want Placeboard for your town?','We are looking for a small number of founding places to shape it with us.',`${btn('See it working in Ripon','/products/placeboard/demo')}${btn('Become a founding place','/contact?interest=Placeboard',true)}`)}`;
 

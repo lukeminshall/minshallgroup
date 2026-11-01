@@ -113,6 +113,56 @@ function riponMap(){
 </figure>`;
 }
 
+
+/* Two ways to take Placeboard: the live feed on the website a place already
+   has, or a new visitor website with the feed built in. Founding place prices,
+   excluding VAT; change them here and both pages follow. */
+export const PB_PRICES={embed:1950,site:4950};
+const gbp=(n:number)=>'£'+n.toLocaleString('en-GB');
+const SNIPPET='<div data-placeboard="ripon"></div>\n<script src="https://theplaceboard.com/embed.js" async></script>';
+const escH=(s:string)=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+export function pbOptions(){
+  return `<div class="pkgs pb-opts">
+    <article class="pkg pop reveal">
+      <span class="pkg-flag">Keep your website</span>
+      <h3 class="pkg-name">Embed the feed</h3>
+      <p class="pkg-price">${gbp(PB_PRICES.embed)}<span> a year</span></p>
+      <p class="pkg-for">For places that already have a website they are happy with.</p>
+      <ul class="ticks"><li>The full board: one route in for businesses, council approvals, the seasonal plan and the dashboard</li><li>A live What’s On feed on your existing site, added with two lines of code</li><li>A direct feed: approve once and it appears on your site, with nothing to copy or upload</li><li>Matched to your colours, and it fits any page width</li><li>Set up, and your officers trained, within two weeks</li></ul>
+      <a class="btn" href="/contact?interest=Placeboard%20embed"><span>Ask about the embed</span></a>
+    </article>
+    <article class="pkg reveal" style="--i:1">
+      <h3 class="pkg-name">A new visitor website</h3>
+      <p class="pkg-price"><span>from</span> ${gbp(PB_PRICES.site)}<span> to build</span></p>
+      <p class="pkg-for">Then ${gbp(PB_PRICES.embed)} a year, hosting included. For places with no visitor website, or one that is past saving.</p>
+      <ul class="ticks"><li>Everything in the embed</li><li>A visitor website for the place, designed and built by us</li><li>What’s On, a business directory, getting here and seasonal campaign pages, all fed by the board</li><li>Built to the public sector accessibility standard (WCAG 2.2 AA)</li><li>On your own domain, and the content is yours to keep</li></ul>
+      <a class="btn ghost" href="/contact?interest=Placeboard%20website"><span>Ask about a new website</span></a>
+    </article>
+  </div>
+  <p class="pf-flag">Founding place prices for 2027, excluding VAT. Want us to run the campaigns and reporting as well? We quote that separately.</p>`;
+}
+
+function embedSection(){
+  return `<section class="pf-sec soft" id="embed"><div class="wrap">
+  <div class="shead"><div class="reveal"><span class="eyebrow">05 · On your website</span><h2 class="h2">No new website needed. It feeds the one you have.</h2></div><div class="shead-r reveal" style="--i:1"><p>Paste two lines into your existing site and What’s On runs itself. It is a direct feed: when the council approves a request on the board, it appears on your website straight away. Try it: approve a request in section 01 and watch it arrive here.</p></div></div>
+  <div class="pb-embed">
+    <div class="pf-win reveal"><div class="pf-bar"><i></i><i></i><i></i><span>your-council-website · What’s On</span><b class="pf-live"><i></i>Live</b></div>
+      <div class="pb-host"><p class="pb-host-k">Your existing website, your header and footer</p>
+        <iframe data-pf-embed src="/embed/ripon" title="What’s on in Ripon, the Placeboard feed" loading="lazy"></iframe>
+      </div>
+    </div>
+    <div class="pb-how reveal" style="--i:1">
+      <ol class="pb-steps"><li><b>Paste two lines</b><span>Into any page on any website: WordPress, a council CMS or hand-built. No plug-in, no developer.</span></li><li><b>Approve on the board</b><span>The same approval that sends a post to social media sends it to your website.</span></li><li><b>It appears straight away</b><span>No copying, re-uploading or out-of-date listings. Past events drop off by themselves.</span></li></ol>
+      <div class="pb-code"><pre><code>${escH(SNIPPET)}</code></pre><button type="button" class="btn sm ghost" data-pf-copy="${escH(SNIPPET).replace(/"/g,'&quot;')}"><span>Copy code</span></button></div>
+    </div>
+  </div>
+  <p class="pf-flag">The feed shows real Ripon events and example businesses. It is not on any Ripon website.</p>
+  <div class="pb-price-h reveal"><span class="eyebrow">Two ways to take it</span><h3 class="h2">Keep your website, or let us build one.</h3></div>
+  ${pbOptions()}
+</div></section>`;
+}
+
 export function placeboardDemo(){
   return `
 <header class="demo-hero dark pf-hero"><div class="grain" aria-hidden="true"></div><div class="wrap pf-hero-in">
@@ -153,6 +203,8 @@ export function placeboardDemo(){
   <div class="shead"><div class="reveal"><span class="eyebrow">04 · Results</span><h2 class="h2">Measured on visitors, not likes.</h2></div><div class="shead-r reveal" style="--i:1"><p>A dashboard the council can open any day, and a two-page report each month: who was reached outside the town, what they clicked through to, and how many businesses took part.</p></div></div>
   <div class="reveal">${dashboard(RIPON)}</div>
 </div></section>
+
+${embedSection()}
 
 <section class="cta-band"><div class="wrap cta-in"><div class="reveal"><h2 class="h1">Want Placeboard for your town or city?</h2><p class="lede">We are looking for a small number of founding places to shape it with us.</p></div>
   <div class="actions reveal" style="--i:1"><a class="btn mag" href="/contact?interest=Placeboard"><span>Become a founding place</span></a></div></div></section>`;

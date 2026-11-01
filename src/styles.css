@@ -2256,3 +2256,23 @@ body.pp-hot .phead{min-height:0;padding-top:112px;padding-bottom:30px}body.pp-ho
 .pf-town text tspan{fill:rgba(255,255,255,.5);font-weight:500;font-size:10px}
 .pf-map-key .k-iso.near{width:14px;height:10px;border-radius:4px;background:rgba(255,46,99,.3);box-shadow:inset 0 0 0 1.5px rgba(255,46,99,.85)}
 .pf-map-key .k-old{width:18px;height:2px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.5) 0 4px,transparent 4px 8px)}
+
+/* Placeboard embed and the two ways to take it */
+.pb-embed{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:start}
+.pb-host{background:#F7F8FB;padding:14px}
+.pb-host-k{font-size:12px;font-weight:700;color:#5D6578;border:1px dashed #C9CFDC;border-radius:8px;padding:8px 10px;margin:0 0 12px}
+.pb-host iframe{display:block;width:100%;min-height:520px;border:0;border-radius:12px;background:#fff}
+.pb-steps{list-style:none;padding:0;margin:0 0 18px;display:grid;gap:14px;counter-reset:s}
+.pb-steps li{display:grid;grid-template-columns:34px 1fr;gap:4px 12px;counter-increment:s}
+.pb-steps li::before{content:counter(s);grid-row:span 2;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:14px;display:grid;place-items:center}
+.pb-steps b{color:var(--navy)}.pb-steps span{color:var(--ink-2);font-size:15px}
+.pb-code{background:var(--navy);border-radius:14px;padding:16px;display:grid;gap:12px}
+.pb-code pre{margin:0;overflow-x:auto;color:#D5DBEA;font:13px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre}
+.pb-code .btn{justify-self:start;color:#fff;border-color:rgba(255,255,255,.4)}
+.pb-price-h{margin:56px 0 26px}
+.pb-opts{grid-template-columns:repeat(2,1fr);margin-top:8px}
+.pb-opts .pkg-price{font-size:46px}
+.pb-opts .pkg-price span{margin-left:4px}
+.soft .pkg{background:#fff}
+.pb-see{margin-top:18px}
+@media (max-width:1024px){.pb-embed,.pb-opts{grid-template-columns:1fr}}

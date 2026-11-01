@@ -171,6 +171,9 @@ function wirePortal(root:HTMLElement){
       const sm=li.querySelector('small');sm.textContent=sm.textContent.replace(/ · .*$/,'')+` · approved, scheduled for ${WHERE[t]||'What’s On'}`;
       done.textContent=String(+done.textContent+1);
       audit.innerHTML=`<b>Logged:</b> approved by the Council Officer just now, and scheduled for ${WHERE[t]||'What’s On'}.`;
+      /* the direct feed: the approval goes straight to the embedded What's On on the council's own site */
+      const parts=(sm.textContent||'').split(' · ');
+      document.querySelector<HTMLIFrameElement>('[data-pf-embed]')?.contentWindow?.postMessage({placeboard:'approved',type:t,title:li.querySelector('b')?.textContent||'',biz:li.dataset.biz||parts[0],when:li.dataset.when??''},location.origin);
     }else if(b.hasAttribute('data-pf-change')){
       li.dataset.state='change';swapForTag(li.querySelector('.pf-acts'),'<span class="pf-tag">Changes asked</span>');
       audit.innerHTML='<b>Logged:</b> sent back to the business with the Council’s comments.';
@@ -182,7 +185,7 @@ function wirePortal(root:HTMLElement){
     const d=new FormData(form);const type=String(d.get('type')||'event');
     const biz=esc(String(d.get('biz')||'').trim()||'Your business'),title=esc(String(d.get('title')||'').trim()||'Untitled request'),when=esc(String(d.get('when')||'').trim());
     if(!d.get('ok')){audit.innerHTML='<b>Held:</b> the business needs to confirm photo permission before this can be sent.';return;}
-    const li=document.createElement('li');li.dataset.state='wait';li.dataset.type=type;li.className='pf-new';
+    const li=document.createElement('li');li.dataset.state='wait';li.dataset.type=type;li.className='pf-new';li.dataset.biz=String(d.get('biz')||'').trim();li.dataset.when=String(d.get('when')||'').trim();
     li.innerHTML=`<div><em>${TYPE[type]}</em><b>${title}</b><small>${biz}${when?` · ${when}`:''} · just now</small></div><div class="pf-acts"><button type="button" data-pf-approve>Approve</button><button type="button" class="ghost" data-pf-change>Ask for changes</button></div>`;
     nameActs(li);
     flow.classList.remove('go');void flow.offsetWidth;flow.classList.add('go');
@@ -212,4 +215,10 @@ export function initPlace(){
   const rp=document.querySelector<HTMLElement>('[data-pf-rp]');if(rp)wirePortal(rp);
   const cp=document.querySelector<HTMLElement>('[data-pf-cp]');if(cp)wireCouncil(cp);
   const dash=document.querySelector<HTMLElement>('.pf-dash');if(dash)wireCounts(dash);
+  /* the embedded feed reports its height, so it shows in full without its own scrollbar */
+  const fr=document.querySelector<HTMLIFrameElement>('[data-pf-embed]');
+  if(fr)addEventListener('message',e=>{if(e.source===fr.contentWindow&&e.data?.placeboard==='height'){fr.style.height=`${+e.data.h||520}px`;fr.style.minHeight='0';}});
+  document.querySelectorAll<HTMLButtonElement>('[data-pf-copy]').forEach(b=>b.addEventListener('click',()=>{
+    const sp=b.querySelector('span');navigator.clipboard?.writeText(b.dataset.pfCopy||'').then(()=>{sp.textContent='Copied';setTimeout(()=>{sp.textContent='Copy code';},2000);},()=>{});
+  }));
 }

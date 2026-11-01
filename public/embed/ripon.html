@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>What's on in Ripon · Placeboard feed</title>
+<style>
+/* The Placeboard feed: what a council or BID drops into its existing website.
+   Everything here is published straight from the board once the council
+   approves it. ?accent=%23hex and ?theme=dark let it match the host site. */
+:root{--accent:#FF2E63;--bg:#fff;--ink:#14171A;--ink-2:#3A4152;--muted:#5D6578;--line:#E2E5EE;--chip:#F3F4F8;--card:#fff}
+:root[data-theme=dark]{--bg:#0A1A3F;--ink:#fff;--ink-2:#D5DBEA;--muted:#A9B3CC;--line:#22356A;--chip:#152C63;--card:#0E2250}
+*{box-sizing:border-box;margin:0}
+body{font:15px/1.5 ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);padding:18px}
+.hd{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+h1{font:400 24px/1.15 Georgia,'Times New Roman',serif;letter-spacing:-.01em}
+.live{font-size:12px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.live i{width:8px;height:8px;border-radius:50%;background:#28C941;box-shadow:0 0 0 0 rgba(40,201,65,.5);animation:p 2s infinite}
+@keyframes p{70%{box-shadow:0 0 0 7px rgba(40,201,65,0)}100%{box-shadow:0 0 0 0 rgba(40,201,65,0)}}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chips button{font:inherit;font-size:13px;font-weight:700;border:0;border-radius:999px;padding:6px 12px;background:var(--chip);color:var(--ink-2);cursor:pointer}
+.chips button[aria-pressed=true]{background:var(--accent);color:#fff}
+ul{list-style:none;padding:0;display:grid;gap:8px}
+li{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
+li[hidden]{display:none}
+.d{text-align:center;border-radius:8px;background:var(--chip);padding:6px 4px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);line-height:1.25}
+.d b{display:block;font-size:13px;color:var(--ink);letter-spacing:0;text-transform:none}
+.k{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.t{font-weight:700;display:block}
+.s{font-size:13px;color:var(--muted)}
+li.new{border-color:var(--accent);animation:in .6s ease}
+li.new .k::after{content:" · just approved";color:var(--muted)}
+@keyframes in{from{opacity:0;transform:translateY(-8px)}}
+.ft{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}
+.ft a{color:inherit}
+@media (prefers-reduced-motion:reduce){.live i,li.new{animation:none}}
+</style>
+</head>
+<body>
+<div class="hd"><h1>What’s on in Ripon</h1><span class="live"><i></i>Live from the Ripon board</span></div>
+<div class="chips" role="group" aria-label="Show">
+  <button type="button" aria-pressed="true" data-f="all">Everything</button><button type="button" aria-pressed="false" data-f="event">Events</button><button type="button" aria-pressed="false" data-f="offer">Offers</button><button type="button" aria-pressed="false" data-f="news">News</button>
+</div>
+<ul id="feed">
+  <li data-type="event"><span class="d">Nov<b>Lights</b></span><div><span class="k">Event</span><span class="t">Christmas lights switch-on</span><span class="s">Market Square</span></div></li>
+  <li data-type="event"><span class="d">Every<b>Thu</b></span><div><span class="k">Event</span><span class="t">Thursday market</span><span class="s">Market Square</span></div></li>
+  <li data-type="event"><span class="d">Nightly<b>9pm</b></span><div><span class="k">Event</span><span class="t">Setting the watch with the Hornblower</span><span class="s">Market Square obelisk</span></div></li>
+  <li data-type="event"><span class="d">Nov<b>Fair</b></span><div><span class="k">Event</span><span class="t">Christmas food and gift fair</span><span class="s">Ripon Cathedral</span></div></li>
+  <li data-type="offer"><span class="d">Until<b>24 Dec</b></span><div><span class="k">Offer</span><span class="t">10% off gifts on Thursdays</span><span class="s">Kirkgate gift shop (example)</span></div></li>
+  <li data-type="news"><span class="d">New<b>Open</b></span><div><span class="k">News</span><span class="t">Now open for winter breakfasts</span><span class="s">Market Square café (example)</span></div></li>
+</ul>
+<div class="ft"><span>Approved by the council before it appears here. Business listings are examples.</span><a href="https://minshallgroup.com/products/placeboard" target="_blank" rel="noopener">Powered by Placeboard</a></div>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search),a=q.get('accent');
+  if(a&&/^#[0-9a-f]{3,8}$/i.test(a))document.documentElement.style.setProperty('--accent',a);
+  if(q.get('theme')==='dark')document.documentElement.dataset.theme='dark';
+  var feed=document.getElementById('feed'),chips=document.querySelectorAll('[data-f]'),f='all';
+  function show(){feed.querySelectorAll('li').forEach(function(li){li.hidden=f!=='all'&&li.dataset.type!==f;});size();}
+  chips.forEach(function(b){b.addEventListener('click',function(){f=b.dataset.f;chips.forEach(function(c){c.setAttribute('aria-pressed',c===b);});show();});});
+  /* tell the host page how tall we are, so the frame never scrolls */
+  function size(){parent!==window&&parent.postMessage({placeboard:'height',h:document.documentElement.scrollHeight},'*');}
+  addEventListener('load',size);new ResizeObserver(size).observe(document.body);
+  /* the direct feed: an approval on the board appears here straight away.
+     On the demo page the board sends it by message; in a live place it comes from the board's API. */
+  var LABEL={event:'Event',offer:'Offer',news:'News',listing:'Listing'};
+  addEventListener('message',function(e){
+    var m=e.data;if(!m||m.placeboard!=='approved'||e.origin!==location.origin)return;
+    var li=document.createElement('li');li.className='new';li.dataset.type=m.type in LABEL?m.type:'event';
+    var d=document.createElement('span');d.className='d';d.innerHTML='Just<b>now</b>';
+    var b=document.createElement('div'),k=document.createElement('span'),t=document.createElement('span'),s=document.createElement('span');
+    k.className='k';k.textContent=LABEL[li.dataset.type];t.className='t';t.textContent=String(m.title||'').slice(0,120);
+    s.className='s';s.textContent=[m.biz,m.when].filter(Boolean).join(' · ').slice(0,160);
+    b.append(k,t,s);li.append(d,b);feed.prepend(li);show();
+  });
+})();
+</script>
+</body>
+</html>
