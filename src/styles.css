@@ -2216,7 +2216,7 @@ body.pp-hot .phead{min-height:0;padding-top:112px;padding-bottom:30px}body.pp-ho
    THE RECORD: home page. A scroll-driven opening in four beats, the three
    fields as full-width bands, and the work as a ledger rather than cards.
    ===================================================================== */
-.open{height:340vh;padding:0;background:var(--navy);color:#fff}
+.open{height:420vh;padding:0;background:var(--navy);color:#fff}
 .open-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
 .open-in{position:relative;z-index:1;height:100%}
 .beat{position:absolute;left:var(--gut);right:var(--gut);top:50%;transform:translateY(-50%);opacity:0;transition:opacity .45s var(--ease),transform .8s var(--ease-out);pointer-events:none}
@@ -2232,6 +2232,26 @@ body.pp-hot .phead{min-height:0;padding-top:112px;padding-bottom:30px}body.pp-ho
 .open.intro .split .w>span,.open.intro .split .dot,.open.intro .rise{animation-play-state:paused}
 .open.intro .open-bar{opacity:0}
 .open.static.intro .beat,html:not(.js) .open.intro .beat{opacity:1}
+.ask-opts{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:clamp(20px,3vw,34px)}
+.ask-opts button{font-family:var(--fd);font-weight:700;font-variation-settings:'wdth' 112;font-size:clamp(19px,2.3vw,32px);line-height:1.2;letter-spacing:-.02em;color:#fff;background:none;border:0;border-bottom:3px solid rgba(255,255,255,.22);padding:2px 0 6px;cursor:pointer;transition:border-color .2s,color .2s;text-align:left}
+.ask-opts button:hover,.ask-opts button:focus-visible{border-color:var(--pink);color:var(--pink);outline:none}
+.ask-opts button.on{border-color:var(--pink)}
+.ask-free{display:flex;align-items:center;margin-top:26px;max-width:560px;border-bottom:2px solid rgba(255,255,255,.3);transition:border-color .2s}
+.ask-free:focus-within{border-color:var(--pink)}
+.ask-free input{flex:1;min-width:0;background:none;border:0;color:#fff;font:inherit;font-size:17px;padding:10px 0;outline:none}
+.ask-free input::placeholder{color:rgba(255,255,255,.5)}
+.ask-free button{background:none;border:0;color:#fff;font-size:24px;line-height:1;cursor:pointer;padding:0 4px 4px;transition:color .2s}
+.ask-free button:hover{color:var(--pink)}
+.ask-free.busy{opacity:.5;pointer-events:none}
+.ask-free[hidden],.ask-opts[hidden]{display:none}
+.ask-note{font-size:14px;color:rgba(255,255,255,.55);margin:18px 0 0;min-height:1.4em}
+.ask.done{opacity:0!important;transition:opacity .35s}
+.open.static .ask,html:not(.js) .ask{display:none}
+.view-chip{margin:0;padding:12px var(--gut);font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--muted);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.view-chip::before{content:"";width:8px;height:8px;background:var(--pink);border-radius:50%;margin-right:4px}
+.view-chip b{color:var(--navy)}
+.view-chip button{font:inherit;color:var(--navy);background:none;border:0;border-bottom:1px solid var(--navy);padding:0;cursor:pointer}
+.view-chip[hidden]{display:none}
 .beat-k{display:flex;align-items:center;gap:12px;font-size:13.5px;font-weight:600;letter-spacing:.02em;color:rgba(255,255,255,.6);margin-bottom:26px}
 .beat-k::before{content:"";width:22px;height:3px;background:var(--pink)}
 .proxies{display:flex;flex-wrap:wrap;gap:.1em .3em;font-family:var(--fd);font-weight:700;font-variation-settings:'wdth' 122;font-size:clamp(34px,6.2vw,112px);line-height:.98;letter-spacing:-.035em;max-width:1180px;margin:0}
@@ -2337,7 +2357,7 @@ html.noscroll{overflow:hidden}
   .windex a{grid-template-columns:1fr;gap:6px}
 }
 @media (max-width:680px){
-  .open{height:300vh}
+  .open{height:380vh}
   .beat-foot{grid-template-columns:1fr}
   .beat-h{font-size:clamp(38px,11.5vw,64px)}
   .beat-h.long{font-size:clamp(28px,8.6vw,44px)}

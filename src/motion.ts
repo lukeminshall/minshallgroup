@@ -11,12 +11,13 @@ let ac:AbortController|null=null;
 const cleanups:(()=>void)[]=[];
 const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
 
+import {initTailor} from './tailor';
 export function initPage(){
   ac?.abort();cleanups.splice(0).forEach(f=>f());
   ac=new AbortController();const sig={signal:ac.signal};
   document.body.dataset.route=location.pathname;
   reveals();heroField(sig);opening(sig);hscroll(sig);hoverPreview(sig);
-  finder();filters();insightFilter();tabs(sig);stickySteps(sig);magnetic(sig);mobileCta(sig);
+  finder();filters();insightFilter();tabs(sig);stickySteps(sig);magnetic(sig);mobileCta(sig);initTailor();
   dispatchEvent(new Event('mg:page'));
 }
 export function initGlobal(){}
@@ -76,19 +77,23 @@ function heroField(sig){
     if(!sec||!words.length||RM||!sec.classList.contains('intro')){sec?.classList.remove('intro');return;}
     try{await document.fonts.load("700 100px 'Archivo Variable'");}catch{}
     if(!sec.classList.contains('intro'))return;
-    sp={tg:words.map(sample),i:0,t0:performance.now()};
+    sp={tg:words.map(sample),i:0,t0:performance.now(),pour:POUR};
     const end=()=>{if(sp)spellDone();};
     addEventListener('scroll',end,{passive:true,once:true,...sig});cv.parentElement.addEventListener('pointerdown',end,{once:true,...sig});
     const t=setTimeout(end,POUR+words.length*(IN+HOLD)+IN+400);cleanups.push(()=>clearTimeout(t));};
   const POUR=1600,IN=480,HOLD=600;                 /* ms: the fall, each travel, each hold */
+  /* the page can ask the dots to spell something later (the visitor's own word), without the pour */
+  sec?.addEventListener('mg:spell',async(e:Event)=>{if(RM||sp)return;const words=((e as CustomEvent).detail||[]).filter(Boolean);if(!words.length)return;
+    try{await document.fonts.load("700 100px 'Archivo Variable'");}catch{}
+    sp={tg:words.map(sample),i:0,t0:performance.now(),pour:0,keep:true};},sig);
   const spellPos=(i:number,now:number,bx:number,by:number)=>{
-    const el=now-sp.t0;
-    if(el<POUR){                                     /* sand: every dot falls in on its own delay, sways, lands, and a ripple runs across */
+    const el=now-sp.t0,pour=sp.pour;
+    if(el<pour){                                     /* sand: every dot falls in on its own delay, sways, lands, and a ripple runs across */
       const d=rnd(i),p=clamp((el-d*700)/800),e=p*p,sy=-40-rnd(i+7)*H*.7;
       const sway=Math.sin(el/180+d*9)*10*(1-e);
       const rip=p>=1?Math.sin(bx*.018-el/95)*9*clamp(1-(el-900)/700):0;
       return [bx+sway,sy+(by-sy)*e+rip,Math.max(1-e,Math.abs(rip)/9*.7)];}
-    const t=el-POUR,W_=IN+HOLD,k=Math.floor(t/W_),ph=t-k*W_,last=sp.tg.length;
+    const t=el-pour,W_=IN+HOLD,k=Math.floor(t/W_),ph=t-k*W_,last=sp.tg.length;
     if(k>=last){                                     /* scatter home */
       const e=1-Math.pow(1-clamp(ph/IN),3);const tg=sp.tg[last-1];
       if(ph>=IN){spellDone();return null;}
@@ -351,7 +356,7 @@ function opening(sig){
   const sec=document.querySelector<HTMLElement>('[data-open]');if(!sec)return;
   if(RM){sec.classList.add('static');sec.classList.remove('intro');return;}
   const beats=[...sec.querySelectorAll<HTMLElement>('.beat')],prox=[...sec.querySelectorAll<HTMLElement>('.proxies span')],bar=sec.querySelector<HTMLElement>('.open-bar i');
-  const cuts=[0,.2,.58,.78];
+  const cuts=[0,.17,.4,.58,.78];
   const upd=()=>{const r=sec.getBoundingClientRect(),run=r.height-innerHeight;const p=clamp(-r.top/Math.max(1,run));
     let cur=0;cuts.forEach((c,i)=>{if(p>=c)cur=i;});
     beats.forEach((b,i)=>{b.classList.toggle('on',i===cur);b.classList.toggle('off',i<cur);b.classList.toggle('pre',i>cur);});

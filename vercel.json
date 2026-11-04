@@ -210,6 +210,9 @@
     "api/contact.js": {
       "maxDuration": 10
     },
+    "api/intent.js": {
+      "maxDuration": 15
+    },
     "api/portal-rescore.js": {
       "maxDuration": 60
     },
