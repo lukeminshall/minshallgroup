@@ -2292,8 +2292,8 @@ html.noscroll{overflow:hidden}
 
 .instr{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 .instr li{border-bottom:1px solid var(--line)}
-.instr a{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr) auto;gap:14px 40px;align-items:center;padding:clamp(26px,3.4vw,46px) 0}
-.in-name{font-family:var(--fd);font-weight:700;font-variation-settings:'wdth' 122;font-size:clamp(38px,5.6vw,92px);line-height:.9;letter-spacing:-.04em;color:#fff;transition:color .3s}
+.instr a{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) auto;gap:14px 48px;align-items:center;padding:clamp(26px,3.4vw,46px) 0}
+.in-name{font-family:var(--fd);font-weight:700;font-variation-settings:'wdth' 118;font-size:clamp(36px,4.6vw,74px);line-height:.9;letter-spacing:-.04em;color:#fff;transition:color .3s}
 .instr a:hover .in-name{color:var(--pink)}
 .in-d{font-size:clamp(16px,1.25vw,18.5px);line-height:1.5;color:rgba(255,255,255,.76);max-width:46ch;margin:0}
 .in-d b{color:#fff;display:block;margin-bottom:4px}
