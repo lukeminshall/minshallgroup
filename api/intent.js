@@ -68,7 +68,7 @@ const SCHEMA = {
     page: { type: ['object', 'null'], additionalProperties: false, required: ['headline', 'intro', 'points', 'close'],
       properties: {
         headline: { type: 'string' }, intro: { type: 'string' }, close: { type: 'string' },
-        points: { type: 'array', minItems: 3, maxItems: 3, items: { type: 'object', additionalProperties: false, required: ['t', 'd'], properties: { t: { type: 'string' }, d: { type: 'string' } } } },
+        points: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['t', 'd'], properties: { t: { type: 'string' }, d: { type: 'string' } } } },
       } },
   },
 };
