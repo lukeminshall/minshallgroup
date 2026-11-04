@@ -38,11 +38,12 @@ P['/']=()=>`
           <div class="actions">${btn('Start a conversation','/contact')}${btn('See the record','#record',true)}</div>
         </div>
       </div>
-      <div class="open-bar"><span aria-hidden="true">Scroll</span><i aria-hidden="true"></i><button type="button" class="play-link" data-play>Or, play a game</button></div>
+      <div class="open-bar"><span aria-hidden="true">Scroll</span><i aria-hidden="true"></i><button type="button" class="play-link" data-play>Need a moment? Play padel</button></div>
       <div class="pong" data-pong hidden>
         <div class="pong-score" aria-live="polite"><b data-ps="you">0</b><span>You</span><em></em><span>Them</span><b data-ps="them">0</b></div>
-        <p class="pong-msg" data-pong-msg>Move the mouse. First to seven.</p>
-        <button type="button" class="pong-x" data-pong-x>Close</button>
+        <div class="pong-hand" data-hand hidden><span>Which hand do you play with?</span><button type="button" data-h="-1">Left</button><button type="button" data-h="1">Right</button></div>
+        <p class="pong-msg" data-pong-msg>Move the mouse to play. First to seven.</p>
+        <div class="pong-btns"><button type="button" class="pong-x" data-hand-switch>Switch hand</button><button type="button" class="pong-x" data-pong-x>Close</button></div>
       </div>
     </div>
   </div>

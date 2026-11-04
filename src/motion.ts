@@ -37,15 +37,15 @@ function reveals(){
    A quiet grid that breathes, and bends towards the cursor in brand pink:
    the number moving. Starts after first paint, pauses off screen and in
    background tabs, and stays still for reduced motion.
-   The same field doubles as a table-tennis table: a discreet "Play a game"
-   on the opening turns the cursor into a bat on the left, an opponent on
-   the right, and the ball becomes the thing the grid bends towards. */
+   The same field doubles as a padel court: a discreet line on the opening
+   turns the cursor into a racket on the left, an opponent on the right, glass
+   all round, and the ball becomes the thing the grid bends towards. */
 function heroField(sig){
   const cv=document.querySelector<HTMLCanvasElement>('[data-field]');if(!cv)return;
   const ctx=cv.getContext('2d');if(!ctx)return;
   let W=0,H=0,dpr=1,pts:number[]=[],gap=34,mx=-9999,my=-9999,tmx=-9999,tmy=-9999,on=false,raf=0,t0=performance.now(),lastF=0,touchT=0;
   const size=()=>{const r=cv.getBoundingClientRect();dpr=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;
-    gap=W<700?24:36;pts=[];for(let y=gap/2;y<H;y+=gap)for(let x=gap/2;x<W;x+=gap)pts.push(x,y);};
+    gap=W<700?20:26;pts=[];for(let y=gap/2;y<H;y+=gap)for(let x=gap/2;x<W;x+=gap)pts.push(x,y);};
 
   const sec=cv.closest<HTMLElement>('[data-open]');
 
@@ -55,19 +55,21 @@ function heroField(sig){
      hold, move to the next word, and finally scatter home as the headline
      cuts in. Scrolling or a touch ends it early. */
   let sp:any=null;                                   /* {tg:number[][],i,t0,on:boolean} */
+  const rnd=(i:number)=>{const x=Math.sin(i*12.9898+78.233)*43758.5453;return x-Math.floor(x);};   /* a stable per-dot random */
   const spellDone=()=>{sp=null;sec?.classList.remove('intro');};
   const sample=(word:string)=>{
     const oc=document.createElement('canvas');oc.width=W;oc.height=H;const o=oc.getContext('2d');
     let fs=Math.min(H*.56,W*1.5/Math.max(4,word.length));o.font=`700 ${fs}px 'Archivo Variable',Archivo,sans-serif`;
     const tw=o.measureText(word).width;if(tw>W*.86){fs*=W*.86/tw;o.font=`700 ${fs}px 'Archivo Variable',Archivo,sans-serif`;}
     o.fillStyle='#fff';o.textAlign='center';o.textBaseline='middle';o.fillText(word,W/2,H*.47);
-    const d=o.getImageData(0,0,W,H).data,hits:number[]=[],st=W<700?4:5;
+    const d=o.getImageData(0,0,W,H).data,hits:number[]=[],st=W<700?3:4;
     for(let y=0;y<H;y+=st)for(let x=0;x<W;x+=st)if(d[(y*W+x)*4+3]>128)hits.push(x,y);
     const n=pts.length/2,m=hits.length/2,tg:number[]=[];
     /* give every grid dot a target; spread the picks evenly through the glyphs */
     const order=[...Array(n).keys()].sort((a,b)=>pts[a*2]-pts[b*2]||pts[a*2+1]-pts[b*2+1]);
-    const hidx=[...Array(m).keys()].sort((a,b)=>hits[a*2]-hits[b*2]||hits[a*2+1]-hits[b*2+1]);
-    order.forEach((pi,k)=>{const h=hidx[Math.floor(k/n*m)];tg[pi*2]=hits[h*2];tg[pi*2+1]=hits[h*2+1];});
+    /* a random pick of the glyph pixels (an ordered pick draws stripes), then matched left to right so no dot travels far */
+    const hidx=[...Array(m).keys()].sort((a,b)=>rnd(a)-rnd(b)).slice(0,Math.min(n,m)).sort((a,b)=>hits[a*2]-hits[b*2]||hits[a*2+1]-hits[b*2+1]);
+    order.forEach((pi,k)=>{const h=hidx[Math.floor(k/n*hidx.length)];tg[pi*2]=hits[h*2];tg[pi*2+1]=hits[h*2+1];});
     return tg;};
   const spell=async()=>{
     const words=(sec?.dataset.spell||'').split('|').filter(Boolean);
@@ -77,66 +79,97 @@ function heroField(sig){
     sp={tg:words.map(sample),i:0,t0:performance.now()};
     const end=()=>{if(sp)spellDone();};
     addEventListener('scroll',end,{passive:true,once:true,...sig});cv.parentElement.addEventListener('pointerdown',end,{once:true,...sig});
-    const t=setTimeout(end,words.length*1050+900);cleanups.push(()=>clearTimeout(t));};
-  const IN=520,HOLD=530;                             /* ms to travel, ms to hold */
+    const t=setTimeout(end,POUR+words.length*(IN+HOLD)+IN+400);cleanups.push(()=>clearTimeout(t));};
+  const POUR=1600,IN=480,HOLD=600;                 /* ms: the fall, each travel, each hold */
   const spellPos=(i:number,now:number,bx:number,by:number)=>{
-    const el=now-sp.t0,W_=IN+HOLD,k=Math.floor(el/W_),ph=el-k*W_;
-    const last=sp.tg.length;
+    const el=now-sp.t0;
+    if(el<POUR){                                     /* sand: every dot falls in on its own delay, sways, lands, and a ripple runs across */
+      const d=rnd(i),p=clamp((el-d*700)/800),e=p*p,sy=-40-rnd(i+7)*H*.7;
+      const sway=Math.sin(el/180+d*9)*10*(1-e);
+      const rip=p>=1?Math.sin(bx*.018-el/95)*9*clamp(1-(el-900)/700):0;
+      return [bx+sway,sy+(by-sy)*e+rip,Math.max(1-e,Math.abs(rip)/9*.7)];}
+    const t=el-POUR,W_=IN+HOLD,k=Math.floor(t/W_),ph=t-k*W_,last=sp.tg.length;
     if(k>=last){                                     /* scatter home */
       const e=1-Math.pow(1-clamp(ph/IN),3);const tg=sp.tg[last-1];
       if(ph>=IN){spellDone();return null;}
-      return [tg[i]+(bx-tg[i])*e,tg[i+1]+(by-tg[i+1])*e,1-e];}
+      return [tg[i]+(bx-tg[i])*e,tg[i+1]+(by-tg[i+1])*e,1.25*(1-e)];}
     const tg=sp.tg[k],fx=k?sp.tg[k-1][i]:bx,fy=k?sp.tg[k-1][i+1]:by;
     const e=1-Math.pow(1-clamp(ph/IN),3);
-    return [fx+(tg[i]-fx)*e,fy+(tg[i+1]-fy)*e,k?1:e];};
+    return [fx+(tg[i]-fx)*e,fy+(tg[i+1]-fy)*e,k?1.25:e*1.25];};
 
   /* ----- the game ----- */
   const ui=sec?.querySelector<HTMLElement>('[data-pong]'),playBtn=sec?.querySelector<HTMLElement>('[data-play]');
   const msg=ui?.querySelector<HTMLElement>('[data-pong-msg]'),sYou=ui?.querySelector<HTMLElement>('[data-ps="you"]'),sThem=ui?.querySelector<HTMLElement>('[data-ps="them"]');
   const TO=7;
-  let g:any=null,keys={up:false,down:false};
+  let g:any=null,keys={up:false,down:false,left:false,right:false};
   const say=(t:string)=>{if(msg)msg.textContent=t;};
   const score=()=>{if(sYou)sYou.textContent=String(g.you);if(sThem)sThem.textContent=String(g.them);};
-  const serve=(dir:number)=>{g.bx=W/2;g.by=H/2;const a=(Math.random()*.7-.35);const s=Math.min(W,H)*.55;g.vx=Math.cos(a)*s*dir;g.vy=Math.sin(a)*s;g.hold=performance.now()+900;};
-  const reset=()=>{g={you:0,them:0,py:H/2,oy:H/2,bx:W/2,by:H/2,vx:0,vy:0,hold:0,over:false,last:performance.now(),trail:[] as number[]};score();serve(Math.random()<.5?1:-1);say(FINE?'Move the mouse. First to seven.':'Drag to move. First to seven.');};
+  /* court geometry: a padel court seen from above, net down the middle, glass all round */
+  const court=()=>{const m=W<700?14:gap*1.2,top=Math.max(m,96);return {l:m,r:W-m,t:top,b:H-m,net:W/2,R:W<700?19:26,HO:W<700?26:38,ball:W<700?5:6};};
+  let hand=Number((()=>{try{return localStorage.getItem('mg-hand');}catch{return '';}})()||0);   /* 1 right, -1 left */
+  const handUi=ui?.querySelector<HTMLElement>('[data-hand]');
+  const serve=(dir:number)=>{const c=court();g.wall=0;g.bx=dir>0?c.l+(c.net-c.l)*.3:c.r-(c.r-c.net)*.3;g.by=c.t+(c.b-c.t)*(.35+Math.random()*.3);
+    const a=(Math.random()*.5-.25),s=Math.min(W,H)*.52;g.vx=Math.cos(a)*s*dir;g.vy=Math.sin(a)*s;g.hold=performance.now()+900;};
+  const reset=()=>{const c=court();g={you:0,them:0,hx:c.l+(c.net-c.l)*.35,hy:H/2,ohx:c.r-(c.r-c.net)*.35,ohy:H/2,bx:W/2,by:H/2,vx:0,vy:0,hold:0,over:false,last:performance.now(),trail:[] as number[],wall:0,cool:0};
+    score();serve(Math.random()<.5?1:-1);say(FINE?'Move the mouse to play. Off the glass still counts. First to seven.':'Drag to play. Off the glass still counts. First to seven.');};
   const startGame=()=>{if(!sec||!ui||g)return;
     scrollTo({top:sec.offsetTop,behavior:RM?'auto':'smooth'});
     sec.classList.add('playing');ui.hidden=false;document.documentElement.classList.add('noscroll');
     /* focusing the link can scroll the overflow-hidden frame; put it back */
     const pin=cv.parentElement;pin.scrollTo(0,0);pin.addEventListener('scroll',()=>pin.scrollTo(0,0),sig);
-    size();reset();start();};
+    size();reset();start();
+    if(handUi){handUi.hidden=!!hand;if(!hand){g.hold=Infinity;say('Everyone needs a moment. Which hand do you play with?');}}};
   const endGame=()=>{if(!g)return;g=null;sec.classList.remove('playing');ui.hidden=true;document.documentElement.classList.remove('noscroll');};
+  const setHand=(h:number)=>{hand=h;try{localStorage.setItem('mg-hand',String(h));}catch{}if(handUi)handUi.hidden=true;if(g&&g.hold===Infinity){g.hold=performance.now()+700;say(FINE?'Move the mouse to play. Off the glass still counts. First to seven.':'Drag to play. Off the glass still counts. First to seven.');}};
+  const head=(hx:number,hy:number,side:number)=>[hx,hy+(hand||1)*side*court().HO];   /* racket head sits on the hand side; the opponent mirrors you */
   const step=(now:number)=>{
     const dt=Math.min(.04,(now-g.last)/1000);g.last=now;
-    const ph=H<600?84:116,pw=8,px=gap*1.6,ox=W-gap*1.6,r=5,spd=H*1.1;
-    /* your bat follows the pointer, or the arrow keys */
-    if(tmy>-999)g.py+=(tmy-g.py)*Math.min(1,dt*18);
-    if(keys.up)g.py-=spd*dt;if(keys.down)g.py+=spd*dt;
-    g.py=clamp(g.py,ph/2,H-ph/2);
+    const c=court(),spd=Math.min(W,H)*1.2;
+    /* your hand follows the pointer, or the arrow keys, anywhere in your half */
+    if(tmx>-999){g.hx+=(tmx-g.hx)*Math.min(1,dt*18);g.hy+=(tmy-g.hy)*Math.min(1,dt*18);}
+    if(keys.up)g.hy-=spd*dt;if(keys.down)g.hy+=spd*dt;if(keys.left)g.hx-=spd*dt;if(keys.right)g.hx+=spd*dt;
+    g.hx=clamp(g.hx,c.l+c.R,c.net-c.R-6);g.hy=clamp(g.hy,c.t+c.R,c.b-c.R);
     if(g.over)return;
     /* the opponent reads the ball late and moves a touch slower than you can */
-    const want=g.vx>0&&g.bx>W*.3?g.by+Math.sin(now/700)*18:H/2;
-    g.oy+=clamp(want-g.oy,-spd*.72*dt,spd*.72*dt);g.oy=clamp(g.oy,ph/2,H-ph/2);
+    const theirs=g.bx>c.net||g.vx>0;
+    const wx=theirs?clamp(g.bx+(g.vx>0?60:-30),c.net+c.R+6,c.r-c.R):c.r-(c.r-c.net)*.35,wy=theirs?g.by-(hand||1)*-1*c.HO+Math.sin(now/600)*22:H/2;
+    g.ohx+=clamp(wx-g.ohx,-spd*.6*dt,spd*.6*dt);g.ohy+=clamp(wy-g.ohy,-spd*.6*dt,spd*.6*dt);g.ohy=clamp(g.ohy,c.t+c.R,c.b-c.R);
     if(now<g.hold)return;
-    g.bx+=g.vx*dt;g.by+=g.vy*dt;
-    g.trail.push(g.bx,g.by);if(g.trail.length>24)g.trail.splice(0,2);
-    if(g.by<r){g.by=r;g.vy=Math.abs(g.vy);}if(g.by>H-r){g.by=H-r;g.vy=-Math.abs(g.vy);}
-    const hit=(x:number,y:number,dir:number)=>{if(Math.abs(g.by-y)>ph/2+r)return false;
-      const rel=clamp((g.by-y)/(ph/2),-1,1),s=Math.min(Math.min(W,H)*1.4,Math.hypot(g.vx,g.vy)*1.06);
-      const a=rel*.95;g.vx=Math.cos(a)*s*dir;g.vy=Math.sin(a)*s;g.bx=x+(pw/2+r+1)*dir;return true;};
-    if(g.vx<0&&g.bx-r<=px+pw/2&&g.bx-r>px-pw)hit(px,g.py,1);
-    if(g.vx>0&&g.bx+r>=ox-pw/2&&g.bx+r<ox+pw)hit(ox,g.oy,-1);
-    if(g.bx<-30||g.bx>W+30){const you=g.bx>W;if(you)g.you++;else g.them++;score();g.trail=[];
+    const px=g.bx;g.bx+=g.vx*dt;g.by+=g.vy*dt;
+    g.trail.push(g.bx,g.by);if(g.trail.length>28)g.trail.splice(0,2);
+    const r=c.ball;
+    if(g.by<c.t+r){g.by=c.t+r;g.vy=Math.abs(g.vy);}if(g.by>c.b-r){g.by=c.b-r;g.vy=-Math.abs(g.vy);}
+    /* a strike: the ball meets the racket head, and goes the other way */
+    const strike=(hx:number,hy:number,side:number,dir:number)=>{if(now<g.cool)return false;const [cx,cy]=head(hx,hy,side);const dx=g.bx-cx,dy=g.by-cy;
+      if(dx*dx+dy*dy>(c.R+r)*(c.R+r))return false;
+      const s=Math.min(Math.min(W,H)*1.5,Math.hypot(g.vx,g.vy)*1.06+40),a=clamp(dy/c.R,-1,1)*.8;
+      g.vx=Math.cos(a)*s*dir;g.vy=Math.sin(a)*s;g.bx=cx+(c.R+r+1)*dir;g.wall=0;g.cool=now+220;return true;};
+    if(g.bx<c.net)strike(g.hx,g.hy,1,1);else strike(g.ohx,g.ohy,-1,-1);
+    /* the glass: one bounce off your back wall is live, a second is the point */
+    const point=(you:boolean)=>{if(you)g.you++;else g.them++;score();g.trail=[];
       if(g.you>=TO||g.them>=TO){g.over=true;say(`${you?'You win':'They win'}. ${FINE?'Click':'Tap'} to play again.`);}
-      else{say(you?'Your point.':'Their point.');serve(you?-1:1);}}
+      else{say(you?'Your point.':'Their point.');serve(you?-1:1);}};
+    if(g.bx<c.l+r){if(g.wall===-1)return point(false);g.wall=-1;g.bx=c.l+r;g.vx=Math.abs(g.vx)*.8;g.vy*=.85;}
+    if(g.bx>c.r-r){if(g.wall===1)return point(true);g.wall=1;g.bx=c.r-r;g.vx=-Math.abs(g.vx)*.8;g.vy*=.85;}
+    /* back over the net untouched after your glass: their point */
+    if(px<c.net&&g.bx>=c.net&&g.wall===-1)return point(false);
+    if(px>c.net&&g.bx<=c.net&&g.wall===1)return point(true);
   };
+  const racket=(hx:number,hy:number,side:number,a:number)=>{const c=court(),[cx,cy]=head(hx,hy,side);
+    ctx.strokeStyle=`rgba(255,255,255,${a})`;ctx.lineWidth=3;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(hx,hy);ctx.lineTo(cx,cy-Math.sign(cy-hy)*c.R*.9);ctx.stroke();
+    ctx.beginPath();ctx.arc(cx,cy,c.R,0,Math.PI*2);ctx.stroke();
+    ctx.fillStyle=`rgba(255,255,255,${a*.55})`;for(let y=-c.R+8;y<c.R;y+=8)for(let x=-c.R+8;x<c.R;x+=8)if(x*x+y*y<(c.R-6)*(c.R-6))ctx.fillRect(cx+x-1,cy+y-1,2,2);};
   const drawGame=()=>{
-    const ph=H<600?84:116,pw=8,px=gap*1.6,ox=W-gap*1.6;
-    ctx.fillStyle='rgba(255,255,255,.18)';for(let y=10;y<H;y+=22)ctx.fillRect(W/2-1,y,2,10);
-    ctx.fillStyle='#fff';ctx.fillRect(px-pw/2,g.py-ph/2,pw,ph);
-    ctx.fillStyle='rgba(255,255,255,.55)';ctx.fillRect(ox-pw/2,g.oy-ph/2,pw,ph);
-    for(let i=0;i<g.trail.length;i+=2){const k=i/g.trail.length;ctx.fillStyle=`rgba(255,46,99,${k*.35})`;const s=4+k*5;ctx.fillRect(g.trail[i]-s/2,g.trail[i+1]-s/2,s,s);}
-    if(!g.over){ctx.fillStyle='#ff2e63';ctx.fillRect(g.bx-6,g.by-6,12,12);}
+    const c=court();
+    ctx.strokeStyle='rgba(255,255,255,.22)';ctx.lineWidth=1.5;ctx.strokeRect(c.l,c.t,c.r-c.l,c.b-c.t);
+    ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=6;ctx.strokeRect(c.l-4,c.t-4,c.r-c.l+8,c.b-c.t+8);      /* the glass */
+    ctx.strokeStyle='rgba(255,255,255,.22)';ctx.lineWidth=1.5;const sl=(c.net-c.l)*.3;
+    ctx.beginPath();ctx.moveTo(c.l+sl,c.t);ctx.lineTo(c.l+sl,c.b);ctx.moveTo(c.r-sl,c.t);ctx.lineTo(c.r-sl,c.b);ctx.moveTo(c.l+sl,H/2);ctx.lineTo(c.r-sl,H/2);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.3)';for(let y=c.t;y<c.b;y+=14)ctx.fillRect(c.net-1,y,2,8);                         /* the net */
+    racket(g.hx,g.hy,1,.95);racket(g.ohx,g.ohy,-1,.5);
+    for(let i=0;i<g.trail.length;i+=2){const k=i/g.trail.length;ctx.fillStyle=`rgba(255,46,99,${k*.35})`;const s=3+k*5;ctx.fillRect(g.trail[i]-s/2,g.trail[i+1]-s/2,s,s);}
+    if(!g.over){ctx.fillStyle='#ff2e63';ctx.beginPath();ctx.arc(g.bx,g.by,c.ball,0,Math.PI*2);ctx.fill();}
   };
 
   const draw=(now:number)=>{
@@ -153,7 +186,7 @@ function heroField(sig){
       let x=bx,y=by+w*5,dx=x-mx,dy=y-my,d=Math.sqrt(dx*dx+dy*dy),k=0;
       if(d<R){k=1-d/R;k*=k;x-=dx*k*.45;y-=dy*k*.45;}
       if(sp){const s=spellPos(i,now,x,y);if(s){x=s[0];y=s[1];k=Math.max(k,s[2]);}}
-      const r=.9+Math.max(0,w)*.7+k*2.6;
+      const r=.9+Math.max(0,w)*.7+k*(sp?3.4:2.6);
       ctx.fillStyle=k>.02?`rgba(255,46,99,${.25+k*.75})`:`rgba(255,255,255,${.09+Math.max(0,w)*.1})`;
       ctx.fillRect(x-r/2,y-r/2,r,r);
     }
@@ -166,16 +199,18 @@ function heroField(sig){
     const io=new IntersectionObserver(([e])=>e.isIntersecting&&!document.hidden?start():stop());io.observe(cv);
     cleanups.push(()=>{io.disconnect();stop();endGame();});
     document.addEventListener('visibilitychange',()=>document.hidden?stop():start(),sig);
-    addEventListener('resize',()=>{size();if(g){g.py=clamp(g.py,0,H);g.oy=clamp(g.oy,0,H);}},sig);
+    addEventListener('resize',()=>{size();},sig);
     addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect();tmx=e.clientX-r.left;tmy=e.clientY-r.top;if(mx<-999){mx=tmx;my=tmy;}},{passive:true,...sig});
     document.addEventListener('pointerleave',()=>{if(!g)tmx=tmy=-9999;},sig);
-    cv.parentElement.addEventListener('pointerdown',e=>{if(g){if(g.over)reset();return;}if(e.pointerType==='mouse')return;const r=cv.getBoundingClientRect();tmx=mx=e.clientX-r.left;tmy=my=e.clientY-r.top;touchT=performance.now();},{passive:true,...sig});
+    cv.parentElement.addEventListener('pointerdown',e=>{if(g){if(g.over&&!(e.target as HTMLElement).closest('button'))reset();return;}if(e.pointerType==='mouse')return;const r=cv.getBoundingClientRect();tmx=mx=e.clientX-r.left;tmy=my=e.clientY-r.top;touchT=performance.now();},{passive:true,...sig});
     playBtn?.addEventListener('click',startGame,sig);
     ui?.querySelector('[data-pong-x]')?.addEventListener('click',endGame,sig);
-    addEventListener('keydown',e=>{if(!g)return;if(e.key==='Escape')endGame();if(e.key==='ArrowUp'){keys.up=true;e.preventDefault();}if(e.key==='ArrowDown'){keys.down=true;e.preventDefault();}},sig);
-    addEventListener('keyup',e=>{if(e.key==='ArrowUp')keys.up=false;if(e.key==='ArrowDown')keys.down=false;},sig);};
+    ui?.querySelectorAll<HTMLElement>('[data-h]').forEach(b=>b.addEventListener('click',()=>setHand(Number(b.dataset.h)),sig));
+    ui?.querySelector('[data-hand-switch]')?.addEventListener('click',()=>{if(handUi){handUi.hidden=false;}},sig);
+    addEventListener('keydown',e=>{if(!g)return;if(e.key==='Escape')endGame();if(e.key==='ArrowUp'){keys.up=true;e.preventDefault();}if(e.key==='ArrowDown'){keys.down=true;e.preventDefault();}if(e.key==='ArrowLeft'){keys.left=true;e.preventDefault();}if(e.key==='ArrowRight'){keys.right=true;e.preventDefault();}},sig);
+    addEventListener('keyup',e=>{if(e.key==='ArrowUp')keys.up=false;if(e.key==='ArrowDown')keys.down=false;if(e.key==='ArrowLeft')keys.left=false;if(e.key==='ArrowRight')keys.right=false;},sig);};
   const ric=(window as any).requestIdleCallback||((f)=>setTimeout(f,300));
-  const go=()=>ric(boot,{timeout:2500});let id:any;if(document.readyState==='complete')id=go();else addEventListener('load',()=>{id=go();},{once:true,...sig});cleanups.push(()=>{(window as any).cancelIdleCallback?.(id);clearTimeout(id);});
+  const go=()=>ric(boot,{timeout:sec?250:2500});   /* the opening should not wait for idle */let id:any;if(document.readyState==='complete')id=go();else addEventListener('load',()=>{id=go();},{once:true,...sig});cleanups.push(()=>{(window as any).cancelIdleCallback?.(id);clearTimeout(id);});
 }
 
 /* ---------- pinned horizontal capability panels ---------- */

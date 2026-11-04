@@ -2257,7 +2257,13 @@ html.noscroll{overflow:hidden}
 .pong-score span{font-family:var(--f);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5);font-variation-settings:normal}
 .pong-score em{width:3px;height:.7em;background:var(--pink)}
 .pong-msg{position:absolute;left:var(--gut);bottom:28px;margin:0;font-size:12.5px;font-weight:600;letter-spacing:.03em;color:rgba(255,255,255,.6)}
-.pong-x{position:absolute;right:var(--gut);bottom:20px;pointer-events:auto;font:inherit;font-size:12.5px;font-weight:600;letter-spacing:.03em;color:#fff;background:none;border:1px solid rgba(255,255,255,.3);padding:7px 14px;cursor:pointer;transition:border-color .2s,color .2s}
+.pong-btns{position:absolute;right:var(--gut);bottom:20px;display:flex;gap:8px}
+.pong-hand{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:18px;pointer-events:auto;font-family:var(--fd);font-weight:700;font-variation-settings:'wdth' 112;font-size:clamp(18px,2vw,26px);letter-spacing:-.02em;color:#fff;flex-wrap:wrap;justify-content:center;text-align:center;padding:0 var(--gut)}
+.pong-hand[hidden]{display:none}
+.pong-hand span{display:block;width:100%}
+.pong-hand button{margin:0 6px;font:inherit;color:#fff;background:none;border:1.5px solid rgba(255,255,255,.6);padding:10px 22px;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.pong-hand button:hover,.pong-hand button:focus-visible{background:#fff;color:var(--navy);border-color:#fff;outline:none}
+.pong-x{pointer-events:auto;font:inherit;font-size:12.5px;font-weight:600;letter-spacing:.03em;color:#fff;background:none;border:1px solid rgba(255,255,255,.3);padding:7px 14px;cursor:pointer;transition:border-color .2s,color .2s}
 .pong-x:hover,.pong-x:focus-visible{border-color:var(--pink);color:var(--pink);outline:none}
 .open.static .pong,html:not(.js) .pong,.open.static .play-link,html:not(.js) .play-link{display:none}
 /* no JS, or reduced motion: every beat stacked and visible */
