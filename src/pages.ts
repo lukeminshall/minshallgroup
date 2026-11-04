@@ -39,7 +39,8 @@ P['/']=()=>`
         </div>
       </div>
       <div class="beat pre ask" data-ask>
-        <p class="beat-k">One question, so the rest of this page is about you</p>
+        <p class="beat-k">A short conversation, so the rest of this page is about you</p>
+        <ol class="ask-log" data-ask-log hidden></ol>
         <p class="beat-h long" data-ask-q>What brings you here?</p>
         <div class="ask-opts" data-ask-step="1">
           <button type="button" data-sector="health">Health</button>
@@ -47,14 +48,9 @@ P['/']=()=>`
           <button type="button" data-sector="public">A place or community</button>
           <button type="button" data-sector="">Just looking</button>
         </div>
-        <form class="ask-free" data-ask-free novalidate><label class="sr" for="ask-free">Or say it in your own words</label><input id="ask-free" type="text" maxlength="200" autocomplete="off" placeholder="Or say it in your own words"><button type="submit" aria-label="Send">→</button></form>
-        <div class="ask-opts" data-ask-step="2" hidden>
-          <button type="button" data-job="fund">make the case for funding</button>
-          <button type="button" data-job="prove">prove something worked</button>
-          <button type="button" data-job="build">build a tool or service</button>
-          <button type="button" data-job="who">find out who you are</button>
-        </div>
+        <form class="ask-free" data-ask-free novalidate><label class="sr" for="ask-free">Or say it in your own words</label><input id="ask-free" type="text" maxlength="400" autocomplete="off" placeholder="Or say it in your own words"><button type="submit" aria-label="Send">→</button></form>
         <p class="ask-note" data-ask-note></p>
+        <p class="ask-dots" aria-hidden="true"><i></i><i></i><i></i></p>
       </div>
       <div class="open-bar"><span aria-hidden="true">Scroll</span><i aria-hidden="true"></i><button type="button" class="play-link" data-play>Need a moment? Play padel</button></div>
       <div class="pong" data-pong hidden>
@@ -67,6 +63,15 @@ P['/']=()=>`
   </div>
 </section>
 
+<section class="yours dark" id="yours" data-yours hidden><div class="grain" aria-hidden="true"></div><div class="wrap">
+  <span class="eyebrow">A page for you</span>
+  <h2 class="h2" data-y-h></h2>
+  <p class="lede" data-y-intro></p>
+  <ul class="method yours-pts" data-y-pts></ul>
+  <p class="yours-close" data-y-close></p>
+  <div class="yours-from" data-y-from hidden><span class="eyebrow">From this site, for you</span><ul class="yfrom" data-y-list></ul></div>
+  <div class="actions">${btn('Have a proper conversation','/contact')}<button type="button" class="tlink yours-edit" data-y-edit>Change my answers</button></div>
+</div></section>
 <p class="view-chip" data-chip hidden>Showing the <b></b> view · <button type="button" data-chip-change>change</button></p>
 <div class="with" role="region" aria-label="Clients"><div class="wrap"><span class="with-l">Working with</span>${CLIENTS.map(c=>`<span>${c}</span>`).join('')}</div></div>
 
