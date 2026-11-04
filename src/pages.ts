@@ -73,7 +73,6 @@ P['/']=()=>`
   <div class="actions">${btn('Have a proper conversation','/contact')}<button type="button" class="tlink yours-edit" data-y-edit>Change my answers</button></div>
 </div></section>
 <p class="view-chip" data-chip hidden>Showing the <b></b> view · <button type="button" data-chip-change>change</button></p>
-<div class="with" role="region" aria-label="Clients"><div class="wrap"><span class="with-l">Working with</span>${CLIENTS.map(c=>`<span>${c}</span>`).join('')}</div></div>
 
 <section class="fields" id="fields">${FIELDS.map(f=>`
   <div class="field ${f.tone}" data-field="${f.id}"><div class="wrap">

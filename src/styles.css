@@ -2326,10 +2326,6 @@ html.noscroll{overflow:hidden}
 .open.static .proxies span,html:not(.js) .proxies span{opacity:1}
 .open.static .open-bar,html:not(.js) .open-bar{display:none}
 
-.with{padding:32px 0;border-bottom:1px solid var(--line)}
-.with .wrap{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 26px}
-.with-l{font-size:13.5px;font-weight:600;color:var(--muted);margin-right:6px}
-.with span{font-family:var(--fd);font-weight:700;font-variation-settings:'wdth' 108;font-size:clamp(16px,1.35vw,20px);letter-spacing:-.02em;color:var(--navy)}
 
 .fields{padding:0}
 .field{padding:clamp(70px,9vw,140px) 0;position:relative}
