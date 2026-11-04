@@ -194,6 +194,160 @@ export const PRINCIPLES=[
    Short, opinionated pieces. Add one by appending to this array: it gets
    its own page at /insights/<slug>, a card on /insights and the sitemap. */
 export const INSIGHTS:any[]=[
+{slug:'poor-health-is-an-economic-measure-north-east-2026',tag:'Research',cap:'strategy',date:'2026-11-04',mins:6,
+ t:'Poor health is an economic measure: what the North East shows',
+ d:'Economic inactivity, productivity and local growth are usually treated as economic problems. In the North East of England, the data says they are health outcomes in disguise.',
+ stats:[
+  {n:'25.5%',l:'People aged 16 to 64 in the North East economically inactive, June to August 2026, the highest of any English region (ONS)'},
+  {n:'57.0 years',l:'Healthy life expectancy at birth for males in the North East, 2022 to 2024, against 60.9 for England (ONS)'},
+  {n:'9.5%',l:'Working-age population in the North East inactive because of ill health, 2024, against 4.5% in the South East (Health for Wealth 2025)'},
+  {n:'36%',l:'Share of the GVA gap between the North and the rest of England attributed to poorer health (Health for Wealth 2025)'}
+ ],
+ charts:[
+  {t:'Economic inactivity rate, people aged 16 to 64, June to August 2026',unit:'%',src:'ONS, Labour market in the regions of the UK: October 2026',bars:[
+   {l:'North East',v:25.5},
+   {l:'UK',v:20.9},
+   {l:'England',v:20.4}
+  ]},
+  {t:'Healthy life expectancy at birth, 2022 to 2024',unit:'years',src:'ONS, Healthy life expectancy, UK: between 2011 to 2013 and 2022 to 2024',bars:[
+   {l:'North East, males',v:57.0},
+   {l:'England, males',v:60.9},
+   {l:'North East, females',v:56.9},
+   {l:'England, females',v:61.3}
+  ]}
+ ],
+ body:[
+  'The North East of England has the highest rate of economic inactivity of any English region. In June to August 2026, 25.5% of people aged 16 to 64 were neither in work nor looking for it, according to the Office for National Statistics. The rate for England was 20.4% and for the UK 20.9%. The North East’s employment rate, 70.5%, was the lowest of any UK region.',
+  '[[chart:0]]',
+  'Figures like these are normally filed under the economy. They are discussed alongside skills, transport and investment, and handed to the people who look after those things. We think they belong at least as much to health. The North East shows why more clearly than anywhere else in England.',
+  '## Start with how long people stay well',
+  'The ONS publishes healthy life expectancy: the number of years a person can expect to live in good health. For 2022 to 2024, a boy born in the North East could expect 57.0 years in good health and a girl 56.9 years. For England the figures were 60.9 and 61.3. The North East has had the lowest healthy life expectancy of any English region in every period since the series began in 2011 to 2013.',
+  '[[chart:1]]',
+  'A healthy life expectancy of 57 means that, on average, poor health arrives while people are still of working age. That is the point at which a health problem becomes an employment problem, and then an income problem for a household and a growth problem for a place.',
+  '## Then look at why people are out of work',
+  'The Annual Population Survey for July 2025 to June 2026, published through Nomis, counts 145,900 people in the North East who are economically inactive because of long-term sickness. That is 36.3% of everyone inactive in the region, against 29.2% across the UK. The survey uses a different sample from the monthly labour market figures, so its headline inactivity rate is a little different, but the pattern is the same.',
+  'Health for Wealth 2025, published in November 2025 by Health Equity North and the Northern Health Science Alliance, puts it more starkly. In 2024, 9.5% of the North East’s working-age population was economically inactive because of ill health. That was the highest rate of any region, and more than double the 4.5% in the South East.',
+  'Nationally, the ONS counts around 2.7 million people aged 16 to 64 who are inactive because of long-term sickness. The government’s Get Britain Working white paper, published in November 2024, set a long-term ambition of an 80% employment rate. The North East, with the lowest employment rate in the UK, is the region furthest from it.',
+  '## Productivity carries the same signature',
+  'The ONS measures productivity as output per hour worked. In 2023 the North East was 14.6% below the UK average. It sits in a cluster of regions around 15% below, with Wales, the West Midlands and the East Midlands.',
+  'Health for Wealth 2025 tested how much of the North’s economic gap with the rest of England is explained by health. It found that 36% of the gap in gross value added can be attributed to poorer health, up from 30% in the 2018 edition. It found that 22% of the employment gap is attributable to poorer health, and estimated that the health gap costs the UK economy £18.4 billion a year. For the North East alone, it put the potential gain from better population mental health, in output and household income, at about £6.6 billion.',
+  'Two cautions. “The North” in that report means three regions together, the North East, the North West and Yorkshire and the Humber, so the 36% is not a North East figure on its own. And the authors note that the effect they find runs through mortality; the effect of morbidity alone was not statistically significant. These are modelled findings, not a ledger. They are still the best published estimate we have, and they point the same way as every other number here.',
+  '## One problem, measured in three places',
+  'Put the figures side by side. The region where people lose good health earliest is the region with the highest inactivity, a larger share of inactivity due to sickness than the UK as a whole, and productivity well below the national average. These are not three problems with three owners. They are largely one problem, showing up in three sets of statistics.',
+  'That changes how a health service should be judged. A musculoskeletal service that gets someone back to work, a mental health service that helps someone keep their job, a rehabilitation programme that adds healthy years: each changes the local economy as well as the patient’s life. Yet services like these are usually measured on activity, waiting times and cost per contact. The economic return, when anyone counts it, lands in someone else’s budget and someone else’s report.',
+  'What this means: in a region like the North East, a service that changes health is also an economic programme. It should be designed, funded and measured as one.',
+  '## What we would count',
+  'We would not ask a clinic to report its effect on regional GVA. The line from one service to regional output is too long and too noisy. But there are measures in between that sit close to the service and close to the economy. Did the person stay in work, return to work or move closer to it? Did their pain, mobility or mood improve, measured before and after, in ways that predict those things? Did they need fewer sick days or fewer GP appointments? Are the gains reaching the neighbourhoods with the lowest healthy life expectancy, or only the ones that were already doing well?',
+  'Most of that data already exists somewhere: in outcome measures clinicians collect, in employment support records, in local authority and NHS data. What is missing is the decision, made at the start, to join it up and to count it.',
+  'The ONS reports inactivity every month and healthy life expectancy every year. In the North East they tell the same story. The test we apply to our own work is whether anyone’s life changed. In a region where poor health arrives before working life ends, a service that can show it changed lives is also changing the economy, and that is what it should be measured on.'
+ ],
+ sources:[
+  {t:'ONS, Labour market in the regions of the UK: October 2026',u:'https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/bulletins/regionallabourmarket/october2026'},
+  {t:'ONS, Healthy life expectancy, UK: between 2011 to 2013 and 2022 to 2024, February 2026',u:'https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/healthandlifeexpectancies/bulletins/healthstatelifeexpectanciesuk/between2011to2013and2022to2024'},
+  {t:'Nomis, Labour Market Profile: North East (Annual Population Survey, July 2025 to June 2026)',u:'https://www.nomisweb.co.uk/reports/lmp/gor/2013265921/report.aspx'},
+  {t:'Health Equity North and Northern Health Science Alliance, Health for Wealth 2025, November 2025',u:'https://www.thenhsa.co.uk/app/uploads/2025/11/HEALTH-FOR-WEALTH-2025-10.pdf'},
+  {t:'ONS, Economic inactivity by reason: long-term sick, aged 16 to 64 (LF69), October 2026',u:'https://www.ons.gov.uk/employmentandlabourmarket/peoplenotinwork/economicinactivity/timeseries/lf69/lms'},
+  {t:'DWP, Get Britain Working white paper, November 2024',u:'https://www.gov.uk/government/publications/get-britain-working-white-paper/get-britain-working-white-paper'},
+  {t:'ONS, Regional and subregional labour productivity, UK: 2023',u:'https://www.ons.gov.uk/economy/economicoutputandproductivity/productivitymeasures/bulletins/regionalandsubregionallabourproductivityuk/2023'}
+ ]},
+{slug:'participation-is-the-input-health-is-the-output',tag:'Research',cap:'strategy',date:'2026-11-04',mins:6,
+ t:'Participation is the input. Health is the output.',
+ d:'Physical activity is one of the best-evidenced ways to change health. Most sport and activity programmes still report how many people took part, not what changed for them.',
+ stats:[
+  {n:'Up to 40%',l:'Lower risk of type 2 diabetes from regular physical activity (UK Chief Medical Officers’ guidelines infographic)'},
+  {n:'1 in 6',l:'Deaths in the UK associated with physical inactivity (OHID, Physical activity: applying All Our Health)'},
+  {n:'£7.4bn',l:'Estimated annual cost of physical inactivity to the UK, including £0.9bn to the NHS (OHID)'},
+  {n:'15.7%',l:'Premature deaths estimated to be averted if every insufficiently active person reached about 150 minutes of moderate activity a week (Garcia et al., BJSM, 2023)'}
+ ],
+ charts:[
+  {t:'How much regular activity can reduce the risk of illness',unit:'% lower risk, up to',src:'UK Chief Medical Officers’ physical activity guidelines, adults and older adults infographic',bars:[
+   {l:'Type 2 diabetes',v:40},
+   {l:'Cardiovascular disease',v:35},
+   {l:'Depression',v:30},
+   {l:'Falls',v:30},
+   {l:'Joint and back pain',v:25},
+   {l:'Colon and breast cancers',v:20}
+  ]}
+ ],
+ body:[
+  'Sport and activity programmes are good at counting people. Attendances, sessions, memberships and participants are reported in every funding return. Those numbers matter, but they describe the input. The reason public money goes into activity is what it does to health, and that is the part most programmes are not measured on.',
+  '## The evidence is not in doubt',
+  'The UK Chief Medical Officers’ physical activity guidelines, published in 2019, say adults should aim for at least 150 minutes of moderate activity a week, or 75 minutes of vigorous activity, with muscle-strengthening activity on at least two days. The infographic that accompanies them sets out what regular activity can do: up to 40% lower risk of type 2 diabetes, up to 35% lower risk of cardiovascular disease, up to 30% lower risk of depression and of falls, up to 25% less joint and back pain, and up to 20% lower risk of colon and breast cancers.',
+  '[[chart:0]]',
+  'The Office for Health Improvement and Disparities says physical activity can help prevent and manage over 20 chronic conditions and diseases. It says physical inactivity is associated with 1 in 6 deaths in the UK and is estimated to cost the UK £7.4 billion a year, including £0.9 billion to the NHS.',
+  'The problem is not confined to the UK. The World Health Organization reported in 2024 that 31% of adults worldwide, about 1.8 billion people, did not meet recommended activity levels, and that this is projected to rise to 35% by 2030.',
+  '## Most of the gain comes from the first steps',
+  'The relationship between activity and health is not a straight line. The Chief Medical Officers say the greatest health benefits come from moving from inactive to fairly active, with benefit continuing to rise up to the recommended amount.',
+  'A dose-response meta-analysis published in the British Journal of Sports Medicine in 2023, drawing on 94 cohorts and more than 30 million people, found the same shape. Differences in risk were greatest at the low end, between no activity and around 150 minutes of moderate activity a week. At that level, the relative risk of death from any cause was 0.69, roughly 31% lower than for people doing nothing. The authors estimated that 15.7% of premature deaths would have been averted if every insufficiently active person had reached it.',
+  'What this means: the health return is concentrated among the people who do least. A programme that adds sessions for people who are already active can raise its participation figures and change very little. A programme that moves inactive people to some regular activity can change a great deal, even if its numbers look smaller.',
+  '## The NHS already treats activity as treatment',
+  'NICE guidance puts exercise inside clinical care. For osteoarthritis, NICE says to offer therapeutic exercise tailored to the person to everyone with the condition. For low back pain, it recommends considering a group exercise programme, and says manual therapy should only be used as part of a treatment package that includes exercise. For less severe depression, group exercise appears in NICE’s table of treatment options, listed ahead of antidepressant medication in the committee’s ordering by clinical and cost effectiveness.',
+  'These are health interventions, judged by health outcomes. When activity is delivered by the NHS, nobody would accept attendance as the measure of success. When the same activity is delivered by a leisure trust, a club or a community organisation, attendance is often all that is asked for.',
+  '## NICE has asked for outcome data for over a decade',
+  'NICE guidance on exercise referral schemes, published in 2014, is direct. It says commissioners should not fund exercise referral schemes for people who are sedentary or inactive but otherwise apparently healthy. For people with existing health conditions or risk factors, it says schemes should only be funded if they collect data that meets the essential criteria of the Standard Evaluation Framework: baseline data, follow-up data and process evaluation. It asks for that data to be made available for analysis, monitoring and research.',
+  'In practice, that has been hard to achieve. A study in BMC Public Health in 2017 reviewed the evaluations of a set of walking programmes against the same framework and found that its reporting requirements were generally not followed well. The authors argued for checking whether a programme can be evaluated before it starts, not after.',
+  '## Measuring the output',
+  'Measuring health does not mean every community programme needs a clinical trial. It means deciding at the start what change the programme is meant to cause, for whom, and recording it before and after. How many participants were inactive when they joined, and how many are regularly active six months later? Did pain, mobility, mood or wellbeing change on a validated measure? Where people were referred by a clinician, did blood pressure, weight or blood sugar move? Did anyone return to work or need fewer appointments?',
+  'Who takes part matters as much as what changes. Because the health gain is largest for people who start from nothing, the share of participants who were inactive at the start is one of the most useful numbers a programme can report. It is also one of the least often collected.',
+  'None of this makes participation unimportant. You cannot change health through activity if nobody comes. But participation is the means, and health is the end. Funders, commissioners and providers should agree which one they are paying for.',
+  'Our own test for any service is whether anyone’s life changed. For sport and physical activity the evidence says it can, and by a lot. The job now is to measure it, person by person, so that the programmes that change lives can show it, and the ones that only count heads have to.'
+ ],
+ sources:[
+  {t:'DHSC, UK Chief Medical Officers’ physical activity guidelines, September 2019',u:'https://www.gov.uk/government/publications/physical-activity-guidelines-uk-chief-medical-officers-report/uk-chief-medical-officers-physical-activity-guidelines'},
+  {t:'DHSC, Physical activity for adults and older adults: text of the infographic',u:'https://www.gov.uk/government/publications/physical-activity-guidelines-adults-and-older-adults/physical-activity-for-adults-and-older-adults-19-and-over-text-of-the-infographic'},
+  {t:'OHID, Physical activity: applying All Our Health, updated March 2022',u:'https://www.gov.uk/government/publications/physical-activity-applying-all-our-health/physical-activity-applying-all-our-health'},
+  {t:'World Health Organization, Nearly 1.8 billion adults at risk of disease from not doing enough physical activity, June 2024',u:'https://www.who.int/news/item/26-06-2024-nearly-1.8-billion-adults-at-risk-of-disease-from-not-doing-enough-physical-activity'},
+  {t:'Garcia L et al., Non-occupational physical activity and risk of cardiovascular disease, cancer and mortality outcomes: a dose-response meta-analysis, British Journal of Sports Medicine, 2023',u:'https://doi.org/10.1136/bjsports-2022-105669'},
+  {t:'NICE, NG226 Osteoarthritis in over 16s: diagnosis and management, October 2022',u:'https://www.nice.org.uk/guidance/ng226/chapter/Recommendations'},
+  {t:'NICE, NG59 Low back pain and sciatica in over 16s: assessment and management',u:'https://www.nice.org.uk/guidance/ng59/chapter/Recommendations'},
+  {t:'NICE, NG222 Depression in adults: treatment and management, June 2022',u:'https://www.nice.org.uk/guidance/ng222/chapter/Recommendations'},
+  {t:'NICE, PH54 Physical activity: exercise referral schemes, September 2014',u:'https://www.nice.org.uk/guidance/ph54/chapter/Recommendations'},
+  {t:'Hanson S and Jones A, Missed opportunities in the evaluation of public health interventions: a case study of physical activity programmes, BMC Public Health, 2017',u:'https://doi.org/10.1186/s12889-017-4683-z'}
+ ]},
+{slug:'health-startups-and-the-health-economy-2026',tag:'Research',cap:'strategy',date:'2026-11-04',mins:6,
+ t:'Health startups and the health economy: count the change, not the round',
+ d:'The UK has thousands of small health and life sciences companies and a health service that says it needs them. Their real effect on the health economy depends on whether anything changes for patients and services, not on how much they raise.',
+ stats:[
+  {n:'6,500',l:'Businesses operating in UK life sciences, 2024/25, employing 306,700 people (Office for Life Sciences)'},
+  {n:'88%',l:'Share of UK life sciences companies that are SMEs, 2024/25 (Office for Life Sciences)'},
+  {n:'33%',l:'MedTech firms reporting they had removed products from the UK market in 2024 (Life Sciences Sector Plan, July 2025)'},
+  {n:'5.8%',l:'Healthcare productivity in 2025 below its 2019 pre-pandemic level (ONS)'}
+ ],
+ body:[
+  'The UK has a large health innovation sector, and most of it is small. The Office for Life Sciences counts 6,500 businesses operating in UK life sciences in 2024/25, across 7,600 companies. Together they employed 306,700 people and generated £125.8 billion of turnover. Medical technology accounts for 59% of the companies and 52% of the jobs. Small and medium-sized enterprises make up 88% of all companies.',
+  'The direction is less encouraging. Employment fell 2% on the year and turnover 1%. The statistics are labelled as in development and the method changed in 2023/24, so long-run comparisons need care, but the latest year was not one of growth.',
+  '## Money is tighter',
+  'Investment has cooled too. HSBC Innovation Banking’s venture financing report for 2025 says the UK healthtech market shrank 17% year on year. The BioIndustry Association reported £1.79 billion of venture capital for UK biotech in 2025 across 58 deals, down 13.2%. Biotech and healthtech are different markets, but they point the same way. Fewer rounds mean founders have to show value sooner, and to buyers who are under pressure themselves.',
+  '## The system says it needs them',
+  'The NHS has rarely been clearer that it needs new technology. Lord Darzi’s independent investigation of the NHS in England, published in September 2024, described the service as being in the foothills of digital transformation, called for a major tilt towards technology to unlock productivity, and identified a shortfall of £37 billion in capital investment. The 10 Year Health Plan, published in July 2025, describes the NHS as a technological laggard and commits to expanding NICE’s technology appraisal process to cover devices, diagnostics and digital products.',
+  'The need shows in the productivity figures. The ONS estimates that healthcare productivity rose 1.1% in 2024 and 1.0% in 2025, but was still 5.8% below its 2019 level.',
+  '## But adoption is slow and uneven',
+  'The government’s Life Sciences Sector Plan, published in July 2025, is candid about the problem. It says uptake of medicines and medical technologies is seen as highly variable across the NHS, and describes routes to procurement as complicated and locally variable. It reports that in 2024, 33% of MedTech firms said they had removed products from the UK market. It commits to an NHS Innovator Passport for medtech by 2026.',
+  'NICE estimates there are around 2 million healthtech products available in the UK, with multiple routes into the NHS. No buyer can assess that many. In practice, a trust or integrated care board will look closely at a handful, and choose the ones that make the clearest case.',
+  'The lag between a good idea and normal practice is long. A review in the Journal of the Royal Society of Medicine in 2011 examined the often-quoted claim that research takes an average of 17 years to reach clinical practice. The authors traced the figure back to a small number of estimates and warned that the average hides a great deal of variation. The precise number is less important than the point: useful innovation usually takes years to become standard care.',
+  '## What the support programmes count',
+  'England’s health innovation networks exist to close that gap. For 2025/26 they report almost £1.5 billion of investment leveraged, more than 1,500 jobs created or safeguarded, more than 2,300 innovators supported and more than 2.1 million patients benefiting. The NHS Innovation Accelerator reports that since 2015 its innovations have been adopted by 3,532 NHS organisations and reached 13.1 million patients, with 1,345 jobs and over £246 million of external investment.',
+  'These are real figures, and they show real activity. But they are reported by the programmes themselves, and most of them measure the health of the companies: money raised, jobs, organisations signed up. The patient counts are the closest thing to an outcome, and they tell you how many people a product reached, not what changed for them.',
+  'What this means: the health economy is not the same as the startup economy. A company can raise money, hire, and sell into dozens of trusts without improving anyone’s health. Its value to the system comes later and further down the line: fewer admissions, quicker recovery, people back at work, staff time released for other patients.',
+  '## What a startup should be measured on',
+  'For founders, the practical point is that the evidence a buyer needs and the evidence of real impact are the same thing. Say what outcome you change and for whom. Measure it before and after, in the setting where you will actually be used, not only in a pilot built around you. Express what it saves in terms a finance director recognises, such as bed days, appointments or staff hours. And show who it reaches: the people with the worst health, or only the ones who were easiest to serve.',
+  'For commissioners and investors, the same test applies from the other side. Ask for outcomes before activity. Treat funding raised and contracts signed as signs of momentum, not proof of value.',
+  'Startups add to the health economy in two ways. One is direct: jobs, investment and turnover, which the sector statistics capture well. The other runs through the health service: care that works better and people who are healthier as a result. The second is larger, harder to count and the one that justifies the public money and clinical time that adoption takes. The question we would put to any health startup, and to ourselves, is the same one: whose life changed, and how do you know?'
+ ],
+ sources:[
+  {t:'Office for Life Sciences, Bioscience and health technology sector statistics 2024 to 2025, September 2026',u:'https://www.gov.uk/government/statistics/bioscience-and-health-technology-sector-statistics-2024-to-2025/bioscience-and-health-technology-sector-statistics-2024-to-2025'},
+  {t:'HSBC Innovation Banking, UK Life Sciences and Healthcare Venture Financing Report FY 2025',u:'https://www.hsbcinnovationbanking.com/gb/en/resources/uk-life-science-healthcare-report'},
+  {t:'BioIndustry Association, UK biotech finishes on high despite challenging 2025, January 2026',u:'https://www.bioindustry.org/resource/uk-biotech-finishes-on-high-despite-challenging-2025-bia-report-finds.html'},
+  {t:'DHSC, Independent investigation of the National Health Service in England (Lord Darzi), September 2024',u:'https://www.gov.uk/government/publications/independent-investigation-of-the-nhs-in-england/independent-investigation-of-the-national-health-service-in-england-accessible-version'},
+  {t:'DHSC, Fit for the future: 10 Year Health Plan for England, executive summary, July 2025',u:'https://www.gov.uk/government/publications/10-year-health-plan-for-england-fit-for-the-future/fit-for-the-future-10-year-health-plan-for-england-executive-summary'},
+  {t:'ONS, Public service productivity, quarterly, UK: January to March 2026, August 2026',u:'https://www.ons.gov.uk/economy/economicoutputandproductivity/publicservicesproductivity/bulletins/publicserviceproductivityquarterlyuk/januarytomarch2026'},
+  {t:'DSIT, DHSC and Office for Life Sciences, Life Sciences Sector Plan, July 2025',u:'https://www.gov.uk/government/publications/life-sciences-sector-plan/life-sciences-sector-plan'},
+  {t:'NICE, The 10 Year Health Plan for the NHS',u:'https://indepth.nice.org.uk/10-year-health-plan-for-the-NHS/index.html'},
+  {t:'Morris ZS, Wooding S and Grant J, The answer is 17 years, what is the question, Journal of the Royal Society of Medicine, 2011',u:'https://doi.org/10.1258/jrsm.2011.110180'},
+  {t:'UCLPartners, Annual impact report 2025-26: health innovation network impact',u:'https://uclpartners.com/our-impact/annual-impact-report-2025-26/our-organisation-2526/'},
+  {t:'Health Innovation East Midlands, Report highlights the scale of innovation and system-wide impact, July 2026',u:'https://healthinnovation-em.org.uk/news-and-events/latest-news/2060-report-highlights-the-scale-of-innovation-and-system-wide-impact'},
+  {t:'UCLPartners, Annual impact report 2025-26: NHS Innovation Accelerator',u:'https://uclpartners.com/our-impact/annual-impact-report-2025-26/nhs-innovation-accelerator-2526/'}
+ ]},
 {slug:'selling-into-the-nhs-2026',tag:'Research',cap:'strategy',date:'2026-10-21',mins:6,
  t:'Selling into the NHS in 2026: the real routes to market',
  d:'The NHS still spends tens of billions a year outside its own organisations, but the buyers, the rules and the assurance bar have all changed. Here is what the evidence says about where to start.',
