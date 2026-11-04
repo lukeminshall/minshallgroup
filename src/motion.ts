@@ -5,8 +5,6 @@
    runs once (nothing global at present). Content is visible by default: every effect fails
    toward showing content, and prefers-reduced-motion turns movement off.
    ===================================================================== */
-import FULL_N from '@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2?url';
-import FULL_I from '@fontsource-variable/fraunces/files/fraunces-latin-full-italic.woff2?url';
 export const RM=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 const FINE=window.matchMedia('(pointer:fine)').matches;
 let ac:AbortController|null=null;
@@ -17,7 +15,7 @@ export function initPage(){
   ac?.abort();cleanups.splice(0).forEach(f=>f());
   ac=new AbortController();const sig={signal:ac.signal};
   document.body.dataset.route=location.pathname;
-  reveals();scrub(sig);rotator();heroZoom(sig);heroField(sig);varFont(sig);velocityMarquee(sig);hscroll(sig);hoverPreview(sig);
+  reveals();heroField(sig);opening(sig);hscroll(sig);hoverPreview(sig);
   finder();filters();insightFilter();tabs(sig);stickySteps(sig);magnetic(sig);mobileCta(sig);
   dispatchEvent(new Event('mg:page'));
 }
@@ -35,59 +33,76 @@ function reveals(){
   cleanups.push(()=>clearTimeout(t));
 }
 
-/* ---------- scroll-scrubbed statement: words light up as you read ---------- */
-function scrub(sig){
-  const el=document.querySelector<HTMLElement>('[data-scrub]');if(!el||RM)return;
-  el.innerHTML=el.textContent.trim().split(/\s+/).map(w=>`<span class="sw">${w}</span>`).join(' ');
-  const ws=[...el.querySelectorAll('.sw')];
-  const upd=()=>{const r=el.getBoundingClientRect(),vh=innerHeight;
-    const p=clamp((vh*.8-r.top)/(r.height+vh*.25));
-    const lit=Math.round(p*ws.length);ws.forEach((w,i)=>w.classList.toggle('lit',i<lit));};
-  addEventListener('scroll',upd,{passive:true,...sig});upd();
-}
-
-/* ---------- rotating phrase ---------- */
-function rotator(){
-  const r=document.getElementById('rot');if(!r||RM)return;
-  const items=[...r.querySelectorAll('b')];let i=0;
-  const iv=setInterval(()=>{const cur=items[i];i=(i+1)%items.length;cur.classList.remove('on');cur.classList.add('out');
-    const nx=items[i];nx.classList.remove('out');nx.classList.add('on');setTimeout(()=>cur.classList.remove('out'),650);},2600);
-  cleanups.push(()=>clearInterval(iv));
-}
-
-/* ---------- hero: the full stop grows until the screen is pink ---------- */
-function heroZoom(sig){
-  const hero=document.querySelector<HTMLElement>('[data-hero]');if(!hero)return;
-  const dot=hero.querySelector<HTMLElement>('[data-zoomdot]'),pin=hero.querySelector<HTMLElement>('.hero2-pin');
-  if(RM){hero.classList.add('static');return;}
-  let need=60;
-  const measure=()=>{dot.style.transform='';const r=dot.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
-    const half=Math.max(cx,innerWidth-cx,cy,innerHeight-cy)*1.05;need=(half*2)/Math.max(4,r.width);};
-  const upd=()=>{const r=hero.getBoundingClientRect(),run=r.height-innerHeight;const p=clamp(-r.top/Math.max(1,run));
-    const z=clamp((p-.12)/.7);const e=z*z*z;                       /* ease-in: slow start, then rush */
-    dot.style.transform=`scale(${1+(need-1)*e})`;
-    pin.style.setProperty('--fade',String(1-clamp(z*2.2)));
-    hero.classList.toggle('filled',z>=.999);};
-  /* measure once the entrance animation has settled */
-  const t=setTimeout(()=>{measure();upd();},1300);cleanups.push(()=>clearTimeout(t));
-  addEventListener('scroll',upd,{passive:true,...sig});
-  addEventListener('resize',()=>{measure();upd();},sig);
-}
-
 /* ---------- hero: a living field of points ----------
    A quiet grid that breathes, and bends towards the cursor in brand pink:
    the number moving. Starts after first paint, pauses off screen and in
-   background tabs, and stays still for reduced motion. */
+   background tabs, and stays still for reduced motion.
+   The same field doubles as a table-tennis table: a discreet "Play a game"
+   on the opening turns the cursor into a bat on the left, an opponent on
+   the right, and the ball becomes the thing the grid bends towards. */
 function heroField(sig){
   const cv=document.querySelector<HTMLCanvasElement>('[data-field]');if(!cv)return;
   const ctx=cv.getContext('2d');if(!ctx)return;
   let W=0,H=0,dpr=1,pts:number[]=[],gap=34,mx=-9999,my=-9999,tmx=-9999,tmy=-9999,on=false,raf=0,t0=performance.now(),lastF=0,touchT=0;
   const size=()=>{const r=cv.getBoundingClientRect();dpr=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;
     gap=W<700?30:36;pts=[];for(let y=gap/2;y<H;y+=gap)for(let x=gap/2;x<W;x+=gap)pts.push(x,y);};
+
+  /* ----- the game ----- */
+  const sec=cv.closest<HTMLElement>('[data-open]');
+  const ui=sec?.querySelector<HTMLElement>('[data-pong]'),playBtn=sec?.querySelector<HTMLElement>('[data-play]');
+  const msg=ui?.querySelector<HTMLElement>('[data-pong-msg]'),sYou=ui?.querySelector<HTMLElement>('[data-ps="you"]'),sThem=ui?.querySelector<HTMLElement>('[data-ps="them"]');
+  const TO=7;
+  let g:any=null,keys={up:false,down:false};
+  const say=(t:string)=>{if(msg)msg.textContent=t;};
+  const score=()=>{if(sYou)sYou.textContent=String(g.you);if(sThem)sThem.textContent=String(g.them);};
+  const serve=(dir:number)=>{g.bx=W/2;g.by=H/2;const a=(Math.random()*.7-.35);const s=Math.min(W,H)*.55;g.vx=Math.cos(a)*s*dir;g.vy=Math.sin(a)*s;g.hold=performance.now()+900;};
+  const reset=()=>{g={you:0,them:0,py:H/2,oy:H/2,bx:W/2,by:H/2,vx:0,vy:0,hold:0,over:false,last:performance.now(),trail:[] as number[]};score();serve(Math.random()<.5?1:-1);say(FINE?'Move the mouse. First to seven.':'Drag to move. First to seven.');};
+  const startGame=()=>{if(!sec||!ui||g)return;
+    scrollTo({top:sec.offsetTop,behavior:RM?'auto':'smooth'});
+    sec.classList.add('playing');ui.hidden=false;document.documentElement.classList.add('noscroll');
+    /* focusing the link can scroll the overflow-hidden frame; put it back */
+    const pin=cv.parentElement;pin.scrollTo(0,0);pin.addEventListener('scroll',()=>pin.scrollTo(0,0),sig);
+    size();reset();start();};
+  const endGame=()=>{if(!g)return;g=null;sec.classList.remove('playing');ui.hidden=true;document.documentElement.classList.remove('noscroll');};
+  const step=(now:number)=>{
+    const dt=Math.min(.04,(now-g.last)/1000);g.last=now;
+    const ph=H<600?84:116,pw=8,px=gap*1.6,ox=W-gap*1.6,r=5,spd=H*1.1;
+    /* your bat follows the pointer, or the arrow keys */
+    if(tmy>-999)g.py+=(tmy-g.py)*Math.min(1,dt*18);
+    if(keys.up)g.py-=spd*dt;if(keys.down)g.py+=spd*dt;
+    g.py=clamp(g.py,ph/2,H-ph/2);
+    if(g.over)return;
+    /* the opponent reads the ball late and moves a touch slower than you can */
+    const want=g.vx>0&&g.bx>W*.3?g.by+Math.sin(now/700)*18:H/2;
+    g.oy+=clamp(want-g.oy,-spd*.72*dt,spd*.72*dt);g.oy=clamp(g.oy,ph/2,H-ph/2);
+    if(now<g.hold)return;
+    g.bx+=g.vx*dt;g.by+=g.vy*dt;
+    g.trail.push(g.bx,g.by);if(g.trail.length>24)g.trail.splice(0,2);
+    if(g.by<r){g.by=r;g.vy=Math.abs(g.vy);}if(g.by>H-r){g.by=H-r;g.vy=-Math.abs(g.vy);}
+    const hit=(x:number,y:number,dir:number)=>{if(Math.abs(g.by-y)>ph/2+r)return false;
+      const rel=clamp((g.by-y)/(ph/2),-1,1),s=Math.min(Math.min(W,H)*1.4,Math.hypot(g.vx,g.vy)*1.06);
+      const a=rel*.95;g.vx=Math.cos(a)*s*dir;g.vy=Math.sin(a)*s;g.bx=x+(pw/2+r+1)*dir;return true;};
+    if(g.vx<0&&g.bx-r<=px+pw/2&&g.bx-r>px-pw)hit(px,g.py,1);
+    if(g.vx>0&&g.bx+r>=ox-pw/2&&g.bx+r<ox+pw)hit(ox,g.oy,-1);
+    if(g.bx<-30||g.bx>W+30){const you=g.bx>W;if(you)g.you++;else g.them++;score();g.trail=[];
+      if(g.you>=TO||g.them>=TO){g.over=true;say(`${you?'You win':'They win'}. ${FINE?'Click':'Tap'} to play again.`);}
+      else{say(you?'Your point.':'Their point.');serve(you?-1:1);}}
+  };
+  const drawGame=()=>{
+    const ph=H<600?84:116,pw=8,px=gap*1.6,ox=W-gap*1.6;
+    ctx.fillStyle='rgba(255,255,255,.18)';for(let y=10;y<H;y+=22)ctx.fillRect(W/2-1,y,2,10);
+    ctx.fillStyle='#fff';ctx.fillRect(px-pw/2,g.py-ph/2,pw,ph);
+    ctx.fillStyle='rgba(255,255,255,.55)';ctx.fillRect(ox-pw/2,g.oy-ph/2,pw,ph);
+    for(let i=0;i<g.trail.length;i+=2){const k=i/g.trail.length;ctx.fillStyle=`rgba(255,46,99,${k*.35})`;const s=4+k*5;ctx.fillRect(g.trail[i]-s/2,g.trail[i+1]-s/2,s,s);}
+    if(!g.over){ctx.fillStyle='#ff2e63';ctx.fillRect(g.bx-6,g.by-6,12,12);}
+  };
+
   const draw=(now:number)=>{
     /* touch screens: 30fps is plenty and kinder to batteries; a touch fades after a moment */
-    if(!FINE||W<900){if(now-lastF<33){if(on)raf=requestAnimationFrame(draw);return;}lastF=now;if(touchT&&now-touchT>1400){tmx=tmy=-9999;touchT=0;}}
-    const t=(now-t0)/1000;mx+=(tmx-mx)*.12;my+=(tmy-my)*.12;
+    if((!FINE||W<900)&&!g){if(now-lastF<33){if(on)raf=requestAnimationFrame(draw);return;}lastF=now;if(touchT&&now-touchT>1400){tmx=tmy=-9999;touchT=0;}}
+    if(g)step(now);
+    const t=(now-t0)/1000;
+    const ax=g?g.bx:tmx,ay=g?g.by:tmy;mx+=(ax-mx)*(g?.5:.12);my+=(ay-my)*(g?.5:.12);
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
     const R=W<700?140:220;
     for(let i=0;i<pts.length;i+=2){
@@ -99,52 +114,24 @@ function heroField(sig){
       ctx.fillStyle=k>.02?`rgba(255,46,99,${.25+k*.75})`:`rgba(255,255,255,${.09+Math.max(0,w)*.1})`;
       ctx.fillRect(x-r/2,y-r/2,r,r);
     }
+    if(g)drawGame();
     if(on&&!RM)raf=requestAnimationFrame(draw);
   };
   const start=()=>{if(on)return;on=true;raf=requestAnimationFrame(draw);},stop=()=>{on=false;cancelAnimationFrame(raf);};
   const boot=()=>{size();cv.classList.add('in');if(RM){draw(performance.now());return;}
     const io=new IntersectionObserver(([e])=>e.isIntersecting&&!document.hidden?start():stop());io.observe(cv);
-    cleanups.push(()=>{io.disconnect();stop();});
+    cleanups.push(()=>{io.disconnect();stop();endGame();});
     document.addEventListener('visibilitychange',()=>document.hidden?stop():start(),sig);
-    addEventListener('resize',size,sig);
+    addEventListener('resize',()=>{size();if(g){g.py=clamp(g.py,0,H);g.oy=clamp(g.oy,0,H);}},sig);
     addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect();tmx=e.clientX-r.left;tmy=e.clientY-r.top;if(mx<-999){mx=tmx;my=tmy;}},{passive:true,...sig});
-    document.addEventListener('pointerleave',()=>{tmx=tmy=-9999;},sig);
-    cv.parentElement.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')return;const r=cv.getBoundingClientRect();tmx=mx=e.clientX-r.left;tmy=my=e.clientY-r.top;touchT=performance.now();},{passive:true,...sig});};
+    document.addEventListener('pointerleave',()=>{if(!g)tmx=tmy=-9999;},sig);
+    cv.parentElement.addEventListener('pointerdown',e=>{if(g){if(g.over)reset();return;}if(e.pointerType==='mouse')return;const r=cv.getBoundingClientRect();tmx=mx=e.clientX-r.left;tmy=my=e.clientY-r.top;touchT=performance.now();},{passive:true,...sig});
+    playBtn?.addEventListener('click',startGame,sig);
+    ui?.querySelector('[data-pong-x]')?.addEventListener('click',endGame,sig);
+    addEventListener('keydown',e=>{if(!g)return;if(e.key==='Escape')endGame();if(e.key==='ArrowUp'){keys.up=true;e.preventDefault();}if(e.key==='ArrowDown'){keys.down=true;e.preventDefault();}},sig);
+    addEventListener('keyup',e=>{if(e.key==='ArrowUp')keys.up=false;if(e.key==='ArrowDown')keys.down=false;},sig);};
   const ric=(window as any).requestIdleCallback||((f)=>setTimeout(f,300));
   const go=()=>ric(boot,{timeout:2500});let id:any;if(document.readyState==='complete')id=go();else addEventListener('load',()=>{id=go();},{once:true,...sig});cleanups.push(()=>{(window as any).cancelIdleCallback?.(id);clearTimeout(id);});
-}
-
-/* ---------- hero type that thickens and softens near the cursor ---------- */
-function varFont(sig){
-  const h=document.querySelector<HTMLElement>('[data-vf]');if(!h||!FINE||RM)return;
-  const chars=[...h.querySelectorAll<HTMLElement>('.ch')];let mx=-9999,my=-9999,raf=0,live=false;
-  const frame=()=>{raf=0;
-    for(const c of chars){const r=c.getBoundingClientRect();const d=Math.hypot(r.left+r.width/2-mx,r.top+r.height/2-my);
-      const k=live?clamp(1-d/260):0;const w=Math.round(300+k*500),soft=Math.round(k*100);
-      c.style.fontVariationSettings=`"opsz" 144, "wght" ${w}, "SOFT" ${soft}, "WONK" ${k>.5?1:0}`;}};
-  const req=()=>{if(!raf)raf=requestAnimationFrame(frame);};
-  const host=h.closest('section');
-  /* the soft and wonky axes live in the larger "full" font files: fetch them only
-     once a mouse actually moves over the hero, so phones never download them */
-  let loading=false;
-  const loadFull=()=>{if(loading)return;loading=true;
-    Promise.all([new FontFace('Fraunces Full',`url(${FULL_N})`,{weight:'100 900'}),new FontFace('Fraunces Full',`url(${FULL_I})`,{weight:'100 900',style:'italic'})].map(f=>f.load().then(x=>{document.fonts.add(x);})))
-      .then(()=>{h.style.fontFamily="'Fraunces Full','Fraunces Variable','Fraunces Display Fallback',Georgia,serif";}).catch(()=>{});};
-  host.addEventListener('pointermove',e=>{loadFull();mx=e.clientX;my=e.clientY;live=true;req();},sig);
-  host.addEventListener('pointerleave',()=>{live=false;req();},sig);
-}
-
-/* ---------- huge marquee that speeds up and leans with scroll velocity ---------- */
-function velocityMarquee(sig){
-  const m=document.querySelector<HTMLElement>('[data-velomarq]');if(!m||RM)return;
-  const track=m.querySelector<HTMLElement>('.bigmarq-track');let x=0,v=0,last=scrollY,dir=1,raf=0;
-  const loop=()=>{const y=scrollY,dy=y-last;last=y;if(dy)dir=dy>0?1:-1;
-    v+=(dy-v)*.12;const half=track.scrollWidth/2;
-    x-=(1.1+Math.abs(v)*.35)*dir;if(x<=-half)x+=half;if(x>0)x-=half;
-    track.style.transform=`translate3d(${x}px,0,0) skewX(${clamp(-v*.25,-12,12)}deg)`;
-    raf=requestAnimationFrame(loop);};
-  const io=new IntersectionObserver(([e])=>{cancelAnimationFrame(raf);if(e.isIntersecting){last=scrollY;raf=requestAnimationFrame(loop);}});
-  io.observe(m);cleanups.push(()=>{io.disconnect();cancelAnimationFrame(raf);});
 }
 
 /* ---------- pinned horizontal capability panels ---------- */
@@ -277,3 +264,19 @@ function mobileCta(sig){
   addEventListener('scroll',upd,{passive:true,...sig});upd();
 }
 
+/* ---------- opening: four beats, driven by scroll ----------
+   The section is tall and its inner frame is pinned. Scroll progress picks
+   the beat; the proxies light one by one across the second beat; the bar
+   at the foot shows how far through. Reduced motion stacks every beat. */
+function opening(sig){
+  const sec=document.querySelector<HTMLElement>('[data-open]');if(!sec)return;
+  if(RM){sec.classList.add('static');return;}
+  const beats=[...sec.querySelectorAll<HTMLElement>('.beat')],prox=[...sec.querySelectorAll<HTMLElement>('.proxies span')],bar=sec.querySelector<HTMLElement>('.open-bar i');
+  const cuts=[0,.2,.58,.78];
+  const upd=()=>{const r=sec.getBoundingClientRect(),run=r.height-innerHeight;const p=clamp(-r.top/Math.max(1,run));
+    let cur=0;cuts.forEach((c,i)=>{if(p>=c)cur=i;});
+    beats.forEach((b,i)=>{b.classList.toggle('on',i===cur);b.classList.toggle('off',i<cur);b.classList.toggle('pre',i>cur);});
+    const q=clamp((p-.24)/.28);const lit=Math.ceil(q*prox.length);prox.forEach((s,i)=>s.classList.toggle('lit',i<lit));
+    bar?.style.setProperty('--p',String(p));};
+  addEventListener('scroll',upd,{passive:true,...sig});addEventListener('resize',upd,sig);upd();
+}

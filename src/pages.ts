@@ -17,107 +17,87 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 export const P:Record<string,()=>string>={};
 
 /* ================= HOME ================= */
+const PROXIES=['Appointments','Memberships','Visits','Sessions','Referrals','Footfall','Followers','Logins'];
+const FIELDS=[
+  {id:'health',k:'Health',q:'Did the patient get there sooner, and feel heard?',p:'Access, pathways and the commercial case behind NHS and independent care. We measure time to treatment, capacity returned, and what patients say in their own words.',tone:''},
+  {id:'sport',k:'Sport and physical activity',q:'Are more people moving, and is it paying for itself?',p:'Participation, facilities, sponsorship and the business of sport, from grassroots clubs to national bodies. We measure who turned up, who came back, and what it returned.',tone:'dark'},
+  {id:'public',k:'Communities and places',q:'Is the high street alive?',p:'Town centres, BIDs and councils. We measure visitors, not likes: who came, what they did, and whether the businesses felt it.',tone:'pink'}
+];
 P['/']=()=>`
-<section class="hero2 dark" id="hero" data-hero>
-  <div class="hero2-pin">
+<section class="open" id="open" data-open>
+  <div class="open-pin">
     <canvas class="hero-field" data-field aria-hidden="true"></canvas>
     <div class="grain" aria-hidden="true"></div>
-    <div class="wrap hero2-in">
-      <div class="fadebox"><div class="hero2-top rise" style="--i:0"><span>Commercial strategy</span><span>Digital</span><span>Health</span><span>Sport</span></div></div>
-      <h1 class="hero2-h split" data-vf>${splitLetters('Commercial strategy and digital, measured by the <em>return</em>',1)}<span class="dot zoomdot" data-zoomdot aria-hidden="true"></span></h1>
-      <div class="hero2-foot">
-        <p class="hero2-lede rise" style="--i:7">We find where the growth is, then build what it takes to get it. Clients bring us a number that needs to move, and we stay until it has moved. Deepest in health and sport.</p>
-        <div class="actions rise" style="--i:8">${btn('Start a conversation','/contact')}${btn('See the work','/work',true)}</div>
-        <a class="hero2-web rise" style="--i:9" href="/digitalsme"><small>Small business websites</small><span>Fixed prices from £495, quoted online</span><i aria-hidden="true">→</i></a>
+    <div class="open-in">
+      <div class="beat on"><p class="beat-k rise" style="--i:0">Minshall Group</p><h1 class="beat-h split">${split('Public services are measured on activity',1)}${dot}</h1></div>
+      <div class="beat pre" aria-label="${PROXIES.join(', ')}"><p class="proxies">${PROXIES.map(w=>`<span>${w}</span>`).join('')}</p></div>
+      <div class="beat pre"><p class="beat-h">None of it says whether anyone’s life <em>changed</em>${dot}</p></div>
+      <div class="beat pre">
+        <p class="beat-h long">We help health, sport and community services prove, and improve, the difference they make${dot}</p>
+        <div class="beat-foot">
+          <p class="beat-lede">Strategy, digital and data, for organisations across the UK, with one measure that matters: did anything change for the people the service is for.</p>
+          <div class="actions">${btn('Start a conversation','/contact')}${btn('See the record','#record',true)}</div>
+        </div>
       </div>
-      <div class="fadebox"><a class="hero2-scroll rise" style="--i:9" href="#intro"><i aria-hidden="true"></i>Scroll</a></div>
+      <div class="open-bar"><span aria-hidden="true">Scroll</span><i aria-hidden="true"></i><button type="button" class="play-link" data-play>Or, play a game</button></div>
+      <div class="pong" data-pong hidden>
+        <div class="pong-score" aria-live="polite"><b data-ps="you">0</b><span>You</span><em></em><span>Them</span><b data-ps="them">0</b></div>
+        <p class="pong-msg" data-pong-msg>Move the mouse. First to seven.</p>
+        <button type="button" class="pong-x" data-pong-x>Close</button>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="pinksec" id="intro">
-  <div class="wrap">
-    <span class="eyebrow">Why Minshall Group</span>
-    <p class="scrub" data-scrub>Most strategy firms hand over a deck and leave. Most digital agencies build without a commercial case. We do both, so one team owns the plan, the build and the result.</p>
-    <div class="pink-foot">
-      <span class="pink-we">We <span class="rot" id="rot"><b class="on">find the number</b><b>design the route</b><b>build the platform</b><b>tell the story</b><b>prove it moved</b></span></span>
-      <a class="tlink" href="/about">Who we are</a>
-    </div>
-  </div>
-  <div class="bigmarq" data-velomarq aria-hidden="true"><div class="bigmarq-track">${[0,1].map(()=>`<div class="bigmarq-row">${CAPS.map(c=>`<span>${c.t}</span><i></i>`).join('')}</div>`).join('')}</div></div>
+<div class="with" role="region" aria-label="Clients"><div class="wrap"><span class="with-l">Working with</span>${CLIENTS.map(c=>`<span>${c}</span>`).join('')}</div></div>
+
+<section class="fields" id="fields">${FIELDS.map(f=>`
+  <div class="field ${f.tone}"><div class="wrap">
+    <div class="reveal"><span class="eyebrow">${f.k}</span><h2 class="field-q">${f.q}</h2></div>
+    <div class="field-r reveal" style="--i:1"><p>${f.p}</p><a class="tlink" href="/industries#${f.id}">${f.k}</a></div>
+  </div></div>`).join('')}
 </section>
 
-<section class="clients-sec">
-<div class="cwall" role="region" aria-label="Clients">
-  <div class="wrap"><span class="eyebrow">Our clients include</span><p class="sr">${CLIENTS.join(', ')}</p></div>
-  ${[0,1].map(r=>{const list=r?[...CLIENTS].reverse():CLIENTS;return `<div class="cw-row${r?' rev':''}" aria-hidden="true"><div class="cw-track">${[0,1].map(()=>list.map((c,i)=>`<span class="${(i+r)%2?'it':''}">${c}</span><i></i>`).join('')).join('')}</div></div>`;}).join('')}
-</div>
-</section>
-
-<section class="deliver" id="capabilities"><div class="wrap">
-  ${shead({eyebrow:'What we do',h:'Commercial strategy finds the growth. Digital builds what it takes.',p:'One team, two practices, and six things clients hire us to deliver.',link:['How we work','/approach']})}
-  ${[['strategy','Commercial strategy',[
-      ['Find the growth','Where the next pound of revenue comes from, sized and ranked by speed and certainty.','A ranked growth plan with owners and numbers.'],
-      ['Enter a market','UK market entry for overseas companies, and selling into the NHS for health businesses.','Target buyers, pricing, a route in and a measured pilot.'],
-      ['Make the case','Business and investment cases, and the site and catchment evidence behind them.','A case a board or funder will sign, and the right location.']]],
-    ['digital','Digital',[
-      ['Build the platform','Products, portals, apps and larger websites, designed with the people who use them.','Working software in usable slices, owned by you.'],
-      ['Put data and AI to work','Dashboards, DataLense, workflow automation and practical AI, governed from day one.','Decisions on evidence, and hours given back.'],
-      ['Win online','Customer journeys, search and conversion, and fixed-price websites for small businesses.','More of the right enquiries, measured.']]]
-  ].map(([slug,label,items])=>`
-  <div class="dl-row">
-    <a class="dl-label" href="/capabilities/${slug}"><span class="dl-name">${label}</span><span class="dl-more">Explore →</span></a>
-    <div class="dl-cards">${(items as any[]).map(([t,d,g],i)=>`
-      <article class="dl-card reveal" style="--i:${i}"><h3>${t}</h3><p>${d}</p><p class="dl-get"><b>You get</b>${g}</p></article>`).join('')}</div>
-  </div>`).join('')}
-</div></section>
-
-<section class="ind-sec soft"><div class="wrap">
-  ${shead({eyebrow:'Sectors',h:'Where we go deepest.',p:'Health and sport, and the ground where they meet. We know the regulation, the buyers and the economics well enough to be accountable for the outcome.',link:['Our sectors','/industries']})}
-  <div class="ind-grid">${INDUSTRIES.filter((x:any)=>x.focus).map((x,i)=>`
-    <a class="ind reveal" style="--i:${i%3}" href="/industries#${x.id}"><span class="ind-n">${String(i+1).padStart(2,'0')}</span><div class="ind-gfx">${gfx(x.gfx)}</div><h3>${x.t}</h3><p>${x.d}</p></a>`).join('')}</div>
-  <div class="ind-also reveal"><p class="ind-also-h">We also work with</p>
-    <div class="ind-also-grid">${INDUSTRIES.filter((x:any)=>!x.focus).map(x=>`
-      <a class="ind-also-c" href="/industries#${x.id}"><h3>${x.t}</h3><p>${x.d}</p><span class="dl-more">See how →</span></a>`).join('')}</div></div>
-</div></section>
-
-<section class="worklist-sec"><div class="wrap">
-  ${shead({eyebrow:'Selected work',h:'Recent work.',link:['All case studies','/work']})}
-  <ol class="wl" data-hoverlist>
-    ${CASES.slice(0,6).map((c,i)=>`
-    <li class="reveal" style="--i:${i%3}"><a href="/work/${c.id}" data-preview="${i}" data-cursor="View">
-      <span class="wl-n">${String(i+1).padStart(2,'0')}</span>
-      <span class="wl-client">${c.client}${c.status?` <em class="wl-status">${c.status}</em>`:''}</span>
-      <span class="wl-head">${c.head}</span>
-      <span class="wl-ind">${indById(c.ind).t}</span>
-      <span class="wl-arrow" aria-hidden="true">→</span>
+<section id="record"><div class="wrap">
+  <div class="record-h reveal"><h2 class="h2">The record${dot}</h2><p>Each piece of work, the organisation it was for, and what changed. Figures are added as each client signs them off.</p></div>
+  <ol class="ledger">${CASES.slice(0,7).map((c,i)=>`
+    <li class="reveal" style="--i:${i%3}"><a href="/work/${c.id}">
+      <span class="lg-client">${c.client}<small>${indById(c.ind).t}</small>${c.status?`<em>${c.status}</em>`:''}</span>
+      <span class="lg-head">${c.head}</span>
+      <span class="lg-ret"><b>What changed</b>${c.ret}</span>
+      <span class="lg-arrow" aria-hidden="true">→</span>
     </a></li>`).join('')}
   </ol>
-</div>
-<div class="hover-preview" data-preview-box aria-hidden="true">${CASES.slice(0,6).map((c,i)=>`<div class="hpv" data-pv="${i}"><div class="hpv-gfx">${gfx(c.gfx)}</div><p>${c.ret}</p></div>`).join('')}</div>
-</section>
-
-<section class="prod-sec dark"><div class="wrap">
-  ${shead({eyebrow:'Products',h:'We built these because clients kept asking.',p:'Products we own and run. Each started as a problem we saw in client after client.',link:['All products','/products']})}
-  <div class="prods">${PRODUCTS.map((p,i)=>`
-    <a class="prod reveal" style="--i:${i}" href="/products/${p.slug}" data-cursor="Open">
-      <div class="prod-top"><span class="status${p.status==='Live'?' live':''}">${p.status}</span>${tile('mini')}</div>
-      <div class="prod-gfx">${gfx(p.gfx)}</div>
-      <h3>${p.t}</h3><p><b>${p.line}</b> ${p.d}</p>
-      <span class="tlink">Explore ${p.t}</span>
-    </a>`).join('')}</div>
+  <p class="ledger-more reveal"><a class="tlink" href="/work">All the work</a></p>
 </div></section>
 
-${TEAM.length?`<section class="team-sec"><div class="wrap">
-  ${shead({eyebrow:'Who you’ll work with',h:'Senior people, from first call to launch.',p:'The people who shape the strategy stay to build it and measure it.'})}
-  <div class="team-grid">${TEAM.map((m:any,i:number)=>`<article class="tm reveal" style="--i:${i}">${m.photo?`<img src="${m.photo}" alt="${m.name}" loading="lazy" width="480" height="560">`:''}<h3>${m.name}</h3><p class="tm-role">${m.role}</p><p>${m.bio}</p>${m.linkedin?`<a class="tlink" href="${m.linkedin}" target="_blank" rel="noopener">LinkedIn</a>`:''}</article>`).join('')}</div>
-</div></section>`:''}
-
-<section><div class="wrap">
-  ${shead({eyebrow:'Insights',h:'Things we have been thinking about.',link:['All insights','/insights']})}
-  <div class="icards">${INSIGHTS.slice(0,3).map(insightCard).join('')}</div>
+<section class="dark" id="instruments"><div class="wrap">
+  <div class="record-h reveal"><h2 class="h2">Instruments we built, because the measures didn’t exist${dot}</h2><p>Three products, each started inside a client problem and now run by us.</p></div>
+  <ul class="instr">${PRODUCTS.map((p,i)=>`
+    <li class="reveal" style="--i:${i}"><a href="/products/${p.slug}" data-cursor="Open">
+      <span class="in-name">${p.t}</span>
+      <p class="in-d"><b>${p.line}</b>${p.d}</p>
+      <span class="in-s${p.status==='Live'?' live':''}">${p.status}</span>
+    </a></li>`).join('')}
+  </ul>
 </div></section>
-${ctaBand('Have a number that needs to move?','Build your brief online in a few minutes, and we will send a short written proposal with a fixed price within two working days.',`${btn('Start a project','/start')}${btn('Talk to us','/contact',true)}`)}`;
+
+<section class="soft" id="method"><div class="wrap">
+  <div class="record-h reveal"><h2 class="h2">How we work${dot}</h2><a class="tlink" href="/approach">The approach in full</a></div>
+  <ul class="method">${PRINCIPLES.map((x,i)=>`<li class="reveal" style="--i:${i%2}"><b>${x.t}</b><p>${x.d}</p></li>`).join('')}</ul>
+</div></section>
+
+<section id="writing"><div class="wrap">
+  <div class="record-h reveal"><h2 class="h2">Writing${dot}</h2><a class="tlink" href="/insights">All insights</a></div>
+  <ul class="windex">${INSIGHTS.slice(0,5).map((a,i)=>`
+    <li class="reveal" style="--i:${i%3}"><a href="/insights/${a.slug}">
+      <span class="wi-date">${new Date(a.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span>
+      <span class="wi-t">${a.t}</span>
+      <span class="wi-tag">${a.tag}</span>
+    </a></li>`).join('')}
+  </ul>
+</div></section>
+${ctaBand('Have a service that needs to prove its worth?','Tell us what it is for and who it is for. We will send a short written proposal, with a fixed price, within two working days.')}`;
 
 /* ================= CAPABILITIES ================= */
 P['/capabilities']=()=>`

@@ -1,7 +1,5 @@
 /* Entry point: styles, shell (nav + footer), forms, router. */
-import '@fontsource-variable/fraunces/opsz.css';
-import '@fontsource-variable/fraunces/opsz-italic.css';
-import '@fontsource-variable/manrope';
+import '@fontsource-variable/archivo/wdth.css';
 import './styles.css';
 import {buildShell} from './nav';
 import {initRouter} from './router';
