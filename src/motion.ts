@@ -45,10 +45,52 @@ function heroField(sig){
   const ctx=cv.getContext('2d');if(!ctx)return;
   let W=0,H=0,dpr=1,pts:number[]=[],gap=34,mx=-9999,my=-9999,tmx=-9999,tmy=-9999,on=false,raf=0,t0=performance.now(),lastF=0,touchT=0;
   const size=()=>{const r=cv.getBoundingClientRect();dpr=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;
-    gap=W<700?30:36;pts=[];for(let y=gap/2;y<H;y+=gap)for(let x=gap/2;x<W;x+=gap)pts.push(x,y);};
+    gap=W<700?24:36;pts=[];for(let y=gap/2;y<H;y+=gap)for(let x=gap/2;x<W;x+=gap)pts.push(x,y);};
+
+  const sec=cv.closest<HTMLElement>('[data-open]');
+
+  /* ----- the first three seconds: the dots spell the words, then let go -----
+     Each word is drawn on an offscreen canvas, sampled to as many points as
+     the grid has, and every grid dot is given a target. The dots travel in,
+     hold, move to the next word, and finally scatter home as the headline
+     cuts in. Scrolling or a touch ends it early. */
+  let sp:any=null;                                   /* {tg:number[][],i,t0,on:boolean} */
+  const spellDone=()=>{sp=null;sec?.classList.remove('intro');};
+  const sample=(word:string)=>{
+    const oc=document.createElement('canvas');oc.width=W;oc.height=H;const o=oc.getContext('2d');
+    let fs=Math.min(H*.56,W*1.5/Math.max(4,word.length));o.font=`700 ${fs}px 'Archivo Variable',Archivo,sans-serif`;
+    const tw=o.measureText(word).width;if(tw>W*.86){fs*=W*.86/tw;o.font=`700 ${fs}px 'Archivo Variable',Archivo,sans-serif`;}
+    o.fillStyle='#fff';o.textAlign='center';o.textBaseline='middle';o.fillText(word,W/2,H*.47);
+    const d=o.getImageData(0,0,W,H).data,hits:number[]=[],st=W<700?4:5;
+    for(let y=0;y<H;y+=st)for(let x=0;x<W;x+=st)if(d[(y*W+x)*4+3]>128)hits.push(x,y);
+    const n=pts.length/2,m=hits.length/2,tg:number[]=[];
+    /* give every grid dot a target; spread the picks evenly through the glyphs */
+    const order=[...Array(n).keys()].sort((a,b)=>pts[a*2]-pts[b*2]||pts[a*2+1]-pts[b*2+1]);
+    const hidx=[...Array(m).keys()].sort((a,b)=>hits[a*2]-hits[b*2]||hits[a*2+1]-hits[b*2+1]);
+    order.forEach((pi,k)=>{const h=hidx[Math.floor(k/n*m)];tg[pi*2]=hits[h*2];tg[pi*2+1]=hits[h*2+1];});
+    return tg;};
+  const spell=async()=>{
+    const words=(sec?.dataset.spell||'').split('|').filter(Boolean);
+    if(!sec||!words.length||RM||!sec.classList.contains('intro')){sec?.classList.remove('intro');return;}
+    try{await document.fonts.load("700 100px 'Archivo Variable'");}catch{}
+    if(!sec.classList.contains('intro'))return;
+    sp={tg:words.map(sample),i:0,t0:performance.now()};
+    const end=()=>{if(sp)spellDone();};
+    addEventListener('scroll',end,{passive:true,once:true,...sig});cv.parentElement.addEventListener('pointerdown',end,{once:true,...sig});
+    const t=setTimeout(end,words.length*1050+900);cleanups.push(()=>clearTimeout(t));};
+  const IN=520,HOLD=530;                             /* ms to travel, ms to hold */
+  const spellPos=(i:number,now:number,bx:number,by:number)=>{
+    const el=now-sp.t0,W_=IN+HOLD,k=Math.floor(el/W_),ph=el-k*W_;
+    const last=sp.tg.length;
+    if(k>=last){                                     /* scatter home */
+      const e=1-Math.pow(1-clamp(ph/IN),3);const tg=sp.tg[last-1];
+      if(ph>=IN){spellDone();return null;}
+      return [tg[i]+(bx-tg[i])*e,tg[i+1]+(by-tg[i+1])*e,1-e];}
+    const tg=sp.tg[k],fx=k?sp.tg[k-1][i]:bx,fy=k?sp.tg[k-1][i+1]:by;
+    const e=1-Math.pow(1-clamp(ph/IN),3);
+    return [fx+(tg[i]-fx)*e,fy+(tg[i+1]-fy)*e,k?1:e];};
 
   /* ----- the game ----- */
-  const sec=cv.closest<HTMLElement>('[data-open]');
   const ui=sec?.querySelector<HTMLElement>('[data-pong]'),playBtn=sec?.querySelector<HTMLElement>('[data-play]');
   const msg=ui?.querySelector<HTMLElement>('[data-pong-msg]'),sYou=ui?.querySelector<HTMLElement>('[data-ps="you"]'),sThem=ui?.querySelector<HTMLElement>('[data-ps="them"]');
   const TO=7;
@@ -110,6 +152,7 @@ function heroField(sig){
       const w=Math.sin(bx*.012+t*.8)*Math.cos(by*.014-t*.6);          /* slow swell */
       let x=bx,y=by+w*5,dx=x-mx,dy=y-my,d=Math.sqrt(dx*dx+dy*dy),k=0;
       if(d<R){k=1-d/R;k*=k;x-=dx*k*.45;y-=dy*k*.45;}
+      if(sp){const s=spellPos(i,now,x,y);if(s){x=s[0];y=s[1];k=Math.max(k,s[2]);}}
       const r=.9+Math.max(0,w)*.7+k*2.6;
       ctx.fillStyle=k>.02?`rgba(255,46,99,${.25+k*.75})`:`rgba(255,255,255,${.09+Math.max(0,w)*.1})`;
       ctx.fillRect(x-r/2,y-r/2,r,r);
@@ -118,7 +161,8 @@ function heroField(sig){
     if(on&&!RM)raf=requestAnimationFrame(draw);
   };
   const start=()=>{if(on)return;on=true;raf=requestAnimationFrame(draw);},stop=()=>{on=false;cancelAnimationFrame(raf);};
-  const boot=()=>{size();cv.classList.add('in');if(RM){draw(performance.now());return;}
+  const boot=()=>{size();cv.classList.add('in');if(RM){sec?.classList.remove('intro');draw(performance.now());return;}
+    spell();
     const io=new IntersectionObserver(([e])=>e.isIntersecting&&!document.hidden?start():stop());io.observe(cv);
     cleanups.push(()=>{io.disconnect();stop();endGame();});
     document.addEventListener('visibilitychange',()=>document.hidden?stop():start(),sig);
@@ -270,7 +314,7 @@ function mobileCta(sig){
    at the foot shows how far through. Reduced motion stacks every beat. */
 function opening(sig){
   const sec=document.querySelector<HTMLElement>('[data-open]');if(!sec)return;
-  if(RM){sec.classList.add('static');return;}
+  if(RM){sec.classList.add('static');sec.classList.remove('intro');return;}
   const beats=[...sec.querySelectorAll<HTMLElement>('.beat')],prox=[...sec.querySelectorAll<HTMLElement>('.proxies span')],bar=sec.querySelector<HTMLElement>('.open-bar i');
   const cuts=[0,.2,.58,.78];
   const upd=()=>{const r=sec.getBoundingClientRect(),run=r.height-innerHeight;const p=clamp(-r.top/Math.max(1,run));

@@ -17,25 +17,24 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 export const P:Record<string,()=>string>={};
 
 /* ================= HOME ================= */
-const PROXIES=['Appointments','Memberships','Visits','Sessions','Referrals','Footfall','Followers','Logins'];
 const FIELDS=[
   {id:'health',k:'Health',q:'Did the patient get there sooner, and feel heard?',p:'Access, pathways and the commercial case behind NHS and independent care. We measure time to treatment, capacity returned, and what patients say in their own words.',tone:''},
   {id:'sport',k:'Sport and physical activity',q:'Are more people moving, and is it paying for itself?',p:'Participation, facilities, sponsorship and the business of sport, from grassroots clubs to national bodies. We measure who turned up, who came back, and what it returned.',tone:'dark'},
   {id:'public',k:'Communities and places',q:'Is the high street alive?',p:'Town centres, BIDs and councils. We measure visitors, not likes: who came, what they did, and whether the businesses felt it.',tone:'pink'}
 ];
 P['/']=()=>`
-<section class="open" id="open" data-open>
+<section class="open intro" id="open" data-open data-spell="lives.|growth.|value.">
   <div class="open-pin">
     <canvas class="hero-field" data-field aria-hidden="true"></canvas>
     <div class="grain" aria-hidden="true"></div>
     <div class="open-in">
-      <div class="beat on"><p class="beat-k rise" style="--i:0">Minshall Group</p><h1 class="beat-h split">${split('Public services are measured on activity',1)}${dot}</h1></div>
-      <div class="beat pre" aria-label="${PROXIES.join(', ')}"><p class="proxies">${PROXIES.map(w=>`<span>${w}</span>`).join('')}</p></div>
-      <div class="beat pre"><p class="beat-h">None of it says whether anyone’s life <em>changed</em>${dot}</p></div>
+      <div class="beat on"><p class="beat-k rise" style="--i:0">Minshall Group</p><h1 class="beat-h split">${split('We build services that change lives',1)}${dot}</h1></div>
+      <div class="beat pre"><p class="beat-h">We develop strategy that allows growth${dot}</p><p class="beat-sub">The commercial case, the funding, the opportunity.</p></div>
+      <div class="beat pre"><p class="beat-h">We deliver value to our customers${dot}</p><p class="beat-sub">Through digital tools, data and the web, and we prove it.</p></div>
       <div class="beat pre">
-        <p class="beat-h long">We help health, sport and community services prove, and improve, the difference they make${dot}</p>
+        <p class="beat-h long">In health, sport and communities, across the UK${dot}</p>
         <div class="beat-foot">
-          <p class="beat-lede">Strategy, digital and data, for organisations across the UK, with one measure that matters: did anything change for the people the service is for.</p>
+          <p class="beat-lede">Minshall Group is a consultancy. We work on the commercial and the strategic, and build the digital tools, for services whose job is to change lives.</p>
           <div class="actions">${btn('Start a conversation','/contact')}${btn('See the record','#record',true)}</div>
         </div>
       </div>
