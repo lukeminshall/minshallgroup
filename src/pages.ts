@@ -38,20 +38,44 @@ P['/']=()=>`
           <div class="actions">${btn('Start a conversation','/contact')}${btn('See the record','#record',true)}</div>
         </div>
       </div>
-      <div class="open-bar"><span aria-hidden="true">Scroll</span><i aria-hidden="true"></i><button type="button" class="play-link" data-play>Or, play a game</button></div>
+      <div class="beat pre ask" data-ask>
+        <p class="beat-k">A short conversation, so the rest of this page is about you</p>
+        <ol class="ask-log" data-ask-log hidden></ol>
+        <p class="beat-h long" data-ask-q>What brings you here?</p>
+        <div class="ask-opts" data-ask-step="1">
+          <button type="button" data-sector="health">Health</button>
+          <button type="button" data-sector="sport">Sport and activity</button>
+          <button type="button" data-sector="public">A place or community</button>
+          <button type="button" data-sector="">Just looking</button>
+        </div>
+        <form class="ask-free" data-ask-free novalidate><label class="sr" for="ask-free">Or say it in your own words</label><input id="ask-free" type="text" maxlength="400" autocomplete="off" placeholder="Or say it in your own words"><button type="submit" aria-label="Send">→</button></form>
+        <p class="ask-note" data-ask-note></p>
+        <p class="ask-dots" aria-hidden="true"><i></i><i></i><i></i></p>
+      </div>
+      <div class="open-bar"><span aria-hidden="true">Scroll</span><i aria-hidden="true"></i><button type="button" class="play-link" data-play>Need a moment? Play padel</button></div>
       <div class="pong" data-pong hidden>
         <div class="pong-score" aria-live="polite"><b data-ps="you">0</b><span>You</span><em></em><span>Them</span><b data-ps="them">0</b></div>
-        <p class="pong-msg" data-pong-msg>Move the mouse. First to seven.</p>
-        <button type="button" class="pong-x" data-pong-x>Close</button>
+        <div class="pong-hand" data-hand hidden><span>Which hand do you play with?</span><button type="button" data-h="-1">Left</button><button type="button" data-h="1">Right</button></div>
+        <p class="pong-msg" data-pong-msg>Move the mouse to play. First to seven.</p>
+        <div class="pong-btns"><button type="button" class="pong-x" data-hand-switch>Switch hand</button><button type="button" class="pong-x" data-pong-x>Close</button></div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="with" role="region" aria-label="Clients"><div class="wrap"><span class="with-l">Working with</span>${CLIENTS.map(c=>`<span>${c}</span>`).join('')}</div></div>
+<section class="yours dark" id="yours" data-yours hidden><div class="grain" aria-hidden="true"></div><div class="wrap">
+  <span class="eyebrow">A page for you</span>
+  <h2 class="h2" data-y-h></h2>
+  <p class="lede" data-y-intro></p>
+  <ul class="method yours-pts" data-y-pts></ul>
+  <p class="yours-close" data-y-close></p>
+  <div class="yours-from" data-y-from hidden><span class="eyebrow">From this site, for you</span><ul class="yfrom" data-y-list></ul></div>
+  <div class="actions">${btn('Have a proper conversation','/contact')}<button type="button" class="tlink yours-edit" data-y-edit>Change my answers</button></div>
+</div></section>
+<p class="view-chip" data-chip hidden>Showing the <b></b> view · <button type="button" data-chip-change>change</button></p>
 
 <section class="fields" id="fields">${FIELDS.map(f=>`
-  <div class="field ${f.tone}"><div class="wrap">
+  <div class="field ${f.tone}" data-field="${f.id}"><div class="wrap">
     <div class="reveal"><span class="eyebrow">${f.k}</span><h2 class="field-q">${f.q}</h2></div>
     <div class="field-r reveal" style="--i:1"><p>${f.p}</p><a class="tlink" href="/industries#${f.id}">${f.k}</a></div>
   </div></div>`).join('')}
@@ -60,7 +84,7 @@ P['/']=()=>`
 <section id="record"><div class="wrap">
   <div class="record-h reveal"><h2 class="h2">The record${dot}</h2><p>Each piece of work, the organisation it was for, and what changed. Figures are added as each client signs them off.</p></div>
   <ol class="ledger">${CASES.slice(0,7).map((c,i)=>`
-    <li class="reveal" style="--i:${i%3}"><a href="/work/${c.id}">
+    <li class="reveal" style="--i:${i%3}" data-ind="${c.ind}"><a href="/work/${c.id}">
       <span class="lg-client">${c.client}<small>${indById(c.ind).t}</small>${c.status?`<em>${c.status}</em>`:''}</span>
       <span class="lg-head">${c.head}</span>
       <span class="lg-ret"><b>What changed</b>${c.ret}</span>
@@ -73,7 +97,7 @@ P['/']=()=>`
 <section class="dark" id="instruments"><div class="wrap">
   <div class="record-h reveal"><h2 class="h2">Instruments we built, because the measures didn’t exist${dot}</h2><p>Three products, each started inside a client problem and now run by us.</p></div>
   <ul class="instr">${PRODUCTS.map((p,i)=>`
-    <li class="reveal" style="--i:${i}"><a href="/products/${p.slug}" data-cursor="Open">
+    <li class="reveal" style="--i:${i}" data-slug="${p.slug}"><a href="/products/${p.slug}" data-cursor="Open">
       <span class="in-name">${p.t}</span>
       <p class="in-d"><b>${p.line}</b>${p.d}</p>
       <span class="in-s${p.status==='Live'?' live':''}">${p.status}</span>
@@ -89,14 +113,14 @@ P['/']=()=>`
 <section id="writing"><div class="wrap">
   <div class="record-h reveal"><h2 class="h2">Writing${dot}</h2><a class="tlink" href="/insights">All insights</a></div>
   <ul class="windex">${INSIGHTS.slice(0,5).map((a,i)=>`
-    <li class="reveal" style="--i:${i%3}"><a href="/insights/${a.slug}">
+    <li class="reveal" style="--i:${i%3}" data-kw="${esc((a.t+' '+(a.d||'')).toLowerCase())}"><a href="/insights/${a.slug}">
       <span class="wi-date">${new Date(a.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span>
       <span class="wi-t">${a.t}</span>
       <span class="wi-tag">${a.tag}</span>
     </a></li>`).join('')}
   </ul>
 </div></section>
-${ctaBand('Have a service that needs to prove its worth?','Tell us what it is for and who it is for. We will send a short written proposal, with a fixed price, within two working days.')}`;
+${ctaBand('Have a service that needs to prove its worth?','Tell us what it is for and who it is for. We will send a short written proposal, with a fixed price, within two working days.').replace('<section class="cta-band">','<section class="cta-band" data-cta>')}`;
 
 /* ================= CAPABILITIES ================= */
 P['/capabilities']=()=>`

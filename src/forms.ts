@@ -6,8 +6,17 @@
 
 /* pre-tick an interest from a link such as /contact?interest=DataLense */
 export function preselect(){
-  const v=new URLSearchParams(location.search).get('interest');if(!v)return;
-  document.querySelectorAll<HTMLInputElement>('#contact-form input[name=interest]').forEach(i=>{if(i.value===v)i.checked=true;});
+  const q=new URLSearchParams(location.search);const v=q.get('interest');
+  if(v)document.querySelectorAll<HTMLInputElement>('#contact-form input[name=interest]').forEach(i=>{if(i.value===v)i.checked=true;});
+  /* from the home page question: /contact?sector=health&job=fund&said=... */
+  const sector=q.get('sector'),job=q.get('job'),said=q.get('said');
+  const msg=document.querySelector<HTMLTextAreaElement>('#cf-msg');if(!msg||msg.value||!(sector||job||said))return;
+  const S={health:'a health service',sport:'a sport or physical activity service',public:'a town, BID or council'}[sector||'']||'';
+  const J={fund:'make the case for funding',prove:'prove it worked',build:'build a tool or service',who:'find out more about you'}[job||'']||'';
+  const line=[S?`We are ${S}.`:'',J?`We need to ${J}.`:'',said?`In our words: ${said}`:''].filter(Boolean).join(' ');
+  if(line){msg.value=line+'\n\n';msg.dispatchEvent(new Event('input',{bubbles:true}));}
+  const tick={health:'DataLense',public:'Placeboard'}[sector||''];
+  if(tick)document.querySelectorAll<HTMLInputElement>('#contact-form input[name=interest]').forEach(i=>{if(i.value===tick)i.checked=true;});
 }
 export function initForms(){
   /* newsletter opt-in */
