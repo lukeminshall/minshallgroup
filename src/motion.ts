@@ -58,7 +58,10 @@ function heroField(sig){
   let sp:any=null;                                   /* {tg:number[][],i,t0,on:boolean} */
   const rnd=(i:number)=>{const x=Math.sin(i*12.9898+78.233)*43758.5453;return x-Math.floor(x);};   /* a stable per-dot random */
   const spellDone=()=>{sp=null;sec?.classList.remove('intro');};
+  /* a backstop: whatever happens to the dots, the words are on screen within eight seconds */
+  if(sec?.classList.contains('intro')){const t=setTimeout(()=>sec.classList.remove('intro'),8000);cleanups.push(()=>clearTimeout(t));}
   const sample=(word:string)=>{
+    if(W<2||H<2)size();if(W<2||H<2)throw new Error('field has no size yet');   /* never sample a zero-width canvas: that throws and would strand the intro */
     const oc=document.createElement('canvas');oc.width=W;oc.height=H;const o=oc.getContext('2d');
     let fs=Math.min(H*.56,W*1.5/Math.max(4,word.length));o.font=`700 ${fs}px 'Archivo Variable',Archivo,sans-serif`;
     const tw=o.measureText(word).width;if(tw>W*.86){fs*=W*.86/tw;o.font=`700 ${fs}px 'Archivo Variable',Archivo,sans-serif`;}
@@ -77,7 +80,7 @@ function heroField(sig){
     if(!sec||!words.length||RM||!sec.classList.contains('intro')){sec?.classList.remove('intro');return;}
     try{await document.fonts.load("700 100px 'Archivo Variable'");}catch{}
     if(!sec.classList.contains('intro'))return;
-    sp={tg:words.map(sample),i:0,t0:performance.now(),pour:POUR};
+    try{sp={tg:words.map(sample),i:0,t0:performance.now(),pour:POUR};}catch{spellDone();return;}   /* if the field cannot be read, skip straight to the words */
     const end=()=>{if(sp)spellDone();};
     addEventListener('scroll',end,{passive:true,once:true,...sig});cv.parentElement.addEventListener('pointerdown',end,{once:true,...sig});
     const t=setTimeout(end,POUR+words.length*(IN+HOLD)+IN+400);cleanups.push(()=>clearTimeout(t));};
@@ -85,7 +88,7 @@ function heroField(sig){
   /* the page can ask the dots to spell something later (the visitor's own word), without the pour */
   sec?.addEventListener('mg:spell',async(e:Event)=>{if(RM||sp)return;const words=((e as CustomEvent).detail||[]).filter(Boolean);if(!words.length)return;
     try{await document.fonts.load("700 100px 'Archivo Variable'");}catch{}
-    sp={tg:words.map(sample),i:0,t0:performance.now(),pour:0,keep:true};},sig);
+    try{sp={tg:words.map(sample),i:0,t0:performance.now(),pour:0,keep:true};}catch{sp=null;}},sig);
   const spellPos=(i:number,now:number,bx:number,by:number)=>{
     const el=now-sp.t0,pour=sp.pour;
     if(el<pour){                                     /* sand: every dot falls in on its own delay, sways, lands, and a ripple runs across */

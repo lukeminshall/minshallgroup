@@ -1814,7 +1814,7 @@ html.touring .cookie{display:none}
 .pp-qtotal{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.2)}
 .pp-qtotal b{font-family:var(--fd);font-weight:400;font-size:34px}
 .pp-qcard .tlink{color:#fff}
-.pp-new{margin-top:18px}
+.pp-newhere{margin-top:18px}
 .pp-fromq h2{margin:0 0 6px}
 .pp-qsum{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;border-radius:16px;background:var(--soft);margin:0 0 28px}
 .pp-qsum p{margin:4px 0 0;font-weight:700;color:var(--navy)}

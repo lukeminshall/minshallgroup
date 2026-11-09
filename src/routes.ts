@@ -13,7 +13,7 @@ export const DEFAULT_DESC='Commercial strategy and digital for health and sport.
 
 const t=s=>`${s} | ${BRAND}`;
 
-export const ROUTES:Record<string,{title:string,description:string,noindex?:boolean,image?:string}>={
+export const ROUTES:Record<string,{title:string,description:string,noindex?:boolean,image?:string,canonical?:string}>={
   '/':{title:DEFAULT_TITLE,description:DEFAULT_DESC},
   '/capabilities':{title:t('Capabilities — commercial strategy and digital'),description:'Two practices, one team and one measure: commercial strategy that finds where the growth is, and digital that builds what it takes, including data and practical AI.'},
   '/industries':{title:t('Sectors — Health and Sport'),description:'Commercial strategy and digital for NHS and private providers, health businesses selling into the NHS, and sport. We also work with universities and growth companies.'},
@@ -29,11 +29,13 @@ export const ROUTES:Record<string,{title:string,description:string,noindex?:bool
 const CAP_SEO={strategy:'Strategy Consultancy & UK Market Entry',digital:'Digital Product, Web & Platform Development','data-ai':'Data, AI & Automation Consultancy','brand-growth':'Brand, Marketing & Growth Agency'};
 CAPS.forEach(c=>{ROUTES['/capabilities/'+c.slug]={title:t(CAP_SEO[c.slug]||c.t),description:c.d};});
 LANDINGS.forEach(L=>{ROUTES['/'+L.slug]={title:L.seoTitle,description:L.desc};});
+/* near-duplicates: these pages stay up for visitors, but tell Google the main page is the one to index */
+ROUTES['/digital-consultancy'].canonical='/capabilities/digital';
 ROUTES['/digitalsme']={title:t('Website Refresh for Small Businesses from £495'),description:'Free instant website check with your Webmins Score, then a fixed-price refresh from £495. Three packages, clear add-ons, paid in three stages. For UK small businesses.'};
 ROUTES['/digitalsme/terms']={title:t('Website refresh offer terms'),description:'The terms that apply to the Minshall Group website refresh offer for small businesses.'};
 ROUTES['/privacy']={title:t('Privacy notice'),description:'How Minshall Group Limited uses the information you give us through this website.'};
 ROUTES['/products/datalense/sample']={title:t('DataLense sample catchment report'),description:'See what a DataLense healthcare catchment report looks like: drivetime map, market score, competitors, population health, workforce and coverage status. Illustrative data.'};
-ROUTES['/products/straight-talking/demo']={title:t('Straight Talking live demo'),description:'Give feedback as a patient and watch it reach the service, routed to the right person, and appear on the waiting-room screen. Made-up data.'};
+ROUTES['/products/straight-talking/demo']={title:t('Straight Talking live demo'),description:'Give feedback as a patient and watch it reach the service, routed to the right person, and appear on the waiting-room screen. Made-up data.',canonical:'/products/straight-talking'};
 ROUTES['/products/placeboard/demo']={title:t('Placeboard live demo'),description:'A working Placeboard set in Ripon, with real drive times and the city’s real year of events. Send a request as a business, approve it as the council and open the dashboard. Example data, not affiliated with Ripon’s councils or BID.'};
 PRODUCTS.forEach(p=>{ROUTES['/products/'+p.slug]={title:t(p.t+' — '+p.line.replace(/\.$/,'')),description:p.d};});
 ROUTES['/products/placeboard'].image=ROUTES['/products/placeboard/demo'].image='/og-placeboard.png';

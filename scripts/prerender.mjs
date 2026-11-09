@@ -61,7 +61,7 @@ function renderRoute(path) {
   /* title + per-page meta */
   doc = doc.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(title)}</title>`);
   doc = replaceAttr(doc, /(<meta name="description" content=")[\s\S]*?(">)/, desc);
-  doc = replaceAttr(doc, /(<link rel="canonical" href=")[\s\S]*?(">)/, url);
+  doc = replaceAttr(doc, /(<link rel="canonical" href=")[\s\S]*?(">)/, meta.canonical ? SITE + meta.canonical : url);
   doc = replaceAttr(doc, /(<meta property="og:url" content=")[\s\S]*?(">)/, url);
   doc = replaceAttr(doc, /(<meta property="og:title" content=")[\s\S]*?(">)/, title);
   doc = replaceAttr(doc, /(<meta property="og:description" content=")[\s\S]*?(">)/, desc);
@@ -86,9 +86,10 @@ for (const path of routes) {
 }
 
 /* 3. Regenerate sitemap.xml from the canonical route list. */
-const urls = routes.filter(p => !ROUTES[p].noindex).map(p => {
+/* a page that names another as canonical is left out: the sitemap lists only pages we want indexed */
+const urls = routes.filter(p => !ROUTES[p].noindex && !ROUTES[p].canonical).map(p => {
   const loc = SITE + (p === '/' ? '/' : p);
-  const priority = p === '/' ? '1.0' : (p === '/healthcare-consultancy' || p === '/digital-consultancy') ? '0.9' : p === '/privacy' ? '0.3' : '0.8';
+  const priority = p === '/' ? '1.0' : p === '/healthcare-consultancy' ? '0.9' : p === '/privacy' ? '0.3' : '0.8';
   const lastmod = new Date().toISOString().slice(0, 10);
   return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
 }).join('\n');

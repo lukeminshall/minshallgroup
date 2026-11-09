@@ -48,7 +48,7 @@ async function render(){
     </div>`:`<div class="pp-signin">
       <div><h2 class="h2">Log in to your project.</h2><p class="lede-s">Strategy, digital or a new website: follow progress, answer your brief, see the plan and the results, get your documents, raise requests and see invoices, all in one place.</p>
         <div class="actions"><button class="btn" data-in><span>Log in</span></button><button class="btn ghost" data-up><span>Create an account</span></button></div>
-        <p class="pp-muted pp-new">New here? <a class="ulink" href="/start">Build your brief</a> or <a class="ulink" href="/digitalsme#quote">price a website</a> first, then create your account.</p></div>
+        <p class="pp-muted pp-newhere">New here? <a class="ulink" href="/start">Build your brief</a> or <a class="ulink" href="/digitalsme#quote">price a website</a> first, then create your account.</p></div>
       <ol class="pp-how">${['Create your account','Choose your project and answer the brief','See the plan, the progress and the results','Get documents, approve work and raise requests'].map((t,i)=>`<li><span>${i+1}</span>${t}</li>`).join('')}</ol>
     </div>`;
     root.querySelector('[data-in]').addEventListener('click',()=>clerk.openSignIn({}));

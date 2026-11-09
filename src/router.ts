@@ -20,11 +20,11 @@ const path=()=>location.pathname.replace(/\/+$/,'')||'/';
 
 function setMeta(p){
   const r=ROUTES[p];const title=r?r.title:'Page not found | Minshall Group';const desc=r?r.description:DEFAULT_DESC;
-  const url=SITE+(p==='/'?'/':p);
+  const url=SITE+(p==='/'?'/':p),canon=r&&r.canonical?SITE+r.canonical:url;
   document.title=title||DEFAULT_TITLE;
   const set=(sel,attr,val)=>{const el=document.querySelector(sel);if(el)el.setAttribute(attr,val);};
   set('meta[name="description"]','content',desc);
-  set('link[rel="canonical"]','href',url);
+  set('link[rel="canonical"]','href',canon);
   set('meta[property="og:url"]','content',url);
   set('meta[property="og:title"]','content',title);
   set('meta[property="og:description"]','content',desc);
