@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
-    "test:db": "node supabase/tests/security.test.mjs"
+    "test:db": "node supabase/tests/security.test.mjs && node supabase/tests/workflow.test.mjs && node supabase/tests/xero.test.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.2.17",

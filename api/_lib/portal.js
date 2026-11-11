@@ -34,12 +34,27 @@ export async function caller(req) {
   return { userId, isAdmin: !!te };
 }
 
-/* the project, if the caller may see it */
+/* the caller's verified email, recorded from Clerk at sign-up */
+export async function emailOf(who) {
+  if (who.email !== undefined) return who.email;
+  const { data } = await db().from('signups').select('email').eq('user_id', who.userId).maybeSingle();
+  return (who.email = (data?.email || '').toLowerCase());
+}
+
+/* the project, if the caller may see it: our team, the owner, or someone on the client's team.
+   Adds p.canManage (our team or the owner) and p.memberRole. */
 export async function projectFor(who, clientId) {
   const { data } = await db().from('clients').select('*').eq('id', clientId).maybeSingle();
   if (!data) throw Object.assign(new Error('Project not found'), { status: 404 });
-  if (!who.isAdmin && data.owner_id !== who.userId) throw Object.assign(new Error('Not your project'), { status: 403 });
-  return data;
+  const owner = data.owner_id === who.userId;
+  let role = null;
+  if (!who.isAdmin && !owner) {
+    const email = await emailOf(who);
+    const { data: m } = email ? await db().from('project_members').select('role').eq('client_id', clientId).eq('email', email).maybeSingle() : { data: null };
+    if (!m) throw Object.assign(new Error('Not your project'), { status: 403 });
+    role = m.role;
+  }
+  return Object.assign(data, { canManage: who.isAdmin || owner, memberRole: role });
 }
 
 export async function sendEmail({ to, subject, text, html, replyTo, from }) {

@@ -2394,3 +2394,66 @@ html.noscroll{overflow:hidden}
   .open-bar span{display:none}
   .with .wrap{gap:6px 18px}
 }
+
+/* ---------- portal workflow: team, phases, tasks, sign-off ---------- */
+.wf-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:start;margin-top:8px}
+.wf-side{position:sticky;top:calc(var(--hh) + 16px);display:grid;gap:16px}
+.wf-side .pp-card+.pp-card{margin-top:0}
+.wf-needs{margin-bottom:18px}
+.wf-phase{background:var(--soft);border-radius:var(--r);padding:clamp(18px,2.4vw,28px);margin-bottom:16px;border-left:4px solid var(--line)}
+.wf-phase.p-active{border-left-color:var(--pink)}.wf-phase.p-done{border-left-color:#13633F}
+.wf-phase>header{display:flex;align-items:center;gap:14px}
+.wf-phase>header>div{flex:1;min-width:0}.wf-phase>header .pp-h{margin:0}
+.wf-phase>header small{color:var(--muted);font-size:13px}
+.wf-n{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--navy);font-weight:800;box-shadow:inset 0 0 0 1.5px var(--line)}
+.p-active .wf-n{background:var(--pink);color:var(--navy);box-shadow:none}.p-done .wf-n{background:#13633F;color:#fff;box-shadow:none}
+.wf-phase select,.wf-team select,.wf-task select{font:inherit;font-size:13px;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);max-width:170px}
+.wf-cols{display:grid;gap:6px}
+.wf-tasks,.wf-team,.wf-chain{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.wf-tasks{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.wf-so .pp-docs button{font-size:15px;text-align:left}
+.wf-so-body .wf-chain{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.wf-task{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;background:#fff;border-radius:10px;padding:10px 12px}
+.wf-task>div{flex:1 1 160px;min-width:0}.wf-task b{display:block;font-size:15px}.wf-task small{color:var(--muted);font-size:12.5px}
+.wf-task p{margin:6px 0 0;color:var(--ink-2)}
+.wf-task.t-done b{text-decoration:line-through;text-decoration-color:rgba(20,23,26,.35)}
+.pp-badge.t-todo{background:#fff}.pp-badge.t-doing{background:#E3EAFF;color:#1F3D99}.pp-badge.t-review{background:#FFF1D6;color:#8A5A00}.pp-badge.t-done{background:#E5F6EE;color:#13633F}
+.wf-x{flex:none;width:28px;height:28px;border-radius:50%;color:var(--muted);font-size:18px;line-height:1}.wf-x:hover{background:var(--pink-soft);color:var(--pink-d)}
+.wf-so{background:#fff;border-radius:12px;margin-bottom:10px;border:1.5px solid transparent}
+.wf-so[open]{border-color:var(--navy)}
+.wf-so>summary{list-style:none;cursor:pointer;padding:12px 14px;display:grid;gap:4px}
+.wf-so>summary::-webkit-details-marker{display:none}
+.wf-so>summary b{font-size:15.5px}.wf-so>summary small{color:var(--muted);font-size:12.5px}
+.wf-so>summary .pp-badge{justify-self:start}
+.wf-so-body{padding:0 14px 16px}
+.pp-badge.so-open{background:#E3EAFF;color:#1F3D99}.pp-badge.so-changes{background:var(--pink-soft);color:var(--pink-d)}.pp-badge.so-ready{background:#FFF1D6;color:#8A5A00}.pp-badge.so-approved{background:#E5F6EE;color:#13633F}
+.wf-chain li{display:grid;grid-template-columns:26px 1fr auto;gap:2px 10px;align-items:center;padding:8px 10px;border-radius:10px;background:var(--soft)}
+.wf-chain li>span{grid-row:span 2;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;box-shadow:inset 0 0 0 1.5px var(--line);background:#fff}
+.wf-chain li b{font-size:14.5px}.wf-chain li small{grid-column:2;color:var(--muted);font-size:12.5px}
+.wf-chain li .wf-x{grid-row:1/span 2;grid-column:3}
+.wf-chain .d-approved>span{background:#13633F;color:#fff;box-shadow:none}.wf-chain .d-changes>span{background:var(--pink);color:var(--navy);box-shadow:none}
+.wf-chain li.final{background:#fff;box-shadow:inset 0 0 0 1.5px var(--navy)}
+.wf-inv{margin:14px 0 0;padding:12px 14px;border-radius:10px;background:var(--soft);font-size:14px;line-height:1.55}
+.wf-inv .pp-badge{margin-left:6px}.wf-err{display:block;color:var(--pink-d);margin-top:6px}
+.pp-badge.iv-raised{background:#E5F6EE;color:#13633F}.pp-badge.iv-failed{background:var(--pink-soft);color:var(--pink-d)}.pp-badge.iv-manual,.pp-badge.iv-raising{background:#FFF1D6;color:#8A5A00}
+.wf-decide{margin-top:16px;padding:14px;border-radius:12px;background:var(--soft);display:grid;gap:8px}
+.wf-decide label{font-weight:800;font-size:14px}
+.wf-decide textarea,.wf-so .pp-reply textarea{font:inherit;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+.wf-decide .actions{margin:0}
+.wf-admin{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:grid;gap:10px}
+.pp-drop.sm{padding:12px;font-size:13.5px}
+.wf-team li{display:flex;gap:8px;align-items:center;background:#fff;border-radius:10px;padding:9px 10px}
+.wf-team li>div{flex:1;min-width:0}.wf-team b{display:block;font-size:14.5px}.wf-team small{display:block;color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pp-badge.r-approver{background:var(--navy);color:#fff}
+.wf-form{display:grid;gap:4px}.wf-form .btn{justify-self:start}
+.wf-build{margin-top:18px}.wf-build>summary{list-style:none;cursor:pointer}.wf-build>summary::-webkit-details-marker{display:none}
+.wf-build>summary .pp-h::after{content:' +';color:var(--pink-d)}.wf-build[open]>summary .pp-h::after{content:' −'}
+.wf-forms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 28px;margin-top:8px}
+.wf-form-wide{grid-column:1/-1}
+.wf-pick{display:flex;flex-wrap:wrap;gap:6px;max-height:160px;overflow:auto;margin-bottom:8px}
+.wf-invset{background:#fff;border-radius:12px;padding:12px 14px}
+@media (max-width:980px){.wf-layout{grid-template-columns:1fr}.wf-side{position:static}.wf-cols{grid-template-columns:1fr}}
+@media (max-width:680px){.wf-forms{grid-template-columns:1fr}.wf-phase>header{flex-wrap:wrap}}
+.wf-detail{margin:2px 0 4px;font-size:14.5px;line-height:1.55;color:var(--ink-2);white-space:pre-line}
+.wf-form .pp-check{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.45;margin:8px 0 12px}
+.wf-form .pp-check input{margin-top:3px;flex:none}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portal workflow harness</title>
+<!-- Local test page only (never built or deployed). Runs the real Workflow screen
+     against an in-browser Postgres with the real portal migrations and rules.
+     Start with: npx vite --config supabase/tests/ui/vite.config.mjs   then open /harness.html -->
+<style>
+  .hx-bar{position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;background:#0A1A3F;color:#fff;font:600 13px system-ui}
+  .hx-bar button{font:inherit;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;cursor:pointer}
+  .hx-bar button.on{background:#FF2E63;color:#0A1A3F;border-color:#FF2E63}
+  #hx-log{position:fixed;right:12px;bottom:12px;width:340px;max-height:38vh;overflow:auto;background:#fff;border:1px solid #ccd;border-radius:10px;padding:8px 10px;font:12px/1.45 ui-monospace,monospace;z-index:60}
+</style>
+</head>
+<body>
+<div class="hx-bar" data-bar><b>Act as:</b></div>
+<main id="app" style="padding-top:20px"><section id="portal-root"><div class="wrap"><div data-portal><nav class="pp-tabs"><a href="#" data-t="workflow" class="on">Workflow</a><a href="#" data-t="overview">Overview</a></nav><div data-view></div></div></div></section></main>
+<div id="hx-log"><b>Server calls</b></div>
+<script type="module" src="./harness.ts"></script>
+</body>
+</html>

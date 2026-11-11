@@ -6,6 +6,7 @@
 import { configured, caller, projectFor, db, sendEmail, TEAM, PUBLIC_REPLY, SITE, body, fail } from './_lib/portal.js';
 import { brandEmail, FROM } from './_lib/email.js';
 import { createClerkClient } from '@clerk/backend';
+import { workflowEvent, welcomeMember } from './_lib/workflow.js';
 
 const STAGE = { onboarding: 'Onboarding', design: 'Design', build: 'Build', review: 'Review', live: 'Live', discovery: 'Discovery', analysis: 'Analysis', recommendations: 'Recommendations', complete: 'Complete' };
 const SERVICE = { website: 'Website', strategy: 'Commercial strategy', digital: 'Digital, data and AI' };
@@ -36,6 +37,8 @@ export default async function handler(req, res) {
       const email = u.primaryEmailAddress?.emailAddress || u.emailAddresses?.[0]?.emailAddress || '';
       const name = [u.firstName, u.lastName].filter(Boolean).join(' ');
       const { data: added } = await db().from('signups').upsert({ user_id: who.userId, email, name }, { onConflict: 'user_id', ignoreDuplicates: true }).select('user_id');
+      /* someone invited onto a client's project team: a welcome to that project instead */
+      if (added && added.length && email && await welcomeMember(email, name)) return res.status(200).json({ ok: true, new: true, member: true });
       if (added && added.length) {
         /* the quote they built on the website, if any: plain values only, clipped */
         const cl = (v, n = 120) => String(v == null ? '' : v).replace(/[\r\n]+/g, ' ').slice(0, n);
@@ -57,6 +60,8 @@ export default async function handler(req, res) {
     }
 
     const p = await projectFor(who, clientId);
+    const wf = await workflowEvent(event, who, p, body(req));
+    if (wf !== undefined) return res.status(200).json(wf);
     const lastMsg = async fromAdmin => requestId ? (await db().from('request_messages').select('body').eq('request_id', requestId).eq('from_admin', fromAdmin).order('created_at', { ascending: false }).limit(1).maybeSingle()).data?.body || '' : '';
     const link = `${SITE}/portal`;
     const req_ = requestId ? (await db().from('requests').select('*').eq('id', requestId).eq('client_id', p.id).maybeSingle()).data : null;

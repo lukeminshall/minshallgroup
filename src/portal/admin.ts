@@ -28,9 +28,26 @@ export async function viewAdmin(el:HTMLElement,rerender:()=>void){
       <table class="pp-table"><thead><tr><th>Name</th><th>Email</th><th>Signed up</th></tr></thead><tbody>${waiting.map(u=>`<tr><td>${esc(u.name||'—')}</td><td>${esc(u.email||'—')}</td><td>${date(u.created_at)}</td></tr>`).join('')}</tbody></table></div>`:''}
     ${clicks.length?`<div class="pp-card"><h3 class="pp-h">Email clicks (${clicks.length})</h3><p class="pp-muted pp-small">Businesses that clicked the link in our outreach email and ran the check on their own site. Your warmest follow-ups.</p>
       <table class="pp-table"><thead><tr><th>Website</th><th>Checked</th></tr></thead><tbody>${clicks.map(c=>`<tr><td><a class="ulink" href="https://${esc(c.site)}" target="_blank" rel="noopener">${esc(c.site)}</a></td><td>${date(c.created_at)}</td></tr>`).join('')}</tbody></table></div>`:''}
+    <form class="pp-card wf-form" data-newproj><h3 class="pp-h">Set up a client project</h3>
+      <p class="pp-muted pp-small">For a proposal or a project we run with a client's team. You lead it; add their people in Workflow, and each sees it once they sign up with the email you add.</p>
+      <div class="row2"><div class="cfield"><label for="np-n">Organisation</label><input id="np-n" name="business_name" required></div>
+        <div class="cfield"><label for="np-s">Service</label><select id="np-s" name="service">${Object.entries(SERVICES).map(([id,v])=>`<option value="${id}"${id==='digital'?' selected':''}>${esc(v.t)}</option>`).join('')}</select></div></div>
+      <div class="cfield"><label for="np-a">The aim (the client sees this)</label><input id="np-a" name="summary" placeholder="A project tool that shows every referral, owner and deadline in one place"></div>
+      <div class="row2"><div class="cfield"><label for="np-f">Project fee (£) <span class="opt">optional</span></label><input id="np-f" name="quote_total" type="number" min="0"></div>
+        <div class="cfield"><label for="np-b">Billing email <span class="opt">optional</span></label><input id="np-b" name="billing_email" type="email"></div></div>
+      <button class="btn sm" type="submit"><span>Create and open Workflow</span></button></form>
     <div data-manage></div>`;
   const show=()=>manage(el.querySelector('[data-manage]'),rerender).catch(e=>{(el.querySelector('[data-manage]') as HTMLElement).innerHTML=`<div class="pp-card"><p>${esc(e.message||'Could not load this project')}</p></div>`;});
   el.querySelectorAll<HTMLElement>('[data-pick]').forEach(b=>b.addEventListener('click',()=>{S.current=all.find(p=>p.id===b.dataset.pick);try{localStorage.setItem('mg-portal-current',S.current.id);}catch{};show();}));
+  el.querySelector<HTMLFormElement>('[data-newproj]').addEventListener('submit',async e=>{
+    e.preventDefault();const f=e.target as HTMLFormElement;if(!f.checkValidity()){(f.querySelector(':invalid') as HTMLElement)?.focus();return;}
+    const fd=new FormData(f),btn=f.querySelector('button');btn.disabled=true;const v=(k:string)=>String(fd.get(k)||'').trim()||null;
+    try{const row=check(await sb.from('clients').insert({business_name:v('business_name'),service:fd.get('service'),summary:v('summary'),quote_total:fd.get('quote_total')?+fd.get('quote_total'):null,
+        billing_name:v('business_name'),billing_email:(v('billing_email')||'').toLowerCase()||null,stage:'discovery'}).select().single());
+      check(await sb.from('briefs').insert({client_id:row.id,answers:{}}));
+      S.current=row;try{localStorage.setItem('mg-portal-current',row.id);}catch{};toast('Project created. Add their team and the plan here.');location.hash='workflow';}
+    catch(err){toast(err.message,true);btn.disabled=false;}
+  });
   if(S.current)await show();
 }
 

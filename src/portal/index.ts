@@ -1,7 +1,7 @@
 /* =====================================================================
    CLIENT PORTAL — entry. Loaded only on /portal (dynamic import), so the
    rest of the site never downloads Clerk or Supabase.
-   Tabs live in the URL hash: #overview, #onboarding, #requests, #documents,
+   Tabs live in the URL hash: #overview, #workflow (team, phases, tasks and sign-off), #onboarding, #requests, #documents,
    #billing, #performance (websites, or anything live), #admin.
    One portal for every kind of project: websites, commercial strategy and
    digital. Stages, the brief and the dashboard follow the project's service.
@@ -12,9 +12,10 @@ import {SME} from '../content';
 import {viewOnboarding,viewRequests,viewBilling,viewPerformance,viewDocuments} from './views';
 import {score} from '../webmins';
 import {viewAdmin} from './admin';
+import {viewWorkflow,workflowSummary} from './workflow';
 
 let root:HTMLElement;let ac:AbortController|null=null;
-const tabsFor=(p:any)=>[['overview','Overview'],['onboarding',svc(p)==='website'?'Onboarding':'Brief'],['requests','Requests'],['documents','Documents'],['billing','Billing'],...(svc(p)==='website'||p?.live_url?[['performance','Performance']]:[])];
+const tabsFor=(p:any)=>[['overview','Overview'],['workflow','Workflow'],['onboarding',svc(p)==='website'?'Onboarding':'Brief'],['requests','Requests'],['documents','Documents'],['billing','Billing'],...(svc(p)==='website'||p?.live_url?[['performance','Performance']]:[])];
 
 export async function initPortal(){
   root=document.querySelector('[data-portal]');if(!root)return;
@@ -66,11 +67,16 @@ async function render(){
     const [projects,admins]=await Promise.all([sb.from('clients').select('*').order('created_at',{ascending:true}),sb.rpc('is_admin')]);
     S.projects=check(projects)||[];S.isAdmin=check(admins)===true;
   }catch(e){root.innerHTML=`<div class="pp-card"><h2 class="h2">We could not load your project.</h2><p>${esc(e.message)}</p></div>`;return;}
-  const mine=S.projects.filter(p=>p.owner_id===clerk.user.id);
-  /* first visit with no project: tell the team about the new account (the server sends it once) */
-  if(!mine.length&&!S.isAdmin){try{if(!sessionStorage.getItem('mg-signup-'+clerk.user.id)){sessionStorage.setItem('mg-signup-'+clerk.user.id,'1');api('/api/portal-notify',{event:'signed_up',quote:savedQuote()}).then(()=>render(),()=>{});}}catch{}}
+  let mine=S.projects.filter(p=>p.owner_id===clerk.user.id);
+  /* first visit with no project: record the account (the server emails the team once). Someone invited onto a
+     client's team only sees that project once their verified email is recorded, so wait for it, then look again. */
+  if(!mine.length&&!S.isAdmin){let first=false;try{first=!sessionStorage.getItem('mg-signup-'+clerk.user.id);if(first)sessionStorage.setItem('mg-signup-'+clerk.user.id,'1');}catch{}
+    if(first&&!S.projects.length){root.innerHTML=`<p class="pp-loading">Finding your project…</p>`;
+      try{await api('/api/portal-notify',{event:'signed_up',quote:savedQuote()});S.projects=check(await sb.from('clients').select('*').order('created_at',{ascending:true}))||[];}catch{}
+      mine=S.projects.filter(p=>p.owner_id===clerk.user.id);}
+    else if(first)api('/api/portal-notify',{event:'signed_up',quote:savedQuote()}).catch(()=>{});}
   const saved=(()=>{try{return localStorage.getItem('mg-portal-current');}catch{return null;}})();
-  S.current=S.projects.find(p=>p.id===saved)||mine[0]||(S.isAdmin?S.projects[0]:null)||null;
+  S.current=S.projects.find(p=>p.id===saved)||mine[0]||S.projects[0]||null;   /* a team member sees the project they were added to */
   /* the team lands on the admin dashboard; clients on their overview */
   let tab=location.hash.slice(1)||(S.isAdmin?'admin':'overview');
   if(tab==='admin'&&!S.isAdmin)tab='overview';
@@ -84,6 +90,7 @@ async function render(){
   const el=root.querySelector('[data-view]') as HTMLElement;
   try{
     if(tab==='admin')return await viewAdmin(el,()=>render());
+    if(tab==='workflow')return await viewWorkflow(el);
     if(tab==='onboarding')return await viewOnboarding(el);
     if(tab==='requests')return await viewRequests(el);
     if(tab==='documents')return await viewDocuments(el);
@@ -118,6 +125,7 @@ async function overview(el:HTMLElement){
     sb.from('files').select('name,path,created_at').eq('client_id',p.id).eq('kind','deliverable').order('created_at',{ascending:false}).limit(4),
     web||p.live_url?sb.from('scores').select('data,checked_at').eq('client_id',p.id).order('checked_at',{ascending:false}).limit(1):Promise.resolve({data:[]})
   ]);
+  const wf=await workflowSummary(p).catch(()=>({phases:[],waiting:0,tasks:0}));
   const submitted=!!brief.data?.submitted_at;const due=(invoices.data||[]).filter(i=>i.status==='due'||i.status==='overdue');
   const owed=due.reduce((t,i)=>t+Number(i.amount_gbp),0);const allReqs=reqs.data||[];
   const quoted=allReqs.filter(r=>r.status==='quoted').length;const openReqs=allReqs.filter(r=>['new','quoted','approved','in_progress'].includes(r.status)&&r.kind!=='message'&&r.kind!=='approval').length;
@@ -127,6 +135,8 @@ async function overview(el:HTMLElement){
 
   /* what needs the client now */
   const next:string[]=[];
+  if(wf.waiting)next.push(`<a class="pp-next" href="#workflow"><b>${wf.waiting} sign-off${wf.waiting>1?'s':''} waiting for you</b><span>Read the documents, then approve or ask for changes.</span></a>`);
+  if(wf.tasks)next.push(`<a class="pp-next" href="#workflow"><b>${wf.tasks} task${wf.tasks>1?'s':''} allocated to you</b><span>Update them in Workflow as you go.</span></a>`);
   if(S.unread)next.push(`<a class="pp-next" href="#requests"><b>${S.unread} new update${S.unread>1?'s':''} from us</b><span>Messages and replies are in Requests.</span></a>`);
   if(p.stage==='onboarding'&&!submitted)next.push(`<a class="pp-next" href="#onboarding"><b>${web?'Answer your onboarding questions':'Complete your brief'}</b><span>${web?'About 15 minutes. It replaces a kick-off call, and saves as you go.':'About 10 minutes. It means our first meeting is about decisions, not background. Saves as you go.'}</span></a>`);
   if(p.stage==='onboarding'&&submitted)next.push(`<div class="pp-next calm"><b>Thank you, we have your brief.</b><span>${web?'We are designing your pages. You will get an email when the design is ready to review.':'We will be in touch within two working days to agree the plan and the numbers we will measure.'}</span></div>`);
@@ -158,7 +168,8 @@ async function overview(el:HTMLElement){
       ${p.website?`<dt>Website</dt><dd>${esc(p.website)}</dd>`:''}`;
 
   el.innerHTML=`
-    <ol class="pp-stages">${STAGES.map((s,i)=>`<li class="${i<idx?'done':i===idx?'now':''}"><span>${i<idx?'✓':i+1}</span><b>${s.t}</b><small>${s.d}</small></li>`).join('')}</ol>
+    ${wf.phases.length?`<ol class="pp-stages">${wf.phases.map((s:any,i:number)=>`<li class="${s.status==='done'?'done':s.status==='active'?'now':''}"><span>${s.status==='done'?'✓':i+1}</span><b>${esc(s.title)}</b><small>${s.status==='active'?'In progress':s.status==='done'?'Complete':s.due_on?'Due '+date(s.due_on):'Upcoming'}</small></li>`).join('')}</ol>`
+      :`<ol class="pp-stages">${STAGES.map((s,i)=>`<li class="${i<idx?'done':i===idx?'now':''}"><span>${i<idx?'✓':i+1}</span><b>${s.t}</b><small>${s.d}</small></li>`).join('')}</ol>`}
     <div class="pp-tiles">
       <div><small>Stage</small><b>${esc(STAGES[idx]?.t||'')}</b><span>${idx+1} of ${STAGES.length}</span></div>
       <div><small>Next milestone</small><b>${nextMs?esc(nextMs.t):plan.length?'All done':'To be agreed'}</b><span>${nextMs?.due?date(nextMs.due):plan.length?`${doneMs} of ${plan.length} complete`:'At kick-off'}</span></div>
