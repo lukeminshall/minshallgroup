@@ -16,7 +16,7 @@ import {viewWorkflow,workflowSummary} from './workflow';
 import {viewAgreements,agreementsWaiting} from './agreements';
 import {viewProposal} from './proposal';
 
-let root:HTMLElement;let ac:AbortController|null=null;
+let root:HTMLElement;let ac:AbortController|null=null;let jump=false;
 const tabsFor=(p:any)=>[['overview','Overview'],...(p?.page_md?[['proposal','Proposal']]:[]),['workflow','Workflow'],['agreements','Agreements'],['onboarding',svc(p)==='website'?'Onboarding':'Brief'],['requests','Requests'],['documents','Documents'],['billing','Billing'],...(svc(p)==='website'||p?.live_url?[['performance','Performance']]:[])];
 
 export async function initPortal(){
@@ -27,7 +27,10 @@ export async function initPortal(){
   try{await boot();}catch(e){root.innerHTML=`<div class="pp-card"><h2 class="h2">We could not load sign-in.</h2><p>Please refresh the page. If it keeps happening, email hello@minshallgroup.com.</p></div>`;return;}
   let signedIn=!!clerk.user;
   clerk.addListener(()=>{if(!!clerk.user!==signedIn){signedIn=!!clerk.user;render();}});
-  addEventListener('hashchange',()=>{if(document.querySelector('[data-portal]'))render();},{signal:ac.signal});
+  addEventListener('hashchange',()=>{if(document.querySelector('[data-portal]')){jump=true;render();}},{signal:ac.signal});
+  /* a chosen file shows its name in the upload box, so it is clear the choice worked */
+  root.addEventListener('change',e=>{const inp=e.target as HTMLInputElement;if(inp?.type!=='file')return;const box=inp.closest('.pp-drop');const sp=box?.querySelector('span');if(!sp)return;
+    if(!sp.dataset.label)sp.dataset.label=sp.textContent||'';const n=[...(inp.files||[])].map(f=>f.name);sp.textContent=n.length?`Chosen: ${n.join(', ')}`:sp.dataset.label;box.classList.toggle('chosen',!!n.length);},{signal:ac.signal});
   render();
 }
 
@@ -92,7 +95,10 @@ async function render(){
     if(S.isAdmin){const all=check(await sb.from('requests').select('id,last_client_at,team_seen_at'))||[];S.teamUnread=all.filter(unreadForTeam).length;}
   }catch{S.unread=0;S.teamUnread=0;}
   shell(tab);
+  /* a new tab starts at the top of the portal, not wherever the shorter loading page left the scroll (often the footer) */
+  if(jump){jump=false;const top=root.getBoundingClientRect().top+scrollY-(document.querySelector<HTMLElement>('.site-head')?.offsetHeight||80)-16;if(Math.abs(scrollY-top)>40)scrollTo({top:Math.max(0,top),behavior:'instant' as ScrollBehavior});}
   const el=root.querySelector('[data-view]') as HTMLElement;
+  el.style.minHeight='60vh';
   try{
     if(tab==='admin')return await viewAdmin(el,()=>render());
     if(tab==='workflow')return await viewWorkflow(el);

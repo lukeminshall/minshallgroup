@@ -2510,3 +2510,4 @@ html.noscroll{overflow:hidden}
 .pp-viewas [data-view] form{opacity:.75}
 .pp-viewas [data-view] details>summary{pointer-events:auto}
 .pp-viewas [data-view] [data-file],.pp-viewas [data-view] [data-goto]{pointer-events:auto}
+.pp-drop.chosen{border-style:solid;border-color:#13633F;background:#F2FBF6}.pp-drop.chosen span{color:#13633F}
