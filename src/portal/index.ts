@@ -115,12 +115,15 @@ async function render(){
 
 function shell(tab){
   const name=clerk.user.firstName||clerk.user.primaryEmailAddress?.emailAddress||'';
-  const tabs=[...tabsFor(S.current),...(S.isAdmin?[['admin','Admin']]:[])];
+  /* Admin is its own page: no project heading, no project tabs; on a project's tabs, our team gets a way back to Admin */
+  const adminPage=tab==='admin';
+  const tabs=adminPage?[]:[...tabsFor(S.current),...(S.isAdmin?[['admin','Admin']]:[])];
   root.innerHTML=`${S.viewAs?`<div class="pp-viewas-bar" role="status"><span><b>Previewing as ${esc(S.viewAs.name||S.viewAs.email)}</b> · read only, exactly what they see</span><button type="button" class="btn sm" data-exitview><span>Back to my view</span></button></div>`:''}<div class="pp-top">
-      <div><span class="eyebrow">Client portal${S.current&&tab!=='start'?' · '+esc(SERVICES[svc(S.current)].short):''}</span><h2 class="h2">${S.current?esc(S.current.business_name):'Welcome'+(name?', '+esc(name):'')}</h2></div>
-      <div class="pp-user">${S.projects.length>1?`<label><span class="sr">Project</span><select data-switch>${S.projects.map(p=>`<option value="${p.id}"${p.id===S.current?.id?' selected':''}>${esc(p.business_name)}${S.isAdmin&&p.owner_id!==clerk.user.id?' ('+esc(p.owner_email||'client')+')':''}</option>`).join('')}</select></label>`:''}<div data-userbtn></div></div>
+      <div><span class="eyebrow">${adminPage?'Minshall Group':'Client portal'+(S.current&&tab!=='start'?' · '+esc(SERVICES[svc(S.current)].short):'')}</span><h2 class="h2">${adminPage?'Admin':S.current?esc(S.current.business_name):'Welcome'+(name?', '+esc(name):'')}</h2>
+        ${!adminPage&&S.isAdmin?'<a class="pp-back" href="#admin">‹ Admin</a>':''}</div>
+      <div class="pp-user">${!adminPage&&S.projects.length>1?`<label><span class="sr">Project</span><select data-switch>${S.projects.map(p=>`<option value="${p.id}"${p.id===S.current?.id?' selected':''}>${esc(p.business_name)}${S.isAdmin&&p.owner_id!==clerk.user.id?' ('+esc(p.owner_email||'client')+')':''}</option>`).join('')}</select></label>`:''}<div data-userbtn></div></div>
     </div>
-    ${tab==='start'?'':`<nav class="pp-tabs" aria-label="Portal">${tabs.map(([id,t])=>{const n=id==='requests'&&!(S.isAdmin&&S.current?.owner_id!==clerk.user.id)?S.unread:id==='admin'?S.teamUnread:0;
+    ${tab==='start'||adminPage?'':`<nav class="pp-tabs" aria-label="Portal">${tabs.map(([id,t])=>{const n=id==='requests'&&!(S.isAdmin&&S.current?.owner_id!==clerk.user.id)?S.unread:id==='admin'?S.teamUnread:0;
       return `<a href="#${id}" class="${id===tab?'on':''}"${id===tab?' aria-current="page"':''}>${t}${n?` <span class="pp-count" aria-label="${n} new">${n}</span>`:''}</a>`;}).join('')}</nav>`}
     <div data-view></div>`;
   clerk.mountUserButton(root.querySelector('[data-userbtn]'));

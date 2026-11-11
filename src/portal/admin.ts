@@ -25,7 +25,7 @@ export async function viewAdmin(el:HTMLElement,rerender:()=>void){
     return `<li><button type="button" class="ad-proj${p.id===S.current?.id?' sel':''}" data-pick="${p.id}" data-q="${esc((p.business_name+' '+(p.owner_name||'')+' '+(p.owner_email||'')).toLowerCase())}">
       <b>${esc(p.business_name)}</b><small>${esc(SERVICES[svc(p)].short)} · ${esc(stagesFor(p).find(s=>s.id===p.stage)?.t||p.stage)}${sub.has(p.id)?' · brief in':''}</small>
       ${u||o||w?`<span class="ad-chips">${u?`<i class="hot">${u} unread</i>`:''}${o?`<i>${o} open</i>`:''}${w?`<i>${gbp(w)} owed</i>`:''}</span>`:''}</button></li>`;};
-  el.innerHTML=`<nav class="ad-tabs" aria-label="Admin">${tabsA.map(([id,t,n])=>`<button type="button" data-adtab="${id}" class="${id===at?'on':''}">${t}${n?` <span>${n}</span>`:''}</button>`).join('')}</nav>
+  el.innerHTML=`<nav class="ad-tabs" aria-label="Admin">${tabsA.map(([id,t,n])=>`<button type="button" data-adtab="${id}" class="${id===at?'on':''}">${t}${n&&id!=='new'?` <span>${n}</span>`:''}</button>`).join('')}</nav>
     <div data-ad="projects"${at==='projects'?'':' hidden'}><div class="ad-split">
       <aside class="ad-list"><label class="sr" for="ad-q">Find a project</label><input id="ad-q" type="search" placeholder="Find a project or client" data-adq>
         <ul>${all.map(item).join('')||'<li class="pp-muted">No projects yet.</li>'}</ul></aside>
@@ -78,8 +78,9 @@ async function manage(box:HTMLElement,rerender){
   const A=brief.data?.answers||{};const STAGES=stagesFor(p);const BRIEF=briefFor(p,A);const web=svc(p)==='website';
   const SECS:[string,string][]=[['project','Project'],['client','Client view'],['documents','Documents'],['brief','Brief'],['messages','Messages and requests'],['invoices','Invoices'],...(web||p.live_url?[['website','Website checks']] as [string,string][]:[])];
   let sec=(()=>{try{return sessionStorage.getItem('mg-admin-sec')||'project';}catch{return 'project';}})();if(!SECS.some(x=>x[0]===sec))sec='project';
-  box.innerHTML=`<div class="ad-head"><div><span class="eyebrow">${esc(SERVICES[svc(p)].short)} · ${esc(STAGES.find(s=>s.id===p.stage)?.t||p.stage)}</span><h2 class="h3">${esc(p.business_name)}</h2></div>
-      <div class="ad-jump"><a class="btn sm ghost" href="#workflow"><span>Workflow</span></a><a class="btn sm ghost" href="#agreements"><span>Agreements</span></a><a class="btn sm ghost" href="#overview"><span>Their overview</span></a></div></div>
+  const answered=BRIEF.flatMap(s=>s.fields).filter(f=>f.type!=='files'&&A[f.id]!=null&&A[f.id]!==''&&!(Array.isArray(A[f.id])&&!A[f.id].length)).length,asked=BRIEF.flatMap(s=>s.fields).filter(f=>f.type!=='files').length;
+  box.innerHTML=`<div class="ad-top"><div><h2 class="h3">${esc(p.business_name)}</h2><small>${esc(SERVICES[svc(p)].short)} · ${esc(STAGES.find(s=>s.id===p.stage)?.t||p.stage)}${p.owner_email?' · '+esc(p.owner_email):''}</small></div>
+      <div class="ad-open"><span>Open</span><a href="#overview">Overview</a><a href="#workflow">Workflow</a><a href="#agreements">Agreements</a>${p.page_md?'<a href="#proposal">Proposal</a>':''}</div></div>
     <nav class="ad-sub" aria-label="Project sections">${SECS.map(([id,t])=>`<button type="button" data-sec-go="${id}">${t}</button>`).join('')}</nav>
     <div class="pp-admin">
     <form class="pp-card" data-proj data-sec="project"><h3 class="pp-h">Project, stage and links</h3>
@@ -107,13 +108,13 @@ async function manage(box:HTMLElement,rerender){
       <button class="btn sm" type="submit"><span>Deliver</span></button></form>
       <div class="pp-card"><h3 class="pp-h">All files</h3><ul class="pp-files">${(files.data||[]).map(f=>`<li><button type="button" class="ulink" data-file="${esc(f.path)}">${esc(f.name)}</button> <small>${f.kind} · ${Math.round((f.size||0)/1024)} KB · ${date(f.created_at)}</small></li>`).join('')||'<li class="pp-muted">None yet</li>'}</ul></div></div>
 
-    <div class="pp-card" data-sec="brief"><h3 class="pp-h">Brief ${brief.data?.submitted_at?`<small>submitted ${date(brief.data.submitted_at)}</small>`:'<small>not submitted yet</small>'}</h3>
+    <div class="pp-card" data-sec="brief"><h3 class="pp-h">Brief</h3><p class="ad-status">${brief.data?.submitted_at?`<b>Submitted ${date(brief.data.submitted_at)}</b>`:'<b>Not submitted yet</b>'} · ${answered} of ${asked} questions answered${Array.isArray(A._questions)&&A._questions.length?` · ${A._questions.length} questions for this project`:''}</p>
       ${A.direction?briefSummary(A):''}
       <details class="pp-all"><summary>All answers</summary>${BRIEF.map(s=>`<h4 class="pp-h4">${esc(s.t)}</h4><dl class="pp-dl">${s.fields.filter(f=>f.type!=='files').map(f=>`<dt>${esc(f.label)}</dt><dd>${esc(fmtAnswer(f,A[f.id]))}</dd>`).join('')}</dl>`).join('')}</details>
-      <form class="wf-form" data-prefill><h4 class="pp-h4">Pre-fill the brief</h4>
-        <small class="pp-hint">Paste a brief file prepared for this client. It fills in the answers we already know and adds any questions for this project; the client checks, completes and submits it. Answers they have already given are kept.</small>
-        <textarea name="json" rows="4" placeholder='{"answers":{...},"questions":[...]}'></textarea>
-        <button class="btn sm ghost" type="submit"><span>Pre-fill the brief</span></button></form>
+      <div class="ad-prefill"><h4 class="pp-h4">Pre-fill the brief</h4>
+        <p class="pp-muted pp-small">Choose the brief file we prepared for this client. It fills in what we already know and adds the questions for this project; the client checks, completes and submits it. Anything they have already answered is kept.</p>
+        <label class="pp-drop sm"><input type="file" accept=".json,application/json" data-prefill-file><span>Choose the brief file (.json)</span></label>
+        <details class="ad-paste"><summary>Or paste it instead</summary><form class="wf-form" data-prefill><textarea name="json" rows="4" aria-label="Brief file contents"></textarea><button class="btn sm ghost" type="submit"><span>Pre-fill the brief</span></button></form></details></div>
       </div>
 
     <div data-sec="messages"><form class="pp-card" data-msg><h3 class="pp-h">Message ${esc(p.owner_name||p.business_name)}</h3>
@@ -150,15 +151,18 @@ async function manage(box:HTMLElement,rerender){
   const refresh=()=>manage(box,rerender);
   const go=(id:string)=>{sec=id;try{sessionStorage.setItem('mg-admin-sec',id);}catch{};box.querySelectorAll<HTMLElement>('[data-sec]').forEach(c=>c.hidden=c.dataset.sec!==id);box.querySelectorAll<HTMLElement>('[data-sec-go]').forEach(b=>b.classList.toggle('on',b.dataset.secGo===id));};
   go(sec);box.querySelectorAll<HTMLElement>('[data-sec-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.secGo)));
-  box.querySelector<HTMLFormElement>('[data-prefill]')?.addEventListener('submit',async e=>{e.preventDefault();
-    let j:any;try{j=JSON.parse(String(new FormData(e.target as HTMLFormElement).get('json')||''));}catch{return toast('That is not a valid brief file',true);}
-    if(!j||typeof j!=='object'||(!j.answers&&!j.questions))return toast('That is not a valid brief file',true);
+  const prefill=async(text:string)=>{
+    if(!text.trim())return toast('Choose the brief file first',true);
+    let j:any;try{j=JSON.parse(text);}catch{return toast('That file is not a brief file',true);}
+    if(!j||typeof j!=='object'||(!j.answers&&!j.questions))return toast('That file is not a brief file',true);
     const cur=brief.data?.answers||{};const merged:any={...cur};
     for(const [k,val] of Object.entries(j.answers||{})){const has=cur[k]!=null&&cur[k]!==''&&!(Array.isArray(cur[k])&&!cur[k].length);if(!has)merged[k]=val;}
     if(Array.isArray(j.questions))merged._questions=j.questions;
     for(const k of ['questionsTitle','questionsIntro'])if(j[k])merged['_'+k]=j[k];
     try{if(brief.data)check(await sb.from('briefs').update({answers:merged,updated_at:new Date().toISOString()}).eq('client_id',p.id));else check(await sb.from('briefs').insert({client_id:p.id,answers:merged}));
-      toast(`Brief pre-filled: ${Object.keys(j.answers||{}).length} answers, ${(j.questions||[]).length} project questions`);refresh();}catch(err){toast(err.message,true);}});
+      toast(`Brief pre-filled: ${Object.keys(j.answers||{}).length} answers, ${(j.questions||[]).length} project questions`);refresh();}catch(err){toast(err.message,true);}};
+  box.querySelector<HTMLInputElement>('[data-prefill-file]')?.addEventListener('change',async e=>{const f=(e.target as HTMLInputElement).files?.[0];if(f)prefill(await f.text());});
+  box.querySelector<HTMLFormElement>('[data-prefill]')?.addEventListener('submit',e=>{e.preventDefault();prefill(String(new FormData(e.target as HTMLFormElement).get('json')||''));});
   box.querySelector('[data-viewas-go]')?.addEventListener('click',()=>{const e=(box.querySelector('[data-viewas]') as HTMLSelectElement).value;const m=(members.data||[]).find(x=>x.email===e);
     try{sessionStorage.setItem('mg-view-as',JSON.stringify({client:p.id,email:e,name:m?.name||e,role:m?.role}));}catch{};location.hash='overview';rerender();});
   box.querySelector('[data-proj]').addEventListener('submit',async e=>{
