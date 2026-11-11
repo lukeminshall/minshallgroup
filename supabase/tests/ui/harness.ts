@@ -118,5 +118,11 @@ if(new URLSearchParams(location.search).has('seed')){
 if(new URLSearchParams(location.search).has('proposal')){const {viewProposal}=await import('../../../src/portal/proposal');
   const md=await (await fetch('/@fs/Users/lukeminshall/Downloads/IML%20Healthcare%20-%20portal%20page.md')).text();
   S.current={...proj,page_md:md};viewProposal(document.querySelector('[data-view]') as HTMLElement);throw new Error('proposal preview: stop');}
+/* ?brief: the Brief tab as a client team member sees it, pre-filled from a brief file in Downloads (local check only) */
+if(new URLSearchParams(location.search).has('brief')){const {viewOnboarding}=await import('../../../src/portal/views');
+  const j=await (await fetch('/@fs/Users/lukeminshall/Downloads/IML%20Healthcare%20-%20brief%20to%20pre-fill.json')).json();
+  const A={...j.answers,_questions:j.questions,_questionsTitle:j.questionsTitle,_questionsIntro:j.questionsIntro};
+  await asUser(null,`insert into public.briefs (client_id,answers) values ($1,$2)`,[proj.id,JSON.stringify(A)]);
+  await act(PEOPLE[1]);document.querySelector('[data-view]').innerHTML='';await viewOnboarding(document.querySelector('[data-view]') as HTMLElement);throw new Error('brief preview: stop');}
 const start=new URLSearchParams(location.search).get('as');
 await act(PEOPLE.find(p=>p.id===start)||PEOPLE[0]);

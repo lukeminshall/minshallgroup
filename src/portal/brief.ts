@@ -134,5 +134,16 @@ export const SERVICES:Record<string,{t:string,short:string,d:string}>={
   digital:{t:'Digital, data and AI',short:'Digital',d:'Platforms, portals, data and AI that move a number.'}
 };
 export const svc=(p:any)=>p?.service||'website';
-export const briefFor=(p:any)=>svc(p)==='strategy'?STRATEGY_BRIEF:svc(p)==='digital'?DIGITAL_BRIEF:BRIEF;
+/* the brief for a project: the questions for its service, plus any questions our team has added for this
+   project (kept with the answers as A._questions: [{label, type?, hint?, options?, required?}]) */
+export const briefFor=(p:any,A:any={})=>{
+  const base=svc(p)==='strategy'?STRATEGY_BRIEF:svc(p)==='digital'?DIGITAL_BRIEF:BRIEF;
+  const qs:any[]=Array.isArray(A?._questions)?A._questions.filter((q:any)=>q&&q.label):[];
+  if(!qs.length)return base;
+  const types=['text','textarea','choice','multi'];
+  const extra:Section={id:'specifics',t:A._questionsTitle||'Your project specifics',intro:A._questionsIntro||'Questions for this project, so scoping starts with what we need.',
+    fields:qs.map((q:any,i:number)=>({id:'q'+(i+1),label:String(q.label),type:(types.includes(q.type)?q.type:'textarea') as any,hint:q.hint?String(q.hint):undefined,options:Array.isArray(q.options)?q.options.map(String):undefined,required:!!q.required,placeholder:q.placeholder?String(q.placeholder):undefined}))};
+  const at=base.length&&base[base.length-1].id==='practical'?base.length-1:base.length;
+  return [...base.slice(0,at),extra,...base.slice(at)];
+};
 export const stagesFor=(p:any)=>svc(p)==='strategy'?STRATEGY_STAGES:svc(p)==='digital'?DIGITAL_STAGES:STAGES;

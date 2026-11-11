@@ -29,11 +29,11 @@ export function briefSummary(A){
 
 /* ---------- onboarding questionnaire ---------- */
 export async function viewOnboarding(el:HTMLElement){
-  const p=S.current;const BRIEF=briefFor(p);
+  const p=S.current;
   const [b,f]=await Promise.all([sb.from('briefs').select('*').eq('client_id',p.id).maybeSingle(),sb.from('files').select('*').eq('client_id',p.id).eq('kind','brief').order('created_at')]);
   let brief=b.data||{client_id:p.id,answers:{},submitted_at:null};
   if(!b.data)check(await sb.from('briefs').insert({client_id:p.id,answers:{}}));
-  const files=f.data||[];const A=brief.answers||{};
+  const files=f.data||[];const A=brief.answers||{};const BRIEF=briefFor(p,A);
   let step=Math.max(0,BRIEF.findIndex(s=>s.fields.some(x=>x.required&&!filled(A[x.id]))));if(brief.submitted_at)step=0;
   const locked=brief.submitted_at&&p.stage!=='onboarding';
 

@@ -64,7 +64,7 @@ async function manage(box:HTMLElement,rerender){
     sb.from('requests').select('*').eq('client_id',p.id).order('created_at',{ascending:false}),sb.from('invoices').select('*').eq('client_id',p.id).order('created_at'),
     sb.from('scores').select('id,checked_at,label').eq('client_id',p.id).order('checked_at',{ascending:false}).limit(5),
     sb.from('project_members').select('email,name,role').eq('client_id',p.id).then(r=>r,()=>({data:[]}))]);
-  const A=brief.data?.answers||{};const STAGES=stagesFor(p);const BRIEF=briefFor(p);const web=svc(p)==='website';
+  const A=brief.data?.answers||{};const STAGES=stagesFor(p);const BRIEF=briefFor(p,A);const web=svc(p)==='website';
   box.innerHTML=`<div class="pp-admin">
     <form class="pp-card" data-proj><h3 class="pp-h">${esc(p.business_name)}: project, stage and links</h3>
       <div class="row2"><div class="cfield"><label>Service</label><select name="service">${Object.entries(SERVICES).map(([id,v])=>`<option value="${id}"${id===svc(p)?' selected':''}>${esc(v.t)}</option>`).join('')}</select></div>
@@ -92,6 +92,10 @@ async function manage(box:HTMLElement,rerender){
     <div class="pp-card"><h3 class="pp-h">Brief ${brief.data?.submitted_at?`<small>submitted ${date(brief.data.submitted_at)}</small>`:'<small>not submitted yet</small>'}</h3>
       ${A.direction?briefSummary(A):''}
       <details class="pp-all"><summary>All answers</summary>${BRIEF.map(s=>`<h4 class="pp-h4">${esc(s.t)}</h4><dl class="pp-dl">${s.fields.filter(f=>f.type!=='files').map(f=>`<dt>${esc(f.label)}</dt><dd>${esc(fmtAnswer(f,A[f.id]))}</dd>`).join('')}</dl>`).join('')}</details>
+      <form class="wf-form" data-prefill><h4 class="pp-h4">Pre-fill the brief</h4>
+        <small class="pp-hint">Paste a brief file prepared for this client. It fills in the answers we already know and adds any questions for this project; the client checks, completes and submits it. Answers they have already given are kept.</small>
+        <textarea name="json" rows="4" placeholder='{"answers":{...},"questions":[...]}'></textarea>
+        <button class="btn sm ghost" type="submit"><span>Pre-fill the brief</span></button></form>
       <h4 class="pp-h4">Files</h4><ul class="pp-files">${(files.data||[]).map(f=>`<li><button type="button" class="ulink" data-file="${esc(f.path)}">${esc(f.name)}</button> <small>${f.kind} · ${Math.round((f.size||0)/1024)} KB</small></li>`).join('')||'<li class="pp-muted">None</li>'}</ul></div>
 
     <form class="pp-card" data-msg><h3 class="pp-h">Message ${esc(p.owner_name||p.business_name)}</h3>
@@ -126,6 +130,15 @@ async function manage(box:HTMLElement,rerender){
   </div>`;
 
   const refresh=()=>manage(box,rerender);
+  box.querySelector<HTMLFormElement>('[data-prefill]')?.addEventListener('submit',async e=>{e.preventDefault();
+    let j:any;try{j=JSON.parse(String(new FormData(e.target as HTMLFormElement).get('json')||''));}catch{return toast('That is not a valid brief file',true);}
+    if(!j||typeof j!=='object'||(!j.answers&&!j.questions))return toast('That is not a valid brief file',true);
+    const cur=brief.data?.answers||{};const merged:any={...cur};
+    for(const [k,val] of Object.entries(j.answers||{})){const has=cur[k]!=null&&cur[k]!==''&&!(Array.isArray(cur[k])&&!cur[k].length);if(!has)merged[k]=val;}
+    if(Array.isArray(j.questions))merged._questions=j.questions;
+    for(const k of ['questionsTitle','questionsIntro'])if(j[k])merged['_'+k]=j[k];
+    try{if(brief.data)check(await sb.from('briefs').update({answers:merged,updated_at:new Date().toISOString()}).eq('client_id',p.id));else check(await sb.from('briefs').insert({client_id:p.id,answers:merged}));
+      toast(`Brief pre-filled: ${Object.keys(j.answers||{}).length} answers, ${(j.questions||[]).length} project questions`);refresh();}catch(err){toast(err.message,true);}});
   box.querySelector('[data-viewas-go]')?.addEventListener('click',()=>{const e=(box.querySelector('[data-viewas]') as HTMLSelectElement).value;const m=(members.data||[]).find(x=>x.email===e);
     try{sessionStorage.setItem('mg-view-as',JSON.stringify({client:p.id,email:e,name:m?.name||e,role:m?.role}));}catch{};location.hash='overview';rerender();});
   box.querySelector('[data-proj]').addEventListener('submit',async e=>{
