@@ -341,7 +341,7 @@ function insightFilter(){
 function mobileCta(sig){
   const b=document.getElementById('mcta');if(!b)return;
   const p=location.pathname,sme=p.startsWith('/digitalsme');
-  const off=p==='/contact'||p.startsWith('/portal')||p.startsWith('/tools')||p==='/digitalsme/terms';
+  const off=p==='/contact'||p.startsWith('/portal')||p==='/sign'||p.startsWith('/tools')||p==='/digitalsme/terms';
   b.setAttribute('href',sme?'#quote':'/contact');b.querySelector('span').textContent=sme?'Build my quote':'Start a project';
   const foot=document.querySelector('.foot-cta');
   const upd=()=>{if(off){b.classList.remove('on');return;}

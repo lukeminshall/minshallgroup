@@ -221,6 +221,9 @@
     },
     "api/prospect.js": {
       "maxDuration": 60
+    },
+    "api/portal-notify.js": {
+      "maxDuration": 30
     }
   },
   "crons": [

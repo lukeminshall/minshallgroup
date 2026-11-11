@@ -14,7 +14,9 @@ export const ready=()=>!!(CFG.clerk&&CFG.url&&CFG.anon);
 
 export let clerk:any=null;
 export let sb:SupabaseClient=null as any;
-export const S:{user:any,isAdmin:boolean,projects:any[],current:any,brief:any,unread:number,teamUnread:number}={user:null,isAdmin:false,projects:[],current:null,brief:null,unread:0,teamUnread:0};
+export const S:{user:any,isAdmin:boolean,projects:any[],current:any,brief:any,unread:number,teamUnread:number,viewAs:any}={user:null,isAdmin:false,projects:[],current:null,brief:null,unread:0,teamUnread:0,viewAs:null};
+/* the email the screens act for: the signed-in person, or the client our team is previewing as */
+export const myEmail=()=>String(S.viewAs?.email||clerk?.user?.primaryEmailAddress?.emailAddress||'').toLowerCase();
 /* unread: the other side acted after this side last looked */
 export const unreadForClient=r=>!!r.last_team_at&&(!r.client_seen_at||new Date(r.last_team_at)>new Date(r.client_seen_at));
 export const unreadForTeam=r=>!!r.last_client_at&&(!r.team_seen_at||new Date(r.last_client_at)>new Date(r.team_seen_at));

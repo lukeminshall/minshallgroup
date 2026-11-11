@@ -7,6 +7,7 @@ import { configured, caller, projectFor, db, sendEmail, TEAM, PUBLIC_REPLY, SITE
 import { brandEmail, FROM } from './_lib/email.js';
 import { createClerkClient } from '@clerk/backend';
 import { workflowEvent, welcomeMember } from './_lib/workflow.js';
+import { signEvent } from './_lib/sign.js';
 
 const STAGE = { onboarding: 'Onboarding', design: 'Design', build: 'Build', review: 'Review', live: 'Live', discovery: 'Discovery', analysis: 'Analysis', recommendations: 'Recommendations', complete: 'Complete' };
 const SERVICE = { website: 'Website', strategy: 'Commercial strategy', digital: 'Digital, data and AI' };
@@ -58,6 +59,10 @@ export default async function handler(req, res) {
       }
       return res.status(200).json({ ok: true, new: !!(added && added.length) });
     }
+
+    /* agreements: a signer may not be on the project team, so these check access themselves */
+    const sg = await signEvent(event, req, who, body(req));
+    if (sg !== undefined) return res.status(200).json(sg);
 
     const p = await projectFor(who, clientId);
     const wf = await workflowEvent(event, who, p, body(req));

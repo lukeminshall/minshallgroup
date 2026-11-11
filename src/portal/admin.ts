@@ -59,10 +59,11 @@ const parseKpis=(t:string)=>t.split('\n').map(l=>l.split('|').map(x=>x.trim())).
 
 async function manage(box:HTMLElement,rerender){
   const p=S.current;
-  const [brief,files,reqs,inv,scores]=await Promise.all([
+  const [brief,files,reqs,inv,scores,members]=await Promise.all([
     sb.from('briefs').select('*').eq('client_id',p.id).maybeSingle(),sb.from('files').select('*').eq('client_id',p.id).order('created_at'),
     sb.from('requests').select('*').eq('client_id',p.id).order('created_at',{ascending:false}),sb.from('invoices').select('*').eq('client_id',p.id).order('created_at'),
-    sb.from('scores').select('id,checked_at,label').eq('client_id',p.id).order('checked_at',{ascending:false}).limit(5)]);
+    sb.from('scores').select('id,checked_at,label').eq('client_id',p.id).order('checked_at',{ascending:false}).limit(5),
+    sb.from('project_members').select('email,name,role').eq('client_id',p.id).then(r=>r,()=>({data:[]}))]);
   const A=brief.data?.answers||{};const STAGES=stagesFor(p);const BRIEF=briefFor(p);const web=svc(p)==='website';
   box.innerHTML=`<div class="pp-admin">
     <form class="pp-card" data-proj><h3 class="pp-h">${esc(p.business_name)}: project, stage and links</h3>
@@ -76,9 +77,12 @@ async function manage(box:HTMLElement,rerender){
         <div class="cfield"><label>Internal note (client cannot see)</label><input name="admin_note" value="${esc(p.admin_note||'')}"></div></div>
       <div class="cfield"><label>Plan and milestones</label><small class="pp-hint">One per line: date | milestone | done. For example: 2026-11-20 | Discovery interviews complete | done</small><textarea name="plan" rows="5" placeholder="2026-11-20 | Discovery interviews complete&#10;2026-12-05 | Options workshop">${esc(planText(p.plan))}</textarea></div>
       <div class="cfield"><label>Results we are measuring</label><small class="pp-hint">One per line: measure | start | now | target. For example: Online bookings | 10% | 18% | 40%</small><textarea name="kpis" rows="4" placeholder="Self-pay revenue a month | £80k | £86k | £104k">${esc(kpiText(p.kpis))}</textarea></div>
+      <div class="cfield"><label>Private project page (Markdown)</label><small class="pp-hint">Shown as the Proposal tab, only to people on this project. Paste the proposal here: headings, lists, tables and links all work.</small><textarea name="page_md" rows="8" placeholder="# Project title&#10;&#10;What we will deliver…">${esc(p.page_md||'')}</textarea></div>
       <label class="pp-check"><input type="checkbox" name="tell" checked> Email the client if the stage changes</label>
       <button class="btn sm" type="submit"><span>Save</span></button></form>
 
+    ${(members.data||[]).length?`<div class="pp-card"><h3 class="pp-h">See it as the client</h3><p class="pp-muted pp-small">A read-only preview of the portal exactly as this person sees it: their tabs, what is waiting for them and what they can sign.</p>
+      <div class="pp-inline"><label class="sr" for="va">Person</label><select id="va" data-viewas>${members.data.map(m=>`<option value="${esc(m.email)}">${esc(m.name||m.email)} (${esc(m.role)})</option>`).join('')}</select><button type="button" class="btn sm" data-viewas-go><span>View as them</span></button></div></div>`:''}
     <form class="pp-card" data-deliver><h3 class="pp-h">Deliver a document</h3>
       <p class="pp-muted pp-small">Reports, decks, models or designs. The client sees it in Documents and gets an email.</p>
       <div class="cfield"><label for="dl-t">Title</label><input id="dl-t" name="title" required placeholder="Market sizing report, v1"></div>
@@ -122,10 +126,12 @@ async function manage(box:HTMLElement,rerender){
   </div>`;
 
   const refresh=()=>manage(box,rerender);
+  box.querySelector('[data-viewas-go]')?.addEventListener('click',()=>{const e=(box.querySelector('[data-viewas]') as HTMLSelectElement).value;const m=(members.data||[]).find(x=>x.email===e);
+    try{sessionStorage.setItem('mg-view-as',JSON.stringify({client:p.id,email:e,name:m?.name||e,role:m?.role}));}catch{};location.hash='overview';rerender();});
   box.querySelector('[data-proj]').addEventListener('submit',async e=>{
     e.preventDefault();const fd=new FormData(e.target as HTMLFormElement);const before=p.stage;
     const service=String(fd.get('service'));const stages=stagesFor({service});const stage=stages.some(x=>x.id===fd.get('stage'))?fd.get('stage'):stages[0].id;
-    const upd={service,stage,summary:String(fd.get('summary')||'').trim()||null,plan:parsePlan(String(fd.get('plan')||'')),kpis:parseKpis(String(fd.get('kpis')||'')),quote_total:fd.get('quote_total')?+fd.get('quote_total'):null,preview_url:String(fd.get('preview_url')||'').trim()||null,live_url:String(fd.get('live_url')||'').trim()||null,clarity_url:String(fd.get('clarity_url')||'').trim()||null,admin_note:String(fd.get('admin_note')||'').trim()||null};
+    const upd={service,stage,summary:String(fd.get('summary')||'').trim()||null,plan:parsePlan(String(fd.get('plan')||'')),kpis:parseKpis(String(fd.get('kpis')||'')),quote_total:fd.get('quote_total')?+fd.get('quote_total'):null,preview_url:String(fd.get('preview_url')||'').trim()||null,live_url:String(fd.get('live_url')||'').trim()||null,clarity_url:String(fd.get('clarity_url')||'').trim()||null,admin_note:String(fd.get('admin_note')||'').trim()||null,page_md:String(fd.get('page_md')||'').trim()||null};
     try{S.current=check(await sb.from('clients').update(upd).eq('id',p.id).select().single());if(fd.get('tell')&&before!==upd.stage)notify('stage_changed');toast('Saved');rerender();}catch(err){toast(err.message,true);}
   });
   box.querySelectorAll<HTMLElement>('[data-file]').forEach(b=>b.addEventListener('click',async()=>{const u=await fileUrl(b.dataset.file);if(u)window.open(u,'_blank','noopener');}));

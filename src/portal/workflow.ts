@@ -5,7 +5,7 @@
    What each person can do is enforced by the database (migration 005);
    this screen only shows the buttons that will work for them.
    ===================================================================== */
-import {sb,S,esc,gbp,date,check,notify,api,toast,upload,fileUrl,clerk} from './core';
+import {sb,S,esc,gbp,date,check,notify,api,toast,upload,fileUrl,clerk,myEmail} from './core';
 
 const ROLES:Record<string,[string,string]>={
   approver:['Final approver','Gives the last sign-off at each stage, after the reviewers'],
@@ -26,8 +26,8 @@ let openSo='';   /* keep the sign-off someone is working on open across refreshe
 
 export async function viewWorkflow(el:HTMLElement){
   const p=S.current;const uid=clerk.user.id;
-  const me=String(clerk.user.primaryEmailAddress?.emailAddress||'').toLowerCase();
-  const manage=S.isAdmin||p.owner_id===uid;
+  const me=myEmail();
+  const manage=!S.viewAs&&(S.isAdmin||p.owner_id===uid);
   const [m,ph,tk,so,rv,cm,fl]=await Promise.all([
     sb.from('project_members').select('*').eq('client_id',p.id).order('created_at'),
     sb.from('phases').select('*').eq('client_id',p.id).order('sort').order('created_at'),
@@ -146,6 +146,9 @@ export async function viewWorkflow(el:HTMLElement){
           <div class="cfield"><label for="ap-d">What happens in it <span class="opt">optional</span></label><input id="ap-d" name="detail"></div>
           <div class="cfield"><label for="ap-due">Due <span class="opt">optional</span></label><input id="ap-due" name="due_on" type="date"></div>
           <button class="btn sm" type="submit"><span>Add phase</span></button>${phases.length?'':' <button type="button" class="btn sm ghost" data-template><span>Or add the standard five</span></button>'}</form>
+        <form class="wf-form" data-bulkphase><h4 class="pp-h4">Several phases at once</h4>
+          <div class="cfield"><label for="bp-t">One per line: name | date | what is delivered</label><textarea id="bp-t" name="lines" rows="6" placeholder="G0 Agreement | 2026-11-13 | Agreement signed&#10;G1 Scope sign-off | 2026-12-04 | Specification and designs signed off"></textarea><small class="pp-hint">Dates as 2026-11-13 or 13 Nov 2026. Leave the date out if it is not fixed yet.</small></div>
+          <button class="btn sm" type="submit"><span>Add these phases</span></button></form>
         <form class="wf-form" data-addtask><h4 class="pp-h4">A task</h4>
           <div class="cfield"><label for="at-t">Task</label><input id="at-t" name="title" required placeholder="Write the referral user stories"></div>
           <div class="cfield"><label for="at-d">Detail <span class="opt">optional</span></label><textarea id="at-d" name="detail" rows="2"></textarea></div>
@@ -237,6 +240,11 @@ export async function viewWorkflow(el:HTMLElement){
   const val=(fd:FormData,k:string)=>String(fd.get(k)||'').trim()||null;
   el.querySelector<HTMLFormElement>('[data-addphase]')?.addEventListener('submit',e=>{e.preventDefault();const f=e.target as HTMLFormElement;if(!f.checkValidity())return;const fd=new FormData(f);
     run(async()=>{check(await sb.from('phases').insert({client_id:p.id,sort:phases.length+1,title:val(fd,'title'),detail:val(fd,'detail'),due_on:val(fd,'due_on'),status:phases.length?'upcoming':'active'}));},'Phase added');});
+  el.querySelector<HTMLFormElement>('[data-bulkphase]')?.addEventListener('submit',e=>{e.preventDefault();const t=String(new FormData(e.target as HTMLFormElement).get('lines')||'');
+    const iso=(s:string)=>{s=s.trim();if(!s)return null;if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;const d=new Date(s.replace(/^(mon|tue|wed|thu|fri|sat|sun)\w*\s+/i,''));return isNaN(+d)?null:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+    const rows=t.split('\n').map(l=>l.split('|').map(x=>x.trim())).filter(r=>r[0]);
+    if(!rows.length){toast('Paste at least one line',true);return;}
+    run(async()=>{check(await sb.from('phases').insert(rows.map(([title,d,detail],i)=>{const due=iso(d||'');return {client_id:p.id,sort:phases.length+i+1,title,due_on:due,detail:[detail,d&&!due?d:''].filter(Boolean).join(' · ')||null,status:!phases.length&&!i?'active':'upcoming'};})));},`${rows.length} phases added`);});
   el.querySelector<HTMLFormElement>('[data-addtask]')?.addEventListener('submit',e=>{e.preventDefault();const f=e.target as HTMLFormElement;if(!f.checkValidity())return;const fd=new FormData(f);
     const a=val(fd,'assignee_email');const assignee=a==='__team'?null:a;
     run(async()=>{const t=check(await sb.from('tasks').insert({client_id:p.id,phase_id:val(fd,'phase_id'),title:val(fd,'title'),detail:(a==='__team'?'With Minshall Group. ':'')+(val(fd,'detail')||'')||null,assignee_email:assignee,due_on:val(fd,'due_on')}).select().single());
@@ -260,7 +268,7 @@ export async function viewWorkflow(el:HTMLElement){
 
 /* for the overview: what is waiting for this person, and the phases if the project has them */
 export async function workflowSummary(p:any){
-  const me=String(clerk.user.primaryEmailAddress?.emailAddress||'').toLowerCase();
+  const me=myEmail();
   const [ph,so,rv,tk]=await Promise.all([
     sb.from('phases').select('title,status,due_on').eq('client_id',p.id).order('sort'),
     sb.from('signoffs').select('id,title,status,approver_email').eq('client_id',p.id).neq('status','approved'),

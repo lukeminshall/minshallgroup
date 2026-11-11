@@ -2,6 +2,7 @@
    "being set up" message without downloading the sign-in and data libraries. */
 const env=(import.meta as any).env||{};
 export function portalGate(){
+  if(document.querySelector('[data-sign]')){import('./sign').then(m=>m.initSign());return;}
   const root=document.querySelector('[data-portal]');if(!root)return;
   if(!(env.VITE_CLERK_PUBLISHABLE_KEY&&env.VITE_SUPABASE_URL&&env.VITE_SUPABASE_ANON_KEY)){
     const F=[['Your onboarding, online','Answer the project questions in your own time. No kick-off call to book.'],['Follow every stage','Discovery, design, build, review and launch, with what happens next at each step.'],['Approve with one click','Open the design preview, approve it or request changes, all in one place.'],['Changes and quotes','Raise a change after launch, see the price first and approve it before we start.'],['Invoices in one place','Each of the three stage payments, with what it covers.'],['Your site’s performance','Your Webmins Score, re-checked every month, with what to improve next.']];

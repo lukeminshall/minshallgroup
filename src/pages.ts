@@ -874,6 +874,11 @@ P['/portal']=()=>`
 ${phead({eyebrow:'Client portal',title:'Your project, online',lede:'Onboarding, progress, approvals, change requests, invoices and performance, all in one place. No calls needed.'})}
 <section id="portal-root"><div class="wrap"><div data-portal><p class="pp-loading">Loading your portal…</p></div></div></section>`;
 
+/* ================= SIGN AN AGREEMENT ================= */
+P['/sign']=()=>`
+${phead({eyebrow:'Agreements',title:'Read and sign',lede:'Sign in with the email address your invitation was sent to, read the document, then sign it online.'})}
+<section id="sign-root"><div class="wrap"><div data-sign><p class="pp-loading">Loading…</p></div></div></section>`;
+
 /* ================= INTERNAL: PROSPECTING TOOL ================= */
 P['/tools/prospect']=()=>`
 ${phead({eyebrow:'Internal tool',title:'Prospect list',lede:'Paste prospect websites, get each one’s Webmins Score and a personalised email to send by hand from hello@.'})}

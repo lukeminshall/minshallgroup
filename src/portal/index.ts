@@ -13,9 +13,11 @@ import {viewOnboarding,viewRequests,viewBilling,viewPerformance,viewDocuments} f
 import {score} from '../webmins';
 import {viewAdmin} from './admin';
 import {viewWorkflow,workflowSummary} from './workflow';
+import {viewAgreements,agreementsWaiting} from './agreements';
+import {viewProposal} from './proposal';
 
 let root:HTMLElement;let ac:AbortController|null=null;
-const tabsFor=(p:any)=>[['overview','Overview'],['workflow','Workflow'],['onboarding',svc(p)==='website'?'Onboarding':'Brief'],['requests','Requests'],['documents','Documents'],['billing','Billing'],...(svc(p)==='website'||p?.live_url?[['performance','Performance']]:[])];
+const tabsFor=(p:any)=>[['overview','Overview'],...(p?.page_md?[['proposal','Proposal']]:[]),['workflow','Workflow'],['agreements','Agreements'],['onboarding',svc(p)==='website'?'Onboarding':'Brief'],['requests','Requests'],['documents','Documents'],['billing','Billing'],...(svc(p)==='website'||p?.live_url?[['performance','Performance']]:[])];
 
 export async function initPortal(){
   root=document.querySelector('[data-portal]');if(!root)return;
@@ -66,6 +68,9 @@ async function render(){
   try{
     const [projects,admins]=await Promise.all([sb.from('clients').select('*').order('created_at',{ascending:true}),sb.rpc('is_admin')]);
     S.projects=check(projects)||[];S.isAdmin=check(admins)===true;
+    /* our team previewing the portal as one of the client's people: read-only, their view */
+    S.viewAs=null;if(S.isAdmin){try{const v=JSON.parse(sessionStorage.getItem('mg-view-as')||'null');if(v&&S.projects.some(p=>p.id===v.client)){S.viewAs=v;S.isAdmin=false;}}catch{}}
+    document.body.classList.toggle('pp-viewas',!!S.viewAs);
   }catch(e){root.innerHTML=`<div class="pp-card"><h2 class="h2">We could not load your project.</h2><p>${esc(e.message)}</p></div>`;return;}
   let mine=S.projects.filter(p=>p.owner_id===clerk.user.id);
   /* first visit with no project: record the account (the server emails the team once). Someone invited onto a
@@ -76,7 +81,7 @@ async function render(){
       mine=S.projects.filter(p=>p.owner_id===clerk.user.id);}
     else if(first)api('/api/portal-notify',{event:'signed_up',quote:savedQuote()}).catch(()=>{});}
   const saved=(()=>{try{return localStorage.getItem('mg-portal-current');}catch{return null;}})();
-  S.current=S.projects.find(p=>p.id===saved)||mine[0]||S.projects[0]||null;   /* a team member sees the project they were added to */
+  S.current=(S.viewAs&&S.projects.find(p=>p.id===S.viewAs.client))||S.projects.find(p=>p.id===saved)||mine[0]||S.projects[0]||null;   /* a team member sees the project they were added to */
   /* the team lands on the admin dashboard; clients on their overview */
   let tab=location.hash.slice(1)||(S.isAdmin?'admin':'overview');
   if(tab==='admin'&&!S.isAdmin)tab='overview';
@@ -91,6 +96,8 @@ async function render(){
   try{
     if(tab==='admin')return await viewAdmin(el,()=>render());
     if(tab==='workflow')return await viewWorkflow(el);
+    if(tab==='agreements')return await viewAgreements(el);
+    if(tab==='proposal')return viewProposal(el);
     if(tab==='onboarding')return await viewOnboarding(el);
     if(tab==='requests')return await viewRequests(el);
     if(tab==='documents')return await viewDocuments(el);
@@ -103,7 +110,7 @@ async function render(){
 function shell(tab){
   const name=clerk.user.firstName||clerk.user.primaryEmailAddress?.emailAddress||'';
   const tabs=[...tabsFor(S.current),...(S.isAdmin?[['admin','Admin']]:[])];
-  root.innerHTML=`<div class="pp-top">
+  root.innerHTML=`${S.viewAs?`<div class="pp-viewas-bar" role="status"><span><b>Previewing as ${esc(S.viewAs.name||S.viewAs.email)}</b> · read only, exactly what they see</span><button type="button" class="btn sm" data-exitview><span>Back to my view</span></button></div>`:''}<div class="pp-top">
       <div><span class="eyebrow">Client portal${S.current&&tab!=='start'?' · '+esc(SERVICES[svc(S.current)].short):''}</span><h2 class="h2">${S.current?esc(S.current.business_name):'Welcome'+(name?', '+esc(name):'')}</h2></div>
       <div class="pp-user">${S.projects.length>1?`<label><span class="sr">Project</span><select data-switch>${S.projects.map(p=>`<option value="${p.id}"${p.id===S.current?.id?' selected':''}>${esc(p.business_name)}${S.isAdmin&&p.owner_id!==clerk.user.id?' ('+esc(p.owner_email||'client')+')':''}</option>`).join('')}</select></label>`:''}<div data-userbtn></div></div>
     </div>
@@ -111,6 +118,7 @@ function shell(tab){
       return `<a href="#${id}" class="${id===tab?'on':''}"${id===tab?' aria-current="page"':''}>${t}${n?` <span class="pp-count" aria-label="${n} new">${n}</span>`:''}</a>`;}).join('')}</nav>`}
     <div data-view></div>`;
   clerk.mountUserButton(root.querySelector('[data-userbtn]'));
+  root.querySelector('[data-exitview]')?.addEventListener('click',()=>{try{sessionStorage.removeItem('mg-view-as');}catch{};location.hash='admin';render();});
   root.querySelector('[data-switch]')?.addEventListener('change',e=>{try{localStorage.setItem('mg-portal-current',(e.target as HTMLSelectElement).value);}catch{};render();});
 }
 
@@ -126,6 +134,7 @@ async function overview(el:HTMLElement){
     web||p.live_url?sb.from('scores').select('data,checked_at').eq('client_id',p.id).order('checked_at',{ascending:false}).limit(1):Promise.resolve({data:[]})
   ]);
   const wf=await workflowSummary(p).catch(()=>({phases:[],waiting:0,tasks:0}));
+  const toSign=await agreementsWaiting(p).catch(()=>[]);
   const submitted=!!brief.data?.submitted_at;const due=(invoices.data||[]).filter(i=>i.status==='due'||i.status==='overdue');
   const owed=due.reduce((t,i)=>t+Number(i.amount_gbp),0);const allReqs=reqs.data||[];
   const quoted=allReqs.filter(r=>r.status==='quoted').length;const openReqs=allReqs.filter(r=>['new','quoted','approved','in_progress'].includes(r.status)&&r.kind!=='message'&&r.kind!=='approval').length;
@@ -135,6 +144,8 @@ async function overview(el:HTMLElement){
 
   /* what needs the client now */
   const next:string[]=[];
+  for(const a of toSign)next.push(`<a class="pp-next" href="/sign?a=${a.id}"><b>Please sign: ${esc(a.title)}</b><span>Read the document, then sign it online in a couple of minutes.</span></a>`);
+  if(p.page_md)next.push(`<a class="pp-next calm" href="#proposal"><b>Read the proposal</b><span>The scope, timeline and gateways for this project.</span></a>`);
   if(wf.waiting)next.push(`<a class="pp-next" href="#workflow"><b>${wf.waiting} sign-off${wf.waiting>1?'s':''} waiting for you</b><span>Read the documents, then approve or ask for changes.</span></a>`);
   if(wf.tasks)next.push(`<a class="pp-next" href="#workflow"><b>${wf.tasks} task${wf.tasks>1?'s':''} allocated to you</b><span>Update them in Workflow as you go.</span></a>`);
   if(S.unread)next.push(`<a class="pp-next" href="#requests"><b>${S.unread} new update${S.unread>1?'s':''} from us</b><span>Messages and replies are in Requests.</span></a>`);

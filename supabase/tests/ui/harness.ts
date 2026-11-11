@@ -114,5 +114,9 @@ if(new URLSearchParams(location.search).has('seed')){
   await asUser('user_a',`select public.decide_signoff($1,'approved','Scope looks right to me.')`,[so]);
   await asUser('user_b',`select public.decide_signoff($1,'changes','Section 3 is missing the GP referral route.')`,[so]);
 }
+/* ?proposal: render the Proposal tab from a Markdown file in the Downloads folder (local check only) */
+if(new URLSearchParams(location.search).has('proposal')){const {viewProposal}=await import('../../../src/portal/proposal');
+  const md=await (await fetch('/@fs/Users/lukeminshall/Downloads/IML%20Healthcare%20-%20portal%20page.md')).text();
+  S.current={...proj,page_md:md};viewProposal(document.querySelector('[data-view]') as HTMLElement);throw new Error('proposal preview: stop');}
 const start=new URLSearchParams(location.search).get('as');
 await act(PEOPLE.find(p=>p.id===start)||PEOPLE[0]);
