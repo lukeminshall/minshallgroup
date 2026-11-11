@@ -124,5 +124,11 @@ if(new URLSearchParams(location.search).has('brief')){const {viewOnboarding}=awa
   const A={...j.answers,_questions:j.questions,_questionsTitle:j.questionsTitle,_questionsIntro:j.questionsIntro};
   await asUser(null,`insert into public.briefs (client_id,answers) values ($1,$2)`,[proj.id,JSON.stringify(A)]);
   await act(PEOPLE[1]);document.querySelector('[data-view]').innerHTML='';await viewOnboarding(document.querySelector('[data-view]') as HTMLElement);throw new Error('brief preview: stop');}
+/* ?admin: the Admin tab as our team sees it (local check only) */
+if(new URLSearchParams(location.search).has('admin')){const {viewAdmin}=await import('../../../src/portal/admin');
+  await act(PEOPLE[0]);S.projects=(await asUser('user_admin','select * from public.clients')).rows;S.current=S.projects[0];
+  const el=document.querySelector('[data-view]') as HTMLElement;el.innerHTML='';
+  try{await viewAdmin(el,()=>{});}catch(e:any){(window as any).__adminErr=e.message+' '+e.stack;}
+  throw new Error('admin preview: stop');}
 const start=new URLSearchParams(location.search).get('as');
 await act(PEOPLE.find(p=>p.id===start)||PEOPLE[0]);
