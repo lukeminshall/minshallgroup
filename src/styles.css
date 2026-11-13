@@ -384,6 +384,11 @@ section.soft .case{background:#fff}
 .article .prose p:first-child::first-letter{font-family:var(--fd);float:left;font-size:4.6em;line-height:.85;padding:6px 10px 0 0;color:var(--navy)}
 .article-side{position:sticky;top:calc(var(--hh) + 30px);display:flex;flex-direction:column;gap:16px;align-items:flex-start}
 .article-side .mega-link{background:var(--soft);width:100%}
+.ashare{display:flex;flex-wrap:wrap;gap:8px;margin-top:-6px}
+.ashare a,.ashare button{height:38px;padding:0 15px;display:inline-flex;align-items:center;border-radius:999px;background:var(--soft);font-weight:700;font-size:14px;color:var(--navy);transition:background .25s,color .25s}
+.ashare a:hover,.ashare button:hover{background:var(--navy);color:#fff}
+.ashare .ashare-native{display:none}
+.can-share .ashare .ashare-native{display:inline-flex}
 
 /* ---------- about ---------- */
 .orgmap{display:grid;gap:26px}
