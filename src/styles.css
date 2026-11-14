@@ -2564,3 +2564,4 @@ html.noscroll{overflow:hidden}
 .dg-ptabs button[aria-selected="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
 .dg-ptabs button:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
 @media (max-width:1024px){.pf-price-w{grid-template-columns:1fr}}
+.dg-plan article{grid-row:span 4}

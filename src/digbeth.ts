@@ -13,7 +13,14 @@ import {PB_PRICES} from './placeboard';
 const gbp=(n:number)=>'£'+n.toLocaleString('en-GB');
 
 /* reasons people already come to Digbeth */
-const ASSETS=['The Custard Factory','Independent food and drink','Live music venues and clubs','Street art','Warwick Bar and the canals','Creative and digital studios','Birmingham Coach Station','Moor Street and New Street, a short walk','HS2 Curzon Street, under construction','The St Patrick’s parade'];
+const ASSETS=['The Custard Factory','Independent food and drink','Live music venues and clubs','Street art','Warwick Bar and the canals','Creative and digital studios','Digbeth Loc. Studios','Birmingham Coach Station','Moor Street and New Street, a short walk','HS2 Curzon Street, under construction','The St Patrick’s parade'];
+
+/* the BID's three pillars, from the Digbeth BID Business Plan 2026 to 2031, and where we fit */
+const PILLARS=[
+  ['A','Ambition and Aspiration','The plan commits to strategic destination marketing: high-impact campaigns and events that position Digbeth as a must-visit creative and cultural hub, and stronger day and night economies.','This is the heart of option 2. A seasonal campaign plan agreed with the board, run every month and measured on visitors.'],
+  ['B','Better Basics','Cleaner, safer, better-lit streets, and clear, timely communication about street closures and disruption while HS2 and the Metro are built.','Mostly physical work we do not do. Where we help is communication: the board gives the BID one channel to tell businesses and visitors what is closing, when and for how long.'],
+  ['C','Community and Culture','Be a Lighthouse: a stronger welcome, shared campaigns telling Digbeth’s story, partnerships that grow audiences, and networking between businesses, creatives and community groups.','The board is the shared campaign tool: every business, venue and cultural organisation has the same route in, and the BID decides what goes out.']
+];
 
 /* the options: what each includes and how it is priced */
 const OPTIONS=[
@@ -145,18 +152,25 @@ export function digbethPage(){
   <div class="pf-map-wrap rise" style="--i:5">${catchmentMap()}</div>
 </div>
 <div class="wrap"><dl class="pf-facts rise" style="--i:8">
-  <div><dt>Term</dt><dd>Digbeth BID’s first term, from 2026</dd></div>
+  <div><dt>Term</dt><dd>1 September 2026 to 31 August 2031</dd></div>
+  <div><dt>The BID</dt><dd>400+ organisations, about £636,000 a year in levy and other income</dd></div>
   <div><dt>Approvals</dt><dd>Nothing published without the BID’s sign-off</dd></div>
   <div><dt>Price</dt><dd>From ${gbp(PB_PRICES.embed)} + VAT a year, fixed and itemised</dd></div>
-  <div><dt>Contact</dt><dd>One named lead, whichever options you choose</dd></div>
 </dl></div></header>
 
 <section class="pf-sec"><div class="wrap pf-why">
   <div class="reveal"><span class="eyebrow">The opportunity</span><h2 class="h2">Digbeth already has the reasons. The job is making sure the right people hear them.</h2></div>
   <div class="reveal" style="--i:1">
-    <p class="lede-s">Digbeth has more going on than most districts its size: venues, food, studios, street art and canals, a short walk from two city centre stations. A first-term BID has to turn that into more visits for levy payers, and show them the evidence.</p>
+    <p class="lede-s">Digbeth has more going on than most districts its size: venues, food, studios, street art and canals, a short walk from two city centre stations. More than 400 organisations now pay the levy, across industry and workshops (25%), education (22%), offices (16%), retail (12%) and food, drink and hospitality (11%). A first-term BID has to show every one of them a return.</p>
     <ul class="pf-assets">${ASSETS.map(a=>`<li>${a}</li>`).join('')}</ul>
-    <p class="pf-note">We have not yet seen the BID business plan. Whatever you choose is built on its priorities, not ours.</p>
+    <p class="pf-note">Built on the Digbeth BID Business Plan 2026 to 2031, not on our own priorities.</p>
+  </div>
+</div></section>
+
+<section class="pf-sec soft" id="plan"><div class="wrap">
+  <div class="shead"><div class="reveal"><span class="eyebrow">Your business plan</span><h2 class="h2">Three pillars. Here is where we fit, and where we do not.</h2></div><div class="shead-r reveal" style="--i:1"><p>The plan commits the BID to regular updates through newsletters, e-bulletins and social media, annual reports to members, and KPIs set by the board. Both options are built to report against those KPIs.</p></div></div>
+  <div class="pf-ex dg-plan">${PILLARS.map(([k,t,d,r],i)=>`<article class="reveal" style="--i:${i%2}"><span class="pf-k">Pillar ${k}</span><h3>${t}</h3><p>${d}</p><p class="pf-rel"><b>Where we help</b>${r}</p></article>`).join('')}
+    <article class="reveal" style="--i:1"><span class="pf-k">The budget</span><h3>About £500,000 a year for projects</h3><p>Out of £635,940 a year in income, after staffing, office, insurance and collection costs. The levy is 2% of rateable value, and over 65% of businesses pay less than £2 a day.</p><p class="pf-rel"><b>What we cost against it</b>Option 1 is about 0.2% of the projects budget. Option 2 is about 3%.</p></article>
   </div>
 </div></section>
 
@@ -175,7 +189,7 @@ export function digbethPage(){
 </div></section>
 
 <section class="pf-sec" id="pricing"><div class="wrap">
-  <div class="shead"><div class="reveal"><span class="eyebrow">Price</span><h2 class="h2">What each option costs, line by line.</h2></div><div class="shead-r reveal" style="--i:1"><p>Fixed prices, so the board knows the cost before it commits. Option 2 includes the board, so it is never charged twice.</p></div></div>
+  <div class="shead"><div class="reveal"><span class="eyebrow">Price</span><h2 class="h2">What each option costs, line by line.</h2></div><div class="shead-r reveal" style="--i:1"><p>Fixed prices, so the board knows the cost before it commits, against a projects budget of about £500,000 a year. Option 2 includes the board, so it is never charged twice.</p></div></div>
   <div class="dg-price reveal" data-dg-price>
     <div class="dg-ptabs" role="tablist" aria-label="Price by option">${PRICES.map((o,i)=>`<button type="button" role="tab" aria-selected="${!i}" data-dg-p="${i}">${o.tab}</button>`).join('')}</div>
     ${PRICES.map((o,i)=>{const total=o.lines.reduce((a,l)=>a+l[1],0),paid=o.lines.filter(l=>l[1]);return `<div class="pf-price-w" data-dg-pp="${i}"${i?' hidden':''}>
