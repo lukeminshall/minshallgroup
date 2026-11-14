@@ -20,10 +20,10 @@ const OPTIONS=[
   {n:'01',name:'The board',price:`${gbp(PB_PRICES.embed)}<span> a year</span>`,sub:`or ${gbp(PB_PRICES.month)} a month`,for:'For a BID team that wants the tools and will run the channels itself.',
     ticks:['One route in for every business: events, offers, news and listing changes','Nothing published without the BID’s approval, and every approval logged','A live What’s On on the BID’s existing website, fed straight from approvals','A seasonal campaign plan template and a dashboard that measures visitors, not likes','Set-up, matched to your brand, and training for the team'],
     cta:['#board','See the board'],pop:true},
-  {n:'02',name:'The board, run for you',price:'Quoted<span> to scope</span>',sub:'A monthly retainer on top of the board',for:'For a BID team that wants more hands on the marketing.',
+  {n:'02',name:'The board, run for you',price:'£14,995<span> a year</span>',sub:'or £1,250 a month, the board included',for:'For a BID team that wants more hands on the marketing.',
     ticks:['Everything in option 1','An annual marketing plan with seasonal campaigns, agreed with the board','Content, photography and social channels managed day to day','Business requests handled and prepared for your approval','A two-page monthly report for the board and levy payers, and a quarterly review'],
     cta:['#managed','See the managed service']},
-  {n:'03',name:'Event management',price:'Quoted<span> per event</span>',sub:'Or as an annual programme',for:'For a BID that wants signature events planned and delivered end to end.',
+  {n:'03',name:'Event management',price:'£9,000<span> an event</span>',sub:'Smaller events from £1,500, production at cost',for:'For a BID that wants signature events planned and delivered end to end.',
     ticks:['Concept, budget and programme, agreed with the BID','Licensing, road closures, safety planning and the Safety Advisory Group','Suppliers, stewarding, staging and the run of the day','Businesses signed up to take part through the board','Attendance, visitor origin and trader feedback reported after every event'],
     cta:['#events','See event management']}
 ];
@@ -77,6 +77,23 @@ const EVENT_IDEAS=[
   ['Digbeth late','A monthly late opening for shops, studios, bars and galleries, with something on in the streets.'],
   ['Makers’ markets','Seasonal markets for independent makers and food producers, with Christmas the biggest.'],
   ['Walks and open studios','Guided street art, canal and industrial heritage walks, and studios open to the public.']
+];
+
+/* pricing, excluding VAT: [line, £ a year (0 = included), note] */
+type Line=[string,number,string];
+const PRICES:{tab:string,head:string,body:string,lines:Line[],total:string,after:string}[]=[
+  {tab:'Option 1 · The board',head:`${gbp(PB_PRICES.embed)} + VAT a year.`,
+    body:`Or ${gbp(PB_PRICES.month)} a month with no annual commitment. A founding place price for 2027, held for founding places in later years. Everything needed to go live is included.`,
+    lines:[['The board: requests, approvals, What’s On feed and dashboard',PB_PRICES.embed,'Unlimited businesses and requests'],['Set-up, and matching the feed to the BID brand',0,'Included'],['Training for the BID team',0,'Included'],['Hosting, support and updates',0,'Included']],
+    total:'Total, a year',after:''},
+  {tab:'Option 2 · Run for you',head:'£14,995 + VAT a year.',
+    body:'Or £1,250 a month. The same in years two and three. From year two, the £1,800 for the plan and baseline moves into extra content and paid media, as agreed in the annual plan. Paid media is passed through at cost and reported in full.',
+    lines:[['Social media management and organic content',5400,'£450 a month'],['Seasonal photography and video',2400,'Four shoots in Digbeth'],['Paid social media budget',2000,'Passed through at cost'],['Annual plan, evidence base and baseline',1800,'Year one only'],['Business requests and engagement',1500,'Handled and prepared for approval'],['The board',PB_PRICES.embed,'Option 1, included'],['Monthly reporting and quarterly reviews',900,'']],
+    total:'Total, year one',after:''},
+  {tab:'Option 3 · Events',head:'£9,000 + VAT for a signature event.',
+    body:'Our fee to plan, permit, deliver and report a one-day signature event. Production costs such as staging, power, security, stewarding and toilets are budgeted with the BID up front and passed through at cost, with no mark-up.',
+    lines:[['Plan, budget and programme',1500,'Agreed with the BID before anything is booked'],['Licensing, safety documents and the Safety Advisory Group',1800,''],['Event-day management team',1600,'An event manager and two crew, build to clear-down'],['Promotion campaign',1500,'Social, What’s On, partners and press'],['Supplier booking and management',1200,''],['Business sign-up and partners',900,'Through the board'],['Report and debrief',500,'Within ten working days']],
+    total:'Fee, per signature event',after:'Smaller formats: a Digbeth late from £1,500 an evening, a makers’ market from £2,500 a day. An annual programme is quoted together, with one plan, one licensing calendar and one report to the board.'}
 ];
 
 const EXAMPLES=[
@@ -166,7 +183,7 @@ export function digbethPage(){
 <div class="wrap"><dl class="pf-facts rise" style="--i:8">
   <div><dt>Term</dt><dd>Digbeth BID’s first term, from 2026</dd></div>
   <div><dt>Approvals</dt><dd>Nothing published without the BID’s sign-off</dd></div>
-  <div><dt>The board</dt><dd>${gbp(PB_PRICES.embed)} a year or ${gbp(PB_PRICES.month)} a month, set-up included</dd></div>
+  <div><dt>Price</dt><dd>From ${gbp(PB_PRICES.embed)} + VAT a year, fixed and itemised</dd></div>
   <div><dt>Contact</dt><dd>One named lead, whichever options you choose</dd></div>
 </dl></div></header>
 
@@ -191,6 +208,21 @@ export function digbethPage(){
       <a class="btn${o.pop?'':' ghost'}" href="${o.cta[0]}"><span>${o.cta[1]}</span></a>
     </article>`).join('')}</div>
   <p class="pf-flag">Prices exclude VAT. Need a new visitor website as well? We build one from ${gbp(PB_PRICES.site)}, with the board built in.</p>
+</div></section>
+
+<section class="pf-sec" id="pricing"><div class="wrap">
+  <div class="shead"><div class="reveal"><span class="eyebrow">Price</span><h2 class="h2">What each option costs, line by line.</h2></div><div class="shead-r reveal" style="--i:1"><p>Fixed prices, so the board knows the cost before it commits. Options 2 and 3 can be combined, and the board is never charged twice.</p></div></div>
+  <div class="dg-price reveal" data-dg-price>
+    <div class="dg-ptabs" role="tablist" aria-label="Price by option">${PRICES.map((o,i)=>`<button type="button" role="tab" aria-selected="${!i}" data-dg-p="${i}">${o.tab}</button>`).join('')}</div>
+    ${PRICES.map((o,i)=>{const total=o.lines.reduce((a,l)=>a+l[1],0),paid=o.lines.filter(l=>l[1]);return `<div class="pf-price-w" data-dg-pp="${i}"${i?' hidden':''}>
+      <div><h3 class="h2">${o.head}</h3><p class="lede-s">${o.body}</p>${o.after?`<p class="pf-note">${o.after}</p>`:''}</div>
+      <div class="pf-price">
+        <div class="pf-stack" aria-hidden="true">${paid.map((l,j)=>`<i style="--w:${l[1]/total*100}%;--o:${1-j*.11}"></i>`).join('')}</div>
+        <table><caption class="sr">${o.tab} price breakdown, excluding VAT</caption><tbody>${o.lines.map(([t,v,n])=>{const j=paid.findIndex(l=>l[0]===t);return `<tr><td><i style="--o:${j<0?0.15:1-j*.11}"></i>${t}${n?`<small>${n}</small>`:''}</td><td>${v?gbp(v):'Included'}</td></tr>`;}).join('')}</tbody>
+        <tfoot><tr><td>${o.total}</td><td>${gbp(total)}</td></tr></tfoot></table>
+      </div>
+    </div>`;}).join('\n    ')}
+  </div>
 </div></section>
 
 <section class="pf-sec dark pf-portal-sec" id="board"><div class="grain" aria-hidden="true"></div><div class="wrap">
@@ -281,4 +313,5 @@ export function initDigbeth(){
   const ev=document.querySelector<HTMLElement>('[data-dg-ev]');if(!ev)return;
   pingView();
   tabs(ev,'data-dg-e','data-dg-ep');
+  const pr=document.querySelector<HTMLElement>('[data-dg-price]');if(pr)tabs(pr,'data-dg-p','data-dg-pp');
 }
