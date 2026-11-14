@@ -8,7 +8,7 @@ import {dot} from './brand';
 import {split} from './components';
 import {type Place,type Season,requestPortal,councilPortal,dashboard,year} from './place';
 
-const RIPON:Place={
+export const RIPON:Place={
   host:'ripon.theplaceboard.com',brand:'the Ripon board',client:'Example council login',project:'Ripon 2027 · sample plan',
   biz:['Market Square café (example)','Supper, then the Hornblower at 9pm','Thursdays in May, from 6pm'],
   queue:[['event','Event','Late-night shopping before the lights switch-on','A Kirkgate gift shop (example) · submitted yesterday'],
@@ -171,7 +171,7 @@ export function placeboardDemo(){
     <nav class="crumb rise" style="--i:0" aria-label="Breadcrumb"><a href="/products">Products</a><span aria-hidden="true">/</span><a href="/products/placeboard">Placeboard</a><span aria-hidden="true">/</span>Demo</nav>
     <h1 class="display split">${split('Your town, on one board',1)}${dot}</h1>
     <p class="lede rise" style="--i:6">A working Placeboard set in Ripon. The map, the drive times and the year of events are real. The businesses, requests and results are examples. Send a request as a local business, approve it as the council, and open the dashboard.</p>
-    <div class="actions rise" style="--i:7"><a class="btn" href="#portal"><span>Send a request</span></a><a class="btn ghost" href="/contact?interest=Placeboard"><span>Become a founding place</span></a></div>
+    <div class="actions rise" style="--i:7"><a class="btn" href="/products/placeboard/walkthrough"><span>Step through it</span></a><a class="btn ghost" href="#portal"><span>Send a request</span></a><a class="btn ghost" href="/contact?interest=Placeboard"><span>Become a founding place</span></a></div>
     <p class="demo-flag rise" style="--i:8">A demonstration only. Ripon City Council, Ripon BID and Visit Ripon are not involved, and nothing you send goes anywhere.</p>
   </div>
   <div class="pf-map-wrap rise" style="--i:5">${riponMap()}</div>

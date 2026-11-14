@@ -3,6 +3,11 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/placeboarddemo",
+      "destination": "/products/placeboard/walkthrough",
+      "permanent": false
+    },
+    {
       "source": "/capabilities/brand-growth",
       "destination": "https://minshallgroup.com/capabilities/strategy",
       "permanent": true

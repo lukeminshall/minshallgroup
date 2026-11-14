@@ -12,6 +12,7 @@ import {gRidge,gDial,gNetwork} from './graphics';
 import {researchPage,RESEARCH_SLUG} from './research';
 import {datalenseSample,straightTalkingDemo} from './demos';
 import {placeboardDemo,pbOptions} from './placeboard';
+import {placeboardWalkthrough} from './walkthrough';
 import {STYLES} from './portal/brief';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -285,7 +286,7 @@ ${ctaBand('Want to hear from your patients more often?','Join the first cohort a
 
 P['/products/placeboard']=()=>`
 ${phead({crumb:'<a href="/products">Products</a><span>/</span>Placeboard',title:'Bring people in. Show it worked.',lede:'Placeboard gives a town’s council, its businesses and its marketing one shared board: a fair route in for events and offers, nothing published without sign-off, a seasonal plan, and a live dashboard measured on visitors.',gfx:'catchment',
-  actions:`${btn('See it working in Ripon','/products/placeboard/demo')}${btn('Become a founding place','/contact?interest=Placeboard',true)}`,meta:'<span class="status">Founding places · 2027</span>'})}
+  actions:`${btn('See it step by step','/products/placeboard/walkthrough')}${btn('See it working in Ripon','/products/placeboard/demo',true)}${btn('Become a founding place','/contact?interest=Placeboard',true)}`,meta:'<span class="status">Founding places · 2027</span>'})}
 <section><div class="wrap split-2">
   <div class="reveal">${eyebrow('The problem')}<h2 class="h2">Towns have the reasons to visit. The marketing is in pieces.</h2></div>
   <div class="prose reveal" style="--i:1"><p>Most towns already have what visitors want: independent shops, food, green space, events and history. What they lack is one joined-up way to tell people about it. Businesses send news by email and some get heard more than others. Approvals live in long email chains. Reports count followers, because that is what is easy to count.</p><p>Placeboard puts it in one place. Every business gets the same route in, the council approves everything before it goes out, the year is planned around the seasons, and the results are measured on who came from outside the town and what they did next.</p></div>
@@ -484,6 +485,7 @@ P['/insights/'+RESEARCH_SLUG]=researchPage;
 P['/products/datalense/sample']=datalenseSample;
 P['/products/straight-talking/demo']=straightTalkingDemo;
 P['/products/placeboard/demo']=placeboardDemo;
+P['/products/placeboard/walkthrough']=placeboardWalkthrough;
 P['/petersfield']=petersfieldPage;
 P['/digbeth']=digbethPage;
 /* ================= CASE STUDIES ================= */

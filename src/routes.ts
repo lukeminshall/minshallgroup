@@ -38,7 +38,8 @@ ROUTES['/products/datalense/sample']={title:t('DataLense sample catchment report
 ROUTES['/products/straight-talking/demo']={title:t('Straight Talking live demo'),description:'Give feedback as a patient and watch it reach the service, routed to the right person, and appear on the waiting-room screen. Made-up data.',canonical:'/products/straight-talking'};
 ROUTES['/products/placeboard/demo']={title:t('Placeboard live demo'),description:'A working Placeboard set in Ripon, with real drive times and the city’s real year of events. Send a request as a business, approve it as the council and open the dashboard. Example data, not affiliated with Ripon’s councils or BID.'};
 PRODUCTS.forEach(p=>{ROUTES['/products/'+p.slug]={title:t(p.t+' — '+p.line.replace(/\.$/,'')),description:p.d};});
-ROUTES['/products/placeboard'].image=ROUTES['/products/placeboard/demo'].image='/og-placeboard.png';
+ROUTES['/products/placeboard/walkthrough']={title:t('Placeboard step by step'),description:'Placeboard start to finish in nine steps: sign in, set up the board, invite businesses, a business sends an event, approve it, add two lines to your website, see it appear and open the results. Example data.'};
+ROUTES['/products/placeboard'].image=ROUTES['/products/placeboard/demo'].image=ROUTES['/products/placeboard/walkthrough'].image='/og-placeboard.png';
 CASES.forEach(c=>{ROUTES['/work/'+c.id]={title:t(`${c.head.replace(/\.$/,'')}: ${c.client}`),description:c.ch};});
 INSIGHTS.forEach(i=>{ROUTES['/insights/'+i.slug]={title:t(i.t),description:i.d};});
 
