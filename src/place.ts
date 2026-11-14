@@ -10,6 +10,7 @@ export const esc=(s:string)=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>'
 export type Season={span:number,t:string,s:string,m:string,f:string};
 export type Place={
   host:string,brand:string,client:string,project:string,
+  org?:string,                                   /* who approves: Council (default) or BID */
   biz:[string,string,string],                    /* the request already filled in: business, title, when */
   queue:[string,string,string,string][],         /* waiting: type, label, title, who and when */
   done:[string,string,string],                   /* approved: label, title, who and where */
@@ -23,7 +24,8 @@ export type Place={
 /* the business request portal: a business submits, the council approves */
 export function requestPortal(P:Place){
   const types=[['event','An event'],['offer','An offer'],['news','News or an opening'],['listing','A listing change']];
-  return `<div class="pf-rp" data-pf-rp>
+  const O=P.org||'Council';
+  return `<div class="pf-rp" data-pf-rp data-org="${O}">
   <div class="pf-win pf-biz" data-step="biz">
     <div class="pf-bar"><i></i><i></i><i></i><span>${P.host} · share with us</span></div>
     <form class="pf-form" data-pf-form novalidate>
@@ -38,9 +40,9 @@ export function requestPortal(P:Place){
       <button class="btn sm" type="submit"><span>Send for approval</span></button>
     </form>
   </div>
-  <div class="pf-flow" aria-hidden="true"><i></i><span>Logged and sent to the Council</span></div>
+  <div class="pf-flow" aria-hidden="true"><i></i><span>Logged and sent to the ${O}</span></div>
   <div class="pf-win pf-council" data-step="council">
-    <div class="pf-bar"><i></i><i></i><i></i><span>Council approvals</span><b class="pf-live"><i></i>Live</b></div>
+    <div class="pf-bar"><i></i><i></i><i></i><span>${O} approvals</span><b class="pf-live"><i></i>Live</b></div>
     <div class="pf-cq">
       <div class="pf-cq-k"><div><span>Awaiting approval</span><b data-pf-wait>${P.queue.length}</b></div><div><span>Approved this month</span><b data-pf-done>14</b></div><div><span>Average turnaround</span><b>1.8 days</b></div></div>
       <ul class="pf-queue" data-pf-queue>
@@ -57,6 +59,7 @@ export function requestPortal(P:Place){
 export function councilPortal(P:Place){
   const tabs=['Overview','Plan','Approvals','Documents','Reports'];
   const stages=['Mobilise','Plan','Brand toolkit','Deliver','Review'];
+  const O=P.org||'Council';
   const docs=(d:[string,string,string][])=>d.map(([i,b,s])=>`<li><i>${i}</i><b>${b}</b><small>${s}</small></li>`).join('\n          ');
   return `<div class="pf-win pf-cp" data-pf-cp data-step="cp">
   <div class="pf-bar"><i></i><i></i><i></i><span>minshallgroup.com/portal · ${P.client}</span></div>
@@ -76,7 +79,7 @@ export function councilPortal(P:Place){
         </ul>
       </section>
       <section class="pf-cp-p" data-pf-panel="2" hidden>
-        <p class="pf-k">Waiting for Council sign-off</p>
+        <p class="pf-k">Waiting for ${O} sign-off</p>
         <ul class="pf-apr">
           ${P.approvals.map(([b,s])=>`<li><div><b>${b}</b><small>${s}</small></div><button type="button" data-pf-ok>Approve</button></li>`).join('\n          ')}
           <li class="ok"><div><b>${P.approved[0]}</b><small>${P.approved[1]}</small></div><span class="pf-tag ok">Approved</span></li>
@@ -158,7 +161,7 @@ const swapForTag=(el:Element,html:string)=>{const t=document.createElement('temp
 function wirePortal(root:HTMLElement){
   const form=root.querySelector<HTMLFormElement>('[data-pf-form]'),q=root.querySelector<HTMLElement>('[data-pf-queue]');
   const wait=root.querySelector<HTMLElement>('[data-pf-wait]'),done=root.querySelector<HTMLElement>('[data-pf-done]'),audit=root.querySelector<HTMLElement>('[data-pf-audit]');
-  const flow=root.querySelector<HTMLElement>('.pf-flow');
+  const flow=root.querySelector<HTMLElement>('.pf-flow'),O=root.dataset.org||'Council';
   const count=()=>{wait.textContent=String(q.querySelectorAll('[data-state="wait"]').length);};
   const TYPE:Record<string,string>={event:'Event',offer:'Offer',news:'News',listing:'Listing change'};
   const WHERE:Record<string,string>={event:'What’s On and Facebook events',offer:'Instagram Stories and the offers page',news:'Facebook, Instagram and the blog',listing:'the business directory'};
@@ -170,13 +173,13 @@ function wirePortal(root:HTMLElement){
       li.dataset.state='done';swapForTag(li.querySelector('.pf-acts'),'<span class="pf-tag ok">Approved</span>');
       const sm=li.querySelector('small');sm.textContent=sm.textContent.replace(/ · .*$/,'')+` · approved, scheduled for ${WHERE[t]||'What’s On'}`;
       done.textContent=String(+done.textContent+1);
-      audit.innerHTML=`<b>Logged:</b> approved by the Council Officer just now, and scheduled for ${WHERE[t]||'What’s On'}.`;
+      audit.innerHTML=`<b>Logged:</b> approved by the ${O} officer just now, and scheduled for ${WHERE[t]||'What’s On'}.`;
       /* the direct feed: the approval goes straight to the embedded What's On on the council's own site */
       const parts=(sm.textContent||'').split(' · ');
       document.querySelector<HTMLIFrameElement>('[data-pf-embed]')?.contentWindow?.postMessage({placeboard:'approved',type:t,title:li.querySelector('b')?.textContent||'',biz:li.dataset.biz||parts[0],when:li.dataset.when??''},location.origin);
     }else if(b.hasAttribute('data-pf-change')){
       li.dataset.state='change';swapForTag(li.querySelector('.pf-acts'),'<span class="pf-tag">Changes asked</span>');
-      audit.innerHTML='<b>Logged:</b> sent back to the business with the Council’s comments.';
+      audit.innerHTML=`<b>Logged:</b> sent back to the business with the ${O}’s comments.`;
     }
     count();
   });
@@ -189,7 +192,7 @@ function wirePortal(root:HTMLElement){
     li.innerHTML=`<div><em>${TYPE[type]}</em><b>${title}</b><small>${biz}${when?` · ${when}`:''} · just now</small></div><div class="pf-acts"><button type="button" data-pf-approve>Approve</button><button type="button" class="ghost" data-pf-change>Ask for changes</button></div>`;
     nameActs(li);
     flow.classList.remove('go');void flow.offsetWidth;flow.classList.add('go');
-    setTimeout(()=>{q.prepend(li);count();audit.innerHTML=`<b>Logged:</b> “${title}” from ${biz}, received just now. Waiting for Council approval.`;},650);
+    setTimeout(()=>{q.prepend(li);count();audit.innerHTML=`<b>Logged:</b> “${title}” from ${biz}, received just now. Waiting for ${O} approval.`;},650);
     const btn=form.querySelector<HTMLButtonElement>('button[type=submit] span');btn.textContent='Sent. Send another?';setTimeout(()=>{btn.textContent='Send for approval';},2600);
   });
 }

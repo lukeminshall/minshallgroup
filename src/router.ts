@@ -13,6 +13,7 @@ import {initStart} from './start';
 import {initDemos} from './demos';
 import {initProspect} from './prospect';
 import {initPetersfield} from './petersfield';
+import {initDigbeth} from './digbeth';
 import {initPlace} from './place';
 import {portalGate} from './portal/gate';
 
@@ -40,7 +41,7 @@ function paint(scroll=true){
   setMeta(p);setActive(p);
   if(scroll&&!location.hash)window.scrollTo({top:0,behavior:'instant' as ScrollBehavior});
   if(location.hash){const t=document.getElementById(decodeURIComponent(location.hash.slice(1)));if(t)setTimeout(()=>t.scrollIntoView({behavior:'instant' as ScrollBehavior,block:'start'}),60);}
-  initPage();preselect();fitBrief();initSme();initStart();initDemos();initProspect();initPetersfield();initPlace();
+  initPage();preselect();fitBrief();initSme();initStart();initDemos();initProspect();initPetersfield();initDigbeth();initPlace();
   portalGate();
 }
 
@@ -84,6 +85,6 @@ export function initRouter(){
   /* prerendered markup is already on the page: keep it and just wire it up,
      so entrance animations are not restarted. In dev there is none, so render. */
   const app=document.getElementById('app');
-  if(app.children.length){const p=path();setMeta(p);setActive(p);initPage();preselect();fitBrief();initSme();initStart();initDemos();initProspect();initPetersfield();initPlace();portalGate();}
+  if(app.children.length){const p=path();setMeta(p);setActive(p);initPage();preselect();fitBrief();initSme();initStart();initDemos();initProspect();initPetersfield();initDigbeth();initPlace();portalGate();}
   else paint(false);
 }

@@ -45,6 +45,7 @@ INSIGHTS.forEach(i=>{ROUTES['/insights/'+i.slug]={title:t(i.t),description:i.d};
 /* internal tools: prerendered so deep links work, but hidden from search and the sitemap */
 ROUTES['/tools/prospect']={title:t('Prospect list'),description:'Internal tool.',noindex:true};
 ROUTES['/petersfield']={title:t('Petersfield: our digital marketing tender response'),description:'Minshall Group’s response to Petersfield Town Council’s Tourism and Economic Development Digital Marketing tender.',noindex:true,image:'/og-petersfield.png'};
+ROUTES['/digbeth']={title:t('Digbeth BID: options from Minshall Group'),description:'Options for Digbeth BID: the Placeboard business request board, campaigns and reporting run for you, and event management.',noindex:true,image:'/og-placeboard.png'};
 ROUTES['/portal']={title:t('Client portal'),description:'Log in to your Minshall Group project.',noindex:true};
 ROUTES['/sign']={title:t('Sign an agreement'),description:'Read and sign an agreement with Minshall Group.',noindex:true};
 

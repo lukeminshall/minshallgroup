@@ -1,9 +1,9 @@
 /* Vercel Serverless Function — tells the team when a watched page is opened.
-   The page sends one beacon per visit (see initPetersfield). We email the time,
+   The page sends one beacon per visit (see initPetersfield and initDigbeth). We email the time,
    rough location from Vercel's IP geolocation, device and where they came from.
    Nothing identifies the person, and no IP address is stored or sent.
    Uses RESEND_API_KEY and CONTACT_TO, as api/contact.js does. */
-const WATCHED = { '/petersfield': 'Petersfield tender page' };
+const WATCHED = { '/petersfield': 'Petersfield tender page', '/digbeth': 'Digbeth BID page' };
 const BOTS = /bot|crawl|spider|preview|slurp|facebookexternalhit|headless|lighthouse/i;
 
 export default async function handler(req, res) {

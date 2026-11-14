@@ -4,6 +4,7 @@
    ===================================================================== */
 import {CAPS,RETURNS,INDUSTRIES,PRODUCTS,CASES,FINDER,STEPS,MODELS,PRINCIPLES,INSIGHTS,CLIENTS,TEAM,LANDINGS,LEGAL,SME,SCORE,CONTACT} from './content';
 import {petersfieldPage} from './petersfield';
+import {digbethPage} from './digbeth';
 import {startPage} from './start';
 import {subscribeBox,split,splitLetters,eyebrow,shead,phead,btn,cards,returnsRow,capTags,caseCard,marquee,insightCard,ctaBand,gfx,capBySlug,indById} from './components';
 import {dot,tile} from './brand';
@@ -484,6 +485,7 @@ P['/products/datalense/sample']=datalenseSample;
 P['/products/straight-talking/demo']=straightTalkingDemo;
 P['/products/placeboard/demo']=placeboardDemo;
 P['/petersfield']=petersfieldPage;
+P['/digbeth']=digbethPage;
 /* ================= CASE STUDIES ================= */
 function casePage(c,i){
   const ind=indById(c.ind),next=CASES[(i+1)%CASES.length],prev=CASES[(i-1+CASES.length)%CASES.length];
