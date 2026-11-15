@@ -77,3 +77,19 @@ None of these fixes needs a new website. Most take an afternoon.
 The full report, sector by sector and town by town: https://minshallgroup.com/insights/state-of-yorkshire-small-business-websites-2026
 
 And if you want to see how yours compares, the check is free: https://minshallgroup.com/digitalsme
+
+---
+
+## 5. A home page that writes a page for you
+
+We have rebuilt the Minshall Group home page around one idea: the visitor should not have to work out which bit of us is for them.
+
+So it asks. What brings you here? A website for a cafe in Harrogate, the case for funding a leisure centre, proof that a health service changed something. Two short questions, in your own words, and then it writes you a page: a headline, a few lines, three things worth considering, and an invitation to talk properly.
+
+It is a sketch, not a proposal. But it means the page you land on is about your problem, not our services list.
+
+We build services that change lives, develop strategy that allows growth, and deliver value to our customers. In health, sport and places, across the UK.
+
+Try it, and tell it something real: https://minshallgroup.com
+
+(And if you need a moment, there is a game of padel hidden in the dots.)

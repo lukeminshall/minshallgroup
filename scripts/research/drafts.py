@@ -168,6 +168,31 @@ for l in open(f'{RAW}/ch/enriched.jsonl'):
               company_number=c['company_number'], batch='A: limited company', source='Companies House'))
 
 eligible = [c for c in contacts if c['score'] < MAX_SCORE and len(c['fixes']) >= 2 and c.get('ok_check', True) and ACC.get(c['company_number'], '') not in LARGE]
+
+# ---------- only addresses whose domain can receive email (keeps bounces under 2%) ----------
+import urllib.request, concurrent.futures
+MXCACHE = f'{OUTDIR}/mx-cache.json'
+mx = json.load(open(MXCACHE)) if os.path.exists(MXCACHE) else {}
+def has_mx(domain):
+    for t in ('MX', 'A'):
+        try:
+            req = urllib.request.Request(f'https://cloudflare-dns.com/dns-query?name={domain}&type={t}', headers={'accept': 'application/dns-json'})
+            d = json.load(urllib.request.urlopen(req, timeout=8))
+            ans = [a for a in d.get('Answer', []) if a.get('type') in (15, 1)]
+            if t == 'MX':
+                if any(a['data'].split()[-1].strip('.') not in ('', 'localhost') for a in ans if a.get('type') == 15): return True
+                if d.get('Status') == 3: return False          # domain does not exist
+            elif ans: return True                               # no MX but an A record: mail may still be accepted
+        except Exception: return None
+    return False
+todo = sorted({c['email'].split('@')[1] for c in eligible} - set(mx))
+with concurrent.futures.ThreadPoolExecutor(24) as ex:
+    for d, ok in zip(todo, ex.map(has_mx, todo)):
+        if ok is not None: mx[d] = ok
+json.dump(mx, open(MXCACHE, 'w'))
+before = len(eligible)
+eligible = [c for c in eligible if mx.get(c['email'].split('@')[1], True)]
+print(f'dropped {before - len(eligible)} contacts whose email domain cannot receive mail')
 eligible.sort(key=lambda c: (c['batch'], c['score']))
 
 with open(f'{OUTDIR}/queue.jsonl', 'w') as q:
