@@ -3,8 +3,6 @@
    menus (hover with intent delay, keyboard and touch friendly), the
    full-screen mobile menu and the reading-progress bar.
    ===================================================================== */
-import {navMarkup,mobileNavMarkup,footerMarkup} from './shell';
-import {tile} from './brand';
 
 const head=document.getElementById('site-head');
 const nav=document.getElementById('nav');
@@ -12,11 +10,16 @@ const mnav=document.getElementById('mnav');
 const burger=document.getElementById('burger');
 
 export function buildShell(){
-  document.getElementById('brand-tile').outerHTML=tile();
-  nav.innerHTML=navMarkup();
-  mnav.innerHTML=mobileNavMarkup();
-  document.getElementById('site-foot').innerHTML=footerMarkup();
-  wireMega();wireMobile();wireScroll();wirePick();
+  const wire=()=>{wireMega();wireMobile();wireScroll();wirePick();};
+  /* the prerender bakes the header, menu and footer into every page */
+  if(nav.children.length){wire();return;}
+  Promise.all([import('./shell'),import('./brand')]).then(([sh,b])=>{
+    document.getElementById('brand-tile').outerHTML=b.tile();
+    nav.innerHTML=sh.navMarkup();
+    mnav.innerHTML=sh.mobileNavMarkup();
+    document.getElementById('site-foot').innerHTML=sh.footerMarkup();
+    wire();
+  });
 }
 
 function closeMegas(){nav.querySelectorAll('.navitem.open').forEach(n=>{n.classList.remove('open');n.querySelector('.navbtn').setAttribute('aria-expanded','false');});head.classList.remove('mega-open');syncSolid();}

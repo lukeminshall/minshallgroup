@@ -3,13 +3,14 @@
    practice, service, case, product and insight. Results are plain links,
    so the router handles them like any other click.
    ===================================================================== */
-import {CAPS,CASES,PRODUCTS,INSIGHTS,LANDINGS,INDUSTRIES} from './content';
+let C:typeof import('./content')|null=null;
+const loadC=()=>import('./content').then(m=>{C=m;});
 
 type Item={t:string,s:string,h:string,k:string};
 let items:Item[]|null=null;
 /* one entry per title: a dedicated page (listed first) beats a mention */
 const uniq=(a:Item[])=>{const seen=new Set<string>();return a.filter(i=>{const k=i.t.toLowerCase();if(seen.has(k))return false;seen.add(k);return true;});};
-const build=():Item[]=>uniq([
+const build=():Item[]=>{const {CAPS,CASES,PRODUCTS,INSIGHTS,LANDINGS,INDUSTRIES}=C!;return uniq([
   {t:'Check my website',s:'Free Webmins Score in 20 seconds',h:'/digitalsme',k:'Tool'},
   {t:'Website packages and prices',s:'Refresh, Rebuild and Grow',h:'/digitalsme#packages',k:'Tool'},
   {t:'Start a conversation',s:'Tell us the number you want to move',h:'/contact',k:'Contact'},
@@ -24,7 +25,7 @@ const build=():Item[]=>uniq([
   ...INDUSTRIES.map(x=>({t:x.t,s:x.d,h:'/industries#'+x.id,k:'Industry'})),
   ...INSIGHTS.map(i=>({t:i.t,s:i.d,h:'/insights/'+i.slug,k:'Insight'})),
   ...[['Work','/work'],['Approach','/approach'],['About','/about'],['Insights','/insights'],['Industries','/industries'],['Products','/products'],['Capabilities','/capabilities']].map(([t,h])=>({t,s:'Page',h,k:'Page'}))
-]);
+]);};
 const norm=(s:string)=>s.toLowerCase().normalize('NFKD').replace(/[^\w\s]/g,'');
 function score(it:Item,q:string){
   const t=norm(it.t),s=norm(it.s);if(!q)return 1;
@@ -56,6 +57,7 @@ function ensure(){
 }
 function mark(as:HTMLAnchorElement[]){as.forEach((a,i)=>{a.setAttribute('aria-selected',String(i===sel));if(i===sel)a.scrollIntoView({block:'nearest'});});}
 function paint(){
+  if(!C){list.innerHTML='<li class="pal-none">Loading…</li>';loadC().then(paint,()=>{list.innerHTML='<li class="pal-none">Search could not load. <a href="/contact">Ask us instead</a></li>';});return;}
   items??=build();
   const q=norm(input.value.trim());
   const res=items.map(it=>({it,n:score(it,q)})).filter(x=>x.n>0);

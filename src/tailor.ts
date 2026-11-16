@@ -12,7 +12,7 @@
    its default order.
    ===================================================================== */
 import {RM} from './motion';
-import {CASES,PRODUCTS,INSIGHTS} from './content';
+let C:typeof import('./content')|null=null;
 
 const KEY='mg-intent';
 type Sector=''|'health'|'sport'|'public';
@@ -101,6 +101,8 @@ function apply(i:Intent){
 function renderPage(i:Intent){
   const y=document.querySelector<HTMLElement>('[data-yours]');if(!y)return;
   const p=i.page;if(!p){y.hidden=true;return;}
+  if(!C){import('./content').then(m=>{C=m;renderPage(i);});return;}
+  const {CASES,PRODUCTS,INSIGHTS}=C;
   y.querySelector('[data-y-h]')!.innerHTML=esc(p.headline)+'<span class="dot" aria-hidden="true"></span>';
   y.querySelector('[data-y-intro]')!.textContent=p.intro;
   y.querySelector('[data-y-pts]')!.innerHTML=p.points.map(x=>`<li><b>${esc(x.t)}</b><p>${esc(x.d)}</p></li>`).join('');
