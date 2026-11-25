@@ -6,7 +6,7 @@
    ===================================================================== */
 import Y from './data/yorkshire-2026.json';
 import {dot} from './brand';
-import {split} from './components';
+import {split,shareLinks} from './components';
 
 export const RESEARCH_SLUG='state-of-yorkshire-small-business-websites-2026';
 const bandCls=(v:number)=>v>=85?'ex':v>=70?'gd':v>=50?'nw':'fb';
@@ -35,7 +35,6 @@ export function researchPage(){
     [`${Y.noLd}%`,'give Google and AI assistants no structured information about the business.'],
     [`${Y.noAnalytics}%`,'have no visitor analytics, so the owner cannot see what is or is not working.']
   ];
-  const share=encodeURIComponent('https://minshallgroup.com/insights/'+RESEARCH_SLUG);
   return `
 <header class="rs-hero dark"><div class="grain" aria-hidden="true"></div><div class="wrap rs-hero-in">
   <div>
@@ -124,7 +123,7 @@ ${((Y as any).towns||[]).length?`<section><div class="wrap">
   <div><h2 class="eyebrow">Method</h2><p class="rs-p">We drew the sample from OpenStreetMap, the open map of the world, taking places in West, South, North and East Yorkshire (including York and Hull) that list their own website. We excluded chains (a website shared by three or more places), public bodies and social media pages, leaving ${Y.pool.toLocaleString('en-GB')} independent businesses. ${(Y as any).mode==='all'?'We checked every one of them.':'We then took a random sample of up to 70 per sector.'} Town results group sites by postcode area and are shown only where at least 40 sites were scored.</p>
     <p class="rs-p">Each homepage was checked once in October 2026 by the Webmins Score, which looks at experience, findability, trust, conversion and how current a site is, plus what customers expect in that sector. ${Y.unreachable}% of listed websites did not load and are not scored. We checked the homepage only and did not run Google’s speed test, so results reflect what a visitor sees first rather than a full audit. No business is named.</p></div>
   <div><h2 class="eyebrow">Use this research</h2><p class="rs-p">You are welcome to quote and share these findings with a link to this page. Map data © OpenStreetMap contributors, available under the Open Database Licence.</p>
-    <div class="rs-share"><a class="btn sm ghost" href="https://www.linkedin.com/sharing/share-offsite/?url=${share}" target="_blank" rel="noopener"><span>Share on LinkedIn</span></a><a class="btn sm ghost" href="mailto:?subject=${encodeURIComponent(Y.title)}&body=${share}"><span>Email it</span></a></div>
+    <div class="rs-share">${shareLinks(RESEARCH_SLUG,"The state of Yorkshire's small business websites",`We checked ${Y.reachable} independent business websites across Yorkshire. Here is what we found, sector by sector.`)}</div>
     <p class="rs-p sm">Questions about the data, or want it for your area? <a class="ulink" href="/contact">Get in touch</a>.</p></div>
 </div></section>`;
 }

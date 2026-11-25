@@ -6,7 +6,7 @@ import {CAPS,RETURNS,INDUSTRIES,PRODUCTS,CASES,FINDER,STEPS,MODELS,PRINCIPLES,IN
 import {petersfieldPage} from './petersfield';
 import {digbethPage} from './digbeth';
 import {startPage} from './start';
-import {subscribeBox,split,splitLetters,eyebrow,shead,phead,btn,cards,returnsRow,capTags,caseCard,marquee,insightCard,ctaBand,gfx,capBySlug,indById} from './components';
+import {shareLinks,subscribeBox,split,splitLetters,eyebrow,shead,phead,btn,cards,returnsRow,capTags,caseCard,marquee,insightCard,ctaBand,gfx,capBySlug,indById} from './components';
 import {dot,tile} from './brand';
 import {gRidge,gDial,gNetwork} from './graphics';
 import {researchPage,RESEARCH_SLUG} from './research';
@@ -456,18 +456,6 @@ function barChart(c){
     <div class="ac-rows">${c.bars.map(b=>`<div class="ac-row${b.v<0?' neg':''}${/^(All|England)\b/.test(b.l)?' avg':''}"><span class="ac-l">${b.l}</span><span class="ac-track"><i style="--w:${(Math.abs(b.v)/max*100).toFixed(1)}%"></i></span><span class="ac-v">${fmt(b.v)}</span></div>`).join('')}</div>
     <p class="ac-src">Source: ${c.src}</p></figure>`;
 }
-/* share links: plain URLs that work without JS; copy and the native sheet are wired in share.ts */
-function shareBar(a){
-  const u='https://minshallgroup.com/insights/'+a.slug,e=encodeURIComponent,msg=e(a.t+' '+u);
-  return `${eyebrow('Share this')}<div class="ashare">
-    <a href="https://wa.me/?text=${msg}" target="_blank" rel="noopener">WhatsApp</a>
-    <a href="sms:?&amp;body=${msg}">Text</a>
-    <a href="mailto:?subject=${e(a.t)}&amp;body=${e(a.d+'\n\n'+u)}">Email</a>
-    <a href="https://www.linkedin.com/sharing/share-offsite/?url=${e(u)}" target="_blank" rel="noopener">LinkedIn</a>
-    <button type="button" data-share-copy="${u}">Copy link</button>
-    <button type="button" class="ashare-native" data-share-native="${u}" data-share-title="${a.t.replace(/"/g,'&quot;')}">Share…</button>
-  </div>`;
-}
 function article(a){
   const d=new Date(a.date).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
   const cap=capBySlug(a.cap);const more=INSIGHTS.filter(x=>x.slug!==a.slug).slice(0,3);
@@ -484,7 +472,7 @@ ${phead({crumb:`<a href="/insights">Insights</a><span>/</span>${a.tag}`,title:a.
   <aside class="article-side reveal" style="--i:1">
     ${eyebrow('Related practice')}<a class="mega-link" href="/capabilities/${cap.slug}"><span class="mn">${cap.n}</span><b>${cap.t}</b><span>${cap.line}</span></a>
     ${a.cta?`<a class="btn sm mag" href="${a.cta.h}"><span>${a.cta.t}</span></a>`:`<a class="btn sm mag" href="/start?type=${({'data-ai':'data','brand-growth':'brand'} as any)[a.cap]||a.cap}"><span>Talk to us about this</span></a>`}
-    ${shareBar(a)}
+    ${eyebrow('Share this')}${shareLinks(a.slug,a.t,a.d)}
   </aside>
 </div></section>
 <section class="soft"><div class="wrap">

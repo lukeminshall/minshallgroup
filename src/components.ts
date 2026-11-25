@@ -18,6 +18,18 @@ export function split(text,start=0){
 }
 
 export const eyebrow=(t)=>`<span class="eyebrow">${t}</span>`;
+/* share links: plain URLs that work without JS; copy and the native sheet are wired in share.ts */
+export function shareLinks(slug:string,title:string,desc:string){
+  const u='https://minshallgroup.com/insights/'+slug,e=encodeURIComponent,msg=e(title+' '+u);
+  return `<div class="ashare">
+    <a href="https://wa.me/?text=${msg}" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="sms:?&amp;body=${msg}">Text</a>
+    <a href="mailto:?subject=${e(title)}&amp;body=${e(desc+'\n\n'+u)}">Email</a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=${e(u)}" target="_blank" rel="noopener">LinkedIn</a>
+    <button type="button" data-share-copy="${u}">Copy link</button>
+    <button type="button" class="ashare-native" data-share-native="${u}" data-share-title="${title.replace(/"/g,'&quot;')}">Share…</button>
+  </div>`;
+}
 
 /* split into words AND letters, for the variable-font hero that responds
    to the cursor. Supports a single <em>…</em> wrapper per word. */
