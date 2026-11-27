@@ -1,0 +1,312 @@
+[
+ {
+  "date": "2026-12-01",
+  "time": "08:00",
+  "slug": "the-high-street-is-a-service",
+  "title": "The high street is a service: what small towns like Beverley and Boroughbridge do that city centres cannot",
+  "tag": "Research",
+  "topic": "Places",
+  "published": "2026-11-04",
+  "check": false
+ },
+ {
+  "date": "2026-12-02",
+  "time": "08:00",
+  "slug": "ai-in-hospitality-2026",
+  "title": "AI in hospitality: what pubs, restaurants, cafés and hotels should use it for",
+  "tag": "Data & AI",
+  "topic": "Small business",
+  "published": "2026-11-02",
+  "check": false
+ },
+ {
+  "date": "2026-12-03",
+  "time": "08:00",
+  "slug": "poor-health-is-an-economic-measure-north-east-2026",
+  "title": "Poor health is an economic measure: what the North East shows",
+  "tag": "Research",
+  "topic": "Health",
+  "published": "2026-10-31",
+  "check": false
+ },
+ {
+  "date": "2026-12-08",
+  "time": "08:00",
+  "slug": "leisure-centres-as-health-infrastructure",
+  "title": "Leisure centres are health infrastructure: fund them on health outcomes, not memberships",
+  "tag": "Research",
+  "topic": "Sport and activity",
+  "published": "2026-10-30",
+  "check": false
+ },
+ {
+  "date": "2026-12-09",
+  "time": "08:00",
+  "slug": "what-a-towns-events-are-for",
+  "title": "What a town’s events are for: measuring whether they brought people in and kept them",
+  "tag": "Research",
+  "topic": "Places",
+  "published": "2026-10-29",
+  "check": false
+ },
+ {
+  "date": "2026-12-10",
+  "time": "08:00",
+  "slug": "participation-is-the-input-health-is-the-output",
+  "title": "Participation is the input. Health is the output.",
+  "tag": "Research",
+  "topic": "Sport and activity",
+  "published": "2026-10-28",
+  "check": false
+ },
+ {
+  "date": "2026-12-15",
+  "time": "08:00",
+  "slug": "the-cost-of-waiting-time-to-answer",
+  "title": "The cost of waiting: why health services should measure time to answer",
+  "tag": "Research",
+  "topic": "Health",
+  "published": "2026-10-26",
+  "check": false
+ },
+ {
+  "date": "2026-12-16",
+  "time": "08:00",
+  "slug": "sports-sponsorship-that-counts",
+  "title": "Sponsorship that counts: why most sports sponsorship cannot show what it changed",
+  "tag": "Research",
+  "topic": "Sport and activity",
+  "published": "2026-10-27",
+  "check": false
+ },
+ {
+  "date": "2026-12-17",
+  "time": "08:00",
+  "slug": "health-startups-and-the-health-economy-2026",
+  "title": "Health startups and the health economy: count the change, not the round",
+  "tag": "Research",
+  "topic": "Health",
+  "published": "2026-10-24",
+  "check": false
+ },
+ {
+  "date": "2027-01-05",
+  "time": "08:00",
+  "slug": "why-we-built-the-webmins-score",
+  "title": "Why we built the Webmins Score",
+  "tag": "Digital",
+  "topic": "Small business",
+  "published": "2026-10-18",
+  "check": false
+ },
+ {
+  "date": "2027-01-06",
+  "time": "08:00",
+  "slug": "self-referral-and-self-pay-nhs-access",
+  "title": "Self-referral and self-pay: what the NHS and private health providers can learn from each other about access",
+  "tag": "Research",
+  "topic": "Health",
+  "published": "2026-10-23",
+  "check": false
+ },
+ {
+  "date": "2027-01-07",
+  "time": "08:00",
+  "slug": "website-packages-for-small-businesses",
+  "title": "Website packages for small businesses, from £495",
+  "tag": "News",
+  "topic": "Small business",
+  "published": "2026-10-17",
+  "check": false
+ },
+ {
+  "date": "2027-01-12",
+  "time": "08:00",
+  "slug": "uk-market-entry-one-phase-at-a-time",
+  "title": "UK market entry, one phase at a time",
+  "tag": "Strategy",
+  "topic": "Minshall Group",
+  "published": "2026-10-17",
+  "check": false
+ },
+ {
+  "date": "2027-01-13",
+  "time": "08:00",
+  "slug": "what-ai-search-means-for-small-business-websites",
+  "title": "What AI search means for small business websites",
+  "tag": "Digital",
+  "topic": "Small business",
+  "published": "2026-10-17",
+  "check": false
+ },
+ {
+  "date": "2027-01-14",
+  "time": "08:00",
+  "slug": "build-the-tool-not-the-deck",
+  "title": "Build the tool, not the deck",
+  "tag": "Strategy",
+  "topic": "Minshall Group",
+  "published": "2026-10-01",
+  "check": false
+ },
+ {
+  "date": "2027-01-19",
+  "time": "08:00",
+  "slug": "what-cafe-customers-look-for-before-they-visit",
+  "title": "What café customers look for before they visit",
+  "tag": "Digital",
+  "topic": "Small business",
+  "published": "2026-10-17",
+  "check": false
+ },
+ {
+  "date": "2027-01-20",
+  "time": "08:00",
+  "slug": "your-catchment-is-probably-wrong",
+  "title": "Your catchment is probably wrong",
+  "tag": "Data & AI",
+  "topic": "Minshall Group",
+  "published": "2026-09-12",
+  "check": false
+ },
+ {
+  "date": "2027-01-21",
+  "time": "08:00",
+  "slug": "how-trades-websites-win-more-quote-requests",
+  "title": "How trades websites win more quote requests",
+  "tag": "Digital",
+  "topic": "Small business",
+  "published": "2026-10-17",
+  "check": false
+ },
+ {
+  "date": "2027-01-26",
+  "time": "08:00",
+  "slug": "practical-ai-starts-with-the-task",
+  "title": "Practical AI starts with the task, not the tool",
+  "tag": "Data & AI",
+  "topic": "Minshall Group",
+  "published": "2026-08-20",
+  "check": false
+ },
+ {
+  "date": "2027-01-27",
+  "time": "08:00",
+  "slug": "cookie-consent-and-analytics-for-small-businesses",
+  "title": "Analytics and cookie consent: a plain-English guide for small businesses",
+  "tag": "Digital",
+  "topic": "Small business",
+  "published": "2026-10-17",
+  "check": false
+ },
+ {
+  "date": "2027-01-28",
+  "time": "08:00",
+  "slug": "feedback-in-the-moment",
+  "title": "Feedback in the moment beats the survey nobody finishes",
+  "tag": "Digital",
+  "topic": "Minshall Group",
+  "published": "2026-07-08",
+  "check": false
+ },
+ {
+  "date": "2027-02-02",
+  "time": "08:00",
+  "slug": "five-signs-your-website-is-costing-you-enquiries",
+  "title": "Five signs your website is costing you enquiries",
+  "tag": "Digital",
+  "topic": "Small business",
+  "published": "2026-10-17",
+  "check": false
+ },
+ {
+  "date": "2027-02-03",
+  "time": "08:00",
+  "slug": "selling-into-the-nhs-2026",
+  "title": "Selling into the NHS in 2026: the real routes to market",
+  "tag": "Research",
+  "topic": "Health",
+  "published": "2026-10-21",
+  "check": true
+ },
+ {
+  "date": "2027-02-04",
+  "time": "08:00",
+  "slug": "business-of-uk-sport-2026",
+  "title": "The business of UK sport, 2026: where the money is moving",
+  "tag": "Research",
+  "topic": "Sport and activity",
+  "published": "2026-10-21",
+  "check": true
+ },
+ {
+  "date": "2027-02-09",
+  "time": "08:00",
+  "slug": "state-of-uk-digital-health-2026",
+  "title": "The state of UK digital health, 2026",
+  "tag": "Research",
+  "topic": "Health",
+  "published": "2026-10-18",
+  "check": true
+ },
+ {
+  "date": "2027-02-10",
+  "time": "08:00",
+  "slug": "where-sport-meets-health-2026",
+  "title": "Where sport meets health: activity, inactivity and the opportunity in between (2026)",
+  "tag": "Research",
+  "topic": "Sport and activity",
+  "published": "2026-10-21",
+  "check": true
+ },
+ {
+  "date": "2027-02-11",
+  "time": "08:00",
+  "slug": "private-patients-pmi-and-self-pay-2026",
+  "title": "Who pays for private care now, and what it means for where providers build",
+  "tag": "Research",
+  "topic": "Health",
+  "published": "2026-10-18",
+  "check": true
+ },
+ {
+  "date": "2027-02-16",
+  "time": "08:00",
+  "slug": "state-of-yorkshire-small-business-websites-2026",
+  "title": "The state of Yorkshire’s small business websites 2026",
+  "tag": "Research",
+  "topic": "Small business",
+  "published": "2026-10-17",
+  "check": true
+ },
+ {
+  "date": "2027-02-17",
+  "time": "08:00",
+  "slug": "state-of-adult-social-care-2026",
+  "title": "The state of adult social care in England, 2026: steadier on the surface, tighter underneath",
+  "tag": "Research",
+  "topic": "Health",
+  "published": "2026-10-18",
+  "check": true
+ },
+ {
+  "date": "2027-02-18",
+  "time": "08:00",
+  "slug": "knexu-is-now-minshall-group",
+  "title": "Knexu is now Minshall Group",
+  "tag": "News",
+  "topic": "Minshall Group",
+  "published": "2026-10-16",
+  "check": true
+ },
+ {
+  "date": "2027-02-23",
+  "time": "08:00",
+  "slug": "nhs-elective-backlog-and-the-independent-sector-2026",
+  "title": "The elective backlog in 2026: a target met, a plateau, and an independent sector in the wrong places",
+  "tag": "Research",
+  "topic": "Health",
+  "published": "2026-10-18",
+  "check": true
+ }
+]

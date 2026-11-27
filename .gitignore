@@ -9,3 +9,7 @@ dist/
 research/raw/
 marketing/videos/
 supabase/.temp/
+
+# social: generated copies (the live images are in public/social)
+marketing/social/preview/
+marketing/social/*/*.png

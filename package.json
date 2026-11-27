@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
+    "social": "node scripts/social.mjs",
+    "social:buffer": "node scripts/social-buffer.mjs",
     "test:db": "node supabase/tests/security.test.mjs && node supabase/tests/workflow.test.mjs && node supabase/tests/agreements.test.mjs && node --experimental-test-module-mocks --no-warnings supabase/tests/signing.test.mjs && node supabase/tests/xero.test.mjs"
   },
   "devDependencies": {
